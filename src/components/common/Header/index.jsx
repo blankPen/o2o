@@ -3,6 +3,7 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
+import { Link } from 'react-router';
 
 function mapStateToProps(state) {
     return {
@@ -23,7 +24,12 @@ export class Header extends React.Component {
         return (
             <header className="header">
                 <div className="header-content">
-                    Header
+                    <Link to='/' className='left-logo'>
+                        <img 
+                            src="http://waimai.meituan.com/static/img/logos/normal-new2.png" 
+                            alt="商标"
+                        />
+                    </Link>
                 </div>
             </header>
         );
