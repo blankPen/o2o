@@ -30,6 +30,26 @@ export class Header extends React.Component {
                             alt="商标"
                         />
                     </Link>
+                    <div className="menu">
+                        <Link to='/' className='menu-item'>
+                            首页
+                        </Link>
+                        <span>|</span>
+                        <Link to='/' className='menu-item'>
+                            我的外卖
+                        </Link>
+                        <span>|</span>
+                        <Link to='/' className='menu-item'>
+                            加盟合作
+                        </Link>
+                    </div>
+                    <div className="search-bar">
+                        <div className="search-content">
+                            <i className='fa fa-search search-icon'></i>
+                            <input className='search-input'type="text" placeholder='搜索商家，美食'/>
+                            <button type ='button' className='search-btn'>搜索</button>
+                        </div>
+                    </div>
                 </div>
             </header>
         );
