@@ -5,6 +5,7 @@ import {
     connect
 } from 'react-redux';
 import Item from './Item/'
+import Filter from '../common/Filter/'
 import { getList } from 'actions/HomeAction';
 
 function mapStateToProps(state) {
@@ -28,7 +29,8 @@ export class Home extends React.Component {
         return (
             <div className="page-home">
                 <div className="panel-filter">
-                    Filter
+                    <Filter type="text" />
+                    <Filter type="checked" />
                 </div>
                 <div className="panel-list">
                     <div className="tool-bar"></div>
