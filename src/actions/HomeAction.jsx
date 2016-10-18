@@ -3,12 +3,12 @@
  * @Date:   2016-10-17 21:48:10
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-17 22:16:56
+ * @Last Modified time: 2016-10-18 09:52:39
  */
 
 'use strict';
-import Fetch from 'common/Fetch';
-import reqwest from 'reqwest';
+import ajax from 'common/Ajax';
+
 export function getList(params) {
     return function(dispatch) {
         // reqwest({

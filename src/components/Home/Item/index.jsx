@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-17 22:30:53
+ * @Last Modified time: 2016-10-18 10:36:06
  */
 
 'use strict';
@@ -43,7 +43,15 @@ export default class HomeItem extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="discount"></div>
+                <div className="discount">
+                    <i className="icon i-delivery"></i>
+                    <i className="icon i-pay"></i>
+                    <i className="icon-order"></i>
+                    <i className="icon-discount"></i>
+                    <i className="icon-giving"></i>
+                    <i className="icon-first"></i>
+                    <i className="icon-minus"></i>
+                </div>
             </div>
         );
     }
