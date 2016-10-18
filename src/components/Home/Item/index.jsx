@@ -3,12 +3,19 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-18 10:36:06
+ * @Last Modified time: 2016-10-18 14:48:48
  */
 
 'use strict';
 import './index.less';
 import React from 'react';
+import { Rate } from 'antd';
+
+
+const TagMap = {
+    'first': <i className="icon-first"></i>,
+    'invoice': <i className="icon i-cheque"></i>
+};
 
 export default class HomeItem extends React.Component {
     static propTypes = {
@@ -18,8 +25,15 @@ export default class HomeItem extends React.Component {
     constructor(props) {
         super(props);
     }
-
+    renderTags(list){
+        return list.map((item,i)=>{
+            return React.cloneElement(TagMap[item.tagKey],{
+                key: i
+            });
+        })
+    }
     render() {
+        const data = this.props.data || {};
         return (
             <div className="home-item">
                 <div className="item-content">
@@ -27,23 +41,28 @@ export default class HomeItem extends React.Component {
                         <img src="http://p1.meituan.net/xianfu/714f1313d04c4286e18bc079ea540f6c30697.jpg"/>
                     </div>
                     <div className="info">
-                        <h4 className='name'>周黑鸭中关村店</h4>
+                        <h4 className='name'>{data.storeName}</h4>
                         <div className='rank'>
-                            <span className="rater">*****</span>
-                            <span className="sales">月售1234单</span>
+                            <span className="rater">
+                                <Rate onChange={this.handleChange} value={data.storeScore} />
+                                <span className="ant-rate-text">{data.storeScore} 分</span>
+                            </span>
+                            <span className="sales">月售{data.storeSales}单</span>
                         </div>
                         <div className="price">
-                            <span className="start-price">起送:￥20</span>
+                            <span className="start-price">起送:￥{data.startPrice}</span>
                             <span className="send-price">
-                              配送费:￥5
+                              配送费:￥{data.storeDeliverycredit}
                             </span>
                             <span className="send-time">
-                                <i className="fa fa-fw fa-clock-o"></i>38分钟
+                                <i className="fa fa-fw fa-clock-o"></i>{data.storeDomainTimes}分钟
                             </span>
                         </div>
                     </div>
                 </div>
                 <div className="discount">
+                    {this.renderTags(data.tagList)}
+                    {/*
                     <i className="icon i-delivery"></i>
                     <i className="icon i-pay"></i>
                     <i className="icon-order"></i>
@@ -51,6 +70,7 @@ export default class HomeItem extends React.Component {
                     <i className="icon-giving"></i>
                     <i className="icon-first"></i>
                     <i className="icon-minus"></i>
+                    */}
                 </div>
             </div>
         );

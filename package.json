@@ -50,6 +50,7 @@
     "open": "0.0.5",
     "react-addons-test-utils": "^15.0.0",
     "react-hot-loader": "^1.2.9",
+    "redux-actions": "^0.12.0",
     "rimraf": "^2.4.3",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.6",

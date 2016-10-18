@@ -2,7 +2,7 @@
 * @Author: pengzhen
 * @Date:   2016-10-17 21:10:53
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-17 22:33:00
+* @Last Modified time: 2016-10-18 14:45:57
 */
 @import url('../../../styles/theme.less');
 
@@ -32,7 +32,14 @@
     }
     .rank{
         margin: 10px 0 8px;
-        .rater{}
+        .rater{
+            .ant-rate{
+                font-size: 12px;
+                .ant-rate-star{
+                    margin-right: 0.3em;
+                }
+            }
+        }
         .sales{
             float: right;
         }
@@ -53,5 +60,8 @@
     .discount{
         padding-top: 8px;
         min-height: 20px;
+        &>i{
+            margin-right: 5px;
+        }
     }
 }

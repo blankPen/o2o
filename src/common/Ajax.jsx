@@ -12,13 +12,13 @@ export default function(opt){
     opt.success = (result)=> {
         // setTimeout(()=>{
 
-            if(this && this.isMounted) {
-                if(this.isMounted()) {
-                    call_succ && call_succ.call(this, result);
-                }
-            } else {
-                call_succ && call_succ.call(this, result);
-            }
+            // if(this && this.isMounted) {
+            //     if(this.isMounted()) {
+            //         call_succ && call_succ.call(this, result);
+            //     }
+            // } else {
+            call_succ && call_succ.call(this, result);
+            // }
         // },10000);
     };
     reqwest(opt);

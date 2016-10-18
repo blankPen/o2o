@@ -4,8 +4,7 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import Item from './Item/'
-import { getList } from 'actions/HomeAction';
+import List from './List/'
 
 function mapStateToProps(state) {
     return {
@@ -22,7 +21,6 @@ export class Home extends React.Component {
         super(props);
     }
     componentWillMount() {
-        this.props.dispatch(getList())
     }
     render() {
         return (
@@ -32,15 +30,7 @@ export class Home extends React.Component {
                 </div>
                 <div className="panel-list">
                     <div className="tool-bar"></div>
-                    <div className='list-content'>
-                        <Item/>
-                        <Item/>
-                        <Item/>
-                        <Item/>
-                        <Item/>
-                        <Item/>
-
-                    </div>
+                    <List></List>
                 </div>
             </div>
         );
