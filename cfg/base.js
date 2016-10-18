@@ -25,7 +25,19 @@ module.exports = {
     hot: true,
     port: defaultSettings.port,
     publicPath: defaultSettings.publicPath,
-    noInfo: false
+    noInfo: false,
+
+    historyApiFallback: true,
+    stats: {
+      colors: true
+    },
+    proxy: {
+      '/api/*': {
+        pathRewrite: {'^/api' : '/rest/api'},
+        target: 'http://o2o.leimingtech.com/leimingtech-front',
+        changeOrigin: true
+      }
+    }
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
