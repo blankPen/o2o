@@ -6,6 +6,8 @@ import {
 } from 'react-redux';
 // import DeviceUtils from 'common/DeviceUtils.jsx';
 import { Cascader } from 'antd';
+import { Radio } from 'antd';
+
 function mapStateToProps(state) {
     return {
 
@@ -23,6 +25,12 @@ const list=[
             {title:"外卖",id:"3"},
             {title:"药品",id:"4"}
             ];
+const list2=[
+            {title:"默认排序",id:"1"},
+            {title:"价格↑",id:"2"},
+            {title:"价格↓",id:"3"}
+            ];
+
 //PC端
 export class MoreSearch extends React.Component{
     constructor(props) {
@@ -46,15 +54,23 @@ export class MoreSearch extends React.Component{
                                         onClick={this.select.bind(null,item.id)}>
                                         {item.title}</span>);
                         });
-        }else{
+        }else if(type=="checked"){
             btn=(<CheckboxGroup options={options} defaultValue={['Pear']}  />);
+        }else{
+            btn=list2.map((item,i)=>{
+                            return (<span  key={i} 
+                                        className={this.state.checked==item.id?"filter filter-active":"filter"} 
+                                        onClick={this.select.bind(null,item.id)}>
+                                        {item.title}
+                                    </span>);
+                        });
         }
         return(
             <div className="screen">
-                <span className="title">
-                    <i className="fa fa-asterisk" />
-                    商家分类
-                </span>
+                {this.props.type!="filter"?(<span className="title">
+                                                <i className="fa fa-asterisk" />
+                                                商家分类
+                                            </span>):null}
                 <span className="list">
                     {btn}
                 </span>

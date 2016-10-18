@@ -33,6 +33,7 @@ export class Home extends React.Component {
                     <Filter type="checked" />
                 </div>
                 <div className="panel-list">
+                    <Filter type="filter" />
                     <div className="tool-bar"></div>
                     <div className='list-content'>
                         <Item/>
