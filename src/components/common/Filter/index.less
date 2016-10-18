@@ -1,0 +1,75 @@
+.screen{
+	width: 100%;
+	min-height: 50px;
+	font-size: 15px;
+	span{
+		display: inline-block;
+	}
+	.title{
+		height: 50px;
+		line-height: 50px;
+		float:left;
+		width: 10%;
+		i{
+			font-size: 18px;
+			margin-right: 5px;
+			color:#e2e2e2;
+		}
+	}
+	.list{
+		float: left;
+		width: 90%;
+		line-height: 50px;
+		font-size:15px !important;
+		.childer{
+			padding:0 10px;
+			cursor: pointer;
+		}
+		.childer:hover{
+			color:#fa9700;
+		}
+		.childer-active{
+			color:#fa9700;
+		}
+		.filter{
+			padding:0 15px;
+			cursor: pointer;
+			position: relative;
+			&:after{
+				content:'';
+				position:absolute;
+				right: 0;
+				top:10px;
+				height: 30px;
+				border-left:1px solid #e2e2e2;
+			}
+		}
+		.filter:hover{
+			color:#fa9700;
+		}
+		.filter-active{
+			color:#fa9700;
+		}
+		.ant-checkbox-group-item{
+			padding:0 10px;
+			span{
+				font-size:15px !important;
+			}
+			&:hover{
+				color:#fa9700;
+			}
+		}
+		.ant-checkbox-inner{
+			width: 16px;
+			height: 16px;
+			position: relative;
+			top:-1px;
+		}
+		.ant-checkbox-checked{
+			.ant-checkbox-inner{
+				background-color: #fa9700;
+				border-color:#fa9700;
+			}
+		}
+	}
+}

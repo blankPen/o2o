@@ -8,7 +8,9 @@
 
 'use strict';
 import React from 'react';
-import { Provider } from 'react-redux';
+import {
+    Provider
+} from 'react-redux';
 import {
     Router,
     Route,
@@ -19,6 +21,8 @@ from 'react-router'
 
 import PublicMain from 'components/public/Main/';
 import Home from 'components/Home/';
+import Login from 'components/common/SignPage/Login/';
+import Register from 'components/common/SignPage/Register/';
 
 export default class extends React.Component {
     static propTypes = {
@@ -36,6 +40,8 @@ export default class extends React.Component {
                     <Route path='/' component={PublicMain}>
                         <IndexRoute component={Home} />
                     </Route>
+                    <Route path="/login" component={Login}/>
+                    <Route path="/register" component={Register}/>
                 </Router>
             </Provider>
         );
