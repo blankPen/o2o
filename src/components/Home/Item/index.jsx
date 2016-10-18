@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-18 15:06:10
+ * @Last Modified time: 2016-10-18 17:27:35
  */
 
 'use strict';
@@ -34,12 +34,13 @@ export default class HomeItem extends React.Component {
     }
     render() {
         const data = this.props.data || {};
-        console.log(`http://www.leimingtech.com:99/${data.storeLogo}`)
+
+        console.log(`http://o2o.leimingtech.com/${data.storeLogo}`)
         return (
             <div className="home-item">
                 <div className="item-content">
                     <div className="preview">
-                        <img src="http://p1.meituan.net/xianfu/714f1313d04c4286e18bc079ea540f6c30697.jpg"/>
+                        <img src={`http://o2o.leimingtech.com/${data.storeLogo}`}/>
                     </div>
                     <div className="info">
                         <h4 className='name'>{data.storeName}</h4>
