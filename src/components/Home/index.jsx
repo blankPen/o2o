@@ -21,8 +21,6 @@ export class Home extends React.Component {
     constructor(props) {
         super(props);
     }
-    componentWillMount() {
-    }
     render() {
         return (
             <div className="page-home">
@@ -31,10 +29,8 @@ export class Home extends React.Component {
                     <Filter type="checked" />
                 </div>
                 <div className="panel-list">
-                    <div className="tool-bar">
-                        <Filter type="filter" />
-                    </div>
-                    <List></List>
+                    <div className="tool-bar"><Filter type="filter" /></div>
+                    <List/>
                 </div>
             </div>
         );
