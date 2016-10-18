@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-18 14:48:48
+ * @Last Modified time: 2016-10-18 15:06:10
  */
 
 'use strict';
@@ -34,6 +34,7 @@ export default class HomeItem extends React.Component {
     }
     render() {
         const data = this.props.data || {};
+        console.log(`http://www.leimingtech.com:99/${data.storeLogo}`)
         return (
             <div className="home-item">
                 <div className="item-content">
