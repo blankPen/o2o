@@ -3,14 +3,13 @@
  * @Date:   2016-05-13 16:57:30
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-09-01 16:33:14
+ * @Last Modified time: 2016-10-18 21:00:19
  */
 
 import React, {
     Component
 } from 'react';
-import store from 'store';
-import {PageSpinner} from 'component/common/Spinner'
+// import {PageSpinner} from 'component/common/Spinner'
 
 
 /**
@@ -43,11 +42,11 @@ export default function asyncLoader(component,loading) {
 
         render() {
             var Component = this.state.Component;
-            if (Component) {
-                return <Component {...this.props}/>
-            } else {
-                return loading === false? <div/> : <PageSpinner />;
-            }
+            // if (Component) {
+            //     return <Component {...this.props}/>
+            // } else {
+            //     return loading === false? <div/> : <PageSpinner />;
+            // }
         }
     });
 }

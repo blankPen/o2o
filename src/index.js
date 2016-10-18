@@ -3,6 +3,8 @@ require('styles/app.less');
 require('font-awesome-webpack');
 
 import 'core-js/fn/object/assign';
+import 'common/polyfill'
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './Router';
