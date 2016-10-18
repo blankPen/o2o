@@ -33,10 +33,27 @@ export class TopNav extends React.Component {
             <div className='top-nav'>
                 <div className="nav-content">
                     <div className="nav-left">
-                        北京
+                        <i className="fa fa-map-marker marker-icon"></i>
+                        <span className='city'>北京</span>
+                        <span className='area'>美惠大厦</span>
+                        <span className='change-address'>[切换地址]</span>
                     </div>
                     <div className="nav-right">
-                        登录
+                        <div className="login-register">
+                            <div className="register">注册</div>
+                            <span>|</span>
+                            <div className="login">登录</div>
+                        </div>
+                        <div className="moblie-home">
+                            <div className="moblie">
+                                <i className="fa fa-mobile-phone mr5"></i>
+                                手机版
+                            </div>
+                            <div className="home">
+                                <i className="fa fa-home mr5"></i>
+                                美团网
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
