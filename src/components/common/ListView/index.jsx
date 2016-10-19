@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 10:38:40
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-19 12:11:40
+ * @Last Modified time: 2016-10-19 18:07:57
  */
 
 'use strict';
@@ -30,7 +30,11 @@ export default class ListView extends React.Component {
     componentWillMount() {
         this.refresh();
     }
-
+    componentWillReceiveProps(nextProps) {
+        if(!_.isEqual(nextProps.params, this.props.params)){
+            this.refresh(nextProps.params);
+        }
+    }
     getPostData(){
         return {
             ...this.props.params,
@@ -48,12 +52,6 @@ export default class ListView extends React.Component {
                 ...params
             };
             this.props.handleLoad(params,this.onLoaded);
-            // this.props.dispatch(getHomeList({
-            //     ...this.props.params,
-            //     pageSize: this.state.pageSize,
-            //     pageNo: this.state.pageNo,
-            //     ...params
-            // }, this.onLoaded));
         }
     }
     onLoaded = (hasMore) => {
@@ -63,8 +61,11 @@ export default class ListView extends React.Component {
             hasMore
         });
     }
-    refresh() {
-        this.loadNextPage({ pageNo: 1 });
+    refresh(params) {
+        this.loadNextPage({
+            ...params,
+            pageNo: 1 ,
+        });
     }
     renderChildren(list = []) {
         if(this.props.renderChildren){

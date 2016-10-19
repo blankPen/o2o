@@ -15,6 +15,7 @@ import {
     syncHistoryWithStore
 } from 'react-router-redux';
 
+window._ = require('lodash/core');
 const history = syncHistoryWithStore(History, store)
 // Render the main component into the dom
 ReactDOM.render(<App store={store} history ={history} />, document.getElementById('app'));

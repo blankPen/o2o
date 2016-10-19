@@ -3,7 +3,7 @@
  * @Date:   2016-10-18 13:34:55
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-18 13:59:47
+ * @Last Modified time: 2016-10-19 18:09:45
  */
 
 'use strict';
@@ -14,6 +14,12 @@ import {
 export const stateName = 'homeState';
 export default handleActions({
     'get/home/list': (state, action) => {
+        if(action.isRefresh){
+            return {
+                ...state,
+                list: action.list
+            }
+        }
         return {
             ...state,
             list: [
@@ -21,7 +27,21 @@ export default handleActions({
                 ...action.list
             ]
         }
+    },
+    'get/home/class/list': (state, action) => {
+        return {
+            ...state,
+            classLevel1: action.list
+        }
+    },
+    'get/home/class/child': (state, action) => {
+        return {
+            ...state,
+            classLevel2: action.list
+        }
     }
 }, {
-    list: []
+    list: [],
+    classLevel1: [],
+    classLevel2: [],
 });

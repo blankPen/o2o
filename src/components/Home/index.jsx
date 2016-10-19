@@ -8,7 +8,8 @@ import Item from './Item/'
 import Filter from 'components/common/Filter/'
 import ListView from 'components/common/ListView'
 import {
-    getHomeList
+    getHomeList,
+    getClassList,
 } from 'actions/HomeAction';
 import {
     Checkbox,
@@ -18,11 +19,21 @@ const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
 function mapStateToProps({
+    common,
     homeState
 }) {
     return {
-        dataSource: homeState.list
+        position: common.position,
+        dataSource: homeState.list,
+        classLevel1: classFormater(homeState.classLevel1),
+        classLevel2: classFormater(homeState.classLevel2),
     };
+}
+
+function classFormater(classList){
+    return classList.map(item=>{
+        return { label: item.name,value: item.id }
+    });
 }
 
 const filter_type = [{
@@ -73,14 +84,22 @@ export class Home extends React.Component {
     static propTypes = {
         name: React.PropTypes.string,
     };
-
     constructor(props) {
         super(props);
         this.state = {
-            type: 'ALL',
+            type: ['0'], // 全部分类
             special: [],
             order: '1',
             range: 'ALL'
+        }
+    }
+    componentWillMount() {
+        this.props.dispatch(getClassList());
+    }
+    getPostData(){
+        let { type } = this.state;
+        return {
+            scId: type[1] || type[0], // 有二级分类用二级没有用一级
         }
     }
     handleListLoad = (params, callback) => {
@@ -93,8 +112,22 @@ export class Home extends React.Component {
             [key]: value
         });
     }
+    handleTypeSelect(level,value){
+        let curValue = this.state.type;
+        if(level == 1){
+            this.setState({
+                type: [value,value]
+            });
+            this.props.dispatch(getClassList(value));
+        }else if(level == 2){
+            this.setState({
+                type: [curValue[0],value]
+            });
+        }
+    }
     renderTypeFilter(data=[]){
         let curValue = this.state.type;
+        if(!this.props.classLevel1.length){ return;}
         return (
             <div className="filter-wrap">
                 <div className="filter-title">
@@ -102,17 +135,30 @@ export class Home extends React.Component {
                 </div>
                 <div className="filter-content">
                     <div className="filter-type">
-                        {data.map((item, i) => {
-                            let classname = curValue === item.value?"active":""
+                        {this.props.classLevel1.map((item, i) => {
+                            let classname = curValue[0] === item.value?"active":""
                             return (
                                 <span key={item.value}
                                     className={classname}
-                                    onClick={this.handleSelect.bind(this,'type',item.value)}>
+                                    onClick={this.handleTypeSelect.bind(this,1,item.value)}>
                                     {item.label}
                                 </span>
                             );
                         })}
                     </div>
+                    {!!this.props.classLevel2.length &&
+                        <div className="filter-type">
+                            {this.props.classLevel2.map((item, i) => {
+                                let classname = curValue[1] === item.value?"active":""
+                                return (
+                                    <span key={item.value}
+                                        className={classname}
+                                        onClick={this.handleTypeSelect.bind(this,2,item.value)}>
+                                        {item.label}
+                                    </span>
+                                );
+                            })}
+                        </div>}
                 </div>
             </div>
         );
@@ -171,6 +217,7 @@ export class Home extends React.Component {
         })
     }
     render() {
+        console.log(this.getPostData())
         return (
             <div className="page-home">
                 <div className="panel-filter">
@@ -185,6 +232,7 @@ export class Home extends React.Component {
                     <div className="list-content">
                         <ListView
                             keySet='storeId'
+                            params={this.getPostData()}
                             dataSource={this.props.dataSource}
                             handleLoad={this.handleListLoad}
                             renderChildren={this.renderListItem}
