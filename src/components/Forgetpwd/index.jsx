@@ -1,3 +1,6 @@
+/*
+ * @Author: MoCheng
+ */
 import './index.less';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -7,9 +10,7 @@ function mapStateToProps(state) {
 
   };
 }
-/*
- * @Author: MoCheng
- */
+
 export class index extends React.Component {
   static propTypes = {
     name: React.PropTypes.string,
@@ -21,7 +22,7 @@ export class index extends React.Component {
 
   render() {
     return (
-      <div>login</div>
+      <div>forgetpwd</div>
     );
   }
 }

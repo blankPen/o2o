@@ -15,7 +15,7 @@ import {
 
 function mapStateToProps(state) {
     return {
-  
+
     };
 }
 
@@ -42,7 +42,7 @@ export class Footer extends React.Component {
                     </p>
                     <div className="two_line">
                         <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502025545" >
-                            <img src="../../../images/national_emblem.png"/>
+                            <img src="../../../images/1.png"/>
                             <p>京公网安备11010502025545号</p>
                         </a>
                     </div>

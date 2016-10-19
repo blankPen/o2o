@@ -22,8 +22,9 @@ from 'react-router'
 import PublicMain from 'components/public/Main/';
 import Home from 'components/Home/';
 import Detail from 'components/Detail/';
-import Login from 'components/common/SignPage/Login/';
-import Register from 'components/common/SignPage/Register/';
+import Login from 'components/SignPage/Login/';
+import Register from 'components/SignPage/Register/';
+import Forgetpwd from 'components/Forgetpwd/';
 
 export default class extends React.Component {
     static propTypes = {
@@ -44,6 +45,7 @@ export default class extends React.Component {
                     </Route>
                     <Route path="/login" component={Login}/>
                     <Route path="/register" component={Register}/>
+                    <Route path="/forgetpwd" component={Forgetpwd}/>
                 </Router>
             </Provider>
         );
