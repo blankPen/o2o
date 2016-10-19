@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-18 21:03:34
+ * @Last Modified time: 2016-10-18 22:12:11
  */
 
 'use strict';
@@ -27,14 +27,29 @@ export default class HomeItem extends React.Component {
         super(props);
     }
     renderTags(list){
-        return list.map((item,i)=>{
-            return React.cloneElement(TagMap[item.tagKey],{
-                key: i
+        let smallTags = [];
+        let bigTags = [];
+        list.forEach((item,i)=>{
+            let icon = React.cloneElement(TagMap[item.tagKey],{
+                key: item.tagKey
             });
-        })
+            smallTags.push(icon);
+            bigTags.push(
+                <div key={item.tagKey} className='discount-item'>
+                    {icon}
+                    <span className="alias">{item.alias}</span>
+                    {/*<span className="alias primary">(xxxxx)</span>*/}
+                </div>
+            );
+        });
+        return {
+            small: smallTags,
+            big: bigTags
+        };
     }
     render() {
         const data = this.props.data || {};
+        const tagObj = this.renderTags(data.tagList);
         return (
             <div className="home-item">
                 <div className="item-content">
@@ -60,9 +75,23 @@ export default class HomeItem extends React.Component {
                             </span>
                         </div>
                     </div>
+                    <div className={"popover "+(this.props.end?'popover-left':'')}>
+                        <div className="popover-info">
+                            <h4 className="title">商家信息</h4>
+                            <div className='body'>
+                                {tagObj.big}
+                            </div>
+                        </div>
+                        <div className="popover-info">
+                            <h4 className="title">商家公告</h4>
+                            <div className='body'>
+                                {data.storeDescription || '无'}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div className="discount">
-                    {this.renderTags(data.tagList)}
+                    {tagObj.small}
                     {/*
                     <i className="icon i-delivery"></i>
                     <i className="icon i-pay"></i>

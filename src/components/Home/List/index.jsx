@@ -3,7 +3,7 @@
  * @Date:   2016-10-18 13:08:28
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-18 14:22:13
+ * @Last Modified time: 2016-10-18 22:12:36
  */
 
 'use strict';
@@ -69,7 +69,7 @@ export class List extends React.Component {
     }
     renderList(list = []) {
         return list.map((item, i) => {
-            return <Item key={i} data={item}/>
+            return <Item key={i} data={item} end={(i+1)%4 == 0}/>
         })
     }
     render() {
