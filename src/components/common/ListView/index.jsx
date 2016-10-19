@@ -3,36 +3,56 @@
  * @Date:   2016-10-19 10:38:40
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-19 18:07:57
+ * @Last Modified time: 2016-10-19 20:07:27
  */
 
 'use strict';
 import './index.less';
 import React from 'react';
+import * as DomUtils from 'common/utils/dom';
+import throttle from 'common/utils/throttle';
 
 export default class ListView extends React.Component {
     static propTypes = {
         dataSource: React.PropTypes.array,
         keySet: React.PropTypes.string,
         renderChildren: React.PropTypes.func,
+        offset: React.PropTypes.number,
         handleLoad: React.PropTypes.func.isRequired
     };
-
+    static defaultProps = {
+        offset: 0
+    }
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
-            pageSize: 20,
+            pageSize: this.props.pageSize || 4,
             pageNo: 1
         }
     }
-
     componentWillMount() {
         this.refresh();
+        this.event = DomUtils.addEventListener(window,'scroll',throttle(this.onScroll));
+    }
+    componentWillUnmount() {
+        this.event && this.event.removeEvent();
     }
     componentWillReceiveProps(nextProps) {
         if(!_.isEqual(nextProps.params, this.props.params)){
             this.refresh(nextProps.params);
+        }
+    }
+    onScroll=()=>{
+        if(!this.loading){
+            let obj = this.refs.content;
+            if(obj && this.props.auto !== false){
+                let scrollTop = document.documentElement.clientHeight + (document.documentElement.scrollTop || document.body.scrollTop);
+                let offsetTop = DomUtils.getOffset(obj).top + obj.clientHeight - this.props.offset;
+                if (offsetTop < scrollTop) {
+                    this.loadNextPage()
+                }
+            }
         }
     }
     getPostData(){
@@ -44,6 +64,7 @@ export default class ListView extends React.Component {
     }
     loadNextPage = (params) => {
         if (!this.state.loading) {
+            this.loading = true;
             this.setState({
                 loading: true
             })
@@ -55,6 +76,7 @@ export default class ListView extends React.Component {
         }
     }
     onLoaded = (hasMore) => {
+        this.loading = false;
         this.setState({
             pageNo: this.state.pageNo + 1,
             loading: false,
@@ -90,7 +112,8 @@ export default class ListView extends React.Component {
                 return <div className="list-view-more">正在加载...</div>
             }else if(hasMore){
                 return <div className="list-view-more"
-                    onClick={this.loadNextPage.bind(this,{})}>点击加载更多</div>
+                            ref='btn_more'
+                            onClick={this.loadNextPage.bind(this,{})}>点击加载更多</div>
             }else{
                 return <div className="list-view-more">没有更多内容</div>
             }
@@ -100,7 +123,7 @@ export default class ListView extends React.Component {
         let { dataSource } = this.props;
         return (
             <div className='list-view'>
-                <div className="list-view-content">{this.renderChildren(dataSource)}</div>
+                <div ref='content' className="list-view-content">{this.renderChildren(dataSource)}</div>
                 {this.renderFooter()}
             </div>
         );
