@@ -9,6 +9,8 @@
         height: 125px;
         background: #fff;
         border: 1px solid #ebebeb;
+        width: 85%;
+        position: relative;
         .content-box{
             float: left;
             .left-box{
@@ -69,6 +71,95 @@
                 }
             }   
         }
-        
+
+        .right-box{
+            margin-top: 20px;
+            line-height: initial;
+            text-align: center;
+            float: right;
+
+            .rate-box{
+                padding-left: 10px;
+                padding-right: 25px;
+                display: inline-block;
+                .rate{
+                    display: inline-block;
+                    span{
+                        font-size: 34px;
+                    }
+                }
+                .rate-text{
+                    margin-top: 5px;
+                }
+                .turn{
+                    margin-left: 10px;
+                    font-size: 16px;
+                    color: #adadad;
+                }
+                &:hover{
+                    .turn{
+                        &:before{
+                            content: "\F0D8";
+                        }
+                    }
+                }
+            }
+
+            .commas{
+                width: 1px;
+                height: 50px;
+                display: inline-block;
+                border-right:2px solid #eee; 
+                margin: 0 20px;
+            }
+
+        } 
+
+        .fold-3d{
+            float: right;
+            width: 0;
+            height: 0;
+            border-top: 66px solid transparent;
+            border-left: 100px solid #fafafa;
+            border-bottom: 55px solid transparent;
+            position: absolute;
+            height: 100%;
+            width: 20px;
+            right: -100px
+        }
+        .collection{
+            position: absolute;
+            right: -115px;
+            background-color: #ccc;
+            height: 105px;
+            width: 100px;
+            margin-top: 10px;
+            background-color: #fff;
+            padding: 20px;
+            text-align: center;
+           
+            i{
+                display: block;
+                font-size: 22px;
+
+                &:hover{
+                    color: #fe4d3d;
+                    &:before{
+                        content: "\F004";
+                    }
+                }
+
+            }
+            
+            span{
+                display: inline-block;
+                margin: 2px 0px;
+                color: #000;
+            }
+
+            .collection-num{
+                color: #fa9700;
+            }
+        }       
     }
 }

@@ -8,7 +8,7 @@ import {
     getHomeList
 } from 'actions/DetailAction';
 import Img from 'common/Img'
-import { Rate } from 'antd';
+import { Rate,Tooltip } from 'antd';
 function mapStateToProps({
     detailState
 }) {
@@ -51,6 +51,34 @@ export class Detail extends React.Component {
                                 <div>营业时间：XXXXXXXXXXXX</div>
                             </div>
                         </div>
+                    </div>
+                    <div className="right-box">
+                        <div className="rate-box">
+                            <div className="rate"><span>4.5</span>分</div>
+                            <div className="rate-text">商家评分</div>
+                        </div>
+                        <div className="commas"></div>
+                        <Tooltip title="prompt text" placement="bottom">
+                            <div className="rate-box">
+                                <div className="rate"><span>36</span>分钟</div>
+                                <i className="fa fa-caret-down turn"></i>
+                                <div className="rate-text">平均送餐时间</div>
+                            </div>
+                        </Tooltip>
+                        <div className="commas"></div>
+                        <Tooltip title="prompt text" placement="bottom">
+                            <div className="rate-box">
+                                <div className="rate"><span>91</span>%</div>
+                                <i className="fa fa-caret-down turn"></i>
+                                <div className="rate-text">及时送餐率</div>
+                            </div>
+                        </Tooltip>
+                    </div>
+                    <div className="fold-3d"></div>
+                    <div className="collection">
+                        <i className="fa fa-heart-o"></i>
+                        <span>收藏</span>
+                        <div className="collection-num">(646)</div>
                     </div>
                </div>
             </div>
