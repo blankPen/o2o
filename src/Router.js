@@ -2,8 +2,8 @@
  * @Author: pengzhen
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
- * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-17 20:38:45
+ * @Last Modified by:   chenjingwei
+ * @Last Modified time: 2016-10-19 15:02:53
  */
 
 'use strict';
@@ -21,6 +21,7 @@ from 'react-router'
 
 import PublicMain from 'components/public/Main/';
 import Home from 'components/Home/';
+import Detail from 'components/Detail/';
 import Login from 'components/common/SignPage/Login/';
 import Register from 'components/common/SignPage/Register/';
 
@@ -39,6 +40,7 @@ export default class extends React.Component {
                 <Router history={this.props.history} >
                     <Route path='/' component={PublicMain}>
                         <IndexRoute component={Home} />
+                        <Route path="/detail" component={Detail}/>
                     </Route>
                     <Route path="/login" component={Login}/>
                     <Route path="/register" component={Register}/>

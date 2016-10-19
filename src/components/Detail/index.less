@@ -1,0 +1,74 @@
+@import url('../../styles/theme.less');
+
+.detail-body{
+    width: @max-width;
+    margin: auto;
+    min-height: 300px;
+
+    .business-top{
+        height: 125px;
+        background: #fff;
+        border: 1px solid #ebebeb;
+        .content-box{
+            float: left;
+            .left-box{
+                float: left;
+                min-width: 330px;
+                padding: 15px 20px;
+                position: relative;
+                .business-logo{
+                    float: left;
+                }
+
+                .business-box{
+                    float: left;
+                    margin-left: 20px;
+
+                    .business-name{
+                        font-size: 18px;
+                        color: #313131;
+                        margin-bottom: 20px;
+
+                        i{
+                            color: #adadad;
+                        }
+                    }
+
+                    .option{
+                        color: #adadad;
+                        margin-top: 10px;
+                        span{
+                            margin-right: 5px;
+                        }
+                    }
+                }
+
+                .buttom-info{
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    padding: 15px 20px;
+                    display: none;
+                    width: 100%;
+                    background-color: #fff;
+                }
+            }
+        }
+
+        .content-box:hover{
+            box-shadow: 1px 1px 5px #ccc;
+            height: 198px;
+            .buttom-info{
+                margin-top: 2px;
+                border-top: 1px solid #ebebeb;
+                display: inline-block;
+            }
+            .hide{
+                &:before{
+                    content: "\F0D8";
+                }
+            }   
+        }
+        
+    }
+}
