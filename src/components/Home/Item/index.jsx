@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-19 10:26:26
+ * @Last Modified time: 2016-10-19 16:10:16
  */
 
 'use strict';
@@ -30,9 +30,7 @@ export default class HomeItem extends React.Component {
         let smallTags = [];
         let bigTags = [];
         list.forEach((item,i)=>{
-            let icon = React.cloneElement(TagMap[item.tagKey],{
-                key: item.tagKey
-            });
+            let icon = <Img key={item.tagKey} className='icon' src={item.tagIcon} />;
             smallTags.push(icon);
             bigTags.push(
                 <div key={item.tagKey} className='discount-item'>
@@ -63,19 +61,19 @@ export default class HomeItem extends React.Component {
                         <h4 className='name'>{data.storeName}</h4>
                         <div className='rank'>
                             <span className="rater">
-                                <Rate onChange={this.handleChange} value={data.storeScore} />
+                                <Rate value={data.storeScore} />
                                 <span className="ant-rate-text">{data.storeScore} 分</span>
                             </span>
-                            <span className="sales">月售{data.storeSales}单</span>
+                            <span className="sales">月售{data.storeMonSales}单</span>
                         </div>
                         <div className="price">
                             <span className="start-price">起送:￥{data.startPrice}</span>
                             <span className="send-price">
-                              配送费:￥{data.storeDeliverycredit}
+                              配送费:￥{data.expressFee}
                             </span>
-                            <span className="send-time">
+                            {/*<span className="send-time">
                                 <i className="fa fa-fw fa-clock-o"></i>{data.storeDomainTimes}分钟
-                            </span>
+                            </span>*/}
                         </div>
                     </div>
                     <div className={"popover "+(this.props.end?'popover-left':'')}>
