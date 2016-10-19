@@ -10,7 +10,7 @@
 - react-router 路由管理
 - react-redux 状态树管理
 - reqwest 异步请求操作
-- ant-design react组件库
+- ant-design react 组件库
 
 ## 起步
 
