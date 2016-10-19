@@ -4,12 +4,18 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import List from './List/'
-import Filter from '../common/Filter/'
+import Item from './Item/'
+import Filter from 'components/common/Filter/'
+import ListView from 'components/common/ListView'
+import {
+    getHomeList
+} from 'actions/HomeAction';
 
-function mapStateToProps(state) {
+function mapStateToProps({
+    homeState
+}) {
     return {
-
+        dataSource: homeState.list
     };
 }
 
@@ -21,6 +27,11 @@ export class Home extends React.Component {
     constructor(props) {
         super(props);
     }
+    handleLoad=(params,callback)=>{
+        this.props.dispatch(getHomeList(params,(res)=>{
+            callback(res.totalRows>res.pageSize*res.pageNo);
+        }));
+    }
     render() {
         return (
             <div className="page-home">
@@ -30,7 +41,13 @@ export class Home extends React.Component {
                 </div>
                 <div className="panel-list">
                     <div className="tool-bar"><Filter type="filter" /></div>
-                    <List/>
+                    <ListView
+                        keySet='storeId'
+                        dataSource={this.props.dataSource}
+                        handleLoad={this.handleLoad}
+                    >
+                        <Item />
+                    </ListView>
                 </div>
             </div>
         );

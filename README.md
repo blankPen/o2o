@@ -1,8 +1,8 @@
 # o2o外卖电商
 =======
 
-[TOC]
-
+## API地址
+[http://o2o.leimingtech.com/leimingtech-front/doc/view/index](http://o2o.leimingtech.com/leimingtech-front/doc/view/index)
 
 ## 技术栈
 项目基于webpack构建，用到的技术有：
@@ -72,7 +72,7 @@
 - [ ] 【业务】商户详情页
 - [ ] 【业务】登录注册等
 - [ ] 【业务】首页功能开发
-- [ ] ListView开发
+- [x] ListView开发 2016.10.19
 - [x] Img组件开发
 - [x] demo页开发
 - [x] 工程构建

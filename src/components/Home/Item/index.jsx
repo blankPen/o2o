@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-18 22:12:11
+ * @Last Modified time: 2016-10-19 10:26:26
  */
 
 'use strict';
@@ -52,6 +52,9 @@ export default class HomeItem extends React.Component {
         const tagObj = this.renderTags(data.tagList);
         return (
             <div className="home-item">
+                <div className="mask">
+                    <a className="btn-collect"><i className="fa fa-heart-o"></i></a>
+                </div>
                 <div className="item-content">
                     <div className="preview">
                         <Img src={data.storeLogo}/>
