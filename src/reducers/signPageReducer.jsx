@@ -8,15 +8,20 @@ import {
 
 export const stateName = 'signPageState';
 export default handleActions({
-    'get/login/list': (state, action) => {
-        return {
-            ...state,
-            list: [
-                ...state.list,
-                ...action.list
-            ]
-        }
-    }
+    // 'login/success': (state, action) => {
+    //     return {
+    //         ...state,
+    //         loginPhoneList:action.list
+    //     }
+    // },
+    // 'get/login/list': (state, action) => {
+    //     return {
+    //         ...state,
+    //         loginList: action.list
+    //     }
+    // }
 }, {
-    list: []
+    loginPhoneList: [],
+    loginList: [],
 });
+

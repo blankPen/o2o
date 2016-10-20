@@ -14,7 +14,7 @@ export function getLoginByCode(params,call) {
             success: function(res){
                 if(res.result == 1){
                     dispatch({
-                        type: 'get/login/list',
+                        type: 'login/success',
                         list: res.data,
                         isRefresh: params.pageNo == 1
                     })
@@ -24,6 +24,28 @@ export function getLoginByCode(params,call) {
         })
     }
 }
+
+export function getLogin(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/api/login/login',
+            data: {
+                ...params
+            },
+            success: function(res){
+                if(res.result == 1){
+                    dispatch({
+                        type: 'login/success',
+                        list: res.data,
+                        isRefresh: params.pageNo == 1
+                    })
+                }
+                call && call(res);
+            }
+        })
+    }
+}
+
 export function getVerifyCode(params,call) {
     return function(dispatch) {
         ajax({

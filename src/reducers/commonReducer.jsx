@@ -18,6 +18,12 @@ export default handleActions({
             ...state,
             position: action.position
         }
+    },
+    'login/success':(state, action) => {
+        return {
+            ...state,
+            userInfo: action.data
+        }
     }
 }, {
     position: {

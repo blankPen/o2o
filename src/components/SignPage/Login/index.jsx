@@ -19,7 +19,9 @@ import Img from 'common/Img';
 import Footer from 'components/common/Footer';
 import {
     getLoginByCode,
-    getVerifyCode
+    getVerifyCode,
+    getCheckCode,
+    getLogin
 } from 'actions/SignPageAction';
 
 const FormItem = Form.Item;
@@ -39,7 +41,7 @@ function mapStateToProps({
     signPageState
 }){
     return {
-        phoneData: signPageState
+        phoneData: signPageState.loginPhoneList
     };
 }
 
@@ -106,10 +108,16 @@ let index = class extends React.Component {
               "validateCode": values.Dcode,
               "username": values.phone
           },(re)=> {
-            this.setState({
-              openFormError: true,
-              validate_info: re.msg
-            })
+            if(re.result==1){
+              console.log('手机号码登录成功');
+              /*window.location.href="#/";*/
+            }else{
+              console.log("手机号码登录失败");
+              this.setState({
+                openFormError: true,
+                validate_info: re.msg
+              })
+            }
           }
         )
       )
@@ -201,7 +209,7 @@ let index = class extends React.Component {
     console.log(" 验证验证码。。。");
     let phone=this.props.form.getFieldValue('phone');
     let validateCode=this.props.form.getFieldValue('Dcode');
-    this.props.dispatch(getVerifyCode({
+    this.props.dispatch(getCheckCode({
         "validateCode" : validateCode,
         "type" : this.state.type,
         "mobile" : phone
