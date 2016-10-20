@@ -8,8 +8,12 @@ import {
     getHomeList
 } from 'actions/DetailAction';
 import Img from 'common/Img'
-import { Rate,Tooltip ,Tabs} from 'antd';
+import { Rate,Tooltip ,Tabs,Radio} from 'antd';
+
+
+const RadioGroup = Radio.Group;
 const TabPane = Tabs.TabPane;
+
 function mapStateToProps({
     detailState
 }) {
@@ -56,6 +60,9 @@ export class Detail extends React.Component {
     }
     
     tabsChange = (key)=>{
+        console.log(key);
+    }
+    menuClick = (key)=>{
         console.log(key);
     }
     render() {
@@ -121,13 +128,87 @@ export class Detail extends React.Component {
                </div>
                <div className="cate-tab">
                 <Tabs defaultActiveKey="1" onChange={this.tabsChange}>
-                    <TabPane tab="Tab 1" key="1">Content of Tab Pane 1</TabPane>
-                    <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>
-                    <TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>
+                    <TabPane tab="菜单" key="1">
+                        <div 
+                            className="menu-item" 
+                            onClick={()=>this.menuClick('1')}
+                        >
+                            暖食暖胃暖人心暖食暖胃暖人心
+                        </div>
+                        <div 
+                            className="menu-item" 
+                            onClick={()=>this.menuClick('2')}
+                        >
+                            暖食暖胃暖人心暖食暖胃暖人心
+                        </div>
+                        <div 
+                            className="menu-item" 
+                            onClick={()=>this.menuClick('3')}
+                        >
+                            暖食暖胃暖人心暖食暖胃暖人心
+                        </div>
+                        <div 
+                            className="menu-item" 
+                            onClick={()=>this.menuClick('4')}
+                        >
+                            暖食暖胃暖人心暖食暖胃暖人心
+                        </div>
+                        <div 
+                            className="menu-item" 
+                            onClick={()=>this.menuClick('5')}
+                        >
+                            暖食暖胃暖人心暖食暖胃暖人心
+                        </div>
+                        
+
+                    </TabPane>
+                    <TabPane tab="评价" key="2"><RatedBox></RatedBox></TabPane>
+                    <TabPane tab="餐厅资质" key="3">Content of Tab Pane 3</TabPane>
                 </Tabs>
                </div>
             </div>
         );
+    }
+}
+
+
+/**
+ * 评价
+ */
+export class RatedBox extends React.Component {
+    static propTypes = {
+        name: React.PropTypes.string,
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            value:1
+        }
+    }
+
+    filterChange=(e)=>{
+        this.setState({
+            value:e.target.value
+        });
+    }
+
+    render(){
+        return(
+            <div className="rated-box">
+                <div className="rate-filter">
+                    <div className="filter-item">
+                        <RadioGroup onChange={this.filterChange} value={this.state.value}>
+                            <Radio key="a" value={1}>全部评价<span>(726)</span></Radio>
+                            <Radio key="b" value={2}>好评<span>(726)</span></Radio>
+                            <Radio key="c" value={3}>中评<span>(726)</span></Radio>
+                            <Radio key="d" value={4}>差评<span>(726)</span></Radio>
+                        </RadioGroup>
+                    </div>
+                </div>
+            </div>
+
+        )
     }
 }
 
