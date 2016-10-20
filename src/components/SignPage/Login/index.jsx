@@ -95,7 +95,6 @@ let index = class extends React.Component {
   handleSubmitPhone = (e) => {
     e.preventDefault();
     console.log("phone");
-    console.log( this.props.form.setFields);
     this.props.form.validateFields((errors, values) => {
       console.log(values);
       if (errors) {
@@ -130,12 +129,30 @@ let index = class extends React.Component {
     e.preventDefault();
     console.log("other");
     this.props.form.validateFields((errors, values) => {
+      console.log(values);
       if (errors) {
         console.log(' 表单验证错误!');
         return;
       }
       console.log('表单验证成功');
       console.log(values);
+      this.props.dispatch(getLogin({
+              "password": values.password,
+              "username": values.name
+          },(re)=> {
+            if(re.result==1){
+              console.log('其他账号登录成功');
+              /*window.location.href="#/";*/
+            }else{
+              console.log("其他账号登录失败");
+              this.setState({
+                openFormError: true,
+                validate_info: re.msg
+              })
+            }
+          }
+        )
+      )
       if (values.autoLogon) {
         console.log("勾选自动登陆");
       }
