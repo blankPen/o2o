@@ -2,7 +2,7 @@
 * @Author: pengzhen
 * @Date:   2016-10-17 20:37:32
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-19 19:39:30
+* @Last Modified time: 2016-10-19 22:08:25
 */
 
 @import url('./theme.less');
@@ -19,6 +19,20 @@ body {
     font-family: @font-family;
     font-size: 12px;
     line-height: 1.4em;
+}
+
+#app {
+    height: 100%;
+}
+
+a,
+a:hover,
+a:focus{
+    color: inherit;
+}
+button{
+    outline: none;
+    border: none;
 }
 
 // antd style custom
@@ -42,7 +56,7 @@ body {
         background-color: @active-color;
         border-color: @active-color;
     }
-    &:hover .ant-checkbox-inner{
+    &:hover .ant-checkbox-inner {
         border-color: @active-color;
     }
 }
@@ -60,10 +74,12 @@ body {
         box-shadow: none;
     }
 }
-.ant-select-dropdown{
+
+.ant-select-dropdown {
     border-radius: 0;
 }
+
 .ant-select-dropdown-menu-item:hover,
-.ant-select-dropdown-menu-item-active{
+.ant-select-dropdown-menu-item-active {
     background: #fffadf;
 }

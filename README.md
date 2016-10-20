@@ -11,6 +11,7 @@
 - react-redux 状态树管理
 - reqwest 异步请求操作
 - ant-design react 组件库
+- lodash 工具库 [API文档](http://lodashjs.com/docs/)
 
 ## 起步
 

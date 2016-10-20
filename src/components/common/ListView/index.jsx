@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 10:38:40
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-19 20:07:27
+ * @Last Modified time: 2016-10-19 20:57:11
  */
 
 'use strict';
@@ -36,7 +36,7 @@ export default class ListView extends React.Component {
         this.event = DomUtils.addEventListener(window,'scroll',throttle(this.onScroll));
     }
     componentWillUnmount() {
-        this.event && this.event.removeEvent();
+        this.event && this.event.remove();
     }
     componentWillReceiveProps(nextProps) {
         if(!_.isEqual(nextProps.params, this.props.params)){
@@ -44,7 +44,7 @@ export default class ListView extends React.Component {
         }
     }
     onScroll=()=>{
-        if(!this.loading){
+        if(!this.loading && this.state.hasMore){
             let obj = this.refs.content;
             if(obj && this.props.auto !== false){
                 let scrollTop = document.documentElement.clientHeight + (document.documentElement.scrollTop || document.body.scrollTop);

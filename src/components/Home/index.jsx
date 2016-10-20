@@ -212,12 +212,17 @@ export class Home extends React.Component {
         )
     }
     renderListItem(list){
-        return list.map((item, i) => {
-            return <Item key={item.storeId} data={item} end={(i+1)%4 == 0} />
+        let items = [];
+        list.forEach((item, i) => {
+            let isEnd = (i+1)%4 == 0;
+            items.push(<Item key={item.storeId} data={item} end={isEnd} />);
+            if(isEnd){
+                items.push(<div key={'line'+i} className="space-line"></div>);
+            }
         })
+        return items;
     }
     render() {
-        console.log(this.getPostData())
         return (
             <div className="page-home">
                 <div className="panel-filter">

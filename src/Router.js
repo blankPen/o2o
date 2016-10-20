@@ -2,8 +2,8 @@
  * @Author: pengzhen
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
- * @Last Modified by:   chenjingwei
- * @Last Modified time: 2016-10-19 15:02:53
+ * @Last Modified by:   pengzhen
+ * @Last Modified time: 2016-10-19 21:15:18
  */
 
 'use strict';
@@ -25,6 +25,7 @@ import Detail from 'components/Detail/';
 import Login from 'components/SignPage/Login/';
 import Register from 'components/SignPage/Register/';
 import Forgetpwd from 'components/Forgetpwd/';
+import Maper from 'components/Map/';
 
 export default class extends React.Component {
     static propTypes = {
@@ -43,6 +44,7 @@ export default class extends React.Component {
                         <IndexRoute component={Home} />
                         <Route path="/detail" component={Detail}/>
                     </Route>
+                    <Route path='/map' component={Maper} />
                     <Route path="/login" component={Login}/>
                     <Route path="/register" component={Register}/>
                     <Route path="/forgetpwd" component={Forgetpwd}/>

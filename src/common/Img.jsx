@@ -3,7 +3,7 @@
  * @Date:   2016-10-18 20:53:40
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-19 09:50:36
+ * @Last Modified time: 2016-10-19 21:24:36
  */
 
 'use strict';
@@ -14,7 +14,9 @@ const IMG_SERVER = 'http://o2o.leimingtech.com/';
 const reqWithContext = require.context('../images', true, /\.(png|jpg|gif)$/);
 
 export function getRealPath(src){
-    if(src.startWith('/')){
+    if(src.startWith('http')){
+        return src;
+    }else if(src.startWith('/')){
         return IMG_SERVER + src;
     }else{
         if(src.startWith('./')){
