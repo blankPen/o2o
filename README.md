@@ -70,13 +70,13 @@
 #### common/utils
 一些常用的工具方法
 - dom 对DOM节点相关操作
-  - css 类似jquery.css
-  - addEventListener 添加事件监听，返回移除事件方法
-  - getScroll 获取滚动条滚动位置 返回{ top,left }
-  - getOffset 获取dom相对window的偏移量 返回{ top,left }
-  - scrollTo 滚动到指定位置(position, duration,call）
-  - createElement 根据字符串创建dom
-  - contains 判断dom A是否包含B
+  - css 类似jquery.css 
+  - addEventListener 添加事件监听，返回移除事件方法 
+  - getScroll 获取滚动条滚动位置 返回{ top,left }。
+  - getOffset 获取dom相对window的偏移量 返回{ top,left } 。
+  - scrollTo 滚动到指定位置(position, duration,call）。
+  - createElement 根据字符串创建dom 
+  - contains 判断dom A是否包含B 
 - throttle 节流方法
 - debounce 防抖方法
 - Animation Tween动画库
