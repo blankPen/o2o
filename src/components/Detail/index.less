@@ -53,6 +53,7 @@
                     display: none;
                     width: 100%;
                     background-color: #fff;
+                    z-index: 10;
                 }
             }
         }
@@ -141,7 +142,7 @@
             i{
                 display: block;
                 font-size: 22px;
-
+                cursor: pointer;
                 &:hover{
                     color: #fe4d3d;
                     &:before{
@@ -161,5 +162,40 @@
                 color: #fa9700;
             }
         }       
+    }
+
+    .cate-tab{
+        position: absolute;
+        margin-top: 10px;
+        border: 1px solid #eee;
+        width: 720px;
+
+        .ant-tabs-nav-wrap{
+            background-color: #fff;
+            height: 60px;
+
+            .ant-tabs-nav-scroll{
+                margin-top: 23px;
+            }
+        }
+
+        .ant-tabs-ink-bar{
+            height: 3px;
+            background-color: #fa9700;
+
+            .ant-tab-tab{
+                min-width: 110px;
+                text-align: center;
+            }
+
+            .ant-tabs-tab:hover{
+                color: inherit;
+                background-color: #eee;
+            }
+        }
+
+        .ant-tabs-tab-active{
+            color: #fa9700;
+        }
     }
 }
