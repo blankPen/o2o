@@ -8,7 +8,7 @@ import {
     getHomeList
 } from 'actions/DetailAction';
 import Img from 'common/Img'
-import { Rate,Tooltip ,Tabs,Radio} from 'antd';
+import { Rate,Tooltip ,Tabs,Radio,Checkbox} from 'antd';
 
 
 const RadioGroup = Radio.Group;
@@ -163,7 +163,18 @@ export class Detail extends React.Component {
 
                     </TabPane>
                     <TabPane tab="评价" key="2"><RatedBox></RatedBox></TabPane>
-                    <TabPane tab="餐厅资质" key="3">Content of Tab Pane 3</TabPane>
+                    <TabPane tab="餐厅资质" key="3">
+                        <div className="aptitude">
+                            <div className="aptitude-item">
+                                <div className="aptitude-title">营业执照</div>
+                                <img src='http://p1.meituan.net/xianfu/0936e7e3c04b7e873d14a8edd365743b61440.jpg'></img>
+                            </div>
+                            <div className="aptitude-item">
+                                <div className="aptitude-title">餐饮服务许可证</div>
+                                <img src='http://p1.meituan.net/xianfu/18b999daee540d21de9ed40c92a94913184320.jpg'></img>
+                            </div>
+                        </div>
+                    </TabPane>
                 </Tabs>
                </div>
             </div>
@@ -193,6 +204,10 @@ export class RatedBox extends React.Component {
         });
     }
 
+    handleCheck = (e)=>{
+        console.log(`checked = ${e.target.checked}`);
+    }
+
     render(){
         return(
             <div className="rated-box">
@@ -204,10 +219,59 @@ export class RatedBox extends React.Component {
                             <Radio key="c" value={3}>中评<span>(726)</span></Radio>
                             <Radio key="d" value={4}>差评<span>(726)</span></Radio>
                         </RadioGroup>
+                        <div className="have-content">
+                            <Checkbox onChange={this.handleCheck}>有内容的评价</Checkbox>
+                        </div>
                     </div>
+                </div>
+                <div className="content-box">
+                    <RateItem></RateItem>
+                    <RateItem></RateItem>
+                    <RateItem></RateItem>
+                    <RateItem></RateItem>
+                    <RateItem></RateItem>
+                    <RateItem></RateItem>
+                    <RateItem></RateItem>
+
                 </div>
             </div>
 
+        )
+    }
+}
+
+/**
+ * 评价Item
+ */
+export class RateItem extends React.Component {
+    static propTypes = {
+        name: React.PropTypes.string,
+    };
+
+    constructor(props) {
+        super(props);
+        
+    }
+
+    
+
+    render(){
+        return(
+            <div className="rate-item">
+                <div className="rate-info">
+                    <span className="user-name">U***8</span>
+                    <span className="all-rate">总体评价:</span>
+                    <Rate value={4} /> 
+                    <span className="feel">好评</span>
+                    <span className="rate-time">
+                        评价时间
+                        <span>2016-10-07</span>
+                    </span>
+                </div>
+                <div className="user-reply">
+                    下了订单，没任何异常，等了半个小时，竟然突然打电话问我，还要不要送？
+                </div>
+            </div>
         )
     }
 }
