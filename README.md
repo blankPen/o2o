@@ -94,6 +94,7 @@
 | ------------- |:-------------:|
 | keySet      | 当没使用renderChildren时必要，循环时会取item[keySet]作文<Item/>的key |
 | dataSource      | 必要，要循环的数据      |
+| params | load时额外的参数，当params变化是会触发refresh，pageNo回到第一页      |
 | offset | 偏移量，当滚动到距离底部多少时触发handleLoad,默认0      |
 | handleLoad | 滚动到底部时触发的函数 (params,callback)      |
 | renderChildren | 自定义子组件渲染 (dataSource,self)      |
@@ -109,6 +110,7 @@
 - [ ] 【业务】登录注册等 mzq
 - [ ] 【业务】首页功能开发
 - [ ] 【业务】地图选择页开发
+- [ ] 图片预览功能 cjw
 - [x] ListView开发 2016.10.19
 - [x] Img组件开发
 - [x] demo页开发
