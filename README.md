@@ -65,14 +65,40 @@
     changeOrigin: 是否开启跨域
 ```
 
+### 共用组件文档
+
+#### ListView
+滚动加载列表页
+
+```js
+  var data = [
+    {id: 1,text:'ITEM 1'},
+    {id: 2,text:'ITEM 2'},
+    {id: 3,text:'ITEM 3'},
+    {id: 4,text:'ITEM 4'},
+  ];
+  
+  <ListView
+    keySet='id'
+    dataSource={data}
+    offset={100}
+    handleLoad={this.onLoad}
+    renderChildren={this.renderChildren}
+    renderFooter={this.renderFooter}
+  >
+    <Item/>
+  </ListView>
+```
 ## 任务
 
 - [ ] 【业务】支付流程
 - [ ] 【业务】订单页
+- [ ] 【业务】搜索页
 - [ ] 【业务】个人中心页 ly
 - [ ] 【业务】商户详情页 cjw
 - [ ] 【业务】登录注册等 mzq
 - [ ] 【业务】首页功能开发
+- [ ] 【业务】地图选择页开发
 - [x] ListView开发 2016.10.19
 - [x] Img组件开发
 - [x] demo页开发
