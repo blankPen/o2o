@@ -89,6 +89,16 @@
     <Item/>
   </ListView>
 ```
+
+| 参数        | 描述           |
+| ------------- |:-------------:|
+| keySet      | 当没使用renderChildren时必要，循环时会取item[keySet]作文<Item/>的key |
+| dataSource      | 必要，要循环的数据      |
+| offset | 偏移量，当滚动到距离底部多少时触发handleLoad,默认0      |
+| handleLoad | 滚动到底部时触发的函数 (params,callback)      |
+| renderChildren | 自定义子组件渲染 (dataSource,self)      |
+| renderFooter | 自定义Footer渲染 (loading,hasMore,self)      |
+
 ## 任务
 
 - [ ] 【业务】支付流程
