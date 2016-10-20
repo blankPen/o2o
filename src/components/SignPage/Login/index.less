@@ -37,14 +37,37 @@
             float: left;
             padding: 0 5%;
             background: #fff;
+            .ant-form-item {
+                margin-bottom: 0px;
+            }
+            .validate-info{
+                margin-top: 10px;
+                padding: 10px;
+                border: 1px solid #EEE;
+                border-radius: 2px;
+                font-size: 12px;
+                background: #f6f6f6;
+                padding-left: 30px;
+                position:relative;
+                i{
+                    width: 20px;
+                    height: 20px;
+                    background-image: url(../../../images/icons.png);
+                    position: absolute;
+                    top: 10px;
+                    left: 5px;
+                }
+                .i3{
+                    background-position: 296px 28px;
+                }
+            }
             .sign_name {
-                height: 55px;
+                height: 40px;
 			    width: 100%;
 			    margin: 0 auto;
-			    line-height: 55px;
+			    line-height: 40px;
 			    border-bottom: 1px solid #eee;
 			    font-family: "Microsoft YaHei";
-			    margin-bottom: 30px;
 			    font-weight: 400;
 			    color: #666;
 			    font-size: 14px;
@@ -61,7 +84,7 @@
 				    i{
 					    height: 14px;
 					    width: 14px;
-					    top: 20px;
+					    top: 15px;
 					    right: -20px;
 					    position: absolute;
 					    background-image: url(../../../images/sp-normal.png);
@@ -77,6 +100,9 @@
             .sign_photo {
                 margin-top: 15px;
                 position:relative;
+                .input-group-addon{
+                    margin-top: 15px;
+                }
                 .icon{
             	    position: absolute;
 				    z-index: 999;
@@ -111,7 +137,7 @@
                 }
             }
             .infos{
-                height: 48px;
+                height: 35px;
                 width: 300px;
                 color: #999;
                 line-height: 48px;
@@ -137,9 +163,9 @@
                 }
             }
             .sign_btn{
-                height: 45px;
-			    width: 100%;
-			    line-height: 40px;
+                height: 40px;
+                width: 100%;
+                line-height: 35px;
 			    border-radius: 3px;
 			    font-size: 18px;
 			    border-color: #FFD705;
@@ -148,7 +174,7 @@
 			    border: 0px;
             }
             .sign_agreement{
-        	    margin-top: 20px;
+    	        margin-top: 15px;
         	    a{
     	    	    text-decoration: none;
     	    	    color: #FA9700;
