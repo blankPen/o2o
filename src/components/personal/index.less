@@ -1,0 +1,223 @@
+@import url('../../styles/theme.less');
+.mypersonal{
+	width: @max-width;
+	background-color: #fafafa;
+    border: 1px solid #e5e5e5;
+    position: relative;
+    padding-left: 130px;
+    min-height: 300px;
+    margin:auto;
+    position: relative;
+    top:50px;
+    .leftMenu{
+		position: absolute;
+		left:0;
+		top:0;
+		width: 130px;
+		padding:20px 0px;
+		border-right: 1px solid #e5e5e5;
+		height: 100%;
+
+		.menulist{
+			display: inline-block;
+			width: 100%;
+			.menutitle{
+				display: inline-block;
+				font-weight: bold;
+				font-size: 14px;
+    			color: #313131;
+    			padding-left: 10px;
+			}
+			ul>li{
+				padding-left: 20px;
+				width: 100%;
+				height: 25px;
+				line-height: 25px;
+				text-overflow:ellipsis;
+				white-space:nowrap;
+				overflow:hidden;
+				font-size: 14px;
+				color:#898989;
+				margin:5px 0;
+				cursor: pointer;
+				&:hover{
+					background-color:#ffd705;
+					color:#000;
+					transition: background-color 1s ,color 3s;
+				}
+			}
+			ul>li.active{
+				background-color:#ffd705;
+				color:#000;
+			}
+		}
+    }
+    .rightText{
+    	width: 100%;
+    	height: 100%;
+    	padding:20px;
+    	min-height: 300px;
+    	//订单
+		.theOrder{
+			width: 100%;
+			height: 110px;
+			padding:10px 0;
+			cursor: pointer;
+			div{
+				float:left;
+			}
+			.headimg{
+				width: 104px;
+				height: 100%;
+				margin-right: 20px;
+				text-align: center;
+				img{
+					width: 104px;
+					margin: auto;
+				}
+			}
+			.orderdesc{
+				width: 220px;
+				height: 100%;
+				line-height: 30px;
+				.thedesc{
+					width: 100%;
+					font-size: 14px;
+    				color: #898989;
+				    word-break: keep-all;
+				    white-space: nowrap;
+				    overflow: hidden;
+				    text-overflow: ellipsis;
+				}
+				.title{
+					width: 100%;
+					word-break: keep-all;
+				    white-space: nowrap;
+				    overflow: hidden;
+				    text-overflow: ellipsis;
+					.text{
+						display: inline-block;
+						font-size: 16px;
+						color:#434343;
+						float:left;
+					}
+					
+					.right{
+						display: inline-block;
+						float:left;
+						margin-left:10px;
+						margin-top:8px;
+						background: #e2e2e2;
+						color:#fff;
+						width: 14px;
+						height: 14px;
+						line-height: 12px;
+						text-align: center;
+						border-radius: 100%;
+						border-color: #e2e2e2;
+					}
+					&:hover{
+						.text{
+							color:#ffd705;
+						}
+						.right{
+							background-color: red;
+						}
+					}
+				}
+			}
+			.tousu{
+				line-height: 90px;
+				font-size: 14px;
+				float:right;
+				margin-right: 20px;
+			}
+		}
+    }
+}
+
+
+.orderDescs{
+	position: relative;
+	.yincang{
+		display: none;
+		width: 100%;
+		background-color: #fafafa;
+		border:1px solid #e5e5e5;
+		// transition: .4s all ease;
+		// animation: myfirst 3s;
+		position: relative;
+		.lfetlist{
+			float: left;
+			// display: inline-block;
+			// position: absolute;
+			// top:0;
+			// left:0;
+			height: 100%;
+			width: 40%;
+			background: #e2e2e2;
+		}
+		.rightTimeline{
+			// float: left;
+			display: inline-block;
+			// position: absolute;
+			// top:0;
+			// right:0;
+			height: 100%;
+			width: 60%;
+			padding:10px 20px;
+		}
+	}
+	.yincang-active{
+		display: block;
+		animation: myfirst 1s;
+		// display: block;
+		// width: 100%;
+		// transform:scaleY(0);
+		// animation: myfirst 3s;
+		// background-color: red;
+	}
+}
+
+@keyframes myfirst{
+	from {
+		transform:scaleY(0);
+		display: none;}
+	to {
+		transform:scaleY(1);
+		display: block;}
+}
+//我的账号
+.account{
+	width: 100%;
+	.desc{
+		font-size: 14px;
+		color:#313131;
+		div{
+			display: inline-block;
+			margin-left:5px;
+		}
+		.userimg{
+			display: inline-block;
+			width: 38px;
+			height: 38px;
+			border-radius: 100%;
+			border:1px solid #e5e5e5;
+			color:#e5e5e5;
+			line-height: 38px;
+			text-align: center;
+			font-size: 18px;
+		}
+		.theys{
+			width: 210px;
+		}
+		.btn{
+			background: #ffd705;
+			width: 114px;
+			height: 34px;
+			line-height: 34px;
+			text-align: center;
+			cursor: pointer;
+		}
+	}
+}
