@@ -5,7 +5,6 @@ import {
     connect
 } from 'react-redux';
 import Item from './Item/'
-import Filter from 'components/common/Filter/'
 import ListView from 'components/common/ListView'
 import {
     getHomeList,
