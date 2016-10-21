@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 20:20:16
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 17:33:41
+ * @Last Modified time: 2016-10-21 17:51:07
  */
 
 'use strict';
@@ -13,11 +13,11 @@ import {
     connect
 } from 'react-redux';
 import { Link } from 'react-router';
+import UserBox from 'components/common/UserBox';
 
 function mapStateToProps({common}) {
     return {
-        position: common.position,
-        userInfo: common.userInfo
+        position: common.position
     };
 }
 
@@ -42,11 +42,7 @@ export class TopNav extends React.Component {
                         <Link to='/map' className='change-address'>[切换地址]</Link>
                     </div>
                     <div className="nav-right">
-                        <div className="login-register">
-                            <div className="register">注册</div>
-                            <span>|</span>
-                            <div className="login">登录</div>
-                        </div>
+                        <UserBox/>
                         <div className="moblie-home">
                             <div className="moblie">
                                 <i className="fa fa-mobile-phone mr5"></i>
