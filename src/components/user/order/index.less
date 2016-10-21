@@ -1,0 +1,186 @@
+//订单
+.theOrder{
+	width: 100%;
+	height: 110px;
+	padding:10px 0;
+	cursor: pointer;
+	div{
+		float:left;
+	}
+	.headimg{
+		width: 104px;
+		// height: 100%;
+		max-height: 78px;
+		margin-right: 20px;
+		text-align: center;
+		img{
+			width: 104px;
+			max-height: 78px;
+			margin: auto;
+		}
+	}
+	.orderdesc{
+		width: 220px;
+		height: 100%;
+		line-height: 30px;
+		.thedesc{
+			width: 100%;
+			font-size: 14px;
+			color: #898989;
+		    word-break: keep-all;
+		    white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		}
+		.title{
+			width: 100%;
+			word-break: keep-all;
+		    white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+			.text{
+				display: inline-block;
+				font-size: 16px;
+				color:#434343;
+				float:left;
+			}
+			
+			.right{
+				display: inline-block;
+				float:left;
+				margin-left:10px;
+				margin-top:8px;
+				background: #e2e2e2;
+				color:#fff;
+				width: 14px;
+				height: 14px;
+				line-height: 12px;
+				text-align: center;
+				border-radius: 100%;
+				border-color: #e2e2e2;
+			}
+			&:hover{
+				.text{
+					color:#ffd705;
+				}
+				.right{
+					background-color: red;
+				}
+			}
+		}
+	}
+	.tousu{
+		line-height: 90px;
+		font-size: 14px;
+		float:right;
+		margin-right: 20px;
+	}
+}
+.orderDescs{
+	font:12px/1.125 Microsoft Yahei,Arial,Helvetica,sans-serif;
+	position: relative;
+	.yincang{
+		display: none;
+		width: 100%;
+		min-height: 470px;
+		background-color: #fafafa;
+		border:1px solid #e5e5e5;
+		// transition: .4s all ease;
+		// animation: myfirst 3s;
+		position: relative;
+		.lfetlist{
+			float: left;
+			// display: inline-block;
+			// position: absolute;
+			// top:0;
+			// left:0;
+			min-height: 470px;
+			width: 289px;
+			background: #fafafa;
+			border-right: 1px solid #e5e5e5;
+			.head{
+				height: 49px;
+			    line-height: 49px;
+			    border-bottom: 1px solid #e5e5e5;
+			    padding-left: 19px;
+			    font-size: 14px;
+			    color: #313131;
+			    span{
+			    	color:red;
+			    }
+			}
+			.caidan{
+				padding: 20px;
+				color: #535353;
+				font-size: 14px;
+				li{
+					margin-bottom: 16px;
+					.pirce{
+						float:right;
+					}
+				}
+				li.special{
+					color:#fa9700;
+				}
+				li.dashed{
+					border-top:1px dashed #D2D2D2;
+					padding:15px 0 0 0; 
+					margin-bottom: 0px;
+				}
+			}
+			.personalDesc{
+				padding: 20px;
+				color: #898989;
+				border-top: 1px solid #e5e5e5;
+				li{
+					padding: 5px 0;
+				}
+			}
+			.orderfooter{
+				border-top: 1px solid #e5e5e5;
+				text-align: center;
+				padding: 8px 0;
+			}
+		}
+		.rightTimeline{
+			// float: left;
+			display: inline-block;
+			// position: absolute;
+			// top:0;
+			// right:0;
+			height: 100%;
+			// width: 60%;
+			padding:35px 0 35px 50px;
+			.ant-timeline-item-content{
+				margin-bottom: 40px;
+			}
+			.line-title{
+				font-size: 14px;
+				font-weight: bold;
+				color:#434343;
+			}
+			.line-time{
+				float:right;
+				color:#434343;
+			}
+		}
+	}
+	.yincang-active{
+		display: block;
+		animation: myfirst 1s;
+		// display: block;
+		// width: 100%;
+		// transform:scaleY(0);
+		// animation: myfirst 3s;
+		// background-color: red;
+	}
+}
+
+@keyframes myfirst{
+	from {
+		transform:scaleY(0);
+		display: none;}
+	to {
+		transform:scaleY(1);
+		display: block;}
+}
