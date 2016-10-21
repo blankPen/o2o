@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 21:02:26
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 17:20:51
+ * @Last Modified time: 2016-10-22 00:14:30
  */
 
 'use strict';
@@ -22,8 +22,6 @@ import CitySelector from 'components/Map/CitySelector/'
 
 const LETTER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-const DEFAULT_CITY = '北京市';
-
 function mapStateToProps({common}) {
     return {
         position: common.position
@@ -39,6 +37,7 @@ export class Maper extends React.Component {
         super(props);
         let position = props.position;
         this.state = {
+            openMap: false,
             cityControl: false, // 城市选择是否展开
             historyControl: false, // 历史浏览是否展开
             searchKey: '',  // 搜索关键字
@@ -46,10 +45,6 @@ export class Maper extends React.Component {
             activeResultIndex: 0, //选中的结果下标
             selectCity: position.city, // 选中的城市
             guessCity: position.city,
-            point: {
-                lng: 0,
-                lat: 0
-            }
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -144,9 +139,11 @@ export class Maper extends React.Component {
                     res.push(results.getPoi(i));
                 }
             }
+            console.log(1)
             this.setState({
                 searchResult: res,
-                activeResult: 0
+                activeResult: 0,
+                openMap: true
             });
             this.maper.createMarks(res);
             res[0] && this.maper.openMarkWindow(res[0]);
@@ -230,7 +227,7 @@ export class Maper extends React.Component {
         })
     }
     render() {
-        let { searchResult } = this.state;
+        let { searchResult,searchKey,openMap } = this.state;
         return (
             <div className='page-map'>
                 <div className="map-header">
@@ -243,7 +240,7 @@ export class Maper extends React.Component {
                         </span>
                     </div>
                 </div>
-                <div className="map-content">
+                <div className={"map-content"+(openMap?' open':'')}>
                     <div className="address-controller">
                         {this.renderCityControl()}
                         {this.renderHistoryControl()}

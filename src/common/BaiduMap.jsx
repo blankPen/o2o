@@ -3,7 +3,7 @@
  * @Date:   2016-10-20 09:26:57
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 16:26:43
+ * @Last Modified time: 2016-10-22 00:54:41
  */
 
 'use strict';
@@ -99,9 +99,8 @@ BaiduMap.prototype = {
         this.openMarks = {};
         function myFun() {
             var results = local.getResults();
-            let poi = results.getPoi(0);
-            if(poi){
-                var pp = poi.point; //获取第一个智能搜索的结果
+            if(results && results.getPoi(0)){
+                var pp = results.getPoi(0).point; //获取第一个智能搜索的结果
                 map.centerAndZoom(pp, defaultParams.zoom);
                 // map.addOverlay(new BMap.Marker(pp)); //添加标注
             }

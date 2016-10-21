@@ -3,7 +3,7 @@
  * @Date:   2016-10-21 17:47:08
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 23:09:41
+ * @Last Modified time: 2016-10-22 00:04:23
  */
 
 'use strict';
@@ -13,7 +13,7 @@ import {
     connect
 } from 'react-redux';
 import { Link } from 'react-router';
-import { logout } from 'actions/signPageAction';
+import { logout } from 'actions/SignPageAction';
 
 function mapStateToProps({common}) {
     return {

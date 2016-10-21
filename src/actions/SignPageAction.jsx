@@ -22,7 +22,7 @@ export function getMemberDetail(params,call) {
                         type: 'get/userInfo',
                         info: res.data,
                     })
-                    History.push('/');
+                    // History.push('/');
                 }
                 call && call(res);
             }
