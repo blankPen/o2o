@@ -94,10 +94,11 @@ export default class ListView extends React.Component {
             return this.props.renderChildren(list,this);
         }else{
             let keySet = this.props.keySet;
-            if(!keySet) console.error('ListView: keySet is required');
+            // if(!keySet) console.error('ListView: keySet is required');
             return list.map((item, i) => {
                 return React.cloneElement(this.props.children,{
-                    key: item[keySet],
+                    // key: item[keySet],
+                    key: i,
                     data: item
                 })
             })
@@ -105,18 +106,19 @@ export default class ListView extends React.Component {
     }
     renderFooter(){
         let { loading,hasMore } = this.state;
-        if(this.props.renderFooter){
-            return this.props.renderFooter(loading,hasMore,this);
+        
+        let footer = this.props.renderFooter && this.props.renderFooter(loading,hasMore,this);
+        if(footer){
+            return footer;
+        }
+        if(loading){
+            return <div className="list-view-more">正在加载...</div>
+        }else if(hasMore){
+            return <div className="list-view-more"
+                        ref='btn_more'
+                        onClick={this.loadNextPage.bind(this,{})}>点击加载更多</div>
         }else{
-            if(loading){
-                return <div className="list-view-more">正在加载...</div>
-            }else if(hasMore){
-                return <div className="list-view-more"
-                            ref='btn_more'
-                            onClick={this.loadNextPage.bind(this,{})}>点击加载更多</div>
-            }else{
-                return <div className="list-view-more">没有更多内容</div>
-            }
+            return <div className="list-view-more">没有更多内容</div>
         }
     }
     render() {

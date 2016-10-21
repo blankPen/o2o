@@ -7,12 +7,13 @@
 'use strict';
 import ajax from 'common/Ajax';
 
-export function getOrderList(id,call){
+export function getOrderList(params,call){
     return function(dispatch) {
         ajax({
             url: '/rest/api/order/orderlist',
             data: {
-                memberId:"a114f24da925405cade144695e592df8"
+                memberId:"a114f24da925405cade144695e592df8",
+                ...params,
             },
             success: function(res){
                 dispatch({

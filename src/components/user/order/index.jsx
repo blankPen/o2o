@@ -22,20 +22,41 @@ function mapStateToProps(state) {
 export class Order extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+            searchData:{}
+        }
     }
     componentDidMount(){
-        this.props.dispatch(getOrderList(""));
+        // this.props.dispatch(getOrderList(""));
     }
-
-     render(){
+    onLoad=(params, callback)=>{
+        this.props.dispatch(getOrderList(params, (res) => {
+            callback(res.totalRows > res.pageSize * res.pageNo);
+        }));
+    }
+    renderFooter=(loading,hasMore,self)=>{
+        let list = this.props.orderState&&this.props.orderState.list || [];
+        if(true){
+            return <h1>hhhhh</h1>
+        }
+    }
+    render(){
         let list = this.props.orderState&&this.props.orderState.list;
         return(
             <span>
-                {(list||[]).map((item,i)=>{
+                <ListView
+                    dataSource={list}
+                    params={this.state.searchData}
+                    handleLoad={this.onLoad}
+                    renderFooter={this.renderFooter}
+                >
+                    <MyOrder dispatch={this.props.dispatch}/>
+                </ListView>
+                {/*(list||[]).map((item,i)=>{
                     return(
                         <MyOrder key={i} data={item} dispatch={this.props.dispatch}></MyOrder>
                         );
-                })}
+                })*/}
             </span>
             );
      }
