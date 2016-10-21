@@ -21,7 +21,7 @@ export function phoneLogin(params,call) {
                     dispatch({
                         type: 'login/success',
                         info: res.data,
-                        token: res.user_token
+                        cookieInfo: { username: params.username, password: params.validateCode  }
                     })
                     History.push('/');
                 }
@@ -46,7 +46,7 @@ export function otherLogin(params,call) {
                     dispatch({
                         type: 'login/success',
                         info: res.data,
-                        token: res.user_token
+                        cookieInfo: { username: params.username, password: params.password  }
                     })
                     History.push('/');
                 }

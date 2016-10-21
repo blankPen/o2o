@@ -10,6 +10,7 @@
 import {
     handleActions
 }  from 'redux-actions';
+import Cookie from "js-cookie";
 
 export const stateName = 'common';
 export default handleActions({
@@ -20,6 +21,7 @@ export default handleActions({
         }
     },
     'login/success':(state, action) => {
+        Cookie.set('user_info', action.cookieInfo, { expires: 7 });
        /* sessionStorage.setItem('user_token',action.token);*/
         return {
             ...state,

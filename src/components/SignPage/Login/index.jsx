@@ -36,11 +36,10 @@ const formItemLayout = {
 };
 
 function mapStateToProps({
-    common,
-    signPageState
+    common
 }){
     return {
-        phoneData: signPageState.loginPhoneList
+        userInfo: common.userInfo
     };
 }
 
@@ -51,6 +50,7 @@ let index = class extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       openPhoneFrom: false,
       openOtherFrom: true,
@@ -238,6 +238,9 @@ let index = class extends React.Component {
       openFormError:false,
       validate_info: ""
     })
+  }
+  componentWillUnmount() {
+    clearInterval(this.a);
   }
   render() {
     return (

@@ -209,6 +209,9 @@ let index= class extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.a);
+  }
   render() {
     const {
       getFieldDecorator,
