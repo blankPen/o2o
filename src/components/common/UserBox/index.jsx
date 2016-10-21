@@ -3,7 +3,7 @@
  * @Date:   2016-10-21 17:47:08
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 22:01:04
+ * @Last Modified time: 2016-10-21 23:09:41
  */
 
 'use strict';
@@ -29,7 +29,7 @@ export class index extends React.Component {
     constructor(props) {
         super(props);
     }
-    logout(){
+    logout=()=>{
         this.props.dispatch(logout());
     }
     renderUnLogin(){
