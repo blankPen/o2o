@@ -5,3 +5,113 @@
  * @Author: MoCheng
  */
 @import url('../../../styles/theme.less');
+.register-box{
+	button{outline:none;}
+	.sign_head{
+		border-bottom: 2px solid #ffd705;
+       padding: 8px 0px 8px 20px;
+		.sign_logo{
+		 	width: 180px;
+	        .sign_img {
+	            width: 144px;
+			    height: 44px;
+		        display: inline-block;
+			    background-position: -114px -722px;
+			    background-image: url(../../../images/sp-normal.png);
+	        }
+		}
+	}
+	.sign_body{
+		min-height: 500px;
+	    width: 50%;
+    	margin: 50px auto;
+		.sign_input{
+			.input-group-addon{
+                margin-bottom: 15px;
+            }
+            input {
+	 	        height: 40px;
+			    width: 100%;
+			    line-height: 40px;
+			    width: 100%;
+			    font-size: 14px;
+			    margin: 0 auto;
+			    border: 0px;
+			    padding-left: 8px;
+		        border: 1px solid #ccc;
+	        }
+	        .ant-checkbox-vertical{
+	        	a {
+	                text-decoration: none;
+	               	color: #FA9700;
+	               	&:hover{
+	               		text-decoration: underline;
+	               	}
+	            }
+	        }
+		}
+		.sign_btn{
+        	border-color: #FFD705;
+		    color: #6B450A;
+		    background: #FFD705;
+		    padding: 7px 20px 6px;
+		    font-size: 14px;
+		    font-weight: 700;
+		    line-height: 1.5;
+		    letter-spacing: .1em;
+		    -moz-user-select: -moz-none;
+		    -ms-user-select: none;
+		    user-select: none;
+        }
+		.ant-pwd-strength {
+		  display: inline-block;
+		  margin-left: 8px;
+		  line-height: 32px;
+		  height: 32px;
+		  vertical-align: middle;
+		}
+
+		.ant-pwd-strength-item {
+		  float: left;
+		  margin-right: 1px;
+		  margin-top: 12px;
+		  width: 19px;
+		  height: 8px;
+		  line-height: 8px;
+		  list-style: none;
+		  background-color: #eee;
+		  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+		}
+
+		.ant-pwd-strength-item-1 {
+		  border-top-left-radius: 6px;
+		  border-bottom-left-radius: 6px;
+		}
+
+		.ant-pwd-strength-item-2 {
+		  width: 20px;
+		}
+
+		.ant-pwd-strength-item-3 {
+		  border-top-right-radius: 6px;
+		  border-bottom-right-radius: 6px;
+		  margin-right: 8px;
+		}
+
+		.ant-pwd-strength-low .ant-pwd-strength-item-1, .ant-pwd-strength-medium .ant-pwd-strength-item-1, .ant-pwd-strength-high .ant-pwd-strength-item-1 {
+		  background-color: #FAC450;
+		}
+
+		.ant-pwd-strength-medium .ant-pwd-strength-item-2, .ant-pwd-strength-high .ant-pwd-strength-item-2 {
+		  background-color: rgba(135, 208, 104, .6);
+		  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#9987D068,endColorstr=#9987D068);
+		}
+
+		.ant-pwd-strength-high .ant-pwd-strength-item-3 {
+		  background-color: #87D068;
+		}
+	}
+	.footer {
+	    border-top: 0px;
+	}
+}

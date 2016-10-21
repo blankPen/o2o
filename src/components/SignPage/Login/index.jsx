@@ -81,13 +81,8 @@ let index = class extends React.Component {
   phoneExists = (rule, value, callback) => {
     if(value==""){
       callback([new Error('手机号码不能为空！')]);
-    }
-    if (!value) {
-      callback();
     }else {
-     /* setTimeout(() => {*/
         callback();
-     /* }, 800);*/
     }
   }
 
@@ -249,7 +244,7 @@ let index = class extends React.Component {
       <div className="login_box">
         <div className="sign_head">
             <div className="sign_logo">
-                <a href='#/'>
+                <a href='/#/'>
                   <i className="sign_img"></i>
                 </a>
            </div>
@@ -274,7 +269,6 @@ let index = class extends React.Component {
                 {this._PhoneFormBox()}
                 {this._OtherFormBox()}
             </div>
-            <div className="sign_clear"></div>
         </div>
         <Footer/>
       </div>
@@ -289,7 +283,7 @@ let index = class extends React.Component {
     if (this.state.openOtherFrom) {
       return (
         <Form horizontal onSubmit={this.handleSubmitOther}>
-          <div className="sign_photo">
+          <div className="sign_input">
             <i className="icon user-photo"></i>
             <FormItem
               id="control-user"
@@ -306,7 +300,7 @@ let index = class extends React.Component {
               )}
             </FormItem>
           </div>
-          <div className="sign_photo">
+          <div className="sign_input">
             <i className="icon key-photo"></i>
             <FormItem
               id="control-password"
@@ -349,7 +343,7 @@ let index = class extends React.Component {
              登 录
           </Button>
           <div className="sign_agreement">
-            <p>提示： 未注册美团账号的手机号，登录时将自动注册美团账号，且代表您已同意<a href="/">《美团网用户协议》</a></p>
+            <span className="agreement_left">还没有账号？</span><a className="agreement_right" href="/#/register">免费注册</a>
           </div>
         </Form>
       );
@@ -367,7 +361,7 @@ let index = class extends React.Component {
       const wait = this.state.wait;
       return (
         <Form ref="formPhone" horizontal onSubmit={this.handleSubmitPhone} onFocus={this.handerOnFocus}>
-          <div className="sign_photo">
+          <div className="sign_input">
             <i className="icon phone-photo"></i>
             <FormItem
               id="control-phone"
@@ -385,14 +379,13 @@ let index = class extends React.Component {
             )}
             </FormItem>
             <Button
-                ref="getUidentifyCode"
                 disabled={wait === 'loading' || wait > 0}
                 className="input-group-addon"
                 onClick={this.sendDCode}>
                 {wait === 'loading'?<Icon type="loading" /> :wait > 0? `(${wait})s后重新获取` : "免费获取手机动态码"}
             </Button>
           </div>
-          <div className="sign_photo">
+          <div className="sign_input">
             <i className="icon key-photo"></i>
             <FormItem
               id="control-Dcode"
@@ -402,7 +395,7 @@ let index = class extends React.Component {
             >
             {getFieldDecorator('Dcode', {
                 rules: [
-                  { required: true, message: '动态码不能为空！' },
+                  { required: true, message: '动态码不能为空' },
                   { validator: this.validatorDcode }
                 ],
             })(
