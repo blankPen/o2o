@@ -26,6 +26,10 @@ import Login from 'components/SignPage/Login/';
 import Register from 'components/SignPage/Register/';
 import Forgetpwd from 'components/Forgetpwd/';
 import Maper from 'components/Map/';
+import Account from 'components/user/account/';
+import Order from 'components/user/order/';
+import Collect from 'components/user/collect/';
+import PersonNav from 'components/public/PersonNav/';
 
 export default class extends React.Component {
     static propTypes = {
@@ -43,6 +47,11 @@ export default class extends React.Component {
                     <Route path='/' component={PublicMain}>
                         <IndexRoute component={Home} />
                         <Route path="/detail" component={Detail}/>
+                        <Route path="/user" component={PersonNav}>
+                            <Route path="/order" component={Order}/>
+                            <Route path="/account" component={Account}/>
+                            <Route path="/collect" component={Collect}/>
+                        </Route>
                     </Route>
                     <Route path='/map' component={Maper} />
                     <Route path="/login" component={Login}/>
