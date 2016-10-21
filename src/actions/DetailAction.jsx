@@ -4,7 +4,7 @@ import ajax from 'common/Ajax';
 export function getHomeList(params,call) {
     return function(dispatch) {
         ajax({
-            url: '/api/store/list',
+            url: '/rest/api/store/list',
             data: {
                 longitude: 116.429493,
                 atitude: 39.93695,

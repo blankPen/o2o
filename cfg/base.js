@@ -32,8 +32,7 @@ module.exports = {
       colors: true
     },
     proxy: {
-      '/api/*': {
-        pathRewrite: {'^/api' : '/rest/api'},
+      '/rest/*': {
         target: 'http://o2o.leimingtech.com/leimingtech-front',
         changeOrigin: true
       }

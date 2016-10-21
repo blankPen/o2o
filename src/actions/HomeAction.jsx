@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:48:10
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 22:16:17
+ * @Last Modified time: 2016-10-21 22:59:47
  */
 
 'use strict';
@@ -13,7 +13,7 @@ import { getPositionPoint } from 'actions/commonAction'
 export function getHomeList(params,call) {
     return function(dispatch) {
         ajax({
-            url: '/api/store/list',
+            url: '/rest/api/store/list',
             data: {
                 ...getPositionPoint(),
                 ...params
@@ -42,7 +42,7 @@ export function getClassList(id,call){
                 })
             }else{
                 ajax({
-                    url: '/api/classs/child',
+                    url: '/rest/api/classs/child',
                     data: {
                         ...getPositionPoint(),
                         parentId: id
@@ -60,7 +60,7 @@ export function getClassList(id,call){
             }
         }else{
             ajax({
-                url: '/api/classs/list',
+                url: '/rest/api/classs/list',
                 data: getPositionPoint(),
                 success: function(res){
                     if(res.result == 1){

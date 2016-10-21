@@ -10,7 +10,7 @@ import ajax from 'common/Ajax';
 export function getOrderList(id,call){
     return function(dispatch) {
         ajax({
-            url: '/api/order/orderlist',
+            url: '/rest/api/order/orderlist',
             data: {
                 memberId:"a114f24da925405cade144695e592df8"
             },

@@ -11,7 +11,7 @@ import History from 'common/History'
 export function getMemberDetail(params,call) {
     return function(dispatch) {
         ajax({
-            url: '/api/member/memberDetail',
+            url: '/rest/api/member/memberDetail',
             data: {
                 ...params
             },
@@ -36,7 +36,7 @@ export function getMemberDetail(params,call) {
 export function phoneLogin(params,call) {
     return function(dispatch) {
         ajax({
-            url: '/api/login/loginByCode',
+            url: '/rest/api/login/loginByCode',
             data: {
                 ...params
             },
@@ -61,7 +61,7 @@ export function phoneLogin(params,call) {
 export function otherLogin(params,call) {
     return function(dispatch) {
         ajax({
-            url: '/api/login/login',
+            url: '/rest/api/login/login',
             data: {
                 ...params
             },
@@ -95,7 +95,7 @@ export function logout(callback){
 export function getVerifyCode(params,call) {
     return function(dispatch) {
         ajax({
-            url: '/api/index/verifyCode',
+            url: '/rest/api/index/verifyCode',
             data: {
                 ...params
             },
@@ -108,7 +108,7 @@ export function getVerifyCode(params,call) {
 export function getCheckCode(params,call) {
     return function(dispatch) {
         ajax({
-            url: '/api/index/checkCode',
+            url: '/rest/api/index/checkCode',
             data: {
                 ...params
             },
