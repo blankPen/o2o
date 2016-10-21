@@ -12,16 +12,15 @@ import {
   Input,
   Icon,
   Checkbox,
-  Row,
-  Col
+  message
 } from 'antd';
 import Img from 'common/Img';
 import Footer from 'components/common/Footer';
 import {
-    getLoginByCode,
+    phoneLogin,
+    otherLogin,
     getVerifyCode,
-    getCheckCode,
-    getLogin
+    getCheckCode
 } from 'actions/SignPageAction';
 
 const FormItem = Form.Item;
@@ -103,13 +102,13 @@ let index = class extends React.Component {
       }
       console.log('表单验证成功');
       console.log(values);
-      this.props.dispatch(getLoginByCode({
+      this.props.dispatch(phoneLogin({
               "validateCode": values.Dcode,
               "username": values.phone
           },(re)=> {
             if(re.result==1){
               console.log('手机号码登录成功');
-              /*window.location.href="#/";*/
+              message.success("登录成功");
             }else{
               console.log("手机号码登录失败");
               this.setState({
@@ -136,13 +135,13 @@ let index = class extends React.Component {
       }
       console.log('表单验证成功');
       console.log(values);
-      this.props.dispatch(getLogin({
-              "password": values.password,
-              "username": values.name
+      this.props.dispatch(otherLogin({
+            "password": values.password,
+            "username": values.name
           },(re)=> {
             if(re.result==1){
               console.log('其他账号登录成功');
-              /*window.location.href="#/";*/
+              message.success("登录成功");
             }else{
               console.log("其他账号登录失败");
               this.setState({
@@ -194,7 +193,7 @@ let index = class extends React.Component {
               this.setState({
                   wait: 60
               })
-              alert("验证码已发送请查收");
+              message.success("验证码已发送请查收");
               console.log(re.data.verifyCode);
               this.a = setInterval(() => {
                   if (this.state.wait == -1) {

@@ -20,9 +20,10 @@ export default handleActions({
         }
     },
     'login/success':(state, action) => {
+       /* sessionStorage.setItem('user_token',action.token);*/
         return {
             ...state,
-            userInfo: action.data
+            userInfo: action.info
         }
     }
 }, {

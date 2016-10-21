@@ -3,8 +3,12 @@
  */
 'use strict';
 import ajax from 'common/Ajax';
+import History from 'common/History'
 
-export function getLoginByCode(params,call) {
+/**
+ * [phoneLogin  手机账号登录]
+ */
+export function phoneLogin(params,call) {
     return function(dispatch) {
         ajax({
             url: '/api/login/loginByCode',
@@ -12,20 +16,24 @@ export function getLoginByCode(params,call) {
                 ...params
             },
             success: function(res){
+                console.log(res);
                 if(res.result == 1){
                     dispatch({
                         type: 'login/success',
-                        list: res.data,
-                        isRefresh: params.pageNo == 1
+                        info: res.data,
+                        token: res.user_token
                     })
+                    History.push('/');
                 }
                 call && call(res);
             }
         })
     }
 }
-
-export function getLogin(params,call) {
+/**
+ * [otherLogin 其他账号登录]
+ */
+export function otherLogin(params,call) {
     return function(dispatch) {
         ajax({
             url: '/api/login/login',
@@ -33,14 +41,37 @@ export function getLogin(params,call) {
                 ...params
             },
             success: function(res){
+                console.log(res);
                 if(res.result == 1){
                     dispatch({
                         type: 'login/success',
-                        list: res.data,
-                        isRefresh: params.pageNo == 1
+                        info: res.data,
+                        token: res.user_token
                     })
+                    History.push('/');
                 }
                 call && call(res);
+            }
+        })
+    }
+}
+/**
+ * [logout 用户退出登录]
+ */
+export function logout(callback){
+    return function(dispatch){
+        ajax({
+            url: '',
+            success: function(result){
+                dispatch({
+                    type: TYPES.LOG_OUT
+                })
+                if(callback){
+                    callback()
+                }else{
+                    let isOpen = store.getState().common.site_logo.isOpenOutsideWorld == 'Y';
+                    History.push(isOpen?'/':'/login');
+                }
             }
         })
     }
