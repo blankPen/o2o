@@ -17,6 +17,7 @@ function mapStateToProps(state) {
         orderState:state.orderState
     };
 }
+//订单组件
 export class Order extends React.Component {
     constructor(props) {
         super(props);
@@ -39,7 +40,38 @@ export class Order extends React.Component {
      }
 
 }
+export class Timelines extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+     render(){
+        let error=(<Icon type="clock-circle-o" style={{ fontSize: '26px','color':'red'  }} />);
+        let succ=(<Icon type="check-circle-o" style={{ fontSize: '26px','color':'green' }} />);
+        let prodata=this.props.data;
+        return(
+            <Timeline>
+                <Timeline.Item dot={succ}>
+                    <span className="line-title">订单提交成功，等待付款</span>
+                    {/*<span className="line-time">2016-08-02 18:15</span>*/}
+                </Timeline.Item>
+                <Timeline.Item dot={succ}>
+                    <span className="line-title">支付成功，等待商家接单</span>
+                    {/*<span className="line-time">2016-08-02 18:15</span>*/}
+                </Timeline.Item>
+                <Timeline.Item dot={succ}>
+                    <span className="line-title">商家接单，制作配送中</span>
+                    {/*<span className="line-time">2016-08-02 18:15</span>*/}
+                </Timeline.Item>
+                <Timeline.Item dot={error}>
+                    <span className="line-title">订单完成</span>
+                    {/*<span className="line-time">2016-08-02 18:15</span>*/}
+                </Timeline.Item>
+            </Timeline>
+            );
+     }
 
+}
+//订单信息
 export class MyOrder extends React.Component {
     constructor(props) {
         super(props);
@@ -76,8 +108,6 @@ export class MyOrder extends React.Component {
     }
     render(){
         let data=this.props.data||{};
-        let error=(<Icon type="clock-circle-o" style={{ fontSize: '26px','color':'red'  }} />);
-        let succ=(<Icon type="check-circle-o" style={{ fontSize: '26px','color':'green' }} />);
         let day = moment.unix(1318781876).format('YYYY-MM-DD h:mm');
         let state=this.returnState(data.orderState);
         return(
@@ -133,24 +163,7 @@ export class MyOrder extends React.Component {
                         <div className="orderfooter">本订单由 美团专送 提供专业高品质送餐服务</div>
                     </div>
                     <div className="rightTimeline">
-                        <Timeline>
-                            <Timeline.Item dot={succ}>
-                                <span className="line-title">订单提交成功，等待付款</span>
-                                {/*<span className="line-time">2016-08-02 18:15</span>*/}
-                            </Timeline.Item>
-                            <Timeline.Item dot={succ}>
-                                <span className="line-title">支付成功，等待商家接单</span>
-                                {/*<span className="line-time">2016-08-02 18:15</span>*/}
-                            </Timeline.Item>
-                            <Timeline.Item dot={succ}>
-                                <span className="line-title">商家接单，制作配送中</span>
-                                {/*<span className="line-time">2016-08-02 18:15</span>*/}
-                            </Timeline.Item>
-                            <Timeline.Item dot={error}>
-                                <span className="line-title">订单完成</span>
-                                {/*<span className="line-time">2016-08-02 18:15</span>*/}
-                            </Timeline.Item>
-                          </Timeline>
+                        <Timelines data={data}></Timelines>
                     </div>
 
                 </div>
