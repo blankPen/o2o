@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 21:02:26
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-20 20:03:33
+ * @Last Modified time: 2016-10-21 12:28:26
  */
 
 'use strict';
@@ -17,6 +17,8 @@ import Img from 'common/Img';
 import BaiduMap from 'common/BaiduMap';
 import * as DomUtils from 'common/utils/dom';
 import CitySelector from 'components/Map/CitySelector/'
+
+const LETTER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 function mapStateToProps(state) {
     return {
@@ -36,6 +38,7 @@ export class Maper extends React.Component {
             historyControl: false, // 历史浏览是否展开
             searchKey: '',  // 搜索关键字
             searchResult: [], // 搜索结果
+            activeResultIndex: 0, //选中的结果下标
             selectCity: '北京市', // 选中的城市
             guessCity: '北京市',
             point: {
@@ -72,17 +75,20 @@ export class Maper extends React.Component {
             maper.createAutocomplete({
                 id: "search-input",
                 onhighlight: this.handleSearchKeyChange,
-                onconfirm: this.handleSearchKeyChange
+                onconfirm: (value)=>{
+                    this.handleSearchKeyChange(value);
+                    this.searchMap(value);
+                }
             })
         })
     }
     componentWillUnmount() {
         this.event && this.event.remove();
     }
-    handleSearchKeyChange=(e)=>{
+    handleSearchKeyChange=(e,callback)=>{
         this.setState({
             searchKey: e.target ? e.target.value : e
-        });
+        },callback);
     }
     handleCitySelect=(value)=>{
         this.setState({
@@ -96,12 +102,25 @@ export class Maper extends React.Component {
             [type]: !this.state[type]
         });
     }
-    searchMap=()=>{
-        this.maper.setPlace(this.state.searchKey,(point,results)=>{
+    handleClickResult=(index)=>{
+        this.setState({
+            activeResultIndex: index
+        });
+        this.maper.openMarkWindow(this.state.searchResult[index]);
+    }
+    searchMap=(value)=>{
+        this.maper.setPlace(value || this.state.searchKey,(point,results)=>{
             // console.log(results.getPoi)
+            let res = [];
             for (var i = 0; i < results.getCurrentNumPois(); i ++){
-                console.log(results.getPoi(i).title + ", " + results.getPoi(i).address);
+                res.push(results.getPoi(i));
             }
+            this.setState({
+                searchResult: res,
+                activeResult: 0
+            });
+            this.maper.createMarks(res);
+            this.maper.openMarkWindow(res[0]);
         });
     }
     renderSearchControl(){
@@ -155,7 +174,28 @@ export class Maper extends React.Component {
             </div>
         )
     }
+    renderMapResultItems(){
+        let searchResult = this.state.searchResult;
+        let curIndex = this.state.activeResultIndex;
+        return searchResult.map((item,i)=>{
+            var classname = 'map-result-item ';
+            classname += (i == curIndex?'active':'');
+            return (
+                <div key={i}
+                    className={classname}
+                    onClick={this.handleClickResult.bind(this,i)} >
+                    <div className="poi sprite">{LETTER[i]}</div>
+                    <div className="content">
+                        <div className="title">{item.title}</div>
+                        <div className="address">{item.address}</div>
+                        <div className="nearby">附近有<span>1772</span>家外卖餐厅</div>
+                    </div>
+                </div>
+            );
+        })
+    }
     render() {
+        let { searchResult } = this.state;
         return (
             <div className='page-map'>
                 <div className="map-header">
@@ -177,10 +217,18 @@ export class Maper extends React.Component {
                     <div className="map-controller">
                         <div className="map-result">
                             <div className="map-result-head">
-                                共<span className="num">40</span>地址
+                                共<span className="num">{searchResult.length}</span>地址
                             </div>
-                            <div className="map-result-list">
-                            </div>
+                            {searchResult.length?
+                                <div className="map-result-list">
+                                    {this.renderMapResultItems()}
+                                </div>:
+                                <div className="map-result-no-address">
+                                    <div className="text">未找到相关地址：</div>
+                                    <p>1.请核对地址拼写正确。</p>
+                                    <p>2.请尝试其他关键字。</p>
+                                </div>
+                            }
                         </div>
                         <div id="map"></div>
                     </div>
