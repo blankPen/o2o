@@ -3,23 +3,35 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 22:48:46
+ * @Last Modified time: 2016-10-21 23:42:03
  */
 
 'use strict';
 import './index.less';
 import React from 'react';
+import { connect } from 'react-redux';
 import Img from 'common/Img';
 import { Rate } from 'antd';
+import { collectStore } from 'actions/DetailAction';
 
 
-export default class HomeItem extends React.Component {
+function mapStateToProps(state) {
+    return {
+
+    };
+}
+
+export class HomeItem extends React.Component {
     static propTypes = {
         name: React.PropTypes.string,
     };
 
     constructor(props) {
         super(props);
+    }
+    toggleCollect=()=>{
+        const data = this.props.data || {};
+        this.props.dispatch(collectStore(data.storeId,true));
     }
     renderTags(list){
         let smallTags = [];
@@ -46,7 +58,9 @@ export default class HomeItem extends React.Component {
         return (
             <div className="home-item">
                 <div className="mask">
-                    <a className="btn-collect"><i className="fa fa-heart-o"></i></a>
+                    {/*<a className="btn-collect" onClick={this.toggleCollect}>
+                        <i className="fa fa-heart-o"></i>
+                    </a>*/}
                 </div>
                 <div className="item-content">
                     <div className="preview">
@@ -102,3 +116,9 @@ export default class HomeItem extends React.Component {
         );
     }
 }
+
+export default connect(
+    mapStateToProps,
+    // Implement map dispatch to props
+)(HomeItem)
+
