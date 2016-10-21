@@ -7,6 +7,25 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
+<script type="text/javascript">
+ 	document.onkeydown=function(event){
+	    var e = event || window.event || arguments.callee.caller.arguments[0];
+	    if(e && e.keyCode==13){
+	        document.getElementById("other_btn")
+	        let forms=document.getElementsByTagName("form");
+	        if(forms.length=== 0){
+	        	console.log("不存在form");
+	        }else{
+	        	let btn=document.getElementById('other_btn')||document.getElementById('phone_btn')||undefined
+	        	if(btn){
+	        		console.log("回车登录");
+	        		btn.click();
+	        	}
+	        }
+
+	    }
+	};
+</script>
 <body>
   <div id="app">APPLICATION CONTENT</div>
 

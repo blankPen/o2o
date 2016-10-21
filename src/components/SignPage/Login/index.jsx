@@ -90,13 +90,14 @@ let index = class extends React.Component {
     e.preventDefault();
     console.log("phone");
     this.props.form.validateFields((errors, values) => {
-      console.log(values);
       if (errors) {
         console.log(' 表单验证错误!');
         return;
       }
       console.log('表单验证成功');
       console.log(values);
+      let btn=document.getElementById('phone_btn')
+      btn.disabled = true;
       this.props.dispatch(phoneLogin({
               "validateCode": values.Dcode,
               "username": values.phone
@@ -106,6 +107,7 @@ let index = class extends React.Component {
               message.success("登录成功");
             }else{
               console.log("手机号码登录失败");
+              btn.disabled = false;
               this.setState({
                 openFormError: true,
                 validate_info: re.msg
@@ -123,13 +125,14 @@ let index = class extends React.Component {
     e.preventDefault();
     console.log("other");
     this.props.form.validateFields((errors, values) => {
-      console.log(values);
       if (errors) {
         console.log(' 表单验证错误!');
         return;
       }
       console.log('表单验证成功');
       console.log(values);
+      let btn=document.getElementById('other_btn')
+      btn.disabled = true;
       this.props.dispatch(otherLogin({
             "password": values.password,
             "username": values.name
@@ -139,6 +142,7 @@ let index = class extends React.Component {
               message.success("登录成功");
             }else{
               console.log("其他账号登录失败");
+              btn.disabled=false;
               this.setState({
                 openFormError: true,
                 validate_info: re.msg
@@ -239,6 +243,7 @@ let index = class extends React.Component {
       validate_info: ""
     })
   }
+
   componentWillUnmount() {
     clearInterval(this.a);
   }
@@ -285,7 +290,7 @@ let index = class extends React.Component {
     } = this.props.form;
     if (this.state.openOtherFrom) {
       return (
-        <Form horizontal onSubmit={this.handleSubmitOther}>
+        <Form id="other_login_from" horizontal onSubmit={this.handleSubmitOther} >
           <div className="sign_input">
             <i className="icon user-photo"></i>
             <FormItem
@@ -342,6 +347,7 @@ let index = class extends React.Component {
             type="primary"
             htmlType="submit"
             className="sign_btn"
+            id="other_btn"
             >
              登 录
           </Button>
@@ -363,7 +369,7 @@ let index = class extends React.Component {
     if (this.state.openPhoneFrom) {
       const wait = this.state.wait;
       return (
-        <Form ref="formPhone" horizontal onSubmit={this.handleSubmitPhone} onFocus={this.handerOnFocus}>
+        <Form id="phone_login_from" horizontal onSubmit={this.handleSubmitPhone} onFocus={this.handerOnFocus}>
           <div className="sign_input">
             <i className="icon phone-photo"></i>
             <FormItem
@@ -427,6 +433,7 @@ let index = class extends React.Component {
             type="primary"
             htmlType="submit"
             className="sign_btn"
+            id="phone_btn"
             >
             登 录
           </Button>
