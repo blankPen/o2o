@@ -45,7 +45,7 @@ export class index extends React.Component {
         return (
             <div className="user-box-select">
                 <span className='loginbar-username'>
-                    <span >欢迎你，{userInfo.memberName}</span>
+                    <span >欢迎你，{(this.props.userInfo.memberTruename?this.props.userInfo.memberTruename:this.props.userInfo.memberName)||"默认用户"}</span>
                     <i className="fa fa-fw fa-angle-down"></i>
                 </span>
                 <ul className="login-menu">

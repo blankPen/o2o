@@ -6,9 +6,6 @@ import React from 'react';
 import {
   connect
 } from 'react-redux';
-import {
-  Button
-} from 'antd';
 
 function mapStateToProps(state) {
   return {

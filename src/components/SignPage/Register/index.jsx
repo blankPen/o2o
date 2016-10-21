@@ -336,7 +336,7 @@ let index= class extends React.Component {
                     {  validator: this.phoneExists }
                   ],
                 })(
-                  <Input id="control-phone" placeholder="请输入手机号，未注册将自动注册" />
+                  <Input id="control-phone" placeholder="" />
                 )}
                 </FormItem>
                 <Row>
@@ -365,7 +365,7 @@ let index= class extends React.Component {
                       { validator: this.validatorDcode }
                     ],
                 })(
-                  <Input id="control-Dcode" placeholder="动态码"/>
+                  <Input id="control-Dcode" placeholder=""/>
                 )}
                 </FormItem>
               </div>
@@ -464,7 +464,7 @@ let index= class extends React.Component {
                         this.setState({ clickAggrement: !this.state.clickAggrement });
                       }}
                     >
-                        <a href="javascript:void(0);" onClick={() => this.setModalVisible(true)}>《美团网用户协议》</a>
+                        <a href="javascript:void(0);" onClick={() => this.setModalVisible(true)}>《美团网用户协议》</a><a className="agreement_right" href="/#/login"> 账号登录</a>
                     </Checkbox>
                   )}
                 </FormItem>
