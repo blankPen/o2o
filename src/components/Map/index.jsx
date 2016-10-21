@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 21:02:26
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 12:28:26
+ * @Last Modified time: 2016-10-21 17:20:51
  */
 
 'use strict';
@@ -14,15 +14,19 @@ import {
 } from 'react-redux';
 import { Link } from 'react-router';
 import Img from 'common/Img';
+import History from 'common/History';
 import BaiduMap from 'common/BaiduMap';
 import * as DomUtils from 'common/utils/dom';
+import { savePosition,getHistoryPositions } from 'actions/commonAction';
 import CitySelector from 'components/Map/CitySelector/'
 
 const LETTER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-function mapStateToProps(state) {
-    return {
+const DEFAULT_CITY = '北京市';
 
+function mapStateToProps({common}) {
+    return {
+        position: common.position
     };
 }
 
@@ -33,18 +37,25 @@ export class Maper extends React.Component {
     maper = undefined;
     constructor(props) {
         super(props);
+        let position = props.position;
         this.state = {
             cityControl: false, // 城市选择是否展开
             historyControl: false, // 历史浏览是否展开
             searchKey: '',  // 搜索关键字
             searchResult: [], // 搜索结果
             activeResultIndex: 0, //选中的结果下标
-            selectCity: '北京市', // 选中的城市
-            guessCity: '北京市',
+            selectCity: position.city, // 选中的城市
+            guessCity: position.city,
             point: {
                 lng: 0,
                 lat: 0
             }
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        let query = nextProps.location.query;
+        if(query.status == BaiduMap.STATUS_SAVE_POSITION){
+            this.savePosition();
         }
     }
     componentDidMount() {
@@ -53,9 +64,9 @@ export class Maper extends React.Component {
         this.event = DomUtils.addEventListener(window,'click',(e)=>{
             let { cityControl,historyControl } = this.state;
             let target = e.target;
-            // if(cityControl && !DomUtils.contains(cityDom,target)){
-            //     this.toggleSelector('cityControl');
-            // }
+            if(cityControl && !DomUtils.contains(cityDom,target)){
+                this.toggleSelector('cityControl');
+            }
             if(historyControl && !DomUtils.contains(historyDom,target)){
                 this.toggleSelector('historyControl');
             }
@@ -64,10 +75,15 @@ export class Maper extends React.Component {
         BaiduMap.init('map',(maper)=>{
             console.log('地图初始化成功');
             this.maper = maper;
+            maper.setPlace(this.state.selectCity);
             // 获取用户当前所在城市
             maper.getCurrentPosition((point,address)=>{
+                // let isChange = this.state.selectCity !== DEFAULT_CITY;
+                // if(!isChange){
+                //     maper.setPlace(address.addressComponents.city)
+                // }
                 this.setState({
-                    selectCity: address.addressComponents.city,
+                    // selectCity: isChange ? this.state.selectCity : address.addressComponents.city,
                     guessCity: address.addressComponents.city
                 });
             });
@@ -79,11 +95,21 @@ export class Maper extends React.Component {
                     this.handleSearchKeyChange(value);
                     this.searchMap(value);
                 }
-            })
+            });
         })
     }
     componentWillUnmount() {
         this.event && this.event.remove();
+    }
+    savePosition(){
+        let { searchResult,activeResultIndex } = this.state;
+        let data = searchResult[activeResultIndex];
+        if(data){
+            this.props.dispatch(savePosition(data));
+            History.push('/');
+        }else{
+            History.replace('/map');
+        }
     }
     handleSearchKeyChange=(e,callback)=>{
         this.setState({
@@ -93,7 +119,9 @@ export class Maper extends React.Component {
     handleCitySelect=(value)=>{
         this.setState({
             selectCity: value,
-            cityControl: false
+            cityControl: false,
+            searchResult: [],
+            activeResult: 0,
         });
         this.maper.map.centerAndZoom(value,12);
     }
@@ -109,18 +137,19 @@ export class Maper extends React.Component {
         this.maper.openMarkWindow(this.state.searchResult[index]);
     }
     searchMap=(value)=>{
-        this.maper.setPlace(value || this.state.searchKey,(point,results)=>{
-            // console.log(results.getPoi)
+        this.maper.setPlace(value || this.state.searchKey,(results)=>{
             let res = [];
-            for (var i = 0; i < results.getCurrentNumPois(); i ++){
-                res.push(results.getPoi(i));
+            if(results){
+                for (var i = 0; i < results.getCurrentNumPois(); i ++){
+                    res.push(results.getPoi(i));
+                }
             }
             this.setState({
                 searchResult: res,
                 activeResult: 0
             });
             this.maper.createMarks(res);
-            this.maper.openMarkWindow(res[0]);
+            res[0] && this.maper.openMarkWindow(res[0]);
         });
     }
     renderSearchControl(){
@@ -128,7 +157,7 @@ export class Maper extends React.Component {
 
         return (
             <div className="search-wrap">
-                <button type='button' onClick={this.searchMap}>搜索</button>
+                <button type='button' onClick={()=>this.searchMap()}>搜索</button>
                 <div className="input-wrap">
                     <input
                         id="search-input"
@@ -142,9 +171,10 @@ export class Maper extends React.Component {
     }
     renderCityControl(){
         return (
-            <div className="selector city-selector"
-                ref='cityControl'>
-                <div onClick={this.toggleSelector.bind(this,'cityControl')}>
+            <div className="selector city-selector">
+                <div
+                    ref='cityControl'
+                    onClick={this.toggleSelector.bind(this,'cityControl')}>
                     <span className="text" title={this.state.selectCity}>
                         {this.state.selectCity}
                     </span>
@@ -161,6 +191,7 @@ export class Maper extends React.Component {
         )
     }
     renderHistoryControl(){
+        var hp = getHistoryPositions();
         return (
             <div className="selector history-selector"
                 ref='historyControl'
@@ -169,7 +200,11 @@ export class Maper extends React.Component {
                 <i className="fa fa-caret-down"></i>
                 {this.state.historyControl &&
                     <div className="selector-content">
-                        <div className="history-item">美惠大厦</div>
+                        { hp.length?
+                            hp.map((item,i)=>
+                                <div key={i} className="history-item">{item.title}</div>):
+                            <div className="history-item">没有历史地址</div>
+                        }
                     </div>}
             </div>
         )

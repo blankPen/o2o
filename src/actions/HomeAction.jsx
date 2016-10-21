@@ -3,19 +3,19 @@
  * @Date:   2016-10-17 21:48:10
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 11:10:45
+ * @Last Modified time: 2016-10-21 16:44:47
  */
 
 'use strict';
 import ajax from 'common/Ajax';
-import { getPosition } from 'stores/utils'
+import { getPositionPoint } from 'actions/commonAction'
 
 export function getHomeList(params,call) {
     return function(dispatch) {
         ajax({
             url: '/api/store/list',
             data: {
-                ...getPosition(),
+                ...getPositionPoint(),
                 isOpenInvoice: 1,
                 ...params
             },
@@ -45,7 +45,7 @@ export function getClassList(id,call){
                 ajax({
                     url: '/api/classs/child',
                     data: {
-                        ...getPosition(),
+                        ...getPositionPoint(),
                         parentId: id
                     },
                     success: function(res){
@@ -62,7 +62,7 @@ export function getClassList(id,call){
         }else{
             ajax({
                 url: '/api/classs/list',
-                data: getPosition(),
+                data: getPositionPoint(),
                 success: function(res){
                     if(res.result == 1){
                         dispatch({

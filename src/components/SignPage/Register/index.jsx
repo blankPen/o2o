@@ -30,7 +30,7 @@ const formItemLayout = {
     span: 7
   },
   wrapperCol: {
-    span: 15
+    span: 17
   },
 };
 
@@ -148,20 +148,29 @@ let index= class extends React.Component {
       'ant-pwd-strength-high': strength === 'H',
     });
     const level = {
-      L: 'Low',
-      M: 'Middle',
-      H: 'High',
+      L: '弱',
+      M: '中',
+      H: '强',
     };
 
     return (
       <div>
         <ul className={classSet}>
-          <li className="ant-pwd-strength-item ant-pwd-strength-item-1" />
-          <li className="ant-pwd-strength-item ant-pwd-strength-item-2" />
-          <li className="ant-pwd-strength-item ant-pwd-strength-item-3" />
-          <span className="ant-form-text">
-            {level[strength]}
-          </span>
+          <li className="ant-pwd-strength-item ant-pwd-strength-item-1" >
+            <span className="ant-form-text">
+              {level['L']}
+            </span>
+          </li>
+          <li className="ant-pwd-strength-item ant-pwd-strength-item-2" >
+            <span className="ant-form-text">
+              {level['M']}
+            </span>
+          </li>
+          <li className="ant-pwd-strength-item ant-pwd-strength-item-3" >
+             <span className="ant-form-text">
+              {level['H']}
+            </span>
+          </li>
         </ul>
       </div>
     );
@@ -249,7 +258,7 @@ let index= class extends React.Component {
                 </FormItem>
                 <Row>
                   <Col span={7}></Col>
-                  <Col span={15}>
+                  <Col span={17}>
                     <Button
                       disabled={wait === 'loading' || wait > 0}
                       className="input-group-addon"
@@ -305,7 +314,7 @@ let index= class extends React.Component {
               <div className="sign_input">
               <Row>
                   <Col span={7}></Col>
-                  <Col span={15}>
+                  <Col span={17}>
                     {this.state.passBarShow ? this.renderPassStrengthBar('pass') : null}
                   </Col>
               </Row>
@@ -333,7 +342,7 @@ let index= class extends React.Component {
               </div>
               <Row>
                   <Col span={7}></Col>
-                  <Col span={15}>
+                  <Col span={17}>
                     <Button
                       type="primary"
                       htmlType="submit"

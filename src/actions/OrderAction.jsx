@@ -6,7 +6,6 @@
 
 'use strict';
 import ajax from 'common/Ajax';
-import { getPosition } from 'stores/utils'
 
 export function getOrderList(id,call){
     return function(dispatch) {
