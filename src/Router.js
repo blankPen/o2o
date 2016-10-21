@@ -59,7 +59,7 @@ export class index extends React.Component {
         console.log("用户id：" + user_id);
         let bool = !user_info ? !user_id ? true : false : false;
         if (bool) {
-            History.push('/login')
+            /*  History.push('/login')*/
         } else {
             this.props.dispatch(getMemberDetail({
                 "memberId": user_id
