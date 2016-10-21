@@ -81,6 +81,31 @@ export function otherLogin(params,call) {
     }
 }
 /**
+ * [register  注册用户]
+ */
+export function register(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/member/register',
+            data: {
+                ...params
+            },
+            success: function(res){
+                console.log(res);
+                if(res.result == 1){
+                    dispatch({
+                        type: 'login/success',
+                        info: res.data,
+                        cookieInfo: { username: params.name, password: params.password, user_id: res.data.memberId  }
+                    })
+                    History.push('/');
+                }
+                call && call(res);
+            }
+        })
+    }
+}
+/**
  * [logout 用户退出登录]
  */
 export function logout(callback){
@@ -91,7 +116,9 @@ export function logout(callback){
         History.push('/login');
     }
 }
-
+/**
+ * [getVerifyCode  获取动态码]
+ */
 export function getVerifyCode(params,call) {
     return function(dispatch) {
         ajax({
@@ -105,6 +132,9 @@ export function getVerifyCode(params,call) {
         })
     }
 }
+/**
+ * [getCheckCode  验证动态码]
+ */
 export function getCheckCode(params,call) {
     return function(dispatch) {
         ajax({
@@ -118,3 +148,4 @@ export function getCheckCode(params,call) {
         })
     }
 }
+

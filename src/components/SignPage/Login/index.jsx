@@ -88,7 +88,7 @@ let index = class extends React.Component {
 
   handleSubmitPhone = (e) => {
     e.preventDefault();
-    console.log("phone");
+    console.log("phoneSubmit");
     this.props.form.validateFields((errors, values) => {
       if (errors) {
         console.log(' 表单验证错误!');
@@ -123,7 +123,7 @@ let index = class extends React.Component {
   }
   handleSubmitOther = (e) => {
     e.preventDefault();
-    console.log("other");
+    console.log("otherSubmit");
     this.props.form.validateFields((errors, values) => {
       if (errors) {
         console.log(' 表单验证错误!');
@@ -206,7 +206,7 @@ let index = class extends React.Component {
                 this.setState({
                     wait: 0,
                     openFormError: true,
-                    validate_info: "手机号不存在"
+                    validate_info: re.msg
                 })
             }
           }
@@ -290,7 +290,7 @@ let index = class extends React.Component {
     } = this.props.form;
     if (this.state.openOtherFrom) {
       return (
-        <Form id="other_login_from" horizontal onSubmit={this.handleSubmitOther} >
+        <Form id="other_login_from" horizontal onSubmit={this.handleSubmitOther}  onFocus={this.handerOnFocus} >
           <div className="sign_input">
             <i className="icon user-photo"></i>
             <FormItem

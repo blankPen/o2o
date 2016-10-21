@@ -17,7 +17,8 @@ import {
 import Img from 'common/Img';
 import {
     getVerifyCode,
-    getCheckCode
+    getCheckCode,
+    register
 } from 'actions/SignPageAction';
 import Footer from 'components/common/Footer';
 
@@ -55,6 +56,9 @@ let index= class extends React.Component {
       rePassBarShow: false,
       passStrength: 'L',
       rePassStrength: 'L',
+      openFormError:false,
+      validate_info: "",
+      clickAggrement:true
     }
   }
 
@@ -104,11 +108,10 @@ let index= class extends React.Component {
                   })
               }, 1000)
             } else {
-                message.error(re.msg);
                 this.setState({
                     wait: 0,
                     openFormError: true,
-                    validate_info: "手机号不存在"
+                    validate_info: re.msg
                 })
             }
           }
@@ -200,13 +203,23 @@ let index= class extends React.Component {
    getPassStrenth=(value, type)=> {
     if (value) {
       let strength;
-      if (value.length < 6) {
-        strength = 'L';
-      } else if (value.length <= 9) {
-        strength = 'M';
-      } else {
-        strength = 'H';
+      var lv = 0;
+      if (value.match(/[a-z]/g)) {
+        lv++;
       }
+      if (value.match(/[0-9]/g)) {
+        lv++;
+      }
+      if (value.match(/(.[^a-z0-9])/g)) {
+        lv++;
+      }
+      if (value.length < 6) {
+        lv = 0;
+      }
+      if (lv > 3) {
+        lv = 3;
+      }
+      lv === 1 ? strength = 'L' : lv === 2 ? strength = 'M' :lv === 3 ? strength = 'H' : strength="";
       this.setState({
         [`${type}BarShow`]: true,
         [`${type}Strength`]: strength,
@@ -221,6 +234,58 @@ let index= class extends React.Component {
   componentWillUnmount() {
     clearInterval(this.a);
   }
+
+  handerOnFocus=()=>{
+    this.setState({
+      openFormError:false,
+      validate_info: ""
+    })
+  }
+
+  handleSubmit=(e)=>{
+    e.preventDefault();
+    console.log("registerSubmit");
+    this.props.form.validateFields((errors, values) => {
+      if (errors) {
+        console.log(' 表单验证错误!');
+        return;
+      }
+      console.log('表单验证成功');
+      console.log(values);
+      let btn=document.getElementById('reg_btn')
+      btn.disabled = true;
+      let bool=false;
+      if(values.checkAggrement) {
+        console.log("勾选协议");
+        bool=true;
+      }
+      if(bool){
+        this.props.dispatch(register({
+              "password": values.pass,
+              "validateCode": values.Dcode,
+              "name": values.name
+            },(re)=> {
+              if(re.result==1){
+                console.log('注册成功');
+                message.success("注册成功");
+              }else{
+                console.log("注册失败");
+                btn.disabled = false;
+                this.setState({
+                  openFormError: true,
+                  validate_info: re.msg
+                })
+              }
+            }
+          )
+        )
+      }
+    });
+  }
+  resetForm=()=> {
+    this.props.form.resetFields();
+  }
+
   render() {
     const {
       getFieldDecorator,
@@ -238,7 +303,19 @@ let index= class extends React.Component {
             </div>
           </div>
           <div className="sign_body">
-            <Form horizontal onSubmit={this.handleSubmit}>
+            {
+              this.state.openFormError?(
+                <Row className="info-box">
+                  <Col span={7}></Col>
+                  <Col span={17}>
+                    <div className="validate-info">
+                      <i className="i3"></i>{this.state.validate_info}
+                      </div>
+                  </Col>
+                </Row>
+              ):undefined
+            }
+            <Form id="register_from" horizontal onSubmit={this.handleSubmit} onFocus={this.handerOnFocus}>
               <div className="sign_input">
                 <FormItem
                   id="control-phone"
@@ -288,21 +365,23 @@ let index= class extends React.Component {
               </div>
               <div className="sign_input">
                 <FormItem
+                  id="control-pass"
                   label="创建密码"
                   {...formItemLayout}
+                  hasFeedback
+                  help={isFieldValidating('pass') ? 'validating...' : (getFieldError('pass') || []).join(', ')}
                 >
                   {getFieldDecorator('pass', {
                     rules: [
-                      { required: true, whitespace: true, message: '请输入你的密码' },
+                      { required: true, whitespace: true, len:6, message: '请输入你的密码(最少6位)' },
                       { validator: this.checkPass },
                     ],
                   })(
-                    <Input type="password"
+                    <Input
+                      id="control-pass"
+                      type="password"
                       onContextMenu={this.noop} onPaste={this.noop} onCopy={this.noop} onCut={this.noop}
                       autoComplete="off" id="pass"
-                      onChange={(e) => {
-                        console.log('你的密码是以这种方式被盗的', e.target.value);
-                      }}
                       onBlur={(e) => {
                         const value = e.target.value;
                         this.setState({ dirty: this.state.dirty || !!value });
@@ -321,8 +400,11 @@ let index= class extends React.Component {
               </div>
               <div className="sign_input">
                 <FormItem
+                  id="control-rePass"
                   label="确认密码"
-                 {...formItemLayout}
+                  {...formItemLayout}
+                  hasFeedback
+                  help={isFieldValidating('rePass') ? 'validating...' : (getFieldError('rePass') || []).join(', ')}
                 >
                   {getFieldDecorator('rePass', {
                     rules: [{
@@ -333,7 +415,9 @@ let index= class extends React.Component {
                       validator: this.checkPass2,
                     }],
                   })(
-                    <Input type="password"
+                    <Input
+                      id="control-rePass"
+                      type="password"
                       onContextMenu={this.noop} onPaste={this.noop} onCopy={this.noop} onCut={this.noop}
                       autoComplete="off" id="rePass"
                     />
@@ -344,9 +428,11 @@ let index= class extends React.Component {
                   <Col span={7}></Col>
                   <Col span={17}>
                     <Button
+                      id="reg_btn"
                       type="primary"
                       htmlType="submit"
-                      className="sign_btn"
+                      className={this.state.clickAggrement?"sign_btn":"sign_btn sign_btn_disable"}
+                      disabled={!this.state.clickAggrement}
                       >
                        同意以下协议并注册
                     </Button>
@@ -357,13 +443,23 @@ let index= class extends React.Component {
                 <FormItem
                   id="control-checkAggrement"
                   {...formItemLayout}
+                  validateStatus={isFieldValidating('checkAggrement')?"success":"error"}
                 >
                   {getFieldDecorator('checkAggrement', {
                     rules: [
                       { type: 'boolean'},
                     ],
                   })(
-                    <Checkbox id="control-checkAggrement" className="ant-checkbox-vertical"> <a href="/#/">《美团网用户协议》</a></Checkbox>
+                    <Checkbox
+                      checked={this.state.clickAggrement}
+                      id="control-checkAggrement"
+                      className="ant-checkbox-vertical"
+                      onClick={(e) => {
+                        this.setState({ clickAggrement: !this.state.clickAggrement });
+                      }}
+                    >
+                        <a href="/#/">《美团网用户协议》</a>
+                    </Checkbox>
                   )}
                 </FormItem>
               </div>
