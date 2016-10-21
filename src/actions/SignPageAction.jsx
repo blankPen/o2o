@@ -6,6 +6,31 @@ import ajax from 'common/Ajax';
 import History from 'common/History'
 
 /**
+ * [getMemberDetail   获取用户信息]
+ */
+export function getMemberDetail(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/api/member/memberDetail',
+            data: {
+                ...params
+            },
+            success: function(res){
+                console.log(res);
+                if(res.result == 1){
+                    dispatch({
+                        type: 'get/userInfo',
+                        info: res.data,
+                    })
+                    History.push('/');
+                }
+                call && call(res);
+            }
+        })
+    }
+}
+
+/**
  * [phoneLogin  手机账号登录]
  */
 export function phoneLogin(params,call) {
@@ -21,7 +46,7 @@ export function phoneLogin(params,call) {
                     dispatch({
                         type: 'login/success',
                         info: res.data,
-                        cookieInfo: { username: params.username, password: params.validateCode  }
+                        cookieInfo: { username: params.username, password: params.validateCode, user_id: res.data.memberId  }
                     })
                     History.push('/');
                 }
@@ -46,7 +71,7 @@ export function otherLogin(params,call) {
                     dispatch({
                         type: 'login/success',
                         info: res.data,
-                        cookieInfo: { username: params.username, password: params.password  }
+                        cookieInfo: { username: params.username, password: params.password, user_id: res.data.memberId  }
                     })
                     History.push('/');
                 }
@@ -60,20 +85,10 @@ export function otherLogin(params,call) {
  */
 export function logout(callback){
     return function(dispatch){
-        ajax({
-            url: '',
-            success: function(result){
-                dispatch({
-                    type: TYPES.LOG_OUT
-                })
-                if(callback){
-                    callback()
-                }else{
-                    let isOpen = store.getState().common.site_logo.isOpenOutsideWorld == 'Y';
-                    History.push(isOpen?'/':'/login');
-                }
-            }
+        dispatch({
+            type: 'logout/success'
         })
+        History.push('/login');
     }
 }
 

@@ -12,10 +12,15 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
+import {
+   logout
+} from 'actions/SignPageAction';
 
-function mapStateToProps(state) {
+function mapStateToProps({
+    common
+}){
     return {
-
+        userInfo: common.userInfo
     };
 }
 
@@ -26,9 +31,10 @@ export class TopNav extends React.Component {
 
     constructor(props) {
         super(props);
-        
     }
-
+    logout=()=>{
+         this.props.dispatch(logout());
+    }
     render() {
         return (
             <div className='top-nav'>
@@ -41,9 +47,21 @@ export class TopNav extends React.Component {
                     </div>
                     <div className="nav-right">
                         <div className="login-register">
-                            <div className="register">注册</div>
-                            <span>|</span>
-                            <div className="login">登录</div>
+                        {
+                            this.props.userInfo==null?(
+                                <span>
+                                    <div className="register"><a href="/#/register">注册</a></div>
+                                        <span>|</span>
+                                    <div className="login"><a href="/#/login">登录</a></div>
+                                </span>
+                            ):(
+                                <span>
+                                    <div className="register"><a href="/#/">{(this.props.userInfo.memberTruename?this.props.userInfo.memberTruename:this.props.userInfo.memberName)||"默认用户"}</a></div>
+                                        <span>|</span>
+                                    <div className="login" onClick={this.logout}>退出</div>
+                                </span>
+                            )
+                        }
                         </div>
                         <div className="moblie-home">
                             <div className="moblie">
