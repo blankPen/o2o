@@ -5,9 +5,6 @@ import './index.less';
 import {
     connect
 } from 'react-redux';
-import {
-  Link
-} from 'react-router';
 import { Collapse } from 'antd';
 import { Timeline, Icon } from 'antd';
 import ListView from 'components/common/ListView';
@@ -20,21 +17,18 @@ export class Account extends React.Component {
     constructor(props) {
         super(props);
     }
-    render(){
-        
-        return(
-            <div className="accountlist ">
-                <ul className="clearfix">
-                    <li>
-                        <Link to={"/#"} className="account">
-                            <div className="image">
-                                <img src="http://a3.qpic.cn/psb?/V13YrEcN1YFUK0/*.1UjqCMWAE6EU0tiI3elUWyzbIZxStNmnh60Nqbptk!/m/dLIAAAAAAAAAnull&bo=bAQgA2wEIAMFCSo!&rf=photolist&t=5" alt=""/>
-                            </div>
-
-                        </Link>
-                    </li>
-                </ul>
-                
+    render=()=>{
+        return (
+            <div className="account">
+                <div className="desc">
+                   <span className="userimg">
+                         <i className="fa fa-user"></i>
+                   </span>
+                   <div className="name theys">用户名：BMt296183248</div>
+                   <div className="phone theys">手机号：1507****1036</div>
+                   <div className="pswd theys">密　码：尚未设置密码</div>
+                   <div className="btn">修改账户信息</div>
+                </div>
             </div>
             );
     }
