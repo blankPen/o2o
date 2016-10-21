@@ -12,7 +12,8 @@ import {
   message,
   Row,
   Col,
-  Checkbox
+  Checkbox,
+  Modal
 } from 'antd';
 import Img from 'common/Img';
 import {
@@ -21,6 +22,7 @@ import {
     register
 } from 'actions/SignPageAction';
 import Footer from 'components/common/Footer';
+import Aggrement from 'components/SignPage/Aggrement/';
 
 const FormItem = Form.Item;
 const createForm = Form.create;
@@ -58,7 +60,8 @@ let index= class extends React.Component {
       rePassStrength: 'L',
       openFormError:false,
       validate_info: "",
-      clickAggrement:true
+      clickAggrement:true,
+      modalVisible: false
     }
   }
 
@@ -285,6 +288,9 @@ let index= class extends React.Component {
   resetForm=()=> {
     this.props.form.resetFields();
   }
+  setModalVisible=(modalVisible)=> {
+    this.setState({ modalVisible });
+  }
 
   render() {
     const {
@@ -458,7 +464,7 @@ let index= class extends React.Component {
                         this.setState({ clickAggrement: !this.state.clickAggrement });
                       }}
                     >
-                        <a href="/#/">《美团网用户协议》</a>
+                        <a href="javascript:void(0);" onClick={() => this.setModalVisible(true)}>《美团网用户协议》</a>
                     </Checkbox>
                   )}
                 </FormItem>
@@ -466,6 +472,17 @@ let index= class extends React.Component {
             </Form>
           </div>
           <Footer/>
+          <Modal
+            className="full-screen-modal"
+            title="《美团网用户协议》"
+            wrapClassName="vertical-center-modal"
+            visible={this.state.modalVisible}
+            width="100%"
+            style={{ top: 0 }}
+            onOk={() => this.setModalVisible(false)}
+          >
+            <Aggrement/>
+          </Modal>
       </div>
     );
   }

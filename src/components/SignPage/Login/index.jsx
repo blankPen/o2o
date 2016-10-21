@@ -12,7 +12,8 @@ import {
   Input,
   Icon,
   Checkbox,
-  message
+  message,
+  Modal
 } from 'antd';
 import Img from 'common/Img';
 import Footer from 'components/common/Footer';
@@ -22,6 +23,7 @@ import {
     getVerifyCode,
     getCheckCode
 } from 'actions/SignPageAction';
+import Aggrement from 'components/SignPage/Aggrement/';
 
 const FormItem = Form.Item;
 const createForm = Form.create;
@@ -57,7 +59,8 @@ let index = class extends React.Component {
       wait: 0,
       openFormError:false,
       validate_info: "",
-      type:"loginValidate"
+      type:"loginValidate",
+      modalVisible: false
     }
   }
   noop() {
@@ -243,6 +246,9 @@ let index = class extends React.Component {
       validate_info: ""
     })
   }
+  setModalVisible=(modalVisible)=> {
+    this.setState({ modalVisible });
+  }
 
   componentWillUnmount() {
     clearInterval(this.a);
@@ -279,6 +285,17 @@ let index = class extends React.Component {
             </div>
         </div>
         <Footer/>
+        <Modal
+          className="full-screen-modal"
+          title="《美团网用户协议》"
+          wrapClassName="vertical-center-modal"
+          visible={this.state.modalVisible}
+          width="100%"
+          style={{ top: 0 }}
+          onOk={() => this.setModalVisible(false)}
+        >
+          <Aggrement/>
+        </Modal>
       </div>
     );
   }
@@ -438,7 +455,7 @@ let index = class extends React.Component {
             登 录
           </Button>
           <div className="sign_agreement">
-            <p>提示： 未注册美团账号的手机号，登录时将自动注册美团账号，且代表您已同意<a href="/">《美团网用户协议》</a></p>
+            <p>提示： 未注册美团账号的手机号，登录时将自动注册美团账号，且代表您已同意<a href="javascript:void(0);" onClick={() => this.setModalVisible(true)}>《美团网用户协议》</a></p>
           </div>
         </Form>
       )
