@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-19 16:10:16
+ * @Last Modified time: 2016-10-21 22:48:46
  */
 
 'use strict';
@@ -12,11 +12,6 @@ import React from 'react';
 import Img from 'common/Img';
 import { Rate } from 'antd';
 
-
-const TagMap = {
-    'first': <i className="icon-first"></i>,
-    'invoice': <i className="icon i-cheque"></i>
-};
 
 export default class HomeItem extends React.Component {
     static propTypes = {
@@ -71,9 +66,9 @@ export default class HomeItem extends React.Component {
                             <span className="send-price">
                               配送费:￥{data.expressFee}
                             </span>
-                            {/*<span className="send-time">
-                                <i className="fa fa-fw fa-clock-o"></i>{data.storeDomainTimes}分钟
-                            </span>*/}
+                            <span className="send-distance">
+                                {data.distance}km
+                            </span>
                         </div>
                     </div>
                     <div className={"popover "+(this.props.end?'popover-left':'')}>

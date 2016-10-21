@@ -47,25 +47,42 @@ const filter_type = [{
 }];
 
 const filter_special = [{
-    label: '首单立减',
-    value: '1'
+    label: '免费配送',
+    value: 'isExpressFee'
 }, {
-    label: '限时优惠',
-    value: '2'
+    label: '支持发票',
+    value: 'isOpenInvoice'
 }, {
-    label: '美团专送',
-    value: '3'
+    label: '0元起购',
+    value: 'startPrice'
 }];
-
+//标签key:优惠活动：首单立减first, 满减优惠manjian,满免配送manmainyun
+const filter_discount = [{
+    label: '首单立减',
+    value: 'first'
+}, {
+    label: '满减优惠',
+    value: 'manjian'
+}, {
+    label: '满免配送',
+    value: 'manmainyun'
+}];
+//distance:距离,store_mons_ales:月销量,storeScore:评分,start_price:起送假,comprehensive:综合
 const filter_order = [{
-    label: '默认排序',
-    value: '1'
+    label: '综合排序',
+    value: 'comprehensive'
 }, {
-    label: '销量',
-    value: '2'
+    label: '距离最近',
+    value: 'distance'
 }, {
-    label: '评价',
-    value: '3'
+    label: '销量最高',
+    value: 'store_mons_ales'
+}, {
+    label: '评分最高',
+    value: 'storeScore'
+}, {
+    label: '起送价最低',
+    value: 'start_price'
 }];
 
 const filter_price = [{
@@ -88,17 +105,29 @@ export class Home extends React.Component {
         this.state = {
             type: ['0'], // 全部分类
             special: [],
-            order: '1',
-            range: 'ALL'
+            discount: '',
+            order: 'comprehensive',
+            range: 'ALL',
+            searchParams: {
+                isOpenInvoice: 0,// 支持发票
+                startPrice: 0, //0元起送
+                isExpressFee: 0, //免费配送
+                sortFielName: 'comprehensive' //distance:距离,store_mons_ales:月销量,storeScore:评分,start_price:起送假,comprehensive:综合
+            }
         }
     }
     componentWillMount() {
         this.props.dispatch(getClassList());
     }
     getPostData(){
-        let { type } = this.state;
+        let { type,order,special,discount } = this.state;
         return {
             scId: type[1] || type[0], // 有二级分类用二级没有用一级
+            sortFielName: order,
+            isOpenInvoice: special.indexOf('isOpenInvoice') == -1?0:1,
+            startPrice: special.indexOf('startPrice') == -1?0:1,
+            isExpressFee: special.indexOf('isExpressFee') == -1?0:1,
+            tagKey: discount
         }
     }
     handleListLoad = (params, callback) => {
@@ -162,12 +191,12 @@ export class Home extends React.Component {
             </div>
         );
     }
-    renderSpecialFilter(data=[]){
-        let curValue = this.state.special;
+    renderSpacialFilter(data=[]){
+        let curValue = this.state['special'];
         return (
             <div className="filter-wrap">
                 <div className="filter-title">
-                    <i className="fa fa-fw fa-filter"></i><span>优惠筛选</span>
+                    <i className="fa fa-fw fa-filter"></i><span>商家特色</span>
                 </div>
                 <div className="filter-content">
                     <div className="filter-special">
@@ -176,6 +205,30 @@ export class Home extends React.Component {
                             value={curValue}
                             onChange={this.handleSelect.bind(this,'special')}
                         />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    renderDiscountFilter(data=[]){
+        let curValue = this.state['discount'];
+        return (
+            <div className="filter-wrap">
+                <div className="filter-title">
+                    <i className="fa fa-fw fa-filter"></i><span>优惠活动</span>
+                </div>
+                <div className="filter-content">
+                    <div className="filter-discount">
+                        {data.map((item)=>{
+                            return (
+                                <Checkbox
+                                    key={item.value}
+                                    checked={item.value == curValue}
+                                    onChange={this.handleSelect.bind(this,'discount',item.value)}>
+                                    {item.label}
+                                </Checkbox>
+                            )
+                        })}
                     </div>
                 </div>
             </div>
@@ -226,7 +279,8 @@ export class Home extends React.Component {
             <div className="page-home">
                 <div className="panel-filter">
                     {this.renderTypeFilter(filter_type)}
-                    {this.renderSpecialFilter(filter_special)}
+                    {this.renderSpacialFilter(filter_special)}
+                    {this.renderDiscountFilter(filter_discount)}
                 </div>
                 <div className="panel-list">
                     <div className="tool-bar">

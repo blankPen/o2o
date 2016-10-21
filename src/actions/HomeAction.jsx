@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:48:10
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 16:44:47
+ * @Last Modified time: 2016-10-21 22:16:17
  */
 
 'use strict';
@@ -16,7 +16,6 @@ export function getHomeList(params,call) {
             url: '/api/store/list',
             data: {
                 ...getPositionPoint(),
-                isOpenInvoice: 1,
                 ...params
             },
             success: function(res){

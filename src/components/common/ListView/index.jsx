@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 10:38:40
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-19 20:57:11
+ * @Last Modified time: 2016-10-21 22:20:23
  */
 
 'use strict';
@@ -27,7 +27,7 @@ export default class ListView extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            pageSize: this.props.pageSize || 4,
+            pageSize: this.props.pageSize || 20,
             pageNo: 1
         }
     }
