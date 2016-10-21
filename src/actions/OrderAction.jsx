@@ -24,3 +24,21 @@ export function getOrderList(id,call){
         })
     }
 }
+
+export function getMenuList(id,call){
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/order/orderDetail',
+            data: {
+                orderId:id
+            },
+            success: function(res){
+                dispatch({
+                    type: 'order/orderDetail',
+                    list: res.data||{}
+                })
+                call && call(res);
+            }
+        })
+    }
+}
