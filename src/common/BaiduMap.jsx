@@ -3,7 +3,7 @@
  * @Date:   2016-10-20 09:26:57
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 13:32:12
+ * @Last Modified time: 2016-10-21 16:26:43
  */
 
 'use strict';
@@ -19,9 +19,13 @@ const defaultParams = {
     minZoom: 8,
     maxZoom: 18
 }
+
+
+
 const BaiduMap = function(id, callback) {
     var self = this;
     var BMap = window.BMap;
+    this.element = document.getElementById(id);
     // init
     this.map = new BMap.Map(id, {
         enableMapClick: false,
@@ -41,11 +45,6 @@ const BaiduMap = function(id, callback) {
     // this.map.addControl(new BMap.NavigationControl()); //左上角，添加默认缩放平移控件
     this.map.enableScrollWheelZoom(true);
 
-    function showInfo(e) {
-        console.log(e)
-    }
-    this.map.addEventListener("click", showInfo);
-
     this.local = new BMap.LocalSearch(this.map, {
         onSearchComplete: function(results) {
             if (self.searchCallback) {
@@ -63,13 +62,15 @@ const BaiduMap = function(id, callback) {
     });
 }
 BaiduMap.prototype = {
+    // 地图上展示的openMarkes
+    openMarks: {},
     // 获取当前地理位置信息
     getCurrentPosition(callback) {
         var _self = this;
         var map = this.map;
         this.geolocation.getCurrentPosition(function(r) {
             if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                map.panTo(r.point);
+                // map.panTo(r.point);
                 _self.getPositionAddress(r.point.lng, r.point.lat, callback.bind(null, r.point))
             } else {
                 console.error('BMap failed' + this.getStatus());
@@ -82,7 +83,7 @@ BaiduMap.prototype = {
     getPositionAddress(lng, lat, callback) {
         this.geocoder.getLocation(new BMap.Point(lng, lat), function(result) {
             if (result) {
-                callback(result);
+                callback && callback(result);
             }
         });
     },
@@ -91,27 +92,28 @@ BaiduMap.prototype = {
         this.searchCallback = callback;
         this.local.search(value);
     },
+    // 根据城市名设置位置
     setPlace(value, callback) {
         var map = this.map;
         map.clearOverlays(); //清除地图上所有覆盖物
+        this.openMarks = {};
         function myFun() {
             var results = local.getResults();
-            var pp = results.getPoi(0).point; //获取第一个智能搜索的结果
-            map.centerAndZoom(pp, defaultParams.zoom);
-            // map.addOverlay(new BMap.Marker(pp)); //添加标注
-            callback && callback(pp, results);
+            let poi = results.getPoi(0);
+            if(poi){
+                var pp = poi.point; //获取第一个智能搜索的结果
+                map.centerAndZoom(pp, defaultParams.zoom);
+                // map.addOverlay(new BMap.Marker(pp)); //添加标注
+            }
+            callback && callback(results);
         }
         var local = new BMap.LocalSearch(map, { //智能搜索
             onSearchComplete: myFun
         });
         local.search(value);
     },
-
-    createAutocomplete({
-        id,
-        onhighlight,
-        onconfirm
-    }) {
+    // 创建自动补全插件
+    createAutocomplete({id, onhighlight, onconfirm }) {
         var self = this;
         var ac = new BMap.Autocomplete({
             "input": id,
@@ -136,30 +138,30 @@ BaiduMap.prototype = {
         });
         return ac;
     },
-
+    // 根据坐标数组创建marker
     createMarks(data) {
         var self = this;
-        data.forEach((item) => {
+        var makerSize = new BMap.Size(28, 39);
+        // 清除上次查询的遮盖物
+        this.map.clearOverlays();
+        this.openMarks = {};
+        data.forEach((item,i) => {
             var point = new BMap.Point(item.point.lng, item.point.lat);
-            var marker = new BMap.Marker(point); // 创建标注
-            var {
-                content,
-                opts
-            } = this.getWindowTemp(item);
+            var marker = new BMap.Marker(point, {
+                icon: new BMap.Icon('http://waimai.meituan.com/static/img/map/overlays_2.png', makerSize,
+                    { imageOffset: new BMap.Size(0 - i * 28, -39) })
+            });
+            this.openMarks[item.uid] = marker;
+            this.openMarks[item.uid]._data_ = item;
 
             this.map.addOverlay(marker); // 将标注添加到地图中
-            addClickHandler(content, marker, opts);
-        });
-
-        function addClickHandler(content, marker, opts) {
+            // 添加点击监听
             marker.addEventListener("click", function(e) {
-                var p = e.target;
-                var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-                var infoWindow = new BMap.InfoWindow(content, opts); // 创建信息窗口对象
-                self.map.openInfoWindow(infoWindow, point); //开启信息窗口
+                self.openMarkWindow(item);
             });
-        }
+        });
     },
+    // 获取marker展开窗口模板
     getWindowTemp(data) {
         var opts = {
             width: 270, // 信息窗口宽度
@@ -172,7 +174,7 @@ BaiduMap.prototype = {
                 <div class="bd-info-box-addr">地址：${data.address}</div>
                 <div class="bd-info-box-nearby">附近有<span>1309</span>家外卖餐厅</div>
                 <div class="btn-group">
-                    <a class="btn-start" href="#/">开始订餐</a>
+                    <a class="btn-start" href="#/map?status=${BaiduMap.STATUS_SAVE_POSITION}">开始订餐</a>
                 </div>
             </div>`;
         dom.innerHTML = content;
@@ -186,6 +188,7 @@ BaiduMap.prototype = {
             content
         }
     },
+    // 根据Poi对象打开指定窗口
     openMarkWindow(data) {
         var {
             content,
@@ -193,8 +196,31 @@ BaiduMap.prototype = {
         } = this.getWindowTemp(data);
         var p = data.point;
         var point = new BMap.Point(p.lng, p.lat);
+        let marker = this.openMarks[data.uid];
+        this.overMarker(data.uid);
+
         var infoWindow = new BMap.InfoWindow(content, opts); // 创建信息窗口对象
         this.map.openInfoWindow(infoWindow, point); //开启信息窗口
+    },
+    // 将未选中的marker背景色置为红色
+    outMarker(id) {
+        var marker = this.openMarks[id];
+        if(marker){
+            var icon = marker.getIcon();
+            icon.setImageOffset(new BMap.Size(icon.imageOffset.width, -39));
+            marker.setIcon(icon);
+        }
+    },
+    // 将当前选中的marker背景色置为蓝色
+    overMarker(id) {
+        this.outMarker(this.currentMarkerId);
+        var marker = this.openMarks[id];
+        if(marker){
+            this.currentMarkerId = id;
+            var icon = marker.getIcon();
+            icon.setImageOffset(new BMap.Size(icon.imageOffset.width, 0));
+            marker.setIcon(icon);
+        }
     }
 }
 BaiduMap.init = function(id, callback) {
@@ -211,5 +237,5 @@ BaiduMap.init = function(id, callback) {
         document.body.appendChild(script);
     }
 }
-
+BaiduMap.STATUS_SAVE_POSITION = 1;
 export default BaiduMap;

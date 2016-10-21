@@ -3,7 +3,7 @@
  * @Date:   2016-10-20 17:58:42
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-20 19:33:22
+ * @Last Modified time: 2016-10-21 13:46:38
  */
 
 'use strict';
@@ -55,7 +55,7 @@ export default class CitySelector extends React.Component {
 
                     <div className="guess-city">
                         <span>猜你在：</span>
-                        <a>{this.props.guessCity}</a>
+                        <a onClick={this.handleChange.bind(this,this.props.guessCity)}>{this.props.guessCity}</a>
                     </div>
                     <div className="city-search-wrap">
                         <span>直接搜索</span>
