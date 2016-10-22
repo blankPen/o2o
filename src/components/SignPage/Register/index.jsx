@@ -60,7 +60,7 @@ let index= class extends React.Component {
       rePassStrength: 'L',
       openFormError:false,
       validate_info: "",
-      clickAggrement:true,
+      clickAggrement:false,
       modalVisible: false
     }
   }
@@ -255,8 +255,6 @@ let index= class extends React.Component {
       }
       console.log('表单验证成功');
       console.log(values);
-      let btn=document.getElementById('reg_btn')
-      btn.disabled = true;
       let bool=false;
       if(values.checkAggrement) {
         console.log("勾选协议");
@@ -273,11 +271,11 @@ let index= class extends React.Component {
                 message.success("注册成功");
               }else{
                 console.log("注册失败");
-                btn.disabled = false;
                 this.setState({
                   openFormError: true,
                   validate_info: re.msg
                 })
+                /*this.resetForm();*/
               }
             }
           )
@@ -379,7 +377,7 @@ let index= class extends React.Component {
                 >
                   {getFieldDecorator('pass', {
                     rules: [
-                      { required: true, whitespace: true, len:6, message: '请输入你的密码(最少6位)' },
+                      { required: true, whitespace: true, message: '请输入你的密码' },
                       { validator: this.checkPass },
                     ],
                   })(
@@ -449,7 +447,6 @@ let index= class extends React.Component {
                 <FormItem
                   id="control-checkAggrement"
                   {...formItemLayout}
-                  validateStatus={isFieldValidating('checkAggrement')?"success":"error"}
                 >
                   {getFieldDecorator('checkAggrement', {
                     rules: [
