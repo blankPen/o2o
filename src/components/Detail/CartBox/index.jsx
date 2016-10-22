@@ -3,7 +3,7 @@
  * @Date:   2016-10-22 12:37:44
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-22 16:30:51
+ * @Last Modified time: 2016-10-22 23:40:48
  */
 
 'use strict';
@@ -108,7 +108,7 @@ export class CartBox extends React.Component {
                     </div>
                 </div>
                 <div className="btn-box">
-                    <div className="icon" onClick={this.toggleOpen}>
+                    <div className="icon" onClick={!!totalNum && this.toggleOpen}>
                         <i className="fa fa-shopping-cart"></i>
                     </div>
                     {!open && !!totalNum &&
