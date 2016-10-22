@@ -8,7 +8,8 @@ import { Collapse } from 'antd';
 import { Timeline, Icon } from 'antd';
 import {
     getOrderList,
-    getMenuList
+    getMenuList,
+    selectItem
 } from 'actions/OrderAction';
 import {
   Link
@@ -59,7 +60,7 @@ export class Order extends React.Component {
                     handleLoad={this.onLoad}
                     renderFooter={this.renderFooter}
                 >
-                    <MyOrder dispatch={this.props.dispatch}/>
+                    <MyOrder selectItem={this.props.orderState&&this.props.orderState.selectId} dispatch={this.props.dispatch}/>
                 </ListView>
                 {/*(list||[]).map((item,i)=>{
                     return(
@@ -81,12 +82,10 @@ export class MyOrder extends React.Component {
             zk:false
         }
     }
-    zk=()=>{
-        this.setState({
-            zk:!this.state.zk
-        });
+    zk=(id)=>{
+        this.props.dispatch(selectItem(id));
     }
-    returnState=(state)=>{
+   returnState=(state)=>{
          switch(state){
             case 0:
                 return "已取消";
@@ -110,11 +109,11 @@ export class MyOrder extends React.Component {
     }
     render(){
         let data=this.props.data||{};
-        let day = moment.unix(1318781876).format('YYYY-MM-DD h:mm');
         let state=this.returnState(data.orderState);
+        let day = moment.unix(1318781876).format('YYYY-MM-DD h:mm');
         return(
             <div className="orderDescs">
-                <div className="theOrder" onClick={this.zk}>
+                <div className="theOrder" onClick={this.zk.bind(null,data.orderId)}>
                     <div className="headimg">
                         <Img src={data.storeLogo}/>
                     </div>
@@ -131,7 +130,7 @@ export class MyOrder extends React.Component {
                     </div>
                     <div className="tousu"> <i className="fa  fa-edit" /> 投诉商家</div>
                 </div>
-                {this.state.zk?(
+                {data.orderId==this.props.selectItem?(
                     <MenuList dispatch={this.props.dispatch} orderId={data.orderId} />
                     ):null}
                 

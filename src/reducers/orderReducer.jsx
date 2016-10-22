@@ -19,8 +19,15 @@ export default handleActions({
             ...state,
             detail: action.list
         }
+    },
+    'order/selectItem': (state, action) => {
+        return {
+            ...state,
+            selectId: action.id
+        }
     }
 }, {
     list : [],
     detail : {},
+    selectId: ""
 });

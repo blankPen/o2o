@@ -43,3 +43,12 @@ export function getMenuList(id,call){
         })
     }
 }
+
+export function selectItem(id){
+    return function(dispatch) {
+        dispatch({
+            type: 'order/selectItem',
+            id: id
+        })
+    }
+}
