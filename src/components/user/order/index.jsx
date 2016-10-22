@@ -83,6 +83,9 @@ export class MyOrder extends React.Component {
         }
     }
     zk=(id)=>{
+        if(id==this.props.selectItem){
+            id="";
+        }
         this.props.dispatch(selectItem(id));
     }
    returnState=(state)=>{
