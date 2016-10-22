@@ -91,3 +91,28 @@ export function getStoreEvaluatList(params,call) {
         })
     }
 }
+
+/**
+ * 获取公告
+ */
+
+export function getNoticeInfo(params,call) {
+    console.log(11111);
+    return function(dispatch) {
+        ajax({
+            url: 'rest/api/order/storeEvaluatePage',
+            data: {
+                storeId:params.storeId
+            },
+            success: function(res){
+                dispatch({
+                    type: 'get/StoreEvaluat/list',
+                    evaluatList: res.data.evaluateGoodList
+                })
+                call && call(res);
+            }
+        })
+    }
+}
+
+

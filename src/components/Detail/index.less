@@ -4,7 +4,7 @@
     width: @max-width;
     margin: auto;
     min-height: 500px;
-
+    position: relative;
     .business-top{
         height: 125px;
         background: #fff;
@@ -173,75 +173,112 @@
             }
         }
     }
+    .business-content{
 
-    .cate-tab{
-        margin-top: 10px;
-        border: 1px solid #eee;
-        width: 720px;
-        background-color: #fff;
-        padding: 0 20px;
-        margin-bottom: 20px;
-
-        .ant-tabs-nav-wrap{
-            height: 60px;
-
-            .ant-tabs-nav-scroll{
-                margin-top: 23px;
-            }
-
-            .ant-tabs-tab{
-                min-width: 110px;
-                text-align: center;
-                color: #313131;
-                font-size: 16px;
-                margin-top: -2px;
-            }
-
-            .ant-tabs-tab:hover{
-                color: #313131;
-                background-color: #eee;
-            }
-
-            .ant-tabs-ink-bar{
-                height: 4px;
-                background-color: #fa9700;
-            }
-
-            .ant-tabs-tab-active{
-                color: #fa9700;
-            }
-        }
-
-        .ant-tabs-tabpane{
-            padding-top: 15px;
-            padding-bottom: 30px;
-        }
-
-        .menu-item{
+        .content-left{
+            width: 720px;
             display: inline-block;
-            width: 130px;
-            font-size: 14px;
-            line-height: 14px;
-            float: left;
-            margin-bottom: 10px;
-            margin-right: 5px;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            cursor: pointer;
-            color: #535353;
-            &:hover{
-                color: #fa9700;
+            .cate-tab{
+                margin-top: 10px;
+                border: 1px solid #eee;
+                width: 100%;
+                background-color: #fff;
+                padding: 0 20px;
+                margin-bottom: 20px;
+
+                .ant-tabs-nav-wrap{
+                    height: 60px;
+
+                    .ant-tabs-nav-scroll{
+                        margin-top: 23px;
+                    }
+
+                    .ant-tabs-tab{
+                        min-width: 110px;
+                        text-align: center;
+                        color: #313131;
+                        font-size: 16px;
+                        margin-top: -2px;
+                    }
+
+                    .ant-tabs-tab:hover{
+                        color: #313131;
+                        background-color: #eee;
+                    }
+
+                    .ant-tabs-ink-bar{
+                        height: 4px;
+                        background-color: #fa9700;
+                    }
+
+                    .ant-tabs-tab-active{
+                        color: #fa9700;
+                    }
+                }
+
+                .ant-tabs-tabpane{
+                    padding-top: 15px;
+                    padding-bottom: 30px;
+                }
+
+                .menu-item{
+                    display: inline-block;
+                    width: 130px;
+                    font-size: 14px;
+                    line-height: 14px;
+                    float: left;
+                    margin-bottom: 10px;
+                    margin-right: 5px;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    cursor: pointer;
+                    color: #535353;
+                    &:hover{
+                        color: #fa9700;
+                    }
+
+                }
+
+                .item-active{
+                    color: #fa9700;
+                }
+
+
             }
-
         }
 
-        .item-active{
-            color: #fa9700;
+        .content-right{
+            float: right;
+            margin-top: 10px;
+
+            .notice-top{
+                margin-bottom: 10px;
+                
+                .notice-title{
+                    height: 40px;
+                    background-color: #ffd705;
+                    color: #6b450a;
+                    line-height: 40px;
+                    padding-left: 12px;
+                    font-size: 16px;
+                }
+                .notice-content{
+                    border: 1px solid #ebebeb;
+                    border-top: 0;
+                    padding: 12px;
+                    line-height: 21px;
+                    word-wrap: break-word;
+                    font-size: 14px;
+                    color: #fa9700;
+                    background-color: #fff;
+                }
+            }
         }
-
-
+        
     }
+
+    
 }
 
 .ant-rate{
@@ -331,7 +368,7 @@
 }
 
 .category{
-    width: 720px;
+    width: 100%;
     outline: 1px solid #ebebeb;
 
     .category-title{
@@ -372,6 +409,10 @@
                 background-color: #ffffff;
             }
         }
+    }
+
+    .category-content{
+        background-color: #fff;
     }
 
 }
@@ -478,6 +519,41 @@
 
 .last-row{
     border-bottom: none;
+}
+
+
+.notice-box{
+    display: inline-block;
+    width: 250px;
+    float: right;
+    
+    .notice-info{
+        background: #fff;
+        padding:10px;
+        border:  1px solid #ebebeb;
+        div{
+            margin-bottom: 10px;
+        }
+        .start-price{
+            color: #898989;
+            font-size: 14px;
+        }
+        .send-price{
+            color: #898989;
+            font-size: 14px;
+        }
+        .info-detail{
+            color: #535353;
+
+            img{
+                width: 17px;
+                height: 17px;
+                display: block;
+                float: left;
+                margin-right: 5px;
+            }
+        }
+    }
 }
 
 

@@ -6,7 +6,7 @@ import {
 } from 'react-redux';
 import Img from 'common/Img';
 import * as actions from 'actions/DetailAction';
-import { Rate,Tooltip ,Tabs,Radio,Checkbox} from 'antd';
+import { Rate,Tooltip ,Tabs,Radio,Checkbox,Affix} from 'antd';
 import CartBox from 'components/Detail/CartBox/';
 
 
@@ -199,30 +199,43 @@ export class Detail extends React.Component {
                         <div className="collection-num">{(`${data.storeCollect}`)}</div>
                     </div>
                </div>
-               <div className="cate-tab">
-                <Tabs defaultActiveKey="1" onChange={this.tabsChange}>
-                    <TabPane tab="菜单" key="1">
-                       {classList}
+               <div className="business-content">
+                    <div className="content-left">
+                        <div className="cate-tab">
+                         <Tabs defaultActiveKey="1" onChange={this.tabsChange}>
+                             <TabPane tab="菜单" key="1">
+                                {classList}
 
-                    </TabPane>
-                    <TabPane tab="评价" key="2">
-                        <RatedBox evaluatList={this.props.evaluatList}></RatedBox>
-                    </TabPane>
-                    <TabPane tab="餐厅资质" key="3">
-                        <div className="aptitude">
-                            <div className="aptitude-item">
-                                <div className="aptitude-title">营业执照</div>
-                                <img src='http://p1.meituan.net/xianfu/0936e7e3c04b7e873d14a8edd365743b61440.jpg'></img>
-                            </div>
-                            <div className="aptitude-item">
-                                <div className="aptitude-title">餐饮服务许可证</div>
-                                <img src='http://p1.meituan.net/xianfu/18b999daee540d21de9ed40c92a94913184320.jpg'></img>
-                            </div>
+                             </TabPane>
+                             <TabPane tab="评价" key="2">
+                                 <RatedBox evaluatList={this.props.evaluatList}></RatedBox>
+                             </TabPane>
+                             <TabPane tab="餐厅资质" key="3">
+                                 <div className="aptitude">
+                                     <div className="aptitude-item">
+                                         <div className="aptitude-title">营业执照</div>
+                                         <img src='http://p1.meituan.net/xianfu/0936e7e3c04b7e873d14a8edd365743b61440.jpg'></img>
+                                     </div>
+                                     <div className="aptitude-item">
+                                         <div className="aptitude-title">餐饮服务许可证</div>
+                                         <img src='http://p1.meituan.net/xianfu/18b999daee540d21de9ed40c92a94913184320.jpg'></img>
+                                     </div>
+                                 </div>
+                             </TabPane>
+                         </Tabs>
                         </div>
-                    </TabPane>
-                </Tabs>
+                        {categoryList}
+                    </div>
+                    <div className="content-right">
+                        <div className="notice-top">
+                            <div className="notice-title">订餐必读&商家公告</div>
+                            <div className="notice-content">订餐满100元赠送2升可乐一瓶</div>
+                        </div>
+                        <Affix>
+                            <StoreNotice data={this.props.storeDetail}></StoreNotice>
+                        </Affix>
+                    </div>
                </div>
-               {categoryList}
             </div>
         );
     }
@@ -438,6 +451,43 @@ export class CategoryItem extends React.Component {
                     </div>
                     {!!this.props.inCartNum &&
                         <div className="add-num">{this.props.inCartNum}</div>}
+                </div>
+            </div>
+        )
+    }
+}
+
+export class StoreNotice extends React.Component {
+    static propTypes = {
+        name: React.PropTypes.string,
+    };
+
+    constructor(props) {
+        super(props);
+    }
+    
+    render(){
+        let {data={}} = this.props;
+        console.log('data=',data);
+        let tagList = data.tagList||[];
+        return(
+            <div className="notice-box">
+                
+                <div className="notice-info">
+                    <div className="start-price">
+                        {`起送价：${data.startPrice}元`}
+                    </div>
+                    <div className="send-price">
+                       {`配送费：${data.expressFee}元`}
+                    </div>
+                    {tagList.map((item,i)=>{
+                        return(
+                            <div className="info-detail" key={i}>
+                                <Img src={item.tagIcon}></Img>
+                                {item.alias}
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         )
