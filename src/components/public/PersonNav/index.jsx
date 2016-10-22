@@ -18,7 +18,8 @@ function mapStateToProps(state) {
 const menu=[
 			{"title":"订单查询","chrilden":[{"title":"近三个月订单","path":"/order","id":"1"}]},
 			{"title":"账号管理","chrilden":[{"title":"我的账户","path":"/account","id":"2"},
-            {"title":"我的收藏","path":"/collect","id":"3"}]}
+            {"title":"我的收藏","path":"/collect","id":"3"}]},
+            {"title":"个人中心","chrilden":[{"title":"基本信息","path":"/personal_center","id":"4"},{"title":"密码找回","path":"/","id":"5"}]}
 			];
 
 //个人中心主组件
@@ -38,15 +39,15 @@ export class PersonNav extends React.Component {
 						let list ;
 						if(item.chrilden){
 							list = item.chrilden.map((item2,i2)=>{
-								return(<li 
-										className={href==item2.path?"active":""} 
+								return(<li
+										className={href==item2.path?"active":""}
 										key={i2} >
                                             <Link to={item2.path}>
 											{item2.title}
                                             </Link>
 										</li>);
 							});
-							
+
 						}
 						return(
 								<div key={i} className="menulist">

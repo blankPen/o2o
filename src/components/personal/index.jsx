@@ -111,14 +111,14 @@ export class Personal extends React.Component {
 						let list ;
 						if(item.chrilden){
 							list = item.chrilden.map((item2,i2)=>{
-								return(<li 
-										className={this.state.select==item2.id?"active":""} 
-										key={i2} 
+								return(<li
+										className={this.state.select==item2.id?"active":""}
+										key={i2}
 										onClick={this.liClick.bind(null,item2.id)}>
 											{item2.title}
 										</li>);
 							});
-							
+
 						}
 						return(
 								<div key={i} className="menulist">

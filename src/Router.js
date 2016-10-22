@@ -85,7 +85,7 @@ export class index extends React.Component {
                             <Route path="/order" component={Order}/>
                             <Route path="/account" component={Account}/>
                             <Route path="/collect" component={Collect}/>
-                            <Route path="/personalCenter" component={PersonalCenter}/>
+                            <Route path="/personal_center" component={PersonalCenter}/>
                         </Route>
                     </Route>
                     <Route path='/map' component={Maper} />

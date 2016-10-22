@@ -151,27 +151,35 @@ export class index extends React.Component {
         }
         return (
             <div className="personal-center-box">
-                <div className="info-content cf">
-                    <div className="avatar-container">
-                        <h3>亲爱的Ohb946871950，来上传一张头像吧</h3>
-                        <div className="avatar-content">
-                            <Upload {...props} className="upload-list-inline"
-                            >
-                              <Button disabled={!userInfo.memberId?true:false} type="ghost"  id="antBtn">
-                                <Icon type="upload" /> 上传新头像
-                              </Button>
-                            </Upload>
-                            <div onClick={this.handleImg} id="openImg"></div>
-                            <Modal className="open-image-modal" visible={this.state.priviewVisible} footer={null} onCancel={this.handleCancel}>
-                                <div className="defauleImg">{this.state.priviewImage!=undefined?<Img alt="example" src={this.state.priviewImage} className="example_img" />:<i className="anticon anticon-picture"></i>}</div>
-                            </Modal>
-                        </div>
+                <div className="avatar-container">
+                    <h3>亲爱的{(userInfo.memberTruename?userInfo.memberTruename:userInfo.memberName)||"默认用户"}，来上传一张头像吧</h3>
+                    <div className="avatar-content">
+                        <Upload {...props} className="upload-list-inline"
+                        >
+                          <Button disabled={!userInfo.memberId?true:false} type="ghost"  id="antBtn">
+                            <Icon type="upload" /> 上传新头像
+                          </Button>
+                        </Upload>
+                        <div onClick={this.handleImg} id="openImg"></div>
+                        <Modal title="个人头像" className="open-image-modal" visible={this.state.priviewVisible} footer={null} onCancel={this.handleCancel}>
+                            <div className="defauleImg">{this.state.priviewImage!=undefined?<Img alt="example" src={this.state.priviewImage} className="example_img" />:<i className="anticon anticon-picture"></i>}</div>
+                        </Modal>
                     </div>
                     <div className="tips">支持JPG，JPEG，GIF，PNG，BMP，<br/>且小于5M</div>
                 </div>
                 <div className="userexinfo-form">
                     <form  method="post" action="/account/userexinfo">
                         <div className="userexinfo-form__section">
+                             姓名：{userInfo.memberTruename}    修改
+                        </div>
+                        <div className="userexinfo-form__section">
+                             密码：******    修改
+                        </div>
+                        <div className="userexinfo-form__section">
+                             支付密码：******     修改
+                        </div>
+                        <div className="userexinfo-form__section">
+                             手机号：{userInfo.memberMobile}    修改
                         </div>
                     </form>
                 </div>

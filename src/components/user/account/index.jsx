@@ -37,7 +37,7 @@ export class Account extends React.Component {
                <div className="name theys">用户名：{(userinfo.memberTruename?userinfo.memberTruename:userinfo.memberName)||"默认用户"}</div>
                <div className="phone theys">手机号：{phone}</div>
                <div className="pswd theys">密　码：{password}</div>
-               <div className="btn"><Link to="/personalCenter">修改账户信息</Link></div>
+               <div className="btn"><Link to="/personal_center">修改账户信息</Link></div>
             </div>
         </div>
       );
