@@ -3,13 +3,14 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 23:42:03
+ * @Last Modified time: 2016-10-22 16:34:38
  */
 
 'use strict';
 import './index.less';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import Img from 'common/Img';
 import { Rate } from 'antd';
 import { collectStore } from 'actions/DetailAction';
@@ -57,11 +58,11 @@ export class HomeItem extends React.Component {
         const tagObj = this.renderTags(data.tagList);
         return (
             <div className="home-item">
-                <div className="mask">
+                <Link to={`/detail/${data.storeId}`} className="mask">
                     {/*<a className="btn-collect" onClick={this.toggleCollect}>
                         <i className="fa fa-heart-o"></i>
                     </a>*/}
-                </div>
+                </Link>
                 <div className="item-content">
                     <div className="preview">
                         <Img src={data.storeLogo}/>
