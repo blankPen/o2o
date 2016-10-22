@@ -31,6 +31,7 @@ import Account from 'components/user/account/';
 import Order from 'components/user/order/';
 import Collect from 'components/user/collect/';
 import PersonNav from 'components/public/PersonNav/';
+import PersonalCenter from 'components/user/personalCenter/';
 
 import {
     getMemberDetail
@@ -84,6 +85,7 @@ export class index extends React.Component {
                             <Route path="/order" component={Order}/>
                             <Route path="/account" component={Account}/>
                             <Route path="/collect" component={Collect}/>
+                            <Route path="/personalCenter" component={PersonalCenter}/>
                         </Route>
                     </Route>
                     <Route path='/map' component={Maper} />

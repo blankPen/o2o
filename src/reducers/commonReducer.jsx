@@ -40,7 +40,8 @@ export default handleActions({
         }
     },
     'get/userInfo':(state, action) => {
-        console.log("获取用户信息");
+        console.log("获取用户信息为：");
+        console.log(action.info);
         return {
             ...state,
             userInfo: action.info
