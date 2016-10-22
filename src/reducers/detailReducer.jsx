@@ -5,15 +5,25 @@ import {
 
 export const stateName = 'detailState';
 export default handleActions({
-    'get/home/list': (state, action) => {
+    'get/store/info': (state, action) => {
         return {
             ...state,
-            list: [
-                ...state.list,
-                ...action.list
-            ]
+            storeDetail: action.storeDetail
+        }
+    },
+    
+    'get/classAndGoods/list': (state, action) => {
+        return {
+            ...state,
+            classAndGoodsList: action.classAndGoodsList
+        }
+    },
+    'get/StoreEvaluat/list':(state,action) => {
+        return {
+            ...state,
+            evaluatList: action.evaluatList
         }
     }
 }, {
-    list: []
+    classAndGoodsList:[]
 });

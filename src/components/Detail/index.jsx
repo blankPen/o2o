@@ -4,10 +4,8 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import {
-    getHomeList
-} from 'actions/DetailAction';
-import Img from 'common/Img'
+import Img from 'common/Img';
+import * as actions from 'actions/DetailAction';
 import { Rate,Tooltip ,Tabs,Radio,Checkbox} from 'antd';
 
 
@@ -18,7 +16,7 @@ function mapStateToProps({
     detailState
 }) {
     return {
-        detailState: detailState
+         ...detailState
     };
 }
 
@@ -29,6 +27,14 @@ export class Detail extends React.Component {
 
     constructor(props) {
         super(props);
+    }
+
+    componentWillMount=()=>{
+        this.props.dispatch
+            (actions.getStoreDetail({storeId:'0599e1042d824937aac1997ae0187976'}));
+
+        this.props.dispatch
+            (actions.getClassAndGoodsList({storeId:'0599e1042d824937aac1997ae0187976'}));
     }
 
     renderTooltipTitle=(type,level,num1,num2)=>{
@@ -60,40 +66,66 @@ export class Detail extends React.Component {
     }
     
     tabsChange = (key)=>{
+        if(key==2){
+            this.props.dispatch(actions.getStoreEvaluatList({storeId:'0599e1042d824937aac1997ae0187976'}));
+        }
         console.log(key);
     }
     menuClick = (key)=>{
         console.log(key);
     }
     render() {
+        let data = this.props.storeDetail ||{};
+        let categoryList = [];
+        let classList = this.props.classAndGoodsList.map((item,i)=>{
+                        categoryList.push(
+                            <Category 
+                                key={i}
+                                data={item.goodsList}
+                                title={item.stcName} 
+                                showFilter={i==0}>
+                            </Category>
+                        );
+                            return(
+                                    <div
+                                        key={i}
+                                        className="menu-item" 
+                                        onClick={()=>this.menuClick(item.stcId)}
+                                    >
+                                        {item.stcName}
+                                    </div>
+                                )
+                        })
         return (
             <div className="detail-body">
                <div className="business-top">
                     <div className="content-box">
                         <div className="left-box">
-                            <Img className="business-logo" src='./business.jpg' />
+                            <Img className="business-logo" src={data.storeLogo} />
                             <div className="business-box">
                                 <div className="business-name">
-                                    四季甜品（东四店）
+                                    {data.storeName}
                                     <i className="fa fa-caret-down hide"></i>
                                 </div>
-                                <Rate value={4} /> 4.9
+                                <Rate value={data.storeScore} /> {data.storeScore}
                                 <div className="option">
-                                    <span>30元起送</span>
-                                    <span>4元配送费</span>
-                                    <span>由商家配送</span>
+                                    <span>{data.startPrice+'元起送'}</span>
+                                    <span>{data.expressFee+'元配送费'}</span>
+                                    <span>{data.shippingMethod=='1'?'由平台费送':'由商家配送'}</span>
                                 </div>
                             </div>
                             <div className="buttom-info">
-                                <div>商家地址：XXXXXXXXXXXX</div>
-                                <div>商家电话：XXXXXXXXXXXX</div>
-                                <div>营业时间：XXXXXXXXXXXX</div>
+                                <div>{'商家地址：'+data.storeAddress}</div>
+                                <div>{'商家电话：'+data.storeTel}</div>
+                                <div>
+                                    {'营业时间：'+data.startBusinessTime+'-'+data.endBusinessTime}
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="right-box">
                         <div className="rate-box">
-                            <div className="rate"><span>4.5</span>分</div>
+                            <div className="rate"><span>{data.storeScore}</span>分</div>
                             <div className="rate-text">商家评分</div>
                         </div>
                         <div className="commas"></div>
@@ -102,7 +134,9 @@ export class Detail extends React.Component {
                             placement="bottom"
                         >
                             <div className="rate-box">
-                                <div className="rate"><span>36</span>分钟</div>
+                                <div className="rate">
+                                    <span>{data.storeDeliverycredit||0}</span>分钟
+                                </div>
                                 <i className="fa fa-caret-down turn"></i>
                                 <div className="rate-text">平均送餐时间</div>
                             </div>
@@ -121,48 +155,24 @@ export class Detail extends React.Component {
                     </div>
                     <div className="fold-3d"></div>
                     <div className="collection">
-                        <i className="fa fa-heart-o"></i>
+                        {
+                            data.isStoreCollect>1?
+                                <i className="fa fa-heart is-conllect"></i>:
+                                <i className="fa fa-heart-o"></i>
+                        }
                         <span>收藏</span>
-                        <div className="collection-num">(646)</div>
+                        <div className="collection-num">{(`${data.storeCollect}`)}</div>
                     </div>
                </div>
                <div className="cate-tab">
                 <Tabs defaultActiveKey="1" onChange={this.tabsChange}>
                     <TabPane tab="菜单" key="1">
-                        <div 
-                            className="menu-item" 
-                            onClick={()=>this.menuClick('1')}
-                        >
-                            暖食暖胃暖人心暖食暖胃暖人心
-                        </div>
-                        <div 
-                            className="menu-item" 
-                            onClick={()=>this.menuClick('2')}
-                        >
-                            暖食暖胃暖人心暖食暖胃暖人心
-                        </div>
-                        <div 
-                            className="menu-item" 
-                            onClick={()=>this.menuClick('3')}
-                        >
-                            暖食暖胃暖人心暖食暖胃暖人心
-                        </div>
-                        <div 
-                            className="menu-item" 
-                            onClick={()=>this.menuClick('4')}
-                        >
-                            暖食暖胃暖人心暖食暖胃暖人心
-                        </div>
-                        <div 
-                            className="menu-item" 
-                            onClick={()=>this.menuClick('5')}
-                        >
-                            暖食暖胃暖人心暖食暖胃暖人心
-                        </div>
-                        
+                       {classList}
 
                     </TabPane>
-                    <TabPane tab="评价" key="2"><RatedBox></RatedBox></TabPane>
+                    <TabPane tab="评价" key="2">
+                        <RatedBox evaluatList={this.props.evaluatList}></RatedBox>
+                    </TabPane>
                     <TabPane tab="餐厅资质" key="3">
                         <div className="aptitude">
                             <div className="aptitude-item">
@@ -177,6 +187,7 @@ export class Detail extends React.Component {
                     </TabPane>
                 </Tabs>
                </div>
+               {categoryList}
             </div>
         );
     }
@@ -275,6 +286,128 @@ export class RateItem extends React.Component {
         )
     }
 }
+
+export class CategoryFilter extends React.Component {
+    static propTypes = {
+        name: React.PropTypes.string,
+    };
+
+    constructor(props) {
+        super(props);
+        
+    }
+    render(){
+        return(
+            <div className="category-title">
+                <div className="tag-name">{this.props.categoryName}</div>
+                <div className="category-filter">
+                    <div className="category-all">
+                        全部分类
+                    </div>
+                    <button className="category-btn category-active">
+                        默认排序 
+                    </button>
+                    <button className="category-btn sale">
+                        销量
+                        <i className="fa fa-long-arrow-up"></i>
+                    </button>
+                    <button className="category-btn sale">
+                        价格
+                        <i className="fa fa-long-arrow-down"></i>
+                    </button>
+                </div>
+            </div>
+        )
+    }
+}
+
+/**
+ * 菜单列表
+ */
+export class Category extends React.Component {
+    static propTypes = {
+        name: React.PropTypes.string,
+    };
+
+    constructor(props) {
+        super(props);
+        
+    }
+
+    componentWillMount=()=>{
+        
+    }
+
+    render(){
+        return(
+            <div className="category">
+                <div className="category-title">
+                    <div className="tag-name">{this.props.title}</div>
+                    {
+                        this.props.showFilter?(
+                            <CategoryFilter title=''></CategoryFilter>):undefined
+                    }
+                </div>
+                <div className="category-content clearfix">
+                    
+                    {
+                        this.props.data.map((item,i)=>{
+                            return(
+                                <CategoryItem data={item} key={i}></CategoryItem>
+                            )
+                        })
+                    }
+
+                </div>
+            </div>
+        )
+    }
+}
+
+/**
+ * 菜单Item
+ */
+export class CategoryItem extends React.Component {
+    static propTypes = {
+        name: React.PropTypes.string,
+    };
+
+    constructor(props) {
+        super(props);
+        
+    }
+
+    
+
+    render(){
+        let {data} = this.props;
+        return(
+            <div className="category-box">
+                <div className="avatar">
+                    <img className='category-img'
+                     src="http://p1.meituan.net/210.0/xianfu/d23d1e28afb2b1a6cdb63b3d978e3486167936.jpg" />
+                    <div className="description">    销量冠军，招牌馅料，汁多味美，食指大动。豆角具有益气生津功效。
+                    </div>
+                </div>
+                <div className="categroy-name">{data.goodsName}</div>
+                <div className="sale-info clearfix">
+                    <div className="sold-count">月售315份</div>
+                    <div className="zan-count">
+                        <i className="fa fa-thumbs-o-up"></i>
+                       { `(${data.praise})`}
+                    </div>
+                </div>
+                <div className="labels clearfix">
+                    <div className="price">{'￥'+data.goodsStorePrice+data.unitName}</div>
+                    <div className="add">
+                        <i className="fa fa-plus"></i>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
 
 export default connect(
     mapStateToProps,

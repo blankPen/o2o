@@ -1,26 +1,6 @@
 'use strict';
 import ajax from 'common/Ajax';
-import store from 'stores';
-export function getHomeList(params,call) {
-    return function(dispatch) {
-        ajax({
-            url: '/rest/api/store/list',
-            data: {
-                longitude: 116.429493,
-                atitude: 39.93695,
-                isOpenInvoice: 1,
-                ...params
-            },
-            success: function(res){
-                dispatch({
-                    type: 'get/home/list',
-                    list: res.data
-                })
-                call && call(res);
-            }
-        })
-    }
-}
+
 // 收藏店铺
 export function collectStore(storeId,status,callback){
     let userInfo = store.getState().common.userInfo;
@@ -41,6 +21,72 @@ export function collectStore(storeId,status,callback){
                     console.log(res)
                     callback && callback(res);
                 }
+            }
+        })
+    }
+}
+
+/**
+ * 获取店铺详情
+ */
+export function getStoreDetail(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: 'rest/api/store/info',
+            data: {
+                memberId:-1,
+                storeId:params.storeId
+            },
+            success: function(res){
+                dispatch({
+                    type: 'get/store/info',
+                    storeDetail: res.data
+                })
+                call && call(res);
+            }
+        })
+    }
+}
+/**
+ * 获取分类和分类下的菜品列表
+ */
+export function getClassAndGoodsList(params,call) {
+    console.log(11111);
+    return function(dispatch) {
+        ajax({
+            url: 'rest/api/storegoodsclass/list',
+            data: {
+                storeId:params.storeId
+            },
+            success: function(res){
+                dispatch({
+                    type: 'get/classAndGoods/list',
+                    classAndGoodsList: res.data
+                })
+                call && call(res);
+            }
+        })
+    }
+}
+
+/**
+ * 获取评价列表
+ */
+
+export function getStoreEvaluatList(params,call) {
+    console.log(11111);
+    return function(dispatch) {
+        ajax({
+            url: 'rest/api/order/storeEvaluatePage',
+            data: {
+                storeId:params.storeId
+            },
+            success: function(res){
+                dispatch({
+                    type: 'get/StoreEvaluat/list',
+                    evaluatList: res.data.evaluateGoodList
+                })
+                call && call(res);
             }
         })
     }

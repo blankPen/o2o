@@ -14,16 +14,18 @@ const IMG_SERVER = 'http://o2o.leimingtech.com/';
 const reqWithContext = require.context('../images', true, /\.(png|jpg|gif)$/);
 
 export function getRealPath(src){
-    if(src.startWith('http')){
-        return src;
-    }else if(src.startWith('/')){
-        return IMG_SERVER + src;
-    }else{
-        if(src.startWith('./')){
-            return reqWithContext(src);
+    if(src){
+        if(src.startWith('http')){
+            return src;
+        }else if(src.startWith('/')){
+            return IMG_SERVER + src;
         }else{
-            return reqWithContext('./'+src);
-        }
+            if(src.startWith('./')){
+                return reqWithContext(src);
+            }else{
+                return reqWithContext('./'+src);
+            }
+        }    
     }
 }
 
