@@ -17,13 +17,10 @@ export default handleActions({
     'order/orderDetail': (state, action) => {
         return {
             ...state,
-            detail: [
-                ...state.detail,
-                ...action.list
-            ]
+            detail: action.list
         }
     }
 }, {
     list : [],
-    detail : [],
+    detail : {},
 });
