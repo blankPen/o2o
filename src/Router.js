@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-22 00:06:43
+ * @Last Modified time: 2016-10-22 15:01:23
  */
 
 'use strict';
@@ -79,7 +79,7 @@ export class index extends React.Component {
                 <Router history={this.props.history} >
                     <Route path='/' component={PublicMain}>
                         <IndexRoute component={Home} />
-                        <Route path="/detail" component={Detail}/>
+                        <Route path="/detail/:storeId" component={Detail}/>
                         <Route path="/user" component={PersonNav}>
                             <Route path="/order" component={Order}/>
                             <Route path="/account" component={Account}/>

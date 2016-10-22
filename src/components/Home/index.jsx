@@ -285,7 +285,7 @@ export class Home extends React.Component {
                 <div className="panel-list">
                     <div className="tool-bar">
                         {this.renderOrderFilter(filter_order)}
-                        {this.renderPriceSelect(filter_price)}
+                        {/*this.renderPriceSelect(filter_price)*/}
                     </div>
                     <div className="list-content">
                         <ListView

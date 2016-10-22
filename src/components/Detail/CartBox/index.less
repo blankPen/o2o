@@ -1,0 +1,167 @@
+/*
+* @Author: pengzhen
+* @Date:   2016-10-22 12:37:54
+* @Last Modified by:   pengzhen
+* @Last Modified time: 2016-10-22 16:02:50
+*/
+@import url('../../../styles/theme.less');
+.cart-box{
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    margin-left: 230px;
+    width: 290px;
+    z-index: 100;
+    font-size: 14px;
+    .notice{
+        position: absolute;
+        bottom: 100%;
+        width: 100%;
+        height: 35px;
+        line-height: 35px;
+        padding-left: 15px;
+        font-size: 12px;
+        color: #fe4d3d;
+        background-color: #fffdf0;
+        z-index: 1;
+        box-shadow: 0 -1px 9px #CCC;
+    }
+    .order-box.open{
+        transform: translateY(-100%);
+    }
+    .order-box{
+        transition: transform 0.75s cubic-bezier(0.95, -0.44, 0.09, 1.01);
+        position: absolute;
+        top: 0;
+        width: 100%;
+        transform: translateY(0%);
+        background: #fff;
+        box-shadow: 0 -1px 9px #CCC;
+    }
+    .order-table{
+        border-top: 4px solid #6b450a;
+        width: 100%;
+        display: table;
+        background: #fff;
+        color: #333;
+        .clear-cart {
+            margin-left: 3px;
+            color: #fe4d3d;
+        }
+        .title{
+            display: table-row;
+            color: #898989;
+            background-color: #fafafa;
+            height: 27px;
+            line-height: 27px;
+            font-size: 12px;
+
+            &>span:first-child{
+                width: 50%;
+                text-align: left;
+                padding-left: 10px;
+            }
+            &>span{
+                display: table-cell;
+                text-align: center;
+                border-bottom: none;
+            }
+        }
+
+        .order-item{
+            display: table-row;
+            &>span:first-child{
+                width: 50%;
+                text-align: left;
+                padding-left: 15px;
+            }
+            &>span:last-child{
+                width: 65px;
+            }
+            &>span{
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+                border-bottom: 1px solid #E5E5E5;
+                padding: 15px 0;
+                &>div{
+                    line-height: normal;
+                }
+            }
+        }
+        .input_num{
+            width: 56px;
+            height: 18px;
+            line-height: 18px;
+            padding: 0 17px;
+            font-size: 12px;
+            button{
+                width: 18px;
+            }
+        }
+    }
+    .total{
+        height: 49px;
+        line-height: 49px;
+        text-align: right;
+        padding-right: 25px;
+        color: #333;
+        .totalnumber{
+            margin: 0 3px;
+            color: #fe4d3d;
+        }
+        .bill{
+            font-size: 28px;
+            font-weight: bold;
+            margin-right: 0;
+            color: #fe4d3d;
+        }
+    }
+    .btn-box{
+        background-color: #6b450a;
+        cursor: pointer;
+        z-index: 1;
+        position: relative;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 60px;
+        .icon{
+            width: 44px;
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            border-radius: 50%;
+            font-size: 24px;
+            background: @primary-color;
+            color: #6b450a;
+            box-shadow: 0 0 5px 1px rgba(0,0,0,0.15);
+        }
+        .count{
+            display: inline-block;
+            color: #aaa;
+        }
+        .submit{
+            float: right;
+            border-radius: 2px;
+            height: 31px;
+            text-align: center;
+            line-height: 31px;
+            margin-top: 4px;
+            margin-right: 5px;
+            font-weight: bold;
+            padding: 0 30px;
+            border: 0;
+            cursor: pointer;
+            background-color: #ffd705;
+            color: #6b450a;
+            &:disabled{
+                background-color: #E5E5E5;
+                color: #A0A0A0;
+                cursor: no-drop;
+            }
+        }
+    }
+}

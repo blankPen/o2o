@@ -7,6 +7,7 @@ import {
 import Img from 'common/Img';
 import * as actions from 'actions/DetailAction';
 import { Rate,Tooltip ,Tabs,Radio,Checkbox} from 'antd';
+import CartBox from 'components/Detail/CartBox/';
 
 
 const RadioGroup = Radio.Group;
@@ -27,16 +28,54 @@ export class Detail extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            inCartItems: {
+                // id: {
+                //     num: 1,
+                //     data: {}
+                // }
+            }
+        }
     }
 
     componentWillMount=()=>{
+        let storeId = this.props.params.storeId;
         this.props.dispatch
-            (actions.getStoreDetail({storeId:'0599e1042d824937aac1997ae0187976'}));
-
+            (actions.getStoreDetail({storeId: storeId}));
         this.props.dispatch
-            (actions.getClassAndGoodsList({storeId:'0599e1042d824937aac1997ae0187976'}));
+            (actions.getClassAndGoodsList({storeId: storeId}));
     }
 
+    tabsChange = (key)=>{
+        let storeId = this.props.params.storeId;
+        if(key==2){
+            this.props.dispatch(actions.getStoreEvaluatList({storeId:storeId}));
+        }
+        console.log(key);
+    }
+    menuClick = (key)=>{
+        console.log(key);
+    }
+    handleAddCart=(data)=>{
+        let newItems = {...this.state.inCartItems};
+        let goods = newItems[data.goodsId];
+        goods = goods ? {
+            num: (goods.num || 0)+1,
+            data: data,
+        } : {
+            num: 1,
+            data: data,
+        };
+        newItems[data.goodsId] = goods;
+        this.setState({
+            inCartItems: newItems
+        });
+    }
+    handleChangeCart=(value)=>{
+        this.setState({
+            inCartItems: value
+        });
+    }
     renderTooltipTitle=(type,level,num1,num2)=>{
         if(type=='time'){
             return(
@@ -64,40 +103,36 @@ export class Detail extends React.Component {
             )
         }
     }
-    
-    tabsChange = (key)=>{
-        if(key==2){
-            this.props.dispatch(actions.getStoreEvaluatList({storeId:'0599e1042d824937aac1997ae0187976'}));
-        }
-        console.log(key);
-    }
-    menuClick = (key)=>{
-        console.log(key);
-    }
     render() {
         let data = this.props.storeDetail ||{};
         let categoryList = [];
         let classList = this.props.classAndGoodsList.map((item,i)=>{
-                        categoryList.push(
-                            <Category 
-                                key={i}
-                                data={item.goodsList}
-                                title={item.stcName} 
-                                showFilter={i==0}>
-                            </Category>
-                        );
-                            return(
-                                    <div
-                                        key={i}
-                                        className="menu-item" 
-                                        onClick={()=>this.menuClick(item.stcId)}
-                                    >
-                                        {item.stcName}
-                                    </div>
-                                )
-                        })
+            categoryList.push(
+                <Category
+                    key={i}
+                    data={item.goodsList}
+                    title={item.stcName}
+                    inCartItems={this.state.inCartItems}
+                    onAdd={this.handleAddCart}
+                />
+            );
+            return(
+                <div
+                    key={i}
+                    className="menu-item"
+                    onClick={this.menuClick.bind(this,item.stcId)}
+                >
+                    {item.stcName}
+                </div>
+            );
+        });
         return (
             <div className="detail-body">
+                <CartBox
+                    startPrice={data.startPrice}
+                    data={this.state.inCartItems}
+                    onChange={this.handleChangeCart}
+                />
                <div className="business-top">
                     <div className="content-box">
                         <div className="left-box">
@@ -129,8 +164,8 @@ export class Detail extends React.Component {
                             <div className="rate-text">商家评分</div>
                         </div>
                         <div className="commas"></div>
-                        <Tooltip 
-                            title={this.renderTooltipTitle('time',true,36,21)} 
+                        <Tooltip
+                            title={this.renderTooltipTitle('time',true,36,21)}
                             placement="bottom"
                         >
                             <div className="rate-box">
@@ -142,8 +177,8 @@ export class Detail extends React.Component {
                             </div>
                         </Tooltip>
                         <div className="commas"></div>
-                        <Tooltip 
-                            title={this.renderTooltipTitle('promptness',true,91,36)} 
+                        <Tooltip
+                            title={this.renderTooltipTitle('promptness',true,91,36)}
                             placement="bottom"
                         >
                             <div className="rate-box">
@@ -246,7 +281,6 @@ export class RatedBox extends React.Component {
 
                 </div>
             </div>
-
         )
     }
 }
@@ -261,10 +295,10 @@ export class RateItem extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
     }
 
-    
+
 
     render(){
         return(
@@ -272,7 +306,7 @@ export class RateItem extends React.Component {
                 <div className="rate-info">
                     <span className="user-name">U***8</span>
                     <span className="all-rate">总体评价:</span>
-                    <Rate value={4} /> 
+                    <Rate value={4} />
                     <span className="feel">好评</span>
                     <span className="rate-time">
                         评价时间
@@ -294,7 +328,7 @@ export class CategoryFilter extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
     }
     render(){
         return(
@@ -305,7 +339,7 @@ export class CategoryFilter extends React.Component {
                         全部分类
                     </div>
                     <button className="category-btn category-active">
-                        默认排序 
+                        默认排序
                     </button>
                     <button className="category-btn sale">
                         销量
@@ -331,33 +365,30 @@ export class Category extends React.Component {
 
     constructor(props) {
         super(props);
-        
-    }
 
-    componentWillMount=()=>{
-        
     }
+    componentWillMount(){
 
+    }
     render(){
+        var inCartItems = this.props.inCartItems;
         return(
             <div className="category">
                 <div className="category-title">
                     <div className="tag-name">{this.props.title}</div>
-                    {
-                        this.props.showFilter?(
-                            <CategoryFilter title=''></CategoryFilter>):undefined
-                    }
+                    {this.props.showFilter &&
+                        <CategoryFilter title=''></CategoryFilter>}
                 </div>
                 <div className="category-content clearfix">
-                    
-                    {
-                        this.props.data.map((item,i)=>{
-                            return(
-                                <CategoryItem data={item} key={i}></CategoryItem>
-                            )
-                        })
-                    }
-
+                    { this.props.data.map((item,i)=>{
+                        let goods = inCartItems[item.goodsId];
+                        return <CategoryItem
+                            key={i}
+                            data={item}
+                            inCartNum={goods && goods.num}
+                            onAdd={this.props.onAdd}
+                        />
+                    })}
                 </div>
             </div>
         )
@@ -370,22 +401,25 @@ export class Category extends React.Component {
 export class CategoryItem extends React.Component {
     static propTypes = {
         name: React.PropTypes.string,
+        onAdd: React.PropTypes.func
     };
-
+    static defaultProps = {
+        onAdd: function(){}
+    };
     constructor(props) {
         super(props);
-        
     }
-
-    
-
+    onAdd=()=>{
+        let {data} = this.props;
+        this.props.onAdd(data)
+    }
     render(){
         let {data} = this.props;
         return(
             <div className="category-box">
                 <div className="avatar">
-                    <img className='category-img'
-                     src="http://p1.meituan.net/210.0/xianfu/d23d1e28afb2b1a6cdb63b3d978e3486167936.jpg" />
+                    <Img className='category-img'
+                     src={data.goodsImage} />
                     <div className="description">    销量冠军，招牌馅料，汁多味美，食指大动。豆角具有益气生津功效。
                     </div>
                 </div>
@@ -393,15 +427,17 @@ export class CategoryItem extends React.Component {
                 <div className="sale-info clearfix">
                     <div className="sold-count">月售315份</div>
                     <div className="zan-count">
-                        <i className="fa fa-thumbs-o-up"></i>
-                       { `(${data.praise})`}
+                        <i className="fa fa-fw fa-thumbs-up"></i>
+                       ({data.praise})
                     </div>
                 </div>
                 <div className="labels clearfix">
                     <div className="price">{'￥'+data.goodsStorePrice+data.unitName}</div>
-                    <div className="add">
+                    <div className="add" onClick={this.onAdd}>
                         <i className="fa fa-plus"></i>
                     </div>
+                    {!!this.props.inCartNum &&
+                        <div className="add-num">{this.props.inCartNum}</div>}
                 </div>
             </div>
         )
