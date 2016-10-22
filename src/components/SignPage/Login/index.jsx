@@ -259,7 +259,7 @@ let index = class extends React.Component {
         <div className="sign_head">
             <div className="sign_logo">
                 <a href='/#/'>
-                  <i className="sign_img"></i>
+                  <Img alt="雷铭O2O" src="logo.png" className="sign_img" />
                 </a>
            </div>
         </div>
@@ -287,7 +287,7 @@ let index = class extends React.Component {
         <Footer/>
         <Modal
           className="full-screen-modal"
-          title="《美团网用户协议》"
+          title="《雷铭O2O用户协议》"
           wrapClassName="vertical-center-modal"
           visible={this.state.modalVisible}
           width="100%"
@@ -455,7 +455,7 @@ let index = class extends React.Component {
             登 录
           </Button>
           <div className="sign_agreement">
-            <p>提示： 未注册美团账号的手机号，登录时将自动注册美团账号，且代表您已同意<a href="javascript:void(0);" onClick={() => this.setModalVisible(true)}>《美团网用户协议》</a></p>
+            <p>提示： 未注册雷铭O2O账号的手机号，登录时将自动注册雷铭O2O账号，且代表您已同意<a href="javascript:void(0);" onClick={() => this.setModalVisible(true)}>《雷铭O2O网用户协议》</a></p>
           </div>
         </Form>
       )

@@ -304,7 +304,7 @@ let index= class extends React.Component {
           <div className="sign_head">
             <div className="sign_logo">
                 <a href='/#/'>
-                  <i className="sign_img"></i>
+                  <Img alt="雷铭O2O" src="logo.png" className="sign_img" />
                 </a>
             </div>
           </div>
@@ -464,7 +464,7 @@ let index= class extends React.Component {
                         this.setState({ clickAggrement: !this.state.clickAggrement });
                       }}
                     >
-                        <a href="javascript:void(0);" onClick={() => this.setModalVisible(true)}>《美团网用户协议》</a><a className="agreement_right" href="/#/login"> 账号登录</a>
+                        <a href="javascript:void(0);" onClick={() => this.setModalVisible(true)}>《雷铭O2O用户协议》</a><a className="agreement_right" href="/#/login"> 账号登录</a>
                     </Checkbox>
                   )}
                 </FormItem>
@@ -474,7 +474,7 @@ let index= class extends React.Component {
           <Footer/>
           <Modal
             className="full-screen-modal"
-            title="《美团网用户协议》"
+            title="《雷铭O2O用户协议》"
             wrapClassName="vertical-center-modal"
             visible={this.state.modalVisible}
             width="100%"
