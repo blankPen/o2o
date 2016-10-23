@@ -3,7 +3,7 @@
  * @Date:   2016-10-22 12:37:44
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-22 23:40:48
+ * @Last Modified time: 2016-10-23 14:12:14
  */
 
 'use strict';
@@ -12,15 +12,12 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
+import * as DomUtils from 'common/utils/dom';
 import NumInput from 'components/common/NumInput';
+import Parabola from './parabola.js';
 
-function mapStateToProps(state) {
-    return {
-
-    };
-}
-
-export class CartBox extends React.Component {
+let mousePosition = null;
+export default class CartBox extends React.Component {
     static propTypes = {
         onChange: React.PropTypes.func,
         startPrice: React.PropTypes.number
@@ -34,6 +31,39 @@ export class CartBox extends React.Component {
         this.state = {
             open: true,
         };
+    }
+    componentDidMount() {
+        this.listener = DomUtils.addEventListener(document.documentElement, 'click', (e) => {
+            console.log(e.target)
+            let scroll = DomUtils.getScroll();
+            mousePosition = {
+                x: e.pageX - scroll.left,
+                y: e.pageY - scroll.top
+            };
+            // this.triggerAnim();
+            // 20ms 内发生过点击事件，则从点击位置动画展示
+            // 否则直接 zoom 展示
+            // 这样可以兼容非点击方式展开
+            setTimeout(() => {
+                return mousePosition = null;
+            }, 20);
+        });
+    }
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
+    }
+    triggerAnim(){
+        let icon = this.refs.icon;
+        let { x,y } = mousePosition;
+        let target = `<div style="width: 10px;height: 10px;background: blue;position: fixed;top: ${y}px;left: ${x}px;z-index:1000;"></div>`;
+        target = DomUtils.createElement(target);
+        document.body.appendChild(target);
+        Parabola(target,icon,{
+            complete: ()=>{
+                document.body.removeChild(target);
+                target = null;
+            }
+        }).init();
     }
     toggleOpen=()=>{
         this.setState({
@@ -108,7 +138,7 @@ export class CartBox extends React.Component {
                     </div>
                 </div>
                 <div className="btn-box">
-                    <div className="icon" onClick={!!totalNum && this.toggleOpen}>
+                    <div ref='icon' className="icon" onClick={!!totalNum && this.toggleOpen}>
                         <i className="fa fa-shopping-cart"></i>
                     </div>
                     {!open && !!totalNum &&
@@ -124,8 +154,3 @@ export class CartBox extends React.Component {
         );
     }
 }
-
-export default connect(
-    mapStateToProps,
-    // Implement map dispatch to props
-)(CartBox)

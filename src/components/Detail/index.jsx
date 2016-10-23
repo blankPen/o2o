@@ -70,6 +70,7 @@ export class Detail extends React.Component {
         this.setState({
             inCartItems: newItems
         });
+        this.refs.cartBox.triggerAnim();
     }
     handleChangeCart=(value)=>{
         this.setState({
@@ -129,6 +130,7 @@ export class Detail extends React.Component {
         return (
             <div className="detail-body">
                 <CartBox
+                    ref='cartBox'
                     startPrice={data.startPrice}
                     data={this.state.inCartItems}
                     onChange={this.handleChangeCart}
