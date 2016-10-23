@@ -3,7 +3,7 @@
  * @Date:   2016-10-22 12:37:44
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-23 14:12:14
+ * @Last Modified time: 2016-10-23 21:16:06
  */
 
 'use strict';
@@ -32,38 +32,20 @@ export default class CartBox extends React.Component {
             open: true,
         };
     }
-    componentDidMount() {
-        this.listener = DomUtils.addEventListener(document.documentElement, 'click', (e) => {
-            console.log(e.target)
-            let scroll = DomUtils.getScroll();
-            mousePosition = {
-                x: e.pageX - scroll.left,
-                y: e.pageY - scroll.top
-            };
-            // this.triggerAnim();
-            // 20ms 内发生过点击事件，则从点击位置动画展示
-            // 否则直接 zoom 展示
-            // 这样可以兼容非点击方式展开
-            setTimeout(() => {
-                return mousePosition = null;
-            }, 20);
-        });
-    }
-    componentWillUnmount() {
-        this.listener && this.listener.remove();
-    }
-    triggerAnim(){
-        let icon = this.refs.icon;
-        let { x,y } = mousePosition;
-        let target = `<div style="width: 10px;height: 10px;background: blue;position: fixed;top: ${y}px;left: ${x}px;z-index:1000;"></div>`;
-        target = DomUtils.createElement(target);
-        document.body.appendChild(target);
-        Parabola(target,icon,{
-            complete: ()=>{
-                document.body.removeChild(target);
-                target = null;
-            }
-        }).init();
+    triggerAnim(position){
+        if(position){
+            let { x,y } = position;
+            let icon = this.refs.icon;
+            let target = `<div class="cart-anim-point" style="top: ${y}px;left: ${x}px;"></div>`;
+            target = DomUtils.createElement(target);
+            document.body.appendChild(target);
+            Parabola(target,icon,{
+                complete: ()=>{
+                    document.body.removeChild(target);
+                    target = null;
+                }
+            }).init();
+        }
     }
     toggleOpen=()=>{
         this.setState({
@@ -75,12 +57,17 @@ export default class CartBox extends React.Component {
     }
     changeItem(id,num){
         const data = {...this.props.data};
+        let isAdd = false;
         if(num){
+            if(num > data[id].num){
+                this.triggerAnim();
+                isAdd = true;
+            }
             data[id].num = num;
         }else{
             delete data[id];
         }
-        this.props.onChange(data);
+        this.props.onChange(data,isAdd && id);
     }
     parseData(){
         const data = this.props.data || {};

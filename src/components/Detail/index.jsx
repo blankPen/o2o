@@ -5,6 +5,7 @@ import {
     connect
 } from 'react-redux';
 import Img from 'common/Img';
+import * as DomUtils from 'common/utils/dom';
 import * as actions from 'actions/DetailAction';
 import { Rate,Tooltip ,Tabs,Radio,Checkbox,Affix} from 'antd';
 import CartBox from 'components/Detail/CartBox/';
@@ -13,6 +14,21 @@ import CartBox from 'components/Detail/CartBox/';
 const RadioGroup = Radio.Group;
 const TabPane = Tabs.TabPane;
 
+let positionMap = {};
+function saveTarget(id,e){
+    positionMap[id] = e.target;
+}
+function getPosition(id){
+    let el = positionMap[id];
+    if(el){
+        let scroll = DomUtils.getScroll();
+        let offset = DomUtils.getOffset(el);
+        return {
+            x: offset.left - scroll.left,
+            y: offset.top - scroll.top
+        }
+    }
+}
 function mapStateToProps({
     detailState
 }) {
@@ -70,12 +86,13 @@ export class Detail extends React.Component {
         this.setState({
             inCartItems: newItems
         });
-        this.refs.cartBox.triggerAnim();
+        this.refs.cartBox.triggerAnim(getPosition(data.goodsId));
     }
-    handleChangeCart=(value)=>{
+    handleChangeCart=(value,addId)=>{
         this.setState({
             inCartItems: value
         });
+        this.refs.cartBox.triggerAnim(getPosition(addId));
     }
     renderTooltipTitle=(type,level,num1,num2)=>{
         if(type=='time'){
@@ -424,9 +441,10 @@ export class CategoryItem extends React.Component {
     constructor(props) {
         super(props);
     }
-    onAdd=()=>{
+    onAdd=(e)=>{
         let {data} = this.props;
-        this.props.onAdd(data)
+        saveTarget(data.goodsId,e);
+        this.props.onAdd(data);
     }
     render(){
         let {data} = this.props;
@@ -467,13 +485,13 @@ export class StoreNotice extends React.Component {
     constructor(props) {
         super(props);
     }
-    
+
     render(){
         let {data={}} = this.props;
         let tagList = data.tagList||[];
         return(
             <div className="notice-box">
-                
+
                 <div className="notice-info">
                     <div className="start-price">
                         {`起送价：${data.startPrice}元`}
