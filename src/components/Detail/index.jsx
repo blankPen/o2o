@@ -470,7 +470,6 @@ export class StoreNotice extends React.Component {
     
     render(){
         let {data={}} = this.props;
-        console.log('data=',data);
         let tagList = data.tagList||[];
         return(
             <div className="notice-box">

@@ -1,0 +1,90 @@
+@import url('../../styles/theme.less');
+
+.preview-body{
+    width: 980px;
+    margin: auto;
+
+    .breadcrumb{
+        border-left: 5px solid #6b450a;
+        color: #444444;
+        padding-left: 13px;
+        font-size: 14px;
+
+        span{
+            font-weight: bold;
+        }
+    }
+
+    .preview-content{
+        margin-top: 20px;
+        .content-left{
+            float: left;
+            width: 370px;
+
+            .goods-info{
+                background-color: #fff;
+                padding: 15px;
+                padding-bottom: 0px;
+                border: 1px solid #ebebeb;
+                border-bottom: 0;
+                .info-item{
+                    zoom:1;
+                    font-size: 14px;
+                    color: #434343;
+                    padding: 17px 0px;
+                    border-bottom: 1px dashed #ebebeb;
+                    &:before,&:after{
+                        display: table; 
+                        line-height: 0; 
+                        content: "";
+                    }
+                    &:after{
+                        clear: both;
+                    }
+                    div{
+                        display: inline-block;
+                    }
+
+                    .left-info{
+                        float: left;
+                    }
+                    .right-price{
+                        float: right;
+                    }
+                }
+                .head{
+                    font-weight: 500;
+                }
+                .total{
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+            }
+
+            .info-footer{
+                background: #fff;
+                padding: 17px 0px;
+                margin-top: -1px;
+                border: 1px solid #ebebeb;
+                border-bottom: 0;
+                .operation{
+                    text-align: right;
+                    padding-right: 10px;
+                    color: #434343;
+                    .operation-label{
+                        margin-right: 10px;
+                        display: inline-block;
+                    }
+
+                    .ant-select-selection-selected-value{
+                        text-align: left;
+                    }
+                }
+            }
+
+            .footer-img{
+                margin-top: -1px;
+            }
+        }
+    }
+}
