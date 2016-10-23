@@ -51,7 +51,7 @@ export class PersonNav extends React.Component {
 						return(
 								<div key={i} className="menulist">
 									<span className="menutitle">{item.title}</span>
-									<ul>
+									<ul className="navUl">
 										{list}
 									</ul>
 								</div>

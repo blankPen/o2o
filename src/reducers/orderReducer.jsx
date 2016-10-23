@@ -6,13 +6,23 @@ import {
 export const stateName = 'orderState';
 export default handleActions({
     'order/orderList': (state, action) => {
-        return {
-            ...state,
-            list: [
-                ...state.list,
-                ...action.list
-            ]
+        if(action.pageNo=="1"){
+            return {
+                ...state,
+                list: [
+                    ...action.list
+                ]
+            }
+        }else{
+            return {
+                ...state,
+                list: [
+                    ...state.list,
+                    ...action.list
+                ]
+            }
         }
+        
     },
     'order/orderDetail': (state, action) => {
         return {
