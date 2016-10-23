@@ -19,6 +19,9 @@ import {
     getMemberDetail
 } from 'actions/SignPageAction';
 import {getRealPath} from 'common/Img'
+import {
+  Link
+} from 'react-router';
 
 function mapStateToProps({
     common
@@ -170,16 +173,55 @@ export class index extends React.Component {
                 <div className="userexinfo-form">
                     <form  method="post" action="/account/userexinfo">
                         <div className="userexinfo-form__section">
-                             姓名：{userInfo.memberTruename}    修改
+                            <div className="section">
+                                账号：{userInfo.memberName}
+                                会员账号：{userInfo.memberNameCode}
+                            </div>
+                            <div className="section">
+                                未支付订单：{userInfo.noPayOrder}
+                                已支付订单：{userInfo.finishOrder}
+                               {/* 已支付订单：{userInfo.noFilledOrder}*/}
+                            </div>
                         </div>
                         <div className="userexinfo-form__section">
-                             密码：******    修改
+                            <span className="userimg">
+                                 <i className="fa fa-user"></i>
+                            </span>
+                                姓名：{userInfo.memberTruename}
+                            <div className="btn"><Link to="/personal_center">修改</Link></div>
                         </div>
                         <div className="userexinfo-form__section">
-                             支付密码：******     修改
+                            <span className="userimg">
+                                 <i className="fa fa-key"></i>
+                            </span>
+                                密码：******
+                            <div className="btn"><Link to="/personal_center">修改</Link></div>
                         </div>
                         <div className="userexinfo-form__section">
-                             手机号：{userInfo.memberMobile}    修改
+                            <span className="userimg">
+                                 <i className="fa fa-key"></i>
+                            </span>
+                                支付密码：******
+                            <div className="btn"><Link to="/personal_center">修改</Link></div>
+                        </div>
+                        <div className="userexinfo-form__section">
+                            <span className="userimg">
+                                 <i className="fa fa-mobile-phone"></i>
+                            </span>
+                                手机号：{userInfo.memberMobile}
+                            <div className="btn"><Link to="/personal_center">修改</Link></div>
+                        </div>
+                        <div className="userexinfo-form__section">
+                            <span className="userimg">
+                                 <i className="fa fa-credit-card"></i>
+                            </span>
+                                我的钱包：{userInfo.availablePredeposit}
+                            <div className="btn"><Link to="/personal_center">充值</Link></div>
+                        </div>
+                        <div className="userexinfo-form__section">
+                                喜欢的店铺数：{userInfo.favStoreCount}
+                                喜欢的商品数：{userInfo.favGoodsCount}
+                                会员积分：{userInfo.memberConsumePoints}
                         </div>
                     </form>
                 </div>
