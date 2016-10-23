@@ -172,14 +172,14 @@ export class index extends React.Component {
                 </div>
                 <div className="userexinfo-form">
                     <form  method="post" action="/account/userexinfo">
-                        <div className="userexinfo-form__section">
-                            <div className="section">
-                                账号：{userInfo.memberName}
-                                会员账号：{userInfo.memberNameCode}
+                        <div className="userexinfo-form__header">
+                            <div className="section-div">
+                                <span>账号：{userInfo.memberName}</span>
+                                <span>会员账号：{userInfo.memberNameCode}</span>
                             </div>
-                            <div className="section">
-                                未支付订单：{userInfo.noPayOrder}
-                                已支付订单：{userInfo.finishOrder}
+                            <div className="section-div">
+                                <span>未支付订单：{userInfo.noPayOrder}</span>
+                                <span>已支付订单：{userInfo.finishOrder}</span>
                                {/* 已支付订单：{userInfo.noFilledOrder}*/}
                             </div>
                         </div>
@@ -218,10 +218,10 @@ export class index extends React.Component {
                                 我的钱包：{userInfo.availablePredeposit}
                             <div className="btn"><Link to="/personal_center">充值</Link></div>
                         </div>
-                        <div className="userexinfo-form__section">
-                                喜欢的店铺数：{userInfo.favStoreCount}
-                                喜欢的商品数：{userInfo.favGoodsCount}
-                                会员积分：{userInfo.memberConsumePoints}
+                        <div className="userexinfo-form__footer">
+                            <span>喜欢的店铺数：{userInfo.favStoreCount}</span>
+                            <span>喜欢的商品数：{userInfo.favGoodsCount}</span>
+                            <span>会员积分：{userInfo.memberConsumePoints}</span>
                         </div>
                     </form>
                 </div>
