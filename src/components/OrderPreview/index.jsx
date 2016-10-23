@@ -78,7 +78,67 @@ export class OrderPreview extends React.Component {
                             <Img src='./order-bot-bg1.png'></Img>
                         </div>
                     </div>
-                    <div className="content-right"></div>
+                    <div className="content-right">
+                        <div className="address-info">
+                            <div className="top-box">
+                                <div className="title">
+                                    <div className="address-label">请选择您的收餐地址</div>
+                                    <div className="add-address">
+                                        <i className="fa fa-plus"></i>
+                                        添加新地址
+                                    </div>
+                                </div>
+                                <div className="select-address">
+                                    <div className="address-box">
+                                        <div className="member-top">
+                                            <span className="member-name">陈经纬</span>
+                                            <span className="member-sex">先生：</span>
+                                            <span className="member-phone">
+                                                15074861036
+                                            </span>
+                                            <span className="operation-box">
+                                                <span>修改</span>
+                                                <span>删除</span>
+                                            </span>
+                                        </div>
+                                        <div className="address-bottom">
+                                            <span className="address-area">
+                                                美罗家园
+                                            </span>
+                                            <span className="address-line">
+                                                美安路美安苑19号楼1001室
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="message">
+                                    <span className="message-label">
+                                        给商家留言：
+                                    </span>
+                                    <div className="message-box">
+                                        <input 
+                                            className="message-input" 
+                                            type="text" 
+                                            placeholder="不要辣，多放盐等口味要求" />
+                                    </div>
+                                </div>
+                                <div className="pay-way">
+                                    <span className="pay-way-label">付款方式：</span>
+                                    <div className="choose-way">
+                                        <button className="after-pay btn btn-select" type='button'>
+                                            餐到付款
+                                        </button>
+                                        <button className="inline-pay btn" type='button'>
+                                            在线支付
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="order-info">
+
+                        </div>
+                    </div>
                 </div>
             </div>
         )

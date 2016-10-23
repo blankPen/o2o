@@ -86,5 +86,135 @@
                 margin-top: -1px;
             }
         }
+
+        .content-right{
+            float: right;
+            width: 590px;
+            background: #fff;
+
+            .address-info{
+                padding: 30px;
+
+                .top-box{
+                    .title{
+                        .address-label{
+                            font-size: 16px;
+                            font-weight: normal;
+                            color: #313131;
+                            display: inline-block;
+                        }
+                        .add-address{
+                            float: right;
+
+                            i{
+                                width: 20px;
+                                height: 20px;
+                                text-align: center;
+                                line-height: 18px;
+                                border: 2px solid #d2baba;
+                                border-radius: 10px;
+                                color: #d2baba;
+                                margin-right: 5px;
+                            }
+                        }
+                    }
+
+                    .select-address{
+                        padding: 0px 20px;
+                        background: #fafafa;
+                        margin-top: 15px;
+                        color: #b5b5b5;
+                        border: 1px solid #eeeeee;
+
+                        &:hover{
+                            .address-box{
+                                .member-top{
+                                    .operation-box{
+                                        display: inline-block;
+                                    }
+                                }
+                            }
+                        }
+                        .address-box{
+                            font-size: 14px;
+
+                            .member-top{
+                                border-bottom: 1px dashed #e5e5e5;
+                                height: 42px;
+                                line-height: 42px;
+
+                                .operation-box{
+                                    float: right;
+                                    display: none;
+                                    span{
+                                        margin-left: 10px;
+                                        color: #fa9700;
+                                        cursor: pointer; 
+                                    }
+
+                                }
+                            }
+                            .address-bottom{
+                                height: 42px;
+                                line-height: 42px;
+                            }
+                        }
+                    }
+
+                    .message{
+                        margin-top: 20px;
+                        color: #434343;
+
+                        .message-label{
+                            display: inline-block;
+                            width: 87px;
+                        }
+                        .message-box{
+                            display: inline-block;
+                            .message-input{
+                                width: 360px;
+                                height: 35px;
+                                padding: 8px 6px;
+                                padding-right: 0;
+                                outline: none;
+                                border:1px solid #eee;
+                                box-shadow: 0px 0px 1px 0px #ccc inset;
+                            }
+                        }
+                    }
+
+                    .pay-way{
+                        margin-top: 15px;
+                        color: #434343;
+
+                        .pay-way-label{
+                            width: 87px;
+                            display: inline-block;
+                        }
+
+                        .choose-way{
+                            display: inline-block;
+
+                            .btn{
+                                background: #ececec;
+                                width: 75px;
+                                height: 20px;
+                                border: 1px solid #e4e4e4;
+                                cursor: pointer;
+                                outline: none;
+                            }
+                            .btn-select{
+                                border: 1px solid #fa9700;
+                                color: #fa9700;
+                                background-color: #fff;
+                            }
+                            .inline-pay{
+                                margin-left: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
