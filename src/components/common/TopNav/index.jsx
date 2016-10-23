@@ -50,7 +50,7 @@ export class TopNav extends React.Component {
                             </div>
                             <div className="home">
                                 <i className="fa fa-home mr5"></i>
-                                美团网
+                                雷铭O2O网
                             </div>
                         </div>
                     </div>

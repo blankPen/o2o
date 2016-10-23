@@ -34,7 +34,7 @@ export class Footer extends React.Component {
                 <div className="copyright" >
                     <p className="one_line">
                         ©<span title="">2016</span>
-                        <a href="http://www.meituan.com/">美团网团购</a>
+                        <a href="http://www.meituan.com/">雷铭O2O网团购</a>
                              meituan.com
                         <a href="http://www.beianbeian.com/beianxinxi/283f39a9-4c00-427a-97ef-3c7a9e1e0af1.html" target="_blank">京ICP证070791号</a> |
                         <a href="http://www.miitbeian.gov.cn/" target="_blank">京ICP备10211739号</a> |

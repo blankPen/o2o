@@ -4,6 +4,7 @@ import {
     connect
 } from 'react-redux';
 import { Link } from 'react-router';
+import Img from 'common/Img';
 
 function mapStateToProps(state) {
     return {
@@ -24,18 +25,20 @@ export class Header extends React.Component {
         return (
             <header className="header">
                 <div className="header-content">
+                    {/*<div className="sign_logo">
+                        <a href='/#/'>
+                          <Img alt="雷铭O2O" src="logo.png" className="sign_img" />
+                        </a>
+                   </div>*/}
                     <Link to='/' className='left-logo'>
-                        <img 
-                            src="http://waimai.meituan.com/static/img/logos/normal-new2.png" 
-                            alt="商标"
-                        />
+                        <Img alt="雷铭O2O" src="logo.png" className="sign_img"/>
                     </Link>
                     <div className="menu">
                         <Link to='/' className='menu-item'>
                             首页
                         </Link>
                         <span>|</span>
-                        <Link to='/' className='menu-item'>
+                        <Link to='/order' className='menu-item'>
                             我的外卖
                         </Link>
                         <span>|</span>
