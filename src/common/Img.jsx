@@ -39,12 +39,15 @@ export default class Img extends React.Component {
         super(props);
     }
     hadleClick=(e)=>{
-        returnImg(getRealPath(this.props.src));
-        if (e && e.stopPropagation) {
-            e.stopPropagation();
-        } else {
-            window.event.cancelBubble = true;
+        if(this.props.isShow){
+            returnImg(getRealPath(this.props.src));
+            if (e && e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                window.event.cancelBubble = true;
+            }
         }
+        
     }
     render() {
         return (
