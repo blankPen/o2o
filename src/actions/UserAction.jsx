@@ -7,6 +7,22 @@
 'use strict';
 import ajax from 'common/Ajax';
 import { getPositionPoint } from 'actions/commonAction'
+
+//一般请求后台用方法
+export function theAjax(url,data,call,error){
+    return function(dispatch) {
+        ajax({
+            url: url,
+            data:data,
+            success: function(res){
+                call && call(res);
+            },
+            error:function(err){
+                error&&error(err);
+            }
+        })
+    }
+}
 //获取订单list
 export function getOrderList(params,call){
     return function(dispatch) {

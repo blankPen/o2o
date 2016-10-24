@@ -4,12 +4,12 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import { Collapse } from 'antd';
-import { Timeline, Icon } from 'antd';
+import { Timeline, Icon,message } from 'antd';
 import {
     getOrderList,
     getMenuList,
-    selectItem
+    selectItem,
+    theAjax
 } from 'actions/UserAction';
 import {
   Link
@@ -42,6 +42,7 @@ export class Order extends React.Component {
     }
     
     onLoad=(params, callback)=>{
+        console.log("params:",params);
         this.props.dispatch(getOrderList(params, (res) => {
             callback(res.totalRows > res.pageSize * res.pageNo);
         }));
@@ -57,17 +58,26 @@ export class Order extends React.Component {
                 );
         }
     }
+    refresh=()=>{
+        this.refs.listview.refresh();
+    }
     render(){
         let list = this.props.orderState&&this.props.orderState.list;
+        let memberId=this.props.userInfo&&this.props.userInfo.memberId;
         return(
             <span>
                 <ListView
+                    ref="listview"
                     dataSource={list}
                     params={this.state.searchData}
                     handleLoad={this.onLoad}
                     renderFooter={this.renderFooter}
                 >
-                    <MyOrder selectItem={this.props.orderState&&this.props.orderState.selectId} dispatch={this.props.dispatch}/>
+                    <MyOrder 
+                    memberId={memberId}
+                    refresh={this.refresh}
+                    selectItem={this.props.orderState&&this.props.orderState.selectId} 
+                    dispatch={this.props.dispatch}/>
                 </ListView>
                 {/*(list||[]).map((item,i)=>{
                     return(
@@ -117,6 +127,27 @@ export class MyOrder extends React.Component {
                 return "未知";
         }
     }
+    //删除订单
+    removeOrder=(e)=>{
+        if (e && e.stopPropagation) {
+            e.stopPropagation();
+        } else {
+            window.event.cancelBubble = true;
+        }
+        let data=this.props.data||{};
+        this.props.dispatch(theAjax("/rest/api/order/delOrder",{
+            orderId:data.orderId
+        },(res)=>{
+            if(res.result){
+                message.success(res.msg);
+                this.props.refresh();
+            }else{
+                message.error(res.msg);
+            }
+        },()=>{
+            message.error("服务器异常,请尝试刷新页面!");
+        }));
+    }
     render(){
         let data=this.props.data||{};
         let state=this.returnState(data.orderState);
@@ -138,7 +169,15 @@ export class MyOrder extends React.Component {
                         <div className="phone thedesc">订单状态：{state}</div>
                         <div className="time thedesc">下单时间：{day}</div>
                     </div>
-                    <div className="tousu"> <i className="fa  fa-edit" /> 投诉商家</div>
+                    <div className="orderdesc orderdesc-right">
+                        <div className="btnlist orderbtn">确认收货</div>
+                        {data.orderState==0||data.orderState==40?(
+                        <div className="btnlist remove" onClick={this.removeOrder}> 
+                            删除订单
+                        </div>
+                        ):null}
+                    </div>
+                    
                 </div>
                 {data.orderId==this.props.selectItem?(
                     <MenuList dispatch={this.props.dispatch} orderId={data.orderId} />

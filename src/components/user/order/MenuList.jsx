@@ -15,10 +15,16 @@ import {
 } from 'react-router';
 import ListView from 'components/common/ListView';
 import Img from 'common/Img';
+import History from 'common/History';
+
 const moment = require('moment');
-function mapStateToProps(state) {
+function mapStateToProps({
+    common,
+    userState
+}){
     return {
-        orderState:state.userState
+        userInfo: common.userInfo,
+        orderState:userState
     };
 }
 export class Timelines extends React.Component {
@@ -55,8 +61,17 @@ export class Timelines extends React.Component {
     		return false;
     	}
     }
+    tousu=()=>{
+        let userinfo=this.props.userInfo||{};
+        History.push({ pathname: "/feedback", state: {
+            memberId:userinfo.memberId,
+            phone:userinfo.memberMobile,
+            orderSn:this.props.detail&&this.props.detail.orderSn
+        } });
+    }
      render(){
      	let data=this.props.data||[];
+        let orderState=this.props.detail&&this.props.detail.orderState;
         let succ=(<Icon type="check-circle-o" style={{ fontSize: '26px','color':'green' }} />);
         let error=(<Icon type="clock-circle-o" style={{ fontSize: '26px','color':'red'  }} />);
      	
@@ -86,7 +101,11 @@ export class Timelines extends React.Component {
                 </Timeline>
                 <div className="tousu">
                     <div className="tousu-hezi">
-                        商家没有送餐？您可以致电客服 <span>010-65546961</span> 或 <span>投诉商家</span>。
+                        商家没有送餐？您可以致电客服 <span>010-65546961</span> 
+                        {orderState==21||orderState==30||orderState==40||orderState==60?(
+                            <div style={{"display":"inline-block"}}>或 <span onClick={this.tousu}>投诉商家</span>。</div>
+                            ):null}
+                        
                     </div>
                 </div>
             </span>
@@ -151,7 +170,10 @@ export class MenuList extends React.Component {
                     <div className="orderfooter">本订单由 {detail.shippingName} 提供专业高品质送餐服务</div>
                 </div>
                 <div className="rightTimeline">
-                    <Timelines data={detail.orderLogList}></Timelines>
+                    <Timelines 
+                    userInfo={this.props.userInfo} 
+                    detail={detail.detail} 
+                    data={detail.orderLogList}></Timelines>
                 </div>
 
             </div>
