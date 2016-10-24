@@ -3,7 +3,7 @@
  * @Date:   2016-10-24 18:11:42
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 21:45:10
+ * @Last Modified time: 2016-10-24 22:13:05
  */
 
 'use strict';
@@ -28,21 +28,21 @@ export default class Item extends React.Component {
             <Link to={`/detail/${data.storeId}`} className="search-item">
                 <div className="item-content">
                     <div className="title">{data.storeName}</div>
-                    <p className="price">
+                    <div className="price">
                         <span className="start-price">{data.startPrice}元起送</span>
                         <span className="send-price">
                             {data.expressFee}元配送费
                         </span>
-                    </p>
-                    <p className="rank">
+                    </div>
+                    <div className="rank">
                         <Rate value={data.storeScore} />
                         <span className="total">
                         月售{data.storeMonSales}单
                         </span>
-                    </p>
-                    <p className="send-distance">
+                    </div>
+                    <div className="send-distance">
                         距离我{data.distance}km
-                    </p>
+                    </div>
                 </div>
                 <div className="discount">
                     {data.tagList.map((tag,i)=>{

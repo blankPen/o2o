@@ -24,7 +24,8 @@ export class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchValue: ''
+            searchValue: '',
+            activeIndex: 0
         }
     }
     handleSearchChange=(e)=>{
@@ -33,6 +34,29 @@ export class Header extends React.Component {
             searchValue: value
         });
         this.props.dispatch(searchAutoComplete(value));
+    }
+    keyDown=(e)=>{
+        let result = this.props.autoCompleteData;
+        let index = this.state.activeIndex;
+        switch(e.keyCode){
+            case 13:
+                if(index == 0){
+                    return this.toSearch();
+                }else{
+                    this.handleSelect(result[index-1]);
+                }
+            case 38:
+                index--;
+                break;
+            case 40:
+                index++;
+                break;
+        }
+        index = index > result.length ? 0 : index;
+        index = index < 0 ? result.length : index;
+        this.setState({
+            activeIndex: index
+        });
     }
     handleSelect(data){
         this.setState({
@@ -56,8 +80,10 @@ export class Header extends React.Component {
     renderSearch(){
         let result = this.props.autoCompleteData;
         const children = result.map((item,i) => {
+            let className = 'search-input-item';
+            className+=(this.state.activeIndex==i+1)?' active':'';
             return (
-                <div className='search-input-item' key={i}
+                <div className={className} key={i}
                     onClick={this.handleSelect.bind(this,item)}>
                     <Img src={item.storeLogo} />
                     <div className='text'>
@@ -78,6 +104,7 @@ export class Header extends React.Component {
                             placeholder='搜索商家'
                             value={this.state.searchValue}
                             onChange={this.handleSearchChange}
+                            onKeyDown={this.keyDown}
                         />
                         {!!children.length &&
                             <div className="search-auto-complete">

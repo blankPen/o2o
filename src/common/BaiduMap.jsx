@@ -3,7 +3,7 @@
  * @Date:   2016-10-20 09:26:57
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-22 00:54:41
+ * @Last Modified time: 2016-10-24 22:25:33
  */
 
 'use strict';
@@ -123,7 +123,7 @@ BaiduMap.prototype = {
             if (e.toitem.index > -1) {
                 var _value = e.toitem.value;
                 value = _value.province + _value.city + _value.district + _value.street + _value.business;
-                onhighlight(value);
+                onhighlight && onhighlight(value);
             }
         });
         ac.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
@@ -228,7 +228,7 @@ BaiduMap.init = function(id, callback) {
         callback(maper);
         window.initBMap = undefined;
     }
-    if (BMap) {
+    if (window.BMap) {
         initBMap();
     } else {
         var script = document.createElement("script");
