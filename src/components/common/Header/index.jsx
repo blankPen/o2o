@@ -5,10 +5,14 @@ import {
 } from 'react-redux';
 import { Link } from 'react-router';
 import Img from 'common/Img';
+import History from 'common/History';
+import { AutoComplete } from 'antd';
+import { searchAutoComplete } from 'actions/SearchAction';
 
-function mapStateToProps(state) {
+const Option = AutoComplete.Option;
+function mapStateToProps({ searchState }) {
     return {
-
+        autoCompleteData: searchState.completeData
     };
 }
 
@@ -19,8 +23,71 @@ export class Header extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            searchValue: ''
+        }
     }
-
+    handleSearchChange=(e)=>{
+        let value = e.target.value;
+        this.setState({
+            searchValue: value
+        });
+        this.props.dispatch(searchAutoComplete(value));
+    }
+    handleSelect(data){
+        this.setState({
+            searchValue: ''
+        });
+        this.props.dispatch(searchAutoComplete(null));
+        History.push(`/detail/${data.storeId}`);
+    }
+    toSearch=()=>{
+        let value = this.state.searchValue;
+        History.push(`/search?keyword=${value}`);
+        this.setState({
+            searchValue: ''
+        });
+        this.props.dispatch(searchAutoComplete(null));
+    }
+    renderSearch(){
+        let result = this.props.autoCompleteData;
+        const children = result.map((item,i) => {
+            return (
+                <div className='search-input-item' key={i}
+                    onClick={this.handleSelect.bind(this,item)}>
+                    <Img src={item.storeLogo} />
+                    <div className='text'>
+                        {item.storeName}
+                        <span className="other">{item.distance}km</span>
+                    </div>
+                </div>
+            );
+        });
+        return (
+            <div className="search-bar">
+                <div className="search-content">
+                    <i className='fa fa-search search-icon'></i>
+                    <div className="search-wrap">
+                        <input
+                            type="text"
+                            className='search-input'
+                            placeholder='搜索商家，美食'
+                            value={this.state.searchValue}
+                            onChange={this.handleSearchChange}
+                        />
+                        {!!children.length &&
+                            <div className="search-auto-complete">
+                                {children}
+                            </div>
+                        }
+                    </div>
+                    <button type='button' className='search-btn' onClick={this.toSearch}>
+                        搜索
+                    </button>
+                </div>
+            </div>
+        );
+    }
     render() {
         return (
             <header className="header">
@@ -46,13 +113,7 @@ export class Header extends React.Component {
                             加盟合作
                         </Link>
                     </div>
-                    <div className="search-bar">
-                        <div className="search-content">
-                            <i className='fa fa-search search-icon'></i>
-                            <input className='search-input'type="text" placeholder='搜索商家，美食'/>
-                            <button type ='button' className='search-btn'>搜索</button>
-                        </div>
-                    </div>
+                    {this.renderSearch()}
                 </div>
             </header>
         );

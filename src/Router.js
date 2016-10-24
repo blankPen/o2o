@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 10:55:22
+ * @Last Modified time: 2016-10-24 15:43:31
  */
 
 'use strict';
@@ -36,7 +36,7 @@ import PersonNav from 'components/public/PersonNav/';
 import PersonalCenter from 'components/user/personalCenter/';
 import OrderPerview from 'components/OrderPreview/';
 import Feedback from 'components/feedback';
-
+import Search from 'components/Search/';
 
 import {
     getMemberDetail
@@ -67,6 +67,7 @@ export class index extends React.Component {
                             <IndexRoute component={Home} />
                             <Route path="/detail/:storeId" component={Detail}/>
                             <Route path="/order_preview" component={OrderPerview}/>
+                            <Route path="/search" component={Search}/>
                             <Route path="/user" component={PersonNav}>
                                 <Route path="/order" component={Order}/>
                                 <Route path="/account" component={Account}/>

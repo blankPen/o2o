@@ -3,7 +3,7 @@
  * @Date:   2016-10-22 12:37:44
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-23 21:16:06
+ * @Last Modified time: 2016-10-24 13:40:14
  */
 
 'use strict';
@@ -43,6 +43,7 @@ export default class CartBox extends React.Component {
                 complete: ()=>{
                     document.body.removeChild(target);
                     target = null;
+                    console.log(icon)
                 }
             }).init();
         }

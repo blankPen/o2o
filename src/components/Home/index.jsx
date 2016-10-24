@@ -298,9 +298,7 @@ export class Home extends React.Component {
                             dataSource={this.props.dataSource}
                             handleLoad={this.handleListLoad}
                             renderChildren={this.renderListItem}
-                        >
-                            <Item />
-                        </ListView>
+                        />
                     </div>
                 </div>
             </div>
