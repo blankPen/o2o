@@ -3,7 +3,7 @@
  * @Date:   2016-07-03 20:53:17
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-07-04 20:24:37
+ * @Last Modified time: 2016-10-24 09:54:48
  */
 
 'use strict';
@@ -37,7 +37,7 @@ function setStyle(obj, prop, val) {
             break;
         case 'opacity':
             // if($util.client.browser.ie){
-            //     obj.style.filter = 'alpha(' + prop + '=' + val*100 + ')'    
+            //     obj.style.filter = 'alpha(' + prop + '=' + val*100 + ')'
             // }else{
             obj.style[prop] = val;
             // }
@@ -55,7 +55,6 @@ var Animation = function(obj) {
     this.timmer = undefined;
     this.running = false;
     this.ms = [];
-    this.onEnd = function(){};
 }
 
 Animation.prototype = {
@@ -118,7 +117,7 @@ Animation.prototype = {
             clearInterval(this.timmer);
             // 清除掉timmer id
             this.timmer = undefined;
-            this.onEnd();
+            // this.onEnd();
         }
 
     },
