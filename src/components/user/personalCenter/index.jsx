@@ -111,7 +111,6 @@ export class index extends React.Component {
         })
     }
     resetState(userInfo) {
-        console.log(userInfo);
         let imgurl =  null;
         if (userInfo) {
             imgurl = userInfo.memberAvatar;
@@ -178,7 +177,7 @@ export class index extends React.Component {
                         <div className="userexinfo-form__header">
                             <div className="section-div-1">
                                 <span>账号：{userInfo.memberName}</span>
-                                <span>性别：{userInfo.memberSex}</span>
+                                <span>性别：{userInfo.memberSex===1?"男":"女"}</span>
                             </div>
                             {/*<div className="section-div-1">
                                 <span>生日：{userInfo.memberBirthday}</span>
@@ -220,9 +219,9 @@ export class index extends React.Component {
                             <Button className="btn"><Link to="/personal_center">充值</Link></Button>
                         </div>
                         <div className="userexinfo-form__footer">
-                            <span>喜欢的店铺数：{userInfo.favStoreCount}</span>
-                            <span>喜欢的商品数：{userInfo.favGoodsCount}</span>
-                            <span>会员积分：{userInfo.memberConsumePoints}</span>
+                            <span>收藏的店铺：{userInfo.favStoreCount}</span>
+                            <span>收藏的商品：{userInfo.favGoodsCount}</span>
+                           {/* <span>会员积分：{userInfo.memberConsumePoints}</span>*/}
                         </div>
                     </form>
                 </div>
