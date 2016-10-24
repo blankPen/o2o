@@ -3,14 +3,16 @@
  * @Date:   2016-10-20 17:58:42
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 13:46:38
+ * @Last Modified time: 2016-10-24 13:59:14
  */
 
 'use strict';
 import './index.less';
 import React from 'react';
-import cityData from  './city';
-import { AutoComplete } from 'antd';
+import cityData from './city';
+import {
+    AutoComplete
+} from 'antd';
 
 const Option = AutoComplete.Option;
 const letter = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -23,27 +25,29 @@ export default class CitySelector extends React.Component {
     constructor(props) {
         super(props);
     }
-    handleChange=(value)=>{
+    handleChange = (value) => {
         this.props.onChange(value);
     }
-    renderItems(data=[]){
-        return data.map((item)=><li key={item.city_id} >{item.real}</li>);
+    renderItems(data = []) {
+        return data.map((item) => <li key={item.city_id} >{item.real}</li>);
     }
-    renderFields(){
+    renderFields() {
         this.searchArray = [];
-        let fields = cityData.map((items,i)=>{
-           return (
-                <div key={i} className="city-field">
-                    <span className="letter">{letter[i]}</span>
-                    <ul>
-                        {items.map((item)=>{
-                            this.searchArray.push(item.real);
-                            return <li key={item.city_id}
-                                onClick={this.handleChange.bind(this,item.real)}>{item.real}</li>
-                        })}
-                    </ul>
-                </div>
-           )
+        let fields = cityData.map((items, i) => {
+            if (items.length) {
+                return (
+                    <div key={i} className="city-field">
+                        <span className="letter">{letter[i]}</span>
+                        <ul>
+                            {items.map((item)=>{
+                                this.searchArray.push(item.real);
+                                return <li key={item.city_id}
+                                    onClick={this.handleChange.bind(this,item.real)}>{item.real}</li>
+                            })}
+                        </ul>
+                    </div>
+                )
+            }
         });
 
         return fields;

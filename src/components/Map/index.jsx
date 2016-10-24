@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 21:02:26
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-22 00:14:30
+ * @Last Modified time: 2016-10-24 13:57:16
  */
 
 'use strict';
@@ -18,6 +18,7 @@ import History from 'common/History';
 import BaiduMap from 'common/BaiduMap';
 import * as DomUtils from 'common/utils/dom';
 import { savePosition,getHistoryPositions } from 'actions/commonAction';
+import UserBox from 'components/common/UserBox';
 import CitySelector from 'components/Map/CitySelector/'
 
 const LETTER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -85,7 +86,7 @@ export class Maper extends React.Component {
              //建立一个自动完成的对象
             maper.createAutocomplete({
                 id: "search-input",
-                onhighlight: this.handleSearchKeyChange,
+                // onhighlight: this.handleSearchKeyChange,
                 onconfirm: (value)=>{
                     this.handleSearchKeyChange(value);
                     this.searchMap(value);
@@ -96,9 +97,9 @@ export class Maper extends React.Component {
     componentWillUnmount() {
         this.event && this.event.remove();
     }
-    savePosition(){
+    savePosition(data){
         let { searchResult,activeResultIndex } = this.state;
-        let data = searchResult[activeResultIndex];
+        data = data || searchResult[activeResultIndex];
         if(data){
             this.props.dispatch(savePosition(data));
             History.push('/');
@@ -139,7 +140,6 @@ export class Maper extends React.Component {
                     res.push(results.getPoi(i));
                 }
             }
-            console.log(1)
             this.setState({
                 searchResult: res,
                 activeResult: 0,
@@ -199,7 +199,9 @@ export class Maper extends React.Component {
                     <div className="selector-content">
                         { hp.length?
                             hp.map((item,i)=>
-                                <div key={i} className="history-item">{item.title}</div>):
+                                <div key={i} className="history-item" onClick={this.savePosition.bind(this,item)}>
+                                    {item.title}
+                                </div>):
                             <div className="history-item">没有历史地址</div>
                         }
                     </div>}
@@ -234,9 +236,7 @@ export class Maper extends React.Component {
                     <div className="container">
                         <Img className='logo' src='http://waimai.meituan.com/static/img/logos/small_4.png' />
                         <span className="sign-box">
-                            <Link to="/register" className='btn-regist'>注册</Link>
-                            <i className="separator"></i>
-                            <Link to="/login" className='btn-login'>登录</Link>
+                            <UserBox/>
                         </span>
                     </div>
                 </div>

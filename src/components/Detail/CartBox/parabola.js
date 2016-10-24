@@ -12,7 +12,7 @@ var Parabola = function(element, target, options) {
     */
 
     var defaults = {
-        speed: 166.67, // 每帧移动的像素大小，每帧（对于大部分显示屏）大约16~17毫秒
+        speed: 300, // 每帧移动的像素大小，每帧（对于大部分显示屏）大约16~17毫秒
         curvature: 0.001,  // 实际指焦点到准线的距离，你可以抽象成曲率，这里模拟扔物体的抛物线，因此是开口向下的
         progress: function() {},
         complete: function() {}
