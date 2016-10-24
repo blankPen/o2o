@@ -17,6 +17,8 @@ import {
 import ListView from 'components/common/ListView';
 import Img from 'common/Img';
 import MenuList from './MenuList.jsx';
+import History from 'common/History';
+
 const moment = require('moment');
 function mapStateToProps({
     common,
@@ -127,6 +129,16 @@ export class MyOrder extends React.Component {
                 return "未知";
         }
     }
+    goDetail=(e)=>{
+        let data=this.props.data||{};
+        
+        if (e && e.stopPropagation) {
+            e.stopPropagation();
+        } else {
+            window.event.cancelBubble = true;
+        }
+        History.push("/detail/"+data.storeId);
+    }
     //删除订单
     removeOrder=(e)=>{
         if (e && e.stopPropagation) {
@@ -188,10 +200,10 @@ export class MyOrder extends React.Component {
             <div className="orderDescs">
                 <div className="theOrder" onClick={this.zk.bind(null,data.orderId)}>
                     <div className="headimg">
-                        <Img src={data.storeLogo}/>
+                        <Img isShow={true} src={data.storeLogo}/>
                     </div>
                     <div className="orderdesc">
-                        <div className="title">
+                        <div className="title" onClick={this.goDetail}>
                             <span className="text">{data.storeName}</span>
                             <span className="right"><i className="fa fa-arrow-right" /></span>
                         </div>

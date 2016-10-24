@@ -50,8 +50,10 @@ export default class Img extends React.Component {
         
     }
     render() {
+        let props={...this.props};
+        delete props.isShow;
         return (
-            <img {...this.props} src={getRealPath(this.props.src)} onClick={this.hadleClick} />
+            <img {...props} src={getRealPath(this.props.src)} onClick={this.hadleClick} />
         );
     }
 }
