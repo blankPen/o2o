@@ -105,16 +105,19 @@ export class MenuList extends React.Component {
      render(){
         let detail=this.props.orderState.detail||{};
         let address=detail.address||{};
+        
         return(
             <div className="yincang-active yincang clearfix ">
                 <div className="lfetlist">
                     <div className="head">菜品共 <span>{detail.orderGoodsList&&detail.orderGoodsList.length||0}</span> 份，总价 <span>¥{detail.orderAmount}</span> </div>
                     <ul className="caidan">
                     {(detail.orderGoodsList||[]).map((item,i)=>{
+                        let price=parseFloat(item.goodsPrice)/parseInt(item.goodsNum);
+                        price=price.toFixed(2);
                     	return (
                     		<li key={i}>
 	                            <span className="name">{item.goodsName}</span>
-	                            <span className="pirce">¥{item.goodsPrice}*{item.goodsNum}</span>
+	                            <span className="pirce">¥{price}*{item.goodsNum}</span>
 	                        </li>
                     		);
                     })}
