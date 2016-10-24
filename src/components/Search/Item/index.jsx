@@ -3,12 +3,13 @@
  * @Date:   2016-10-24 18:11:42
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 21:25:18
+ * @Last Modified time: 2016-10-24 21:45:10
  */
 
 'use strict';
 import './index.less';
 import React from 'react';
+import { Link } from 'react-router';
 import Img from 'common/Img';
 import { Rate } from 'antd';
 
@@ -24,7 +25,7 @@ export default class Item extends React.Component {
     render() {
         const data = this.props.data;
         return (
-            <div className="search-item">
+            <Link to={`/detail/${data.storeId}`} className="search-item">
                 <div className="item-content">
                     <div className="title">{data.storeName}</div>
                     <p className="price">
@@ -48,7 +49,7 @@ export default class Item extends React.Component {
                         return <Img key={tag.tagKey} className='icon' src={tag.tagIcon} />;
                     })}
                 </div>
-            </div>
+            </Link>
         );
     }
 }

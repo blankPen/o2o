@@ -254,7 +254,7 @@ export class Detail extends React.Component {
 
                              </TabPane>
                              <TabPane tab="评价" key="2">
-                                <RatedBox 
+                                <RatedBox
                                     storeId={this.props.params.storeId}
                                     dispatch={this.props.dispatch}
                                     evaluatList={this.props.evaluatList}
@@ -342,7 +342,7 @@ export class RatedBox extends React.Component {
             <div className="rated-box">
                 <div className="rate-filter">
                     <div className="filter-item">
-                        <RadioGroup onChange={this.filterChange} 
+                        <RadioGroup onChange={this.filterChange}
                                     value={this.state.rateSearchData.gevalType}
                         >
                             <Radio key="a" value={0}>
@@ -397,7 +397,7 @@ export class RateItem extends React.Component {
                     <span className="feel">好评</span>
                     <span className="rate-time">
                         评价时间
-                        <span>{moment(data.gevalAddTime)}</span>
+                        <span>{moment(data.gevalAddTime).format('YYYY-MM-DD')}</span>
                     </span>
                 </div>
                 <div className="user-reply">

@@ -6,10 +6,10 @@ import {
 import { Link } from 'react-router';
 import Img from 'common/Img';
 import History from 'common/History';
-import { AutoComplete } from 'antd';
+import { message } from 'antd';
 import { searchAutoComplete } from 'actions/SearchAction';
 
-const Option = AutoComplete.Option;
+
 function mapStateToProps({ searchState }) {
     return {
         autoCompleteData: searchState.completeData
@@ -43,11 +43,15 @@ export class Header extends React.Component {
     }
     toSearch=()=>{
         let value = this.state.searchValue;
-        History.push(`/search?keyword=${value}`);
-        this.setState({
-            searchValue: ''
-        });
-        this.props.dispatch(searchAutoComplete(null));
+        if(value){
+            History.push(`/search?keyword=${value}`);
+            this.setState({
+                searchValue: ''
+            });
+            this.props.dispatch(searchAutoComplete(null));
+        }else{
+            message.warn('请输入商家名称');
+        }
     }
     renderSearch(){
         let result = this.props.autoCompleteData;
@@ -71,7 +75,7 @@ export class Header extends React.Component {
                         <input
                             type="text"
                             className='search-input'
-                            placeholder='搜索商家，美食'
+                            placeholder='搜索商家'
                             value={this.state.searchValue}
                             onChange={this.handleSearchChange}
                         />

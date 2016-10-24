@@ -16,6 +16,10 @@ import {
 } from 'react-router-redux';
 
 window._ = require('lodash/core');
-const history = syncHistoryWithStore(History, store)
+const history = syncHistoryWithStore(History, store);
+
+import moment from 'moment';
+moment.locale('zh-cn');
+
 // Render the main component into the dom
 ReactDOM.render(<App store={store} history ={history} />, document.getElementById('app'));
