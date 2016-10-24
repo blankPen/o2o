@@ -23,10 +23,11 @@ export default class Dialog extends React.Component {
     render() {
         return (
             <Modal
-                title='收货地址'
+                title={this.props.title}
                 className={'dialog'+(this.props.className || '')}
                 visible={this.props.visible}
                 onCancel={this.props.onCancel}
+                onOk={this.props.onOk}
                 footer={undefined}
             >
                 <div className="dialog-body">

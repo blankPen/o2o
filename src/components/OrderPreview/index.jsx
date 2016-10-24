@@ -48,11 +48,12 @@ export class OrderPreview extends React.Component {
 
     renderAddressDialog=()=>{
         return(
-            <Dialog 
+            <Dialog
                 visible={this.state.show_address_dialog}
                 onCancel={this.toggleAddressDialog}
+                title="收货地址"
             >
-                this is address dialog     
+                this is address dialog
             </Dialog>
         )
     }
@@ -62,7 +63,7 @@ export class OrderPreview extends React.Component {
             show_address_dialog:!this.state.show_address_dialog
         });
     }
-    
+
     render(){
         let goodsList = this.props.goodsList ||[];
         let extraFeeList = this.props.extraFeeList ||[];
@@ -70,7 +71,7 @@ export class OrderPreview extends React.Component {
         let address = this.props.address||{};
         return(
             <div className="preview-body">
-                <div className="breadcrumb">{store.storeName} > 
+                <div className="breadcrumb">{store.storeName} >
                     <span> 确认购买</span>
                 </div>
                 {this.renderAddressDialog()}
@@ -145,7 +146,7 @@ export class OrderPreview extends React.Component {
                                                 {address.mobPhone}
                                             </span>
                                             <span className="operation-box">
-                                                <span 
+                                                <span
                                                     onClick={()=>this.toggleAddressDialog(address)}
                                                 >
                                                     修改
@@ -168,9 +169,9 @@ export class OrderPreview extends React.Component {
                                         给商家留言：
                                     </span>
                                     <div className="message-box">
-                                        <input 
-                                            className="message-input" 
-                                            type="text" 
+                                        <input
+                                            className="message-input"
+                                            type="text"
                                             placeholder="不要辣，多放盐等口味要求" />
                                     </div>
                                 </div>
@@ -179,9 +180,9 @@ export class OrderPreview extends React.Component {
                                         发票信息：
                                     </span>
                                     <div className="message-box">
-                                        <input 
-                                            className="message-input" 
-                                            type="text" 
+                                        <input
+                                            className="message-input"
+                                            type="text"
                                         />
                                     </div>
                                 </div>
