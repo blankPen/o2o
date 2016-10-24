@@ -2,8 +2,8 @@
  * @Author: pengzhen
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
- * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-22 15:01:23
+ * @Last Modified by:   chenjingwei
+ * @Last Modified time: 2016-10-23 13:00:17
  */
 
 'use strict';
@@ -32,6 +32,8 @@ import Order from 'components/user/order/';
 import Collect from 'components/user/collect/';
 import PersonNav from 'components/public/PersonNav/';
 import PersonalCenter from 'components/user/personalCenter/';
+import OrderPerview from 'components/OrderPreview/';
+
 
 import {
     getMemberDetail
@@ -81,6 +83,7 @@ export class index extends React.Component {
                     <Route path='/' component={PublicMain}>
                         <IndexRoute component={Home} />
                         <Route path="/detail/:storeId" component={Detail}/>
+                        <Route path="/order_preview" component={OrderPerview}/>
                         <Route path="/user" component={PersonNav}>
                             <Route path="/order" component={Order}/>
                             <Route path="/account" component={Account}/>

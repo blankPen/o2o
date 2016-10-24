@@ -74,7 +74,6 @@ export function getClassAndGoodsList(params,call) {
  */
 
 export function getStoreEvaluatList(params,call) {
-    console.log(11111);
     return function(dispatch) {
         ajax({
             url: 'rest/api/order/storeEvaluatePage',

@@ -3,7 +3,7 @@
  * @Date:   2016-10-22 12:37:44
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-22 23:40:48
+ * @Last Modified time: 2016-10-23 21:16:06
  */
 
 'use strict';
@@ -12,15 +12,12 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
+import * as DomUtils from 'common/utils/dom';
 import NumInput from 'components/common/NumInput';
+import Parabola from './parabola.js';
 
-function mapStateToProps(state) {
-    return {
-
-    };
-}
-
-export class CartBox extends React.Component {
+let mousePosition = null;
+export default class CartBox extends React.Component {
     static propTypes = {
         onChange: React.PropTypes.func,
         startPrice: React.PropTypes.number
@@ -35,6 +32,21 @@ export class CartBox extends React.Component {
             open: true,
         };
     }
+    triggerAnim(position){
+        if(position){
+            let { x,y } = position;
+            let icon = this.refs.icon;
+            let target = `<div class="cart-anim-point" style="top: ${y}px;left: ${x}px;"></div>`;
+            target = DomUtils.createElement(target);
+            document.body.appendChild(target);
+            Parabola(target,icon,{
+                complete: ()=>{
+                    document.body.removeChild(target);
+                    target = null;
+                }
+            }).init();
+        }
+    }
     toggleOpen=()=>{
         this.setState({
             open: !this.state.open
@@ -45,12 +57,17 @@ export class CartBox extends React.Component {
     }
     changeItem(id,num){
         const data = {...this.props.data};
+        let isAdd = false;
         if(num){
+            if(num > data[id].num){
+                this.triggerAnim();
+                isAdd = true;
+            }
             data[id].num = num;
         }else{
             delete data[id];
         }
-        this.props.onChange(data);
+        this.props.onChange(data,isAdd && id);
     }
     parseData(){
         const data = this.props.data || {};
@@ -108,7 +125,7 @@ export class CartBox extends React.Component {
                     </div>
                 </div>
                 <div className="btn-box">
-                    <div className="icon" onClick={!!totalNum && this.toggleOpen}>
+                    <div ref='icon' className="icon" onClick={!!totalNum && this.toggleOpen}>
                         <i className="fa fa-shopping-cart"></i>
                     </div>
                     {!open && !!totalNum &&
@@ -124,8 +141,3 @@ export class CartBox extends React.Component {
         );
     }
 }
-
-export default connect(
-    mapStateToProps,
-    // Implement map dispatch to props
-)(CartBox)

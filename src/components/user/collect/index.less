@@ -1,35 +1,111 @@
 
-//我的账号
-.account{
-	width: 100%;
-	.desc{
-		font-size: 14px;
-		color:#313131;
-		div{
+.collectlist{
+	.collectul{
+		
+		.collectli{
+			float: left;
+			width: 374px;
+		    height: 152px;
+		    background-color: #ffffff;
+		    border: 1px solid #ebebeb;
+			padding: 14px 14px 0 14px;
+		}
+	}
+
+	.collect{
+		width: 100%;
+		height: 100%;
+		// display: flex;
+		.collect-top{
+			width: 100%;
+			height: 104px;
+			padding-left: 134px;
+			position: relative;
+		}
+		.image{
+			width: 118px;
+    		max-height: 88px;
 			display: inline-block;
-			margin-left:5px;
+			position: absolute;
+			left:0;
+			top:0;
+    		img{
+    			border: 1px solid #ebebeb;
+    			width: 100%;
+
+    		}
 		}
-		.userimg{
-			display: inline-block;
-			width: 38px;
-			height: 38px;
-			border-radius: 100%;
-			border:1px solid #e5e5e5;
-			color:#e5e5e5;
-			line-height: 38px;
-			text-align: center;
-			font-size: 18px;
+		.title{
+			float: left;
+			width: 100%;
+			font-size: 16px;
+    		color: #313131;
 		}
-		.theys{
-			width: 210px;
+		.starAndNum{
+			float: left;
+			width: 100%;
+			margin-top:10px;
+			margin-bottom: 8px;
+			.star{
+				float: left;
+			}
+			.num{
+				float: right;
+				color:#fa9700;
+			}
 		}
-		.btn{
-			background: #ffd705;
-			width: 114px;
+		.sendDesc{
+			float: left;
+			width: 100%;
+			color: #898989;
+			.theys{
+				float: left;
+			}
+			.peisong{
+				margin-left: 15px;
+			}
+			.thetime{
+				float: right;
+				i{
+					margin-right: 8px;
+				}
+			}
+		}
+		.collect-bottom{
+			width: 100%;
+			float: left;
 			height: 34px;
 			line-height: 34px;
-			text-align: center;
-			cursor: pointer;
+			border-top: 1px solid #ebebeb;
+			.iconlist{
+				float: left;
+
+			}
+			.removecollect{
+				float: right;
+				margin-right: 15px;
+				i{
+					margin-right: 5px;
+				}
+				&:hover{
+					color:red;
+				}
+			}
+			.collectnum{
+				float: right;
+				position: relative;
+				padding-right: 15px;
+				margin-right: 15px;
+				span{
+					color:#fa9700;
+				}
+				&:after{
+					content: "|";
+					position: absolute;
+					right: 0;
+					top:-1px;
+				}
+			}
 		}
 	}
 }

@@ -34,6 +34,7 @@ export class Order extends React.Component {
     componentDidMount(){
         // this.props.dispatch(getOrderList(""));
     }
+    
     onLoad=(params, callback)=>{
         this.props.dispatch(getOrderList(params, (res) => {
             callback(res.totalRows > res.pageSize * res.pageNo);

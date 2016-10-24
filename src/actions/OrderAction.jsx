@@ -18,7 +18,8 @@ export function getOrderList(params,call){
             success: function(res){
                 dispatch({
                     type: 'order/orderList',
-                    list: res.data
+                    list: res.data,
+                    pageNo:params.pageNo
                 })
                 call && call(res);
             }
