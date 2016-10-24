@@ -2,5 +2,53 @@
 * @Author: pengzhen
 * @Date:   2016-10-24 18:11:47
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-24 18:11:49
+* @Last Modified time: 2016-10-24 21:36:33
 */
+
+@import url('../../../styles/theme.less');
+.search-item {
+    width: 24%;
+    color: #333;
+    float: left;
+    border: 1px solid #ebebeb;
+    background: #fff;
+    cursor: pointer;
+    &:hover{
+        border-color: #ffd705;
+        background-color: #fffdf0;
+        .discount{
+            background-color: #fff5f4;
+        }
+    }
+    .item-content {
+        padding: 15px 20px 0 20px;
+        .title {
+            height: 16px;
+            line-height: 16px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        p{
+            height: 12px;
+            line-height: 12px;
+            margin-bottom: 8px;
+            color: #898989;
+        }
+        .rank {
+            .total{
+                color: @active-color;
+            }
+        }
+    }
+    .discount {
+        padding-left: 20px;
+        height: 30px;
+        background-color: #f5f5f5;
+        overflow: hidden;
+        .icon {
+            width: 17px;
+            height: 17px;
+            margin: 8px 5px 0 0;
+        }
+    }
+}

@@ -3,7 +3,7 @@
 * @Date:   2016-10-24 14:52:37
 * @Desc: this_is_desc
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-24 17:21:38
+* @Last Modified time: 2016-10-24 21:41:05
 */
 
 'use strict';
@@ -45,7 +45,7 @@ export function searchStore(params,call){
             url: '/rest/api/store/list',
             data: {
                 ...getPositionPoint(),
-                params,
+                ...params,
             },
             success: function(res){
                 if(res.result == 1){
