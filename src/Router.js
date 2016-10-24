@@ -35,6 +35,7 @@ import Collect from 'components/user/collect/';
 import PersonNav from 'components/public/PersonNav/';
 import PersonalCenter from 'components/user/personalCenter/';
 import OrderPerview from 'components/OrderPreview/';
+import Feedback from 'components/feedback';
 
 
 import {
@@ -72,6 +73,7 @@ export class index extends React.Component {
                                 <Route path="/collect" component={Collect}/>
                                 <Route path="/personal_center" component={PersonalCenter}/>
                             </Route>
+                            <Route path="/feedback" component={Feedback}/>
                         </Route>
                         <Route path='/map' component={Maper} />
                         <Route path="/login" component={Login}/>
