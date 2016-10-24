@@ -6,13 +6,13 @@
 
 'use strict';
 import ajax from 'common/Ajax';
-
+import { getPositionPoint } from 'actions/commonAction'
+//获取订单list
 export function getOrderList(params,call){
     return function(dispatch) {
         ajax({
             url: '/rest/api/order/orderlist',
             data: {
-                memberId:"a114f24da925405cade144695e592df8",
                 ...params,
             },
             success: function(res){
@@ -26,7 +26,7 @@ export function getOrderList(params,call){
         })
     }
 }
-
+//获取订单详情
 export function getMenuList(id,call){
     return function(dispatch) {
         ajax({
@@ -44,12 +44,48 @@ export function getMenuList(id,call){
         })
     }
 }
-
+//设置选择某个订单展开
 export function selectItem(id){
     return function(dispatch) {
         dispatch({
             type: 'order/selectItem',
             id: id
+        })
+    }
+}
+//我的收藏请求
+//获取订单详情
+export function getCollectList(id,call){
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/store/storeFavoritesList',
+            data: {
+                ...getPositionPoint(),
+                memberId:id
+            },
+            success: function(res){
+                dispatch({
+                    type: 'store/storeFavoritesList',
+                    list: res.data||{}
+                })
+                call && call(res);
+            }
+        })
+    }
+}
+//删除收藏
+export function removeCollect(storeid,id,call){
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/store/storecollection',
+            data: {
+                storeId:storeid,
+                status:0,
+                memberId:id
+            },
+            success: function(res){
+                call && call(res);
+            }
         })
     }
 }

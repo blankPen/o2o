@@ -10,7 +10,7 @@ import {
     getOrderList,
     getMenuList,
     selectItem
-} from 'actions/OrderAction';
+} from 'actions/UserAction';
 import {
   Link
 } from 'react-router';
@@ -18,9 +18,13 @@ import ListView from 'components/common/ListView';
 import Img from 'common/Img';
 import MenuList from './MenuList.jsx';
 const moment = require('moment');
-function mapStateToProps(state) {
+function mapStateToProps({
+    common,
+    userState
+}){
     return {
-        orderState:state.orderState
+        userInfo: common.userInfo,
+        orderState:userState
     };
 }
 //订单组件
@@ -28,7 +32,9 @@ export class Order extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            searchData:{}
+            searchData:{
+                memberId:props.userInfo&&props.userInfo.memberId
+            }
         }
     }
     componentDidMount(){

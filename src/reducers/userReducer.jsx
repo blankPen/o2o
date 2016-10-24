@@ -3,7 +3,7 @@ import {
     handleActions
 }  from 'redux-actions';
 
-export const stateName = 'orderState';
+export const stateName = 'userState';
 export default handleActions({
     'order/orderList': (state, action) => {
         if(action.pageNo=="1"){
@@ -35,9 +35,16 @@ export default handleActions({
             ...state,
             selectId: action.id
         }
+    },
+    'store/storeFavoritesList': (state, action) => {
+        return {
+            ...state,
+            collectList: action.list
+        }
     }
 }, {
     list : [],
     detail : {},
-    selectId: ""
+    selectId: "",
+    collectList:[]
 });

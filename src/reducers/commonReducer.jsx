@@ -33,24 +33,19 @@ export default handleActions({
     },
     'login/success':(state, action) => {
         Cookie.set('user_info', action.cookieInfo, { expires: 7 });//cookie存储用户名密码
-        console.log("cookie存储用户名密码");
         sessionStorage.setItem('user_id',action.info.memberId);//session存储用户id
-        console.log("session存储用户id");
         return {
             ...state,
             userInfo: action.info
         }
     },
     'get/userInfo':(state, action) => {
-        console.log("获取用户信息为：");
-        console.log(action.info);
         return {
             ...state,
             userInfo: action.info
         }
     },
     'logout/success' :(state, action)=>{
-        console.log("退出登录");
         let user_info = Cookie.getJSON('user_info') || "";
         let user_id = sessionStorage.getItem("user_id") || "";
         if (user_id) {

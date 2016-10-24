@@ -9,7 +9,7 @@ import { Timeline, Icon } from 'antd';
 import {
     getOrderList,
     getMenuList
-} from 'actions/OrderAction';
+} from 'actions/UserAction';
 import {
   Link
 } from 'react-router';
@@ -18,7 +18,7 @@ import Img from 'common/Img';
 const moment = require('moment');
 function mapStateToProps(state) {
     return {
-        orderState:state.orderState
+        orderState:state.userState
     };
 }
 export class Timelines extends React.Component {
@@ -143,7 +143,7 @@ export class MenuList extends React.Component {
                         <li>地址：{address.address+"("+address.areaInfo+")"}</li>
                         <li>姓名：{address.trueName}({address.sex=="1"?"先生":"女士"})</li>
                         <li>电话：{address.mobPhone}</li>
-                        <li>备注：（无）</li>
+                        {detail.orderMessage?(<li>备注：（{detail.orderMessage}）</li>):null}
                     </ul>
                     <div className="orderfooter">本订单由 {detail.shippingName} 提供专业高品质送餐服务</div>
                 </div>
