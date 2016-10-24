@@ -166,7 +166,7 @@ export class index extends React.Component {
                           </Button>
                         </Upload>
                         <div onClick={this.handleImg} id="openImg"></div>
-                        <Modal title="个人头像" className="open-image-modal" visible={this.state.priviewVisible} footer={null} onCancel={this.handleCancel}>
+                        <Modal  className="open-image-modal" visible={this.state.priviewVisible} footer={null} onCancel={this.handleCancel}>
                             <div className="defauleImg">{this.state.priviewImage!=undefined?<Img alt="example" src={this.state.priviewImage} className="example_img" />:<i className="anticon anticon-picture"></i>}</div>
                         </Modal>
                     </div>
