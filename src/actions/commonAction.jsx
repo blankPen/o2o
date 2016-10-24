@@ -3,13 +3,14 @@
  * @Date:   2016-10-17 21:48:10
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 17:31:30
+ * @Last Modified time: 2016-10-24 11:22:16
  */
 
 'use strict';
 import ajax from 'common/Ajax';
 import store from 'stores';
 import Cookie from 'js-cookie';
+import storejs from 'storejs';
 
 // 坐标相关
 export function savePosition(position) {
@@ -25,7 +26,7 @@ export function savePosition(position) {
     if(hp.length >= 5){
         hp = hp.slice(0,5);
     }
-    Cookie.set('history-position',hp)
+    storejs.set('history-position',hp);
     return {
         type: 'set/position',
         position
@@ -42,6 +43,6 @@ export function getPositionPoint(){
     };
 }
 export function getHistoryPositions(){
-    return Cookie.getJSON('history-position') || [];
+    return storejs.get('history-position') || [];
 }
 

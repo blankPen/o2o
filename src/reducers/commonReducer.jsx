@@ -3,7 +3,7 @@
 * @Date:   2016-10-19 17:18:52
 * @Desc: this_is_desc
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-21 17:12:24
+* @Last Modified time: 2016-10-24 11:22:37
 */
 
 'use strict';
@@ -11,9 +11,11 @@ import {
     handleActions
 }  from 'redux-actions';
 import Cookie from 'js-cookie';
+import storejs from 'storejs';
 
-let hp = Cookie.getJSON('history-position') || [];
+let hp = storejs.get('history-position') || [];
 const DEFAULT_POSITION = hp.length ? hp[0] : {
+    isUndefined: true,
     title: '北京市',
     city: '北京市',
     point: {

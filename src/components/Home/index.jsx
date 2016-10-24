@@ -105,7 +105,7 @@ export class Home extends React.Component {
         this.state = {
             type: ['0'], // 全部分类
             special: [],
-            discount: '',
+            discount: undefined,
             order: 'comprehensive',
             range: 'ALL',
             searchParams: {
@@ -136,6 +136,9 @@ export class Home extends React.Component {
         }));
     }
     handleSelect=(key,value)=>{
+        if(key == 'discount' && this.state[key] == value){
+            value = undefined;
+        }
         this.setState({
             [key]: value
         });
