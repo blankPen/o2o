@@ -122,6 +122,17 @@ export class OrderPreview extends React.Component {
                                             placeholder="不要辣，多放盐等口味要求" />
                                     </div>
                                 </div>
+                                <div className="message">
+                                    <span className="message-label">
+                                        发票信息：
+                                    </span>
+                                    <div className="message-box">
+                                        <input 
+                                            className="message-input" 
+                                            type="text" 
+                                        />
+                                    </div>
+                                </div>
                                 <div className="pay-way">
                                     <span className="pay-way-label">付款方式：</span>
                                     <div className="choose-way">
@@ -135,8 +146,34 @@ export class OrderPreview extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="order-info">
-
+                       <div className="preorder-time">
+                            <span>期望送出时间：</span>
+                            <Select defaultValue="jack" style={{ width: 92 }} onChange={this.handleChange}>
+                                  <Option value="jack">立即送出</Option>
+                                  <Option value="lucy">Lucy</Option>
+                                  <Option value="disabled" disabled>Disabled</Option>
+                                  <Option value="Yiminghe">yiminghe</Option>
+                            </Select>
+                        </div>
+                        <div className="order-info clearfix">
+                            <div className="need-pay">
+                                您需要支付<span className="need-price">￥117</span>
+                            </div>
+                            <div className="app-download">
+                                <div className="download-label">
+                                    使用App下单享更多优惠
+                                </div>
+                                <div className="to-download">
+                                    <i className="fa fa-mobile-phone"></i>
+                                    去下载
+                                </div>
+                            </div>
+                            <div className="to-pay">
+                                去付款
+                            </div>
+                            <div className="send-by">
+                                * 由 美团专送 提供专业高品质送餐服务
+                            </div>
                         </div>
                     </div>
                 </div>

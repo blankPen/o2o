@@ -94,7 +94,7 @@
 
             .address-info{
                 padding: 30px;
-
+                padding-bottom: 0;
                 .top-box{
                     .title{
                         .address-label{
@@ -213,6 +213,94 @@
                             }
                         }
                     }
+
+                }
+            }
+            .preorder-time{
+                margin-top: 20px;
+                border-top: 1px dashed #E8E8E8;
+                border-bottom: 1px dashed #E8E8E8;
+                background-color: #fff9da;
+                padding: 10px 30px;
+                color: #434343;
+                span{
+                    margin-right: 3px;
+                }
+            }
+
+            .order-info{
+                padding: 20px 30px;
+
+                .need-pay{
+                    display: inline-block;
+                    color: #000000;
+                    font-weight: bold;
+
+                    .need-price{
+                        font-size: 24px;
+                        color: #fa9700;
+                        font-weight: bold;
+                    }
+                }
+                .to-pay{
+                    display: inline-block;
+                    width: 110px;
+                    text-align: center;
+                    font-size: 16px;
+                    color: #6b450a;
+                    background: #ffd607;
+                    line-height: 32px;
+                    border-radius: 2px;
+                    cursor: pointer;
+                    float: right;
+                    margin-right: 20px;
+
+                    &:hover{
+                        background-color: #fbc60e;
+                    }
+                }
+
+                .app-download{
+                    float: right;
+                    padding: 3px 2px;
+                    border: 1px solid #eee;
+                    text-align: center;
+                    padding-right: 7px;
+                    border-radius: 5px;
+                    background: #fafafa;
+                    color: #434343;
+                    cursor: pointer;
+
+                    &:hover{
+                        background-color: #fff;
+                    }
+
+                    .download-label{
+                            width: 82px;
+                            border-right: 1px solid #eee;
+                            float: left;
+                            margin-right: 5px;
+                            font-size: 11px;
+                            line-height: 12px;
+                            padding: 0px 5px;
+                    }
+                    .to-download{
+                        display: inline-block;
+                        text-align: center;
+                        padding: 3px 0;
+
+                        i{
+                            font-size: 18px;
+                            text-align: center;
+                            vertical-align: middle;
+                            margin-right: 3px;
+                            color: #d1d1d1;
+                        }
+                    }
+                }
+
+                .send-by{
+                    margin-top: 5px;
                 }
             }
         }
