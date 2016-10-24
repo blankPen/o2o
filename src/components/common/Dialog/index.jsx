@@ -26,6 +26,7 @@ export default class Dialog extends React.Component {
                 title='收货地址'
                 className={'dialog'+(this.props.className || '')}
                 visible={this.props.visible}
+                onCancel={this.props.onCancel}
                 footer={undefined}
             >
                 <div className="dialog-body">

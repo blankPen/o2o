@@ -6,15 +6,16 @@ import {
 } from 'react-redux';
 import { Select } from 'antd';
 import Img from 'common/Img';
-
+import * as actions from 'actions/OrderAction';
+import Dialog from 'components/common/Dialog';
 const Option = Select.Option;
 
 
 function mapStateToProps({
-    detailState
+    orderState
 }) {
     return {
-         ...detailState
+         ...orderState
     };
 }
 
@@ -25,18 +26,54 @@ export class OrderPreview extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state={
+            show_address_dialog:false,
+            orderInfo:{
+                message:'11111',
+                invoice:'21312313'
+            }
+        }
+    }
+
+    componentWillMount(){
+        let store_id=this.props.params&&this.props.params.store_id;
+        this.props.dispatch(actions.getOrderInfo({store_id},(res)=>{
+
+        }));
     }
 
     handleChange = (value)=> {
       console.log(`selected ${value}`);
     }
+
+    renderAddressDialog=()=>{
+        return(
+            <Dialog 
+                visible={this.state.show_address_dialog}
+                onCancel={this.toggleAddressDialog}
+            >
+                this is address dialog     
+            </Dialog>
+        )
+    }
+
+    toggleAddressDialog=(address)=>{
+        this.setState({
+            show_address_dialog:!this.state.show_address_dialog
+        });
+    }
     
     render(){
+        let goodsList = this.props.goodsList ||[];
+        let extraFeeList = this.props.extraFeeList ||[];
+        let store = this.props.store||{};
+        let address = this.props.address||{};
         return(
             <div className="preview-body">
-                <div className="breadcrumb">马兰拉面（朝外店）> 
+                <div className="breadcrumb">{store.storeName} > 
                     <span> 确认购买</span>
                 </div>
+                {this.renderAddressDialog()}
                 <div className="preview-content">
                     <div className="content-left">
                         <div className="goods-info">
@@ -44,21 +81,30 @@ export class OrderPreview extends React.Component {
                                 <div className="left-info">菜品</div>
                                 <div className="right-price">价格/份数</div>
                             </div>
-                            <div className="info-item">
-                                <div className="left-info">营养分享餐</div>
-                                <div className="right-price">¥21</div>
-                            </div>
-                            <div className="info-item">
-                                <div className="left-info">餐盒费</div>
-                                <div className="right-price">¥2</div>
-                            </div>
-                            <div className="info-item">
-                                <div className="left-info">配送费</div>
-                                <div className="right-price">¥5</div>
-                            </div>
+                            {goodsList.map((item,i)=>{
+                                return (
+                                     <div className="info-item">
+                                        <div className="left-info">{item.goodsName}</div>
+                                        <div className="right-price">
+                                            {`¥${item.goodsPrice}*${item.goodsNum}`}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+
+                            {extraFeeList.map((item,i)=>{
+                                return (
+                                     <div className="info-item">
+                                        <div className="left-info">{item.chargName}</div>
+                                        <div className="right-price">
+                                            {`¥${item.amount}`}
+                                        </div>
+                                    </div>
+                                )
+                            })}
                             <div className="info-item total">
                                 <div className="left-info">合计</div>
-                                <div className="right-price">¥28</div>
+                                <div className="right-price">{`¥${this.props.totalPrice||0}`}</div>
                             </div>
                         </div>
                         <div className="info-footer">
@@ -83,7 +129,7 @@ export class OrderPreview extends React.Component {
                             <div className="top-box">
                                 <div className="title">
                                     <div className="address-label">请选择您的收餐地址</div>
-                                    <div className="add-address">
+                                    <div className="add-address" onClick={this.toggleAddressDialog}>
                                         <i className="fa fa-plus"></i>
                                         添加新地址
                                     </div>
@@ -91,22 +137,28 @@ export class OrderPreview extends React.Component {
                                 <div className="select-address">
                                     <div className="address-box">
                                         <div className="member-top">
-                                            <span className="member-name">陈经纬</span>
-                                            <span className="member-sex">先生：</span>
+                                            <span className="member-name">{address.trueName}</span>
+                                            <span className="member-sex">
+                                                {address.sex=='0'?'先生：':'女生：'}
+                                            </span>
                                             <span className="member-phone">
-                                                15074861036
+                                                {address.mobPhone}
                                             </span>
                                             <span className="operation-box">
-                                                <span>修改</span>
+                                                <span 
+                                                    onClick={()=>this.toggleAddressDialog(address)}
+                                                >
+                                                    修改
+                                                </span>
                                                 <span>删除</span>
                                             </span>
                                         </div>
                                         <div className="address-bottom">
                                             <span className="address-area">
-                                                美罗家园
+                                                {address.areaInfo}
                                             </span>
                                             <span className="address-line">
-                                                美安路美安苑19号楼1001室
+                                                {address.address}
                                             </span>
                                         </div>
                                     </div>
