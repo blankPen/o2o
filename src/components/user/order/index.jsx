@@ -148,6 +148,38 @@ export class MyOrder extends React.Component {
             message.error("服务器异常,请尝试刷新页面!");
         }));
     }
+    //取消订单
+    clearOrder=()=>{
+        let data=this.props.data||{};
+        this.props.dispatch(theAjax("/rest/api/order/cancleOrder",{
+            orderSn:data.orderSn
+        },(res)=>{
+            if(res.result){
+                message.success(res.msg);
+                this.props.refresh();
+            }else{
+                message.error(res.msg);
+            }
+        },()=>{
+            message.error("服务器异常,请尝试刷新页面!");
+        }));
+    }
+    //确认收货
+    enterOrder=()=>{
+        let data=this.props.data||{};
+        this.props.dispatch(theAjax("/rest/api/order/finishOrder",{
+            orderSn:data.orderSn
+        },(res)=>{
+            if(res.result){
+                message.success(res.msg);
+                this.props.refresh();
+            }else{
+                message.error(res.msg);
+            }
+        },()=>{
+            message.error("服务器异常,请尝试刷新页面!");
+        }));
+    }
     render(){
         let data=this.props.data||{};
         let state=this.returnState(data.orderState);
@@ -170,7 +202,9 @@ export class MyOrder extends React.Component {
                         <div className="time thedesc">下单时间：{day}</div>
                     </div>
                     <div className="orderdesc orderdesc-right">
-                        <div className="btnlist orderbtn">确认收货</div>
+                        {data.orderState==30?(<div className="btnlist orderbtn" onClick={this.enterOrder}>确认收货</div>):null}
+                        {data.orderState==10||data.orderState==20||data.orderState==50?
+                            (<div className="btnlist orderbtn" onClick={this.clearOrder}>取消订单</div>):null}
                         {data.orderState==0||data.orderState==40?(
                         <div className="btnlist remove" onClick={this.removeOrder}> 
                             删除订单
