@@ -17,7 +17,9 @@ import {
   Checkbox,
   message,
   Modal,
-  Progress
+  Progress,
+  Row,
+  Col
 } from 'antd';
 import { Link } from 'react-router';
 function mapStateToProps({
@@ -81,26 +83,42 @@ export class Account extends React.Component {
               <div className="tips">{percent>=35?percent>=65?"安全级别高，感觉棒棒哒":"安全级别中，支付需谨慎":"安全级别低，都是耍流氓"}</div>
           </div>
           <div className="userexinfo-form">
-              <form >{/*登录密码 等级中 提升密码安全程度到强，获得成长值 修改*/}
+              <form >
                   <div className="userexinfo-form__section">
-                      <i className="fa fa-exclamation-circle"></i>
-                      登录密码 等级中 提升密码安全程度到强，获得成长值
-                      <Button className="btn"><Link to="/personal_center">修改</Link></Button>
+                    <Row>
+                      <Col span={2}><i className="fa fa-exclamation-circle"></i></Col>{/*fa-exclamation-circle fa-check-circle*/}
+                      <Col span={4}><span>登录密码</span></Col>
+                      <Col span={6}><span>等级中</span></Col>
+                      <Col span={6}><p>提升密码安全程度到强，获得成长值</p></Col>
+                      <Col span={6}> <Button className="btn"><Link to="/personal_center">修改</Link></Button></Col>
+                    </Row>
                   </div>
                   <div className="userexinfo-form__section">
-                       <i className="fa fa-check-circle"></i>
-                      手机号 已设置 您验证的手机：186****8164
-                      <Button className="btn"><Link to="/personal_center"> 换绑</Link></Button>
+                    <Row>
+                      <Col span={2}><i className="fa fa-check-circle"></i></Col>
+                      <Col span={4}><span>手机号</span></Col>
+                      <Col span={6}><span>已设置</span></Col>
+                      <Col span={6}><p>您验证的手机：186****8164</p></Col>
+                      <Col span={6}><Button className="btn"><Link to="/personal_center"> 换绑</Link></Button></Col>
+                    </Row>
                   </div>
                   <div className="userexinfo-form__section">
-                       <i className="fa fa-exclamation-circle"></i>
-                      邮箱 未设置 绑定邮箱，帮助您找回密码，现在设置赚取成长值
-                      <Button className="btn"><Link to="/personal_center"> 设置</Link></Button>
+                    <Row>
+                      <Col span={2}><i className="fa fa-exclamation-circle"></i></Col>
+                      <Col span={4}><span>支付密码</span></Col>
+                      <Col span={6}><span>未设置</span></Col>
+                      <Col span={6}><p>保护账号安全，在余额支付时使用，现在设置赚取成长值</p></Col>
+                      <Col span={6}><Button className="btn"><Link to="/personal_center"> 设置</Link></Button></Col>
+                    </Row>
                   </div>
                   <div className="userexinfo-form__section">
-                       <i className="fa fa-exclamation-circle"></i>
-                      支付密码 未设置 保护账号安全，在余额支付时使用，现在设置赚取成长值
-                      <Button className="btn"><Link to="/personal_center"> 设置</Link></Button>
+                    <Row>
+                      <Col span={2}><i className="fa fa-exclamation-circle"></i></Col>
+                      <Col span={4}><span>邮箱</span></Col>
+                      <Col span={6}><span>未设置</span></Col>
+                      <Col span={6}><p>绑定邮箱，帮助您找回密码，现在设置赚取成长值</p></Col>
+                      <Col span={6}><Button className="btn"><Link to="/personal_center"> 设置</Link></Button></Col>
+                    </Row>
                   </div>
               </form>
           </div>

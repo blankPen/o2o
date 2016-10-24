@@ -176,14 +176,19 @@ export class index extends React.Component {
                 <div className="userexinfo-form">
                     <form >
                         <div className="userexinfo-form__header">
-                            <div className="section-div">
+                            <div className="section-div-1">
                                 <span>账号：{userInfo.memberName}</span>
-                                <span>会员账号：{userInfo.memberNameCode}</span>
+                                <span>性别：{userInfo.memberSex}</span>
                             </div>
-                            <div className="section-div">
-                                <span>未支付订单：{userInfo.noPayOrder}</span>
-                                <span>已支付订单：{userInfo.finishOrder}</span>
-                               {/* 已支付订单：{userInfo.noFilledOrder}*/}
+                            {/*<div className="section-div-1">
+                                <span>生日：{userInfo.memberBirthday}</span>
+                                <span>qq：{userInfo.memberQq}</span>
+                            </div>*/}
+                            <div className="section-div-2">
+                                <span>已完成的订单：{userInfo.finishOrder}</span>
+                                <span>未支付的订单：{userInfo.noPayOrder}</span>
+                                <span>待发货订单：{userInfo.noFilledOrder}</span>
+                                <span>待收货订单：{userInfo.noReceiveOrder}</span>
                             </div>
                         </div>
                         <div className="userexinfo-form__section">
@@ -200,13 +205,6 @@ export class index extends React.Component {
                                 密码：******
                             <Button className="btn"><Link to="/personal_center">修改</Link></Button>
                         </div>
-                        {/*<div className="userexinfo-form__section">
-                            <span className="userimg">
-                                 <i className="fa fa-key"></i>
-                            </span>
-                                支付密码：******
-                            <Button className="btn"><Link to="/personal_center">修改</Link></Button>
-                        </div>*/}
                         <div className="userexinfo-form__section">
                             <span className="userimg">
                                  <i className="fa fa-mobile-phone"></i>
