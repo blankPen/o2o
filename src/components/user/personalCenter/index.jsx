@@ -44,50 +44,21 @@ export class index extends React.Component {
         this.state = this.resetState(props.userInfo);
     }
 
-    handleCancel = () => {
-        this.setState({
-            priviewVisible: false,
-        });
-    }
     handleChange = (info) => {
-        console.log(info);
-        let fileList = info.fileList;
-        fileList = fileList.slice(-1);
+        const userInfo = this.props.userInfo || {};
         if (info.file.status === 'done') {
-            fileList = fileList.map((file) => {
-                if (file.response) {
-                    console.log(file.response);
-                    if(file.response.result==1){
-                        let url = getRealPath(file.response.Path);
-                        file.url = url;
-                        this.setState({
-                            priviewImage: url
-                        });
-                        message.success(`${info.file.name} 上传成功。`);
-                        file.name = "";
-                    }else{
-                        message.error(`${info.file.name} 上传失败。`);
-                        file.url=this.state.priviewImage;
-                        file.thumbUrl=this.state.priviewImage;
-                        this.setState({
-                            priviewImage: this.state.priviewImage
-                        });
-                        file.name = "";
-                    }
-                }
-                return file;
-            });
-            //this.loadGetUserInfo();
+            let file = info.file;
+            if(file.response.result==1){
+                message.success(`${info.file.name} 上传成功。`);
+                this.props.dispatch(getMemberDetail({
+                    "memberId": userInfo.memberId
+                }));
+            }else{
+                message.error(`${info.file.name} 上传失败。`);
+            }
         } else if (info.file.status === 'error') {
             message.error("上传超时，请重试。");
-            fileList=this.state.defaultList;
-            this.setState({
-                priviewImage: fileList[0].url
-            });
         }
-        this.setState({
-            fileList:fileList
-        });
     }
 
     beforeUpload = (file) => {
@@ -98,40 +69,9 @@ export class index extends React.Component {
         }
         return isBoolean;
     }
-    handleImg = () => {
-        this.setState({
-            priviewVisible: true
-        });
-    }
-
-    componentWillMount = () => {
-        console.log("componentWillMount");
-        this.setState({
-            userInfo: this.props.userInfo || {},
-        })
-    }
     resetState(userInfo) {
-        let imgurl =  null;
-        if (userInfo) {
-            imgurl = userInfo.memberAvatar;
-        }
-        imgurl = getRealPath(imgurl);
         return {
             userInfo: userInfo || {},
-            priviewVisible: false,
-            priviewImage: imgurl,
-            fileList: [{
-                uid: -1,
-                status: 'done',
-                url: imgurl,
-                thumbUrl: imgurl
-            }],
-            defaultList:[{
-                uid: -1,
-                status: 'done',
-                url: imgurl,
-                thumbUrl: imgurl
-            }]
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -140,35 +80,33 @@ export class index extends React.Component {
         }
     }
     render() {
-        const userInfo = this.props.userInfo || {};
+        const userInfo = this.state.userInfo || {};
         const props = { //上传请求
             action: '/rest/api/member/updateMemberFace',
             data:{
-                memberId:userInfo.memberId
+                memberId: userInfo.memberId
             },
-            listType: 'picture',
+            listType: 'text',
             onChange: this.handleChange,
             multiple: false,
-            fileList: this.state.fileList,
-            name:"face",
-            accept:"image/*",
+            // fileList: this.state.fileList,
+            name: "face",
+            accept: "image/*",
             beforeUpload: this.beforeUpload,
-        }
+        };
         return (
             <div className="personal-center-box">
                 <div className="avatar-container">
                     <h3>亲爱的{(userInfo.memberTruename?userInfo.memberTruename:userInfo.memberName)||"默认用户"}，来上传一张头像吧</h3>
                     <div className="avatar-content">
-                        <Upload {...props} className="upload-list-inline"
-                        >
+                        <div className="img-wrap">
+                            <Img isShow={true} src={userInfo.memberAvatar} />
+                        </div>
+                        <Upload {...props} className="upload-list-inline">
                           <Button disabled={!userInfo.memberId?true:false} type="ghost"  id="antBtn">
                             <Icon type="upload" /> 上传新头像
                           </Button>
                         </Upload>
-                        <div onClick={this.handleImg} id="openImg"></div>
-                        <Modal  className="open-image-modal" visible={this.state.priviewVisible} footer={null} onCancel={this.handleCancel}>
-                            <div className="defauleImg">{this.state.priviewImage!=undefined?<Img alt="example" src={this.state.priviewImage} className="example_img" />:<i className="anticon anticon-picture"></i>}</div>
-                        </Modal>
                     </div>
                     <div className="tips">支持JPG，JPEG，GIF，PNG，BMP，<br/>且小于5M</div>
                 </div>

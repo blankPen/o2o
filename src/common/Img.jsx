@@ -3,7 +3,7 @@
  * @Date:   2016-10-18 20:53:40
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-19 21:24:36
+ * @Last Modified time: 2016-10-24 22:56:50
  */
 
 'use strict';
@@ -26,7 +26,7 @@ export function getRealPath(src){
             }else{
                 return reqWithContext('./'+src);
             }
-        }    
+        }
     }
 }
 
@@ -50,7 +50,7 @@ export default class Img extends React.Component {
         
     }
     render() {
-        let props={...this.props};
+        let props = {...this.props};
         delete props.isShow;
         return (
             <img {...props} src={getRealPath(this.props.src)} onClick={this.hadleClick} />
