@@ -95,6 +95,10 @@ let index = class extends React.Component {
     this.props.form.validateFields((errors, values) => {
       if (errors) {
         console.log(' 表单验证错误!');
+        this.setState({
+          openFormError: true,
+          validate_info: '登录信息不完整!'
+        })
         return;
       }
       console.log('表单验证成功');
@@ -130,6 +134,10 @@ let index = class extends React.Component {
     this.props.form.validateFields((errors, values) => {
       if (errors) {
         console.log(' 表单验证错误!');
+        this.setState({
+          openFormError: true,
+          validate_info: '登录信息不完整!'
+        })
         return;
       }
       console.log('表单验证成功');
@@ -183,7 +191,6 @@ let index = class extends React.Component {
       bool=true;
     });
     if (bool) {
-      let phone= this.props.form.getFieldValue('phone');
       this.setState({
           wait: "loading"
       })
@@ -226,19 +233,29 @@ let index = class extends React.Component {
   validatorDcode=(rule, value, callback)=>{
     console.log(" 验证验证码。。。");
     let phone=this.props.form.getFieldValue('phone');
-    let validateCode=this.props.form.getFieldValue('Dcode');
-    this.props.dispatch(getCheckCode({
-        "validateCode" : validateCode,
-        "type" : this.state.type,
-        "mobile" : phone
-      },(re)=> {
-        if(re.result==1){
-            callback();
-        } else {
-          callback([new Error('动态码验证失败')]);
-        }
+    let bool=false;
+    this.props.form.validateFields(['phone'],(errors,values)=>{
+      if (errors) {
+        callback();
+        return;
       }
-    ))
+      bool=true;
+    });
+    if(bool){
+      let validateCode=this.props.form.getFieldValue('Dcode');
+      this.props.dispatch(getCheckCode({
+          "validateCode" : validateCode,
+          "type" : this.state.type,
+          "mobile" : phone
+        },(re)=> {
+          if(re.result==1){
+              callback();
+          } else {
+            callback([new Error('动态码验证失败')]);
+          }
+        }
+      ))
+    }
   }
   handerOnFocus=()=>{
     this.setState({

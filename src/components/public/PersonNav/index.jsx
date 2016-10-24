@@ -17,7 +17,7 @@ function mapStateToProps(state) {
 }
 const menu=[
 			{"title":"订单查询","chrilden":[{"title":"近三个月订单","path":"/order","id":"1"}]},
-			{"title":"账号管理","chrilden":[{"title":"我的账户","path":"/personal_center","id":"2"},{"title":"密码找回","path":"/","id":"3"},
+			{"title":"账号管理","chrilden":[{"title":"我的账户","path":"/personal_center","id":"2"},{"title":"安全中心","path":"/account","id":"3"},
             {"title":"我的收藏","path":"/collect","id":"4"}]},
 			];
 
@@ -51,7 +51,7 @@ export class PersonNav extends React.Component {
 						return(
 								<div key={i} className="menulist">
 									<span className="menutitle">{item.title}</span>
-									<ul>
+									<ul className="navUl">
 										{list}
 									</ul>
 								</div>

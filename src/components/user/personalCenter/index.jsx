@@ -1,3 +1,6 @@
+/*
+ * @Author: MoCheng
+ */
 'use strict';
 import React from 'react';
 import './index.less';
@@ -171,7 +174,7 @@ export class index extends React.Component {
                     <div className="tips">支持JPG，JPEG，GIF，PNG，BMP，<br/>且小于5M</div>
                 </div>
                 <div className="userexinfo-form">
-                    <form  method="post" action="/account/userexinfo">
+                    <form >
                         <div className="userexinfo-form__header">
                             <div className="section-div">
                                 <span>账号：{userInfo.memberName}</span>
@@ -188,35 +191,35 @@ export class index extends React.Component {
                                  <i className="fa fa-user"></i>
                             </span>
                                 姓名：{userInfo.memberTruename}
-                            <div className="btn"><Link to="/personal_center">修改</Link></div>
+                            <Button className="btn"><Link to="/personal_center">修改</Link></Button>
                         </div>
                         <div className="userexinfo-form__section">
                             <span className="userimg">
                                  <i className="fa fa-key"></i>
                             </span>
                                 密码：******
-                            <div className="btn"><Link to="/personal_center">修改</Link></div>
+                            <Button className="btn"><Link to="/personal_center">修改</Link></Button>
                         </div>
-                        <div className="userexinfo-form__section">
+                        {/*<div className="userexinfo-form__section">
                             <span className="userimg">
                                  <i className="fa fa-key"></i>
                             </span>
                                 支付密码：******
-                            <div className="btn"><Link to="/personal_center">修改</Link></div>
-                        </div>
+                            <Button className="btn"><Link to="/personal_center">修改</Link></Button>
+                        </div>*/}
                         <div className="userexinfo-form__section">
                             <span className="userimg">
                                  <i className="fa fa-mobile-phone"></i>
                             </span>
                                 手机号：{userInfo.memberMobile}
-                            <div className="btn"><Link to="/personal_center">修改</Link></div>
+                            <Button className="btn"><Link to="/personal_center">更换</Link></Button>
                         </div>
                         <div className="userexinfo-form__section">
                             <span className="userimg">
                                  <i className="fa fa-credit-card"></i>
                             </span>
                                 我的钱包：{userInfo.availablePredeposit}
-                            <div className="btn"><Link to="/personal_center">充值</Link></div>
+                            <Button className="btn"><Link to="/personal_center">充值</Link></Button>
                         </div>
                         <div className="userexinfo-form__footer">
                             <span>喜欢的店铺数：{userInfo.favStoreCount}</span>
