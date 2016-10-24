@@ -25,6 +25,18 @@ import {getRealPath} from 'common/Img'
 import {
   Link
 } from 'react-router';
+import Dialog from 'components/common/Dialog';
+
+const FormItem = Form.Item;
+const createForm = Form.create;
+const formItemLayout = {
+  labelCol: {
+    span: 7
+  },
+  wrapperCol: {
+    span: 12
+  },
+}
 
 function mapStateToProps({
     common
@@ -34,7 +46,7 @@ function mapStateToProps({
     };
 }
 
-export class index extends React.Component {
+let index= class extends React.Component {
     static propTypes = {
         name: React.PropTypes.string,
     };
@@ -72,12 +84,53 @@ export class index extends React.Component {
     resetState(userInfo) {
         return {
             userInfo: userInfo || {},
+            dailog_title: "",
+            show_dialog:false,
+            loading: false
         }
     }
     componentWillReceiveProps(nextProps) {
         if (!_.isEqual(nextProps.userInfo, this.props.userInfo)) {
            this.setState(this.resetState(nextProps.userInfo));
         }
+    }
+    componentWillMount = () => {
+        console.log("componentWillMount");
+        this.setState({
+            userInfo: this.props.userInfo || {},
+        })
+    }
+    handleOnCancel=()=>{
+        this.setModalVisible(false)
+    }
+    handleOnOk=()=>{
+        console.log("点击");
+    }
+    setModalVisible=(modalVisible)=> {
+        this.setState({
+            show_dialog:modalVisible
+        });
+    }
+    changeName=()=>{
+        this.setState({
+            dailog_title: "修改用户名",
+            show_dialog: true
+        });
+    }
+    handleSubmit = (e) => {
+        e.preventDefault();
+        /*this.setState({
+            loading:true
+        })*/
+        console.log("Submit");
+        this.props.form.validateFields((errors, values) => {
+          if (errors) {
+            console.log(' 表单验证错误!');
+            return;
+          }
+          console.log('表单验证成功');
+          console.log(values);
+        })
     }
     render() {
         const userInfo = this.state.userInfo || {};
@@ -111,63 +164,111 @@ export class index extends React.Component {
                     <div className="tips">支持JPG，JPEG，GIF，PNG，BMP，<br/>且小于5M</div>
                 </div>
                 <div className="userexinfo-form">
-                    <form >
-                        <div className="userexinfo-form__header">
-                            <div className="section-div-1">
-                                <span>账号：{userInfo.memberName}</span>
-                                <span>性别：{userInfo.memberSex===1?"男":"女"}</span>
-                            </div>
-                            {/*<div className="section-div-1">
-                                <span>生日：{userInfo.memberBirthday}</span>
-                                <span>qq：{userInfo.memberQq}</span>
-                            </div>*/}
-                            <div className="section-div-2">
-                                <span>已完成的订单：{userInfo.finishOrder}</span>
-                                <span>未支付的订单：{userInfo.noPayOrder}</span>
-                                <span>待发货订单：{userInfo.noFilledOrder}</span>
-                                <span>待收货订单：{userInfo.noReceiveOrder}</span>
-                            </div>
+                    <div className="userexinfo-form__header">
+                        <div className="section-div-1">
+                            <span>账号：{userInfo.memberName}</span>
+                            <span>性别：{userInfo.memberSex===1?"男":"女"}</span>
                         </div>
-                        <div className="userexinfo-form__section">
-                            <span className="userimg">
-                                 <i className="fa fa-user"></i>
-                            </span>
-                                姓名：{userInfo.memberTruename}
-                            <Button className="btn"><Link to="/personal_center">修改</Link></Button>
+                        {/*<div className="section-div-1">
+                            <span>生日：{userInfo.memberBirthday}</span>
+                            <span>qq：{userInfo.memberQq}</span>
+                        </div>*/}
+                        <div className="section-div-2">
+                            <span>已完成的订单：{userInfo.finishOrder}</span>
+                            <span>未支付的订单：{userInfo.noPayOrder}</span>
+                            <span>待发货订单：{userInfo.noFilledOrder}</span>
+                            <span>待收货订单：{userInfo.noReceiveOrder}</span>
                         </div>
-                        <div className="userexinfo-form__section">
-                            <span className="userimg">
-                                 <i className="fa fa-key"></i>
-                            </span>
-                                密码：******
-                            <Button className="btn"><Link to="/personal_center">修改</Link></Button>
-                        </div>
-                        <div className="userexinfo-form__section">
-                            <span className="userimg">
-                                 <i className="fa fa-mobile-phone"></i>
-                            </span>
-                                手机号：{userInfo.memberMobile}
-                            <Button className="btn"><Link to="/personal_center">更换</Link></Button>
-                        </div>
-                        <div className="userexinfo-form__section">
-                            <span className="userimg">
-                                 <i className="fa fa-credit-card"></i>
-                            </span>
-                                我的钱包：{userInfo.availablePredeposit}
-                            <Button className="btn"><Link to="/personal_center">充值</Link></Button>
-                        </div>
-                        <div className="userexinfo-form__footer">
-                            <span>收藏的店铺：{userInfo.favStoreCount}</span>
-                            <span>收藏的商品：{userInfo.favGoodsCount}</span>
-                           {/* <span>会员积分：{userInfo.memberConsumePoints}</span>*/}
-                        </div>
-                    </form>
+                    </div>
+                    <div className="userexinfo-form__section">
+                        <span className="userimg">
+                             <i className="fa fa-user"></i>
+                        </span>
+                            姓名：{userInfo.memberTruename}
+                        <Button className="btn" onClick={this.changeName}>修改</Button>
+                    </div>
+                    <div className="userexinfo-form__section">
+                        <span className="userimg">
+                             <i className="fa fa-key"></i>
+                        </span>
+                            密码：******
+                        <Button className="btn"><Link to="/personal_center">修改</Link></Button>
+                    </div>
+                    <div className="userexinfo-form__section">
+                        <span className="userimg">
+                             <i className="fa fa-mobile-phone"></i>
+                        </span>
+                            手机号：{userInfo.memberMobile}
+                        <Button className="btn"><Link to="/personal_center">更换</Link></Button>
+                    </div>
+                    <div className="userexinfo-form__section">
+                        <span className="userimg">
+                             <i className="fa fa-credit-card"></i>
+                        </span>
+                            我的钱包：{userInfo.availablePredeposit}
+                        <Button className="btn"><Link to="/personal_center">充值</Link></Button>
+                    </div>
+                    <div className="userexinfo-form__footer">
+                        <span>收藏的店铺：{userInfo.favStoreCount}</span>
+                        <span>收藏的商品：{userInfo.favGoodsCount}</span>
+                       {/* <span>会员积分：{userInfo.memberConsumePoints}</span>*/}
+                    </div>
+                    <Dialog
+                        visible={this.state.show_dialog}
+                        onCancel={this.handleOnCancel}
+                        onOk={this.handleOnOk}
+                        title={this.state.dailog_title}
+                        footer={[
+                            <Button key="back" type="ghost" size="large" onClick={this.handleOnCancel}>取消</Button>
+                        ]}
+                    >
+                        {this._popUpBox()}
+                    </Dialog>
                 </div>
             </div>
         );
       }
+      _popUpBox=()=>{
+        const {
+          getFieldDecorator,
+          getFieldError,
+          isFieldValidating
+        } = this.props.form;
+        if(true){
+            return(
+                <div>
+                    <Form horizontal onSubmit={this.handleSubmit}>
+                        <div>用户名：{this.props.userInfo.memberTruename}</div>
+                         <FormItem
+                          id="control-user"
+                          {...formItemLayout}
+                          label="用户名"
+                          hasFeedback
+                          help={isFieldValidating('name') ? 'validating...' : (getFieldError('name') || []).join(', ')}
+                        >
+                          {getFieldDecorator('name', {
+                                rules: [
+                                  { required: true, message: '用户名不能为空！' }
+                                ],
+                            })(
+                            <Input id="control-user" placeholder="" />
+                          )}
+                        </FormItem>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            size="large"
+                            loading={this.state.loading} >
+                          确定
+                        </Button>
+                    </Form>
+                </div>
+            )
+        }
+      }
     }
 
+index = createForm()(index);
 export default connect(
   mapStateToProps,
 // Implement map dispatch to props

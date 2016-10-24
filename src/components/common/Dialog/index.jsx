@@ -28,7 +28,7 @@ export default class Dialog extends React.Component {
                 visible={this.props.visible}
                 onCancel={this.props.onCancel}
                 onOk={this.props.onOk}
-                footer={undefined}
+                footer={this.props.footer||undefined}
             >
                 <div className="dialog-body">
                     {this.props.children}
