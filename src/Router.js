@@ -2,8 +2,8 @@
  * @Author: pengzhen
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
- * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 15:43:31
+ * @Last Modified by:   chenjingwei
+ * @Last Modified time: 2016-10-24 22:16:55
  */
 
 'use strict';
@@ -34,7 +34,7 @@ import Order from 'components/user/order/';
 import Collect from 'components/user/collect/';
 import PersonNav from 'components/public/PersonNav/';
 import PersonalCenter from 'components/user/personalCenter/';
-import OrderPerview from 'components/OrderPreview/';
+import OrderPreview from 'components/OrderPreview/';
 import Feedback from 'components/feedback';
 import Search from 'components/Search/';
 
@@ -66,7 +66,7 @@ export class index extends React.Component {
                         <Route path='/' component={PublicMain} onEnter={requireSetPosition}>
                             <IndexRoute component={Home} />
                             <Route path="/detail/:storeId" component={Detail}/>
-                            <Route path="/order_preview" component={OrderPerview}/>
+                            <Route path="/order_preview" component={OrderPreview}/>
                             <Route path="/search" component={Search}/>
                             <Route path="/user" component={PersonNav}>
                                 <Route path="/order" component={Order}/>

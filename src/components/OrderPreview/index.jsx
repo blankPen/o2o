@@ -30,7 +30,9 @@ export class OrderPreview extends React.Component {
             show_address_dialog:false,
             orderInfo:{
                 message:'11111',
-                invoice:'21312313'
+                invoice:'21312313',
+                pay_way:"D", //D：餐到付款 Z：在线付款
+                send_time:"14:00"
             }
         }
     }
@@ -69,6 +71,9 @@ export class OrderPreview extends React.Component {
         let extraFeeList = this.props.extraFeeList ||[];
         let store = this.props.store||{};
         let address = this.props.address||{};
+        let afterPayClass = "after-pay btn"+(this.state.orderInfo.pay_way=="D"?' btn-select':'');
+        let inLinePayClass = "inline-pay btn"+(this.state.orderInfo.pay_way=="Z"?' btn-select':'');
+
         return(
             <div className="preview-body">
                 <div className="breadcrumb">{store.storeName} >
@@ -169,9 +174,17 @@ export class OrderPreview extends React.Component {
                                         给商家留言：
                                     </span>
                                     <div className="message-box">
-                                        <input
-                                            className="message-input"
+                                        <input 
+                                            className="message-input" 
                                             type="text"
+                                            onChange={(e)=>this.setState({
+                                                        orderInfo:{
+                                                            ...this.state.orderInfo,
+                                                            message:e.target.value
+                                                        }
+                                                    })
+                                                }
+                                            value={this.state.orderInfo.message} 
                                             placeholder="不要辣，多放盐等口味要求" />
                                     </div>
                                 </div>
@@ -180,19 +193,51 @@ export class OrderPreview extends React.Component {
                                         发票信息：
                                     </span>
                                     <div className="message-box">
-                                        <input
-                                            className="message-input"
-                                            type="text"
+                                        <input 
+                                            className="message-input" 
+                                            value={this.state.orderInfo.invoice} 
+                                            onChange={(e)=>this.setState({
+                                                        orderInfo:{
+                                                            ...this.state.orderInfo,
+                                                            invoice:e.target.value
+                                                        }
+                                                    })
+                                                }
+                                            type="text" 
                                         />
                                     </div>
                                 </div>
                                 <div className="pay-way">
                                     <span className="pay-way-label">付款方式：</span>
                                     <div className="choose-way">
-                                        <button className="after-pay btn btn-select" type='button'>
+                                        <button 
+                                            className={afterPayClass} 
+                                            onClick={()=>{
+                                                    this.setState({
+                                                        orderInfo:{
+                                                            ...this.state.orderInfo,
+                                                            pay_way:"D"
+                                                        }
+                                                    });
+                                                 }
+                                            }
+                                            type='button'
+                                        >
                                             餐到付款
                                         </button>
-                                        <button className="inline-pay btn" type='button'>
+                                        <button 
+                                            className={inLinePayClass} 
+                                            type='button'
+                                            onClick={()=>{
+                                                    this.setState({
+                                                        orderInfo:{
+                                                            ...this.state.orderInfo,
+                                                            pay_way:"Z"
+                                                        }
+                                                    });
+                                                 }
+                                            }
+                                        >
                                             在线支付
                                         </button>
                                     </div>
@@ -201,11 +246,10 @@ export class OrderPreview extends React.Component {
                         </div>
                        <div className="preorder-time">
                             <span>期望送出时间：</span>
-                            <Select defaultValue="jack" style={{ width: 92 }} onChange={this.handleChange}>
-                                  <Option value="jack">立即送出</Option>
-                                  <Option value="lucy">Lucy</Option>
-                                  <Option value="disabled" disabled>Disabled</Option>
-                                  <Option value="Yiminghe">yiminghe</Option>
+                            <Select defaultValue="now" style={{ width: 92 }} onChange={this.handleChange}>
+                                  <Option value="now">立即送出</Option>
+                                  <Option value="14:00">14:00</Option>
+                                  <Option value="14:20">14:20</Option>
                             </Select>
                         </div>
                         <div className="order-info clearfix">

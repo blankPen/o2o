@@ -387,7 +387,7 @@ export class RateItem extends React.Component {
     }
 
     render(){
-        let data = this.props.data;
+        let data = this.props.data||{};
         return(
             <div className="rate-item">
                 <div className="rate-info">
