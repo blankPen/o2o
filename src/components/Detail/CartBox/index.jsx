@@ -95,6 +95,10 @@ export default class CartBox extends React.Component {
             orderList,
         }
     }
+    toOrderPreview=()=>{
+        
+    }
+
     render() {
         let { open } = this.state;
         const { startPrice } = this.props;
@@ -132,7 +136,7 @@ export default class CartBox extends React.Component {
                     {!open && !!totalNum &&
                         <div className="count">{totalNum}份&nbsp;&nbsp;¥{totalPrice}</div>}
                     {totalPrice >= startPrice?
-                        <button className="submit">去下单</button>:
+                        <button className="submit" onClick={this.toOrderPreview}>去下单</button>:
                         <button disabled className="submit">
                             还差{startPrice-totalPrice}元起送
                         </button>

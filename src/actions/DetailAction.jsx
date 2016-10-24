@@ -82,12 +82,13 @@ export function getStoreEvaluatList(params,call) {
         ajax({
             url: 'rest/api/order/storeEvaluatePage',
             data: {
-                storeId:params.storeId
+                storeId:params.storeId,
+                ...params.search
             },
             success: function(res){
                 dispatch({
                     type: 'get/StoreEvaluat/list',
-                    evaluatList: res.data.evaluateGoodList
+                    evaluatList: res.data
                 })
                 call && call(res);
             }

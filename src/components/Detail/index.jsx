@@ -10,6 +10,7 @@ import * as DomUtils from 'common/utils/dom';
 import * as actions from 'actions/DetailAction';
 import { Rate,Tooltip ,Tabs,Radio,Checkbox,Affix} from 'antd';
 import CartBox from 'components/Detail/CartBox/';
+const moment = require('moment');
 
 
 const RadioGroup = Radio.Group;
@@ -48,7 +49,8 @@ export class Detail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inCartItems: {}
+            inCartItems: {},
+            is_show_category:true
         }
     }
 
@@ -75,6 +77,9 @@ export class Detail extends React.Component {
     }
     tabsChange = (key)=>{
         let storeId = this.props.params.storeId;
+        this.setState({
+            is_show_category:key==1?true:false
+        });
         if(key==2){
             this.props.dispatch(actions.getStoreEvaluatList({storeId:storeId}));
         }
@@ -249,7 +254,12 @@ export class Detail extends React.Component {
 
                              </TabPane>
                              <TabPane tab="评价" key="2">
-                                 <RatedBox evaluatList={this.props.evaluatList}></RatedBox>
+                                <RatedBox 
+                                    storeId={this.props.params.storeId}
+                                    dispatch={this.props.dispatch}
+                                    evaluatList={this.props.evaluatList}
+                                    >
+                                </RatedBox>
                              </TabPane>
                              <TabPane tab="餐厅资质" key="3">
                                  <div className="aptitude">
@@ -265,7 +275,7 @@ export class Detail extends React.Component {
                              </TabPane>
                          </Tabs>
                         </div>
-                        {categoryList}
+                        {this.state.is_show_category?categoryList:undefined}
                     </div>
                     <div className="content-right">
                         <div className="notice-top">
@@ -294,30 +304,57 @@ export class RatedBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value:1
+            rateSearchData:{
+                gevalType:0,
+                isHaveContent:0
+            }
         }
     }
 
     filterChange=(e)=>{
         this.setState({
-            value:e.target.value
+            rateSearchData:{
+                ...this.state.rateSearchData,
+                gevalType:e.target.value
+            }
         });
     }
 
+    componentWillMount(){
+        this.props.dispatch(
+            actions.getStoreEvaluatList(
+                {storeId:this.props.storeId,search:this.state.rateSearchData}));
+    }
+
     handleCheck = (e)=>{
-        console.log(`checked = ${e.target.checked}`);
+        this.setState({
+            rateSearchData:{
+                ...this.state.rateSearchData,
+                isHaveContent:e.target.checked?1:0
+            }
+        });
     }
 
     render(){
+        let data = this.props.evaluatList&&this.props.evaluatList.shopEvaluateTagSave||{};
+        let list = this.props.evaluatList&&this.props.evaluatList.evaluateGoodList||[];
         return(
             <div className="rated-box">
                 <div className="rate-filter">
                     <div className="filter-item">
-                        <RadioGroup onChange={this.filterChange} value={this.state.value}>
-                            <Radio key="a" value={1}>全部评价<span>(726)</span></Radio>
-                            <Radio key="b" value={2}>好评<span>(726)</span></Radio>
-                            <Radio key="c" value={3}>中评<span>(726)</span></Radio>
-                            <Radio key="d" value={4}>差评<span>(726)</span></Radio>
+                        <RadioGroup onChange={this.filterChange} 
+                                    value={this.state.rateSearchData.gevalType}
+                        >
+                            <Radio key="a" value={0}>
+                                全部评价<span>{`(${data.allReview||0})`}</span>
+                            </Radio>
+                            <Radio key="b" value={1}>好评<span>(726)</span></Radio>
+                            <Radio key="c" value={2}>
+                                中评<span>{`(${data.mediumReview||0})`}</span>
+                            </Radio>
+                            <Radio key="d" value={3}>
+                                差评<span>{`(${data.badReview||0})`}</span>
+                            </Radio>
                         </RadioGroup>
                         <div className="have-content">
                             <Checkbox onChange={this.handleCheck}>有内容的评价</Checkbox>
@@ -325,14 +362,11 @@ export class RatedBox extends React.Component {
                     </div>
                 </div>
                 <div className="content-box">
-                    <RateItem></RateItem>
-                    <RateItem></RateItem>
-                    <RateItem></RateItem>
-                    <RateItem></RateItem>
-                    <RateItem></RateItem>
-                    <RateItem></RateItem>
-                    <RateItem></RateItem>
-
+                    {list.map((item,i)=>{
+                        return(
+                            <RateItem key={i} data={item}></RateItem>
+                        )
+                    })}
                 </div>
             </div>
         )
@@ -352,23 +386,22 @@ export class RateItem extends React.Component {
 
     }
 
-
-
     render(){
+        let data = this.props.data;
         return(
             <div className="rate-item">
                 <div className="rate-info">
-                    <span className="user-name">U***8</span>
+                    <span className="user-name">{data.gevalFrommembername}</span>
                     <span className="all-rate">总体评价:</span>
-                    <Rate value={4} />
+                    <Rate value={data.gevalScore} />
                     <span className="feel">好评</span>
                     <span className="rate-time">
                         评价时间
-                        <span>2016-10-07</span>
+                        <span>{moment(data.gevalAddTime)}</span>
                     </span>
                 </div>
                 <div className="user-reply">
-                    下了订单，没任何异常，等了半个小时，竟然突然打电话问我，还要不要送？
+                    {data.gevalContent}
                 </div>
             </div>
         )
