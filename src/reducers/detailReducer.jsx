@@ -11,7 +11,7 @@ export default handleActions({
             storeDetail: action.storeDetail
         }
     },
-    
+
     'get/classAndGoods/list': (state, action) => {
         return {
             ...state,
@@ -22,6 +22,16 @@ export default handleActions({
         return {
             ...state,
             evaluatList: action.evaluatList
+        }
+    },
+    'toggle/collect':(state,action) => {
+        return{
+            ...state,
+            storeDetail: {
+                ...state.storeDetail,
+                isStoreCollect: action.status,
+                storeCollect: state.storeDetail.storeCollect+(action.status?1:-1)
+            }
         }
     }
 }, {

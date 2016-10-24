@@ -1,6 +1,7 @@
 'use strict';
 import './index.less';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {
     connect
 } from 'react-redux';
@@ -30,10 +31,12 @@ function getPosition(id){
     }
 }
 function mapStateToProps({
-    detailState
+    detailState,
+    common
 }) {
     return {
-         ...detailState
+         ...detailState,
+         userInfo: common.userInfo || {}
     };
 }
 
@@ -45,23 +48,31 @@ export class Detail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inCartItems: {
-                // id: {
-                //     num: 1,
-                //     data: {}
-                // }
-            }
+            inCartItems: {}
         }
     }
 
     componentWillMount=()=>{
+        let memberId = this.props.userInfo.memberId;
         let storeId = this.props.params.storeId;
-        this.props.dispatch
-            (actions.getStoreDetail({storeId: storeId}));
-        this.props.dispatch
-            (actions.getClassAndGoodsList({storeId: storeId}));
+        this.props.dispatch(actions.getStoreDetail({
+            storeId,
+            memberId,
+        }));
+        this.props.dispatch(actions.getClassAndGoodsList({storeId}));
     }
-
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.params.storeId != this.props.params.storeId ||
+            nextProps.userInfo.memberId != this.props.userInfo.memberId){
+            let memberId = nextProps.userInfo.memberId;
+            let storeId = nextProps.params.storeId;
+            this.props.dispatch(actions.getClassAndGoodsList({storeId}));
+            this.props.dispatch(actions.getStoreDetail({
+                storeId,
+                memberId,
+            }));
+        }
+    }
     tabsChange = (key)=>{
         let storeId = this.props.params.storeId;
         if(key==2){
@@ -70,7 +81,11 @@ export class Detail extends React.Component {
         console.log(key);
     }
     menuClick = (key)=>{
-        console.log(key);
+        let el = ReactDOM.findDOMNode(this.refs[key]);
+        if(el){
+            let offset = DomUtils.getOffset(el).top;
+            DomUtils.scrollTo(offset);
+        }
     }
     handleAddCart=(data)=>{
         let newItems = {...this.state.inCartItems};
@@ -87,6 +102,10 @@ export class Detail extends React.Component {
             inCartItems: newItems
         });
         this.refs.cartBox.triggerAnim(getPosition(data.goodsId));
+    }
+    toggleCollect=(flag)=>{
+        let storeId = this.props.params.storeId;
+        this.props.dispatch(actions.collectStore(storeId,flag));
     }
     handleChangeCart=(value,addId)=>{
         this.setState({
@@ -128,6 +147,7 @@ export class Detail extends React.Component {
             categoryList.push(
                 <Category
                     key={i}
+                    ref={'menu_'+i}
                     data={item.goodsList}
                     title={item.stcName}
                     inCartItems={this.state.inCartItems}
@@ -138,7 +158,7 @@ export class Detail extends React.Component {
                 <div
                     key={i}
                     className="menu-item"
-                    onClick={this.menuClick.bind(this,item.stcId)}
+                    onClick={this.menuClick.bind(this,'menu_'+i)}
                 >
                     {item.stcName}
                 </div>
@@ -209,13 +229,15 @@ export class Detail extends React.Component {
                     </div>
                     <div className="fold-3d"></div>
                     <div className="collection">
-                        {
+                        {/*
                             data.isStoreCollect>1?
                                 <i className="fa fa-heart is-conllect"></i>:
                                 <i className="fa fa-heart-o"></i>
-                        }
-                        <span>收藏</span>
-                        <div className="collection-num">{(`${data.storeCollect}`)}</div>
+                        */}
+                        <i onClick={this.toggleCollect.bind(this,!data.isStoreCollect)}
+                            className={`fa ${!!data.isStoreCollect?'fa-heart is-conllect':'fa-heart-o'}`}></i>
+                        <span>{!!data.isStoreCollect?'已收藏':'收藏'}</span>
+                        <div className="collection-num">{data.storeCollect}</div>
                     </div>
                </div>
                <div className="business-content">
