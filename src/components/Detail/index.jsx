@@ -265,11 +265,17 @@ export class Detail extends React.Component {
                                  <div className="aptitude">
                                      <div className="aptitude-item">
                                          <div className="aptitude-title">营业执照</div>
-                                         <img src='http://p1.meituan.net/xianfu/0936e7e3c04b7e873d14a8edd365743b61440.jpg'></img>
+                                         <Img
+                                            isShow={true}
+                                            src='http://p1.meituan.net/xianfu/0936e7e3c04b7e873d14a8edd365743b61440.jpg'
+                                         />
                                      </div>
                                      <div className="aptitude-item">
                                          <div className="aptitude-title">餐饮服务许可证</div>
-                                         <img src='http://p1.meituan.net/xianfu/18b999daee540d21de9ed40c92a94913184320.jpg'></img>
+                                         <Img
+                                            isShow={true}
+                                            src='http://p1.meituan.net/xianfu/18b999daee540d21de9ed40c92a94913184320.jpg'
+                                         />
                                      </div>
                                  </div>
                              </TabPane>
@@ -508,8 +514,8 @@ export class CategoryItem extends React.Component {
                 <div className="avatar">
                     <Img className='category-img'
                      src={data.goodsImage} />
-                    <div className="description">    销量冠军，招牌馅料，汁多味美，食指大动。豆角具有益气生津功效。
-                    </div>
+                    {/*<div className="description">    销量冠军，招牌馅料，汁多味美，食指大动。豆角具有益气生津功效。
+                    </div>*/}
                 </div>
                 <div className="categroy-name">{data.goodsName}</div>
                 <div className="sale-info clearfix">
