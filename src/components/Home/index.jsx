@@ -14,6 +14,7 @@ import {
     Checkbox,
     Select
 } from 'antd';
+
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
