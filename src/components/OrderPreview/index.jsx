@@ -7,15 +7,20 @@ import {
 import { Select } from 'antd';
 import Img from 'common/Img';
 import * as actions from 'actions/OrderAction';
+import { getAddressList } from 'actions/AddressAction';
 import Dialog from 'components/common/Dialog';
 import AddressForm from 'components/common/AddressForm';
 const Option = Select.Option;
 
 function mapStateToProps({
-    orderState
+    orderState,
+    addressState,
+    common
 }) {
     return {
-         ...orderState
+         ...orderState,
+         userInfo: common.userInfo,
+         addressList: addressState.list
     };
 }
 
@@ -28,6 +33,7 @@ export class OrderPreview extends React.Component {
         super(props);
         this.state={
             show_address_dialog: true,
+            curAddress: undefined,
             orderInfo:{
                 message:'11111',
                 invoice:'21312313',
@@ -38,10 +44,13 @@ export class OrderPreview extends React.Component {
     }
 
     componentWillMount(){
+        let memberId = this.props.userInfo && this.props.userInfo.memberId;
         // let store_id=this.props.params&&this.props.params.store_id;
-        // this.props.dispatch(actions.getOrderInfo({store_id},(res)=>{
-
-        // }));
+        // 请求收货地址列表
+        this.props.dispatch(getAddressList({
+            storeId: undefined,
+            memberId
+        }));
     }
 
     handleChange = (value) => {
@@ -52,25 +61,70 @@ export class OrderPreview extends React.Component {
         console.log("添加地址成功",res);
         this.toggleAddressDialog();
     }
-    toggleAddressDialog=(address)=>{
+    toggleAddressDialog=()=>{
         this.setState({
             show_address_dialog:!this.state.show_address_dialog
         });
     }
-
+    showEditDialog(address){
+        this.setState({
+            show_address_dialog: true,
+            curAddress: address
+        });
+    }
     renderAddressDialog=()=>{
+        let title = '';
+        let address = this.state.curAddress || {};
+        if(address.addressId){
+            title = '修改地址'
+        }else{
+            title = '添加新地址'
+        }
         return(
             <Dialog
                 visible={this.state.show_address_dialog}
                 onCancel={this.toggleAddressDialog}
-                title="添加新地址"
+                title= {title}
             >
                 <AddressForm
-                    data={{}}
+                    key={address.addressId || 'add'}
+                    data={address}
                     onSubmit={this.onAddress}
                     onCancel={this.toggleAddressDialog}/>
             </Dialog>
         )
+    }
+    renderAddressList(){
+        let list = this.props.addressList;
+        return list.map((address,i)=>{
+            return (
+                <div key={address.addressId} className="address-box">
+                    <div className="member-top">
+                        <span className="member-name">{address.trueName}</span>
+                        <span className="member-sex">
+                            {address.sex=='0'?'先生：':'女生：'}
+                        </span>
+                        <span className="member-phone">
+                            {address.mobPhone}
+                        </span>
+                        <span className="operation-box">
+                            <span onClick={this.showEditDialog.bind(this,address)}>
+                                修改
+                            </span>
+                            <span>删除</span>
+                        </span>
+                    </div>
+                    <div className="address-bottom">
+                        <span className="address-area">
+                            {address.areaInfo}
+                        </span>
+                        <span className="address-line">
+                            {address.address}
+                        </span>
+                    </div>
+                </div>
+            );
+        })
     }
     render(){
         let goodsList = this.props.goodsList ||[];
@@ -147,33 +201,7 @@ export class OrderPreview extends React.Component {
                                     </div>
                                 </div>
                                 <div className="select-address">
-                                    <div className="address-box">
-                                        <div className="member-top">
-                                            <span className="member-name">{address.trueName}</span>
-                                            <span className="member-sex">
-                                                {address.sex=='0'?'先生：':'女生：'}
-                                            </span>
-                                            <span className="member-phone">
-                                                {address.mobPhone}
-                                            </span>
-                                            <span className="operation-box">
-                                                <span
-                                                    onClick={()=>this.toggleAddressDialog(address)}
-                                                >
-                                                    修改
-                                                </span>
-                                                <span>删除</span>
-                                            </span>
-                                        </div>
-                                        <div className="address-bottom">
-                                            <span className="address-area">
-                                                {address.areaInfo}
-                                            </span>
-                                            <span className="address-line">
-                                                {address.address}
-                                            </span>
-                                        </div>
-                                    </div>
+                                    {this.renderAddressList()}
                                 </div>
                                 <div className="message">
                                     <span className="message-label">

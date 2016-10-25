@@ -3,7 +3,7 @@
  * @Date:   2016-10-25 17:19:49
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-25 17:37:46
+ * @Last Modified time: 2016-10-25 18:03:02
  */
 
 'use strict';
@@ -116,6 +116,7 @@ export class AddressForm extends React.Component {
             ...AddressForm.defaultProps.data,
             ...this.props.data,
         };
+        console.log(this.props.data)
         const { getFieldDecorator } = this.props.form;
         return getFieldDecorator(name,{
             ...opt,
