@@ -3,7 +3,7 @@
  * @Date:   2016-10-20 09:26:57
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 22:25:33
+ * @Last Modified time: 2016-10-25 16:02:38
  */
 
 'use strict';
@@ -22,9 +22,11 @@ const defaultParams = {
 
 
 
-const BaiduMap = function(id, callback) {
+const BaiduMap = function(id, callback,flag) {
+
     var self = this;
     var BMap = window.BMap;
+
     this.element = document.getElementById(id);
     // init
     this.map = new BMap.Map(id, {
@@ -224,7 +226,7 @@ BaiduMap.prototype = {
 }
 BaiduMap.init = function(id, callback) {
     window.initBMap = function() {
-        let maper = new BaiduMap(id);
+        let maper = id && new BaiduMap(id);
         callback(maper);
         window.initBMap = undefined;
     }

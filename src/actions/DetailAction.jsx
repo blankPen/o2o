@@ -118,3 +118,15 @@ export function getCartList(storeId,memberId = "global"){
     data = data[memberId] || {};
     return data[storeId];
 }
+
+/**
+ * 清空购物车缓存数据
+ */
+export function clearCart(storeId,memberId = "global"){
+    return function(dispatch){
+        let data = storejs.get(CART_KEY) || {};
+        data[memberId] = data[memberId] || {};
+        delete data[memberId][storeId];
+        storejs.set(CART_KEY,data);
+    }
+}
