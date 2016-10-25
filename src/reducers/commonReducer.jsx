@@ -3,7 +3,7 @@
 * @Date:   2016-10-19 17:18:52
 * @Desc: this_is_desc
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-24 11:22:37
+* @Last Modified time: 2016-10-25 10:04:06
 */
 
 'use strict';
@@ -46,19 +46,14 @@ export default handleActions({
         }
     },
     'logout/success' :(state, action)=>{
-        let user_info = Cookie.getJSON('user_info') || "";
-        let user_id = sessionStorage.getItem("user_id") || "";
-        if (user_id) {
-            sessionStorage.removeItem('user_id');
-        }
-        if(user_info){
-            Cookie.remove('user_info', { secure: true });
-        }
+        sessionStorage.removeItem('user_id');
+        Cookie.remove('user_info', { secure: true });
         return {
             ...state,
-            userInfo: []
+            userInfo: undefined
         }
     }
 }, {
+    userInfo: undefined,
     position: DEFAULT_POSITION
 });

@@ -3,7 +3,7 @@
  * @Date:   2016-10-21 17:47:08
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-22 00:04:23
+ * @Last Modified time: 2016-10-25 10:05:35
  */
 
 'use strict';
@@ -45,7 +45,9 @@ export class index extends React.Component {
         return (
             <div className="user-box-select">
                 <span className='loginbar-username'>
-                    <span >欢迎你，{(this.props.userInfo.memberTruename?this.props.userInfo.memberTruename:this.props.userInfo.memberName)||"默认用户"}</span>
+                    <span>
+                        欢迎你，{this.props.userInfo.memberTruename || this.props.userInfo.memberName ||"默认用户"}
+                    </span>
                     <i className="fa fa-fw fa-angle-down"></i>
                 </span>
                 <ul className="login-menu">

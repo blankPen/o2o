@@ -1,6 +1,7 @@
 'use strict';
 import ajax from 'common/Ajax';
 import store from 'stores';
+import storejs from 'storejs';
 import { message } from 'antd'
 
 // 收藏店铺
@@ -96,5 +97,24 @@ export function getStoreEvaluatList(params,call) {
     }
 }
 
+const CART_KEY = 'CART_KEY';
+/**
+ * 保存购物车数据到缓存
+ */
+export function saveCartList(storeId,memberId = "global",newData){
+    return function(dispatch){
+        let data = storejs.get(CART_KEY) || {};
+        data[memberId] = data[memberId] || {};
+        data[memberId][storeId] = newData;
+        storejs.set(CART_KEY,data);
+    }
+}
 
-
+/**
+ * 获取购物车缓存数据
+ */
+export function getCartList(storeId,memberId = "global"){
+    let data = storejs.get(CART_KEY) || {};
+    data = data[memberId] || {};
+    return data[storeId];
+}

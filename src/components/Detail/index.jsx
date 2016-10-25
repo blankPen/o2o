@@ -48,12 +48,21 @@ export class Detail extends React.Component {
 
     constructor(props) {
         super(props);
+        let memberId = this.props.userInfo.memberId;
+        let storeId = this.props.params.storeId;
+        let data = actions.getCartList(storeId,memberId);
+        console.log(data)
         this.state = {
-            inCartItems: {},
+            inCartItems: data || {},
             is_show_category:true
         }
     }
-
+    componentWillUnmount() {
+        let memberId = this.props.userInfo.memberId;
+        let storeId = this.props.params.storeId;
+        let data = this.state.inCartItems;
+        this.props.dispatch(actions.saveCartList(storeId,memberId,data));
+    }
     componentWillMount=()=>{
         let memberId = this.props.userInfo.memberId;
         let storeId = this.props.params.storeId;
@@ -106,7 +115,7 @@ export class Detail extends React.Component {
         this.setState({
             inCartItems: newItems
         });
-        this.refs.cartBox.triggerAnim(getPosition(data.goodsId));
+        this.refs.cartBox && this.refs.cartBox.triggerAnim(getPosition(data.goodsId));
     }
     toggleCollect=(flag)=>{
         let storeId = this.props.params.storeId;
@@ -116,7 +125,7 @@ export class Detail extends React.Component {
         this.setState({
             inCartItems: value
         });
-        this.refs.cartBox.triggerAnim(getPosition(addId));
+        this.refs.cartBox && this.refs.cartBox.triggerAnim(getPosition(addId));
     }
     renderTooltipTitle=(type,level,num1,num2)=>{
         if(type=='time'){
