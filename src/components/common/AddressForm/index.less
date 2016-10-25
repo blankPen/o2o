@@ -1,0 +1,74 @@
+/*
+* @Author: pengzhen
+* @Date:   2016-10-25 17:19:55
+* @Last Modified by:   pengzhen
+* @Last Modified time: 2016-10-25 17:21:02
+*/
+@import url('../../../styles/theme.less');
+
+.address-form {
+    padding: 0 0 0 40px;
+    .ant-radio-inner:after{
+        background-color: @active-color;
+    }
+    .ant-form-item-label {
+        font-size: 14px;
+        text-align: left;
+        label {
+            color: #333;
+            padding-left: 10px;
+        }
+        .ant-form-item-required {
+            padding-left: 0;
+        }
+    }
+    input,
+    .ant-input {
+        border-color: 1px solid #d9d9d9;
+        box-shadow: none;
+        outline: none;
+        padding: 6px 7px;
+        height: 32px;
+        width: 100%;
+    }
+    .ant-form-item {
+        margin-bottom: 20px;
+    }
+    .item-address {
+        padding-top: 1em;
+        .ant-form-explain {
+            position: absolute;
+            top: -1.5em;
+        }
+    }
+    .btn-box {
+        text-align: center;
+        margin-left: -40px;
+        .ant-btn {
+            width: 110px;
+            height: 40px;
+            font-size: 16px;
+            text-align: center;
+            color: #ffffff;
+            background: #a0a0a0;
+            border-radius: 3px;
+        }
+        .ant-btn-clicked:after{
+            border-color: @primary-color;
+        }
+        .ant-btn,
+        .ant-btn:hover,
+        .ant-btn:focus{
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+        .btn-save {
+            color: #6b450a;
+            background-color: #ffd705;
+        }
+        .btn-cancel{
+            margin-left: 21px;
+        }
+    }
+}
