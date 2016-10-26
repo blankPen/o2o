@@ -55,16 +55,16 @@ export class Account extends React.Component {
     }
     resetState(userInfo) {
       console.log(userInfo);
-      let percent=3;//0% 3% 33% 68%
-      let progress_name=true,progress_loginPassword=false,progress_payPassword=false,progress_phone=false;
+      let percent=33;//0% 3% 33% 68%
+      let progress_name=false,progress_loginPassword=false,progress_payPassword=false,progress_phone=false;
       if (userInfo) {
-       /* progress_name=userInfo.memberTruename?true:false;*/
+        progress_name=userInfo.memberTruename?true:false;
         progress_loginPassword=(userInfo.isSettingPwd===1)?true:false;
         progress_payPassword=userInfo.payPassword?true:false;
         progress_phone=(userInfo.isBind===1)?true:false;
         if(progress_name&&progress_loginPassword&&progress_payPassword&&progress_phone){//35% 65% 100%
             console.log("全部验证通过");
-            percent=percent>8?percent>30?100:65:35;
+            percent=percent>3?percent>33?100:65:35;
         }else if(!progress_name&&!progress_loginPassword&&!progress_payPassword&&!progress_phone){//不操作
           console.log("全部验证不通过")
         }else{//11%
@@ -172,6 +172,7 @@ export class Account extends React.Component {
                 this.handleOnCancel();
                 callback && callback(re);
               }else{
+                message.error(re.msg);
                 console.log(re.msg);
               }
             }
@@ -198,6 +199,7 @@ export class Account extends React.Component {
               this.handleOnCancel();
               callback && callback(re);
             }else{
+              message.error(re.msg);
               console.log(re.msg);
             }
           }
@@ -231,6 +233,7 @@ export class Account extends React.Component {
                 this.handleOnCancel();
                 callback && callback(re);
               }else{
+                message.error(re.msg);
                 console.log(re.msg);
               }
             }

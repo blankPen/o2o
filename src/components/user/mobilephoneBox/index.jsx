@@ -274,11 +274,11 @@ export class index extends React.Component {
                     {getFieldDecorator('Vcode', {
                         rules: [
                           { required: true, message: '验证码不能为空' },
-
+                          { validator: this.validatorVcode }
                         ],
                     })(
                       <Input id="control-Vcode" placeholder="验证码"/>
-                    )}{/*{ validator: this.validatorVcode }*/}
+                    )}
                     <Button
                         disabled={wait2 === 'loading' || wait2 > 0}
                         className="input-group-addon"
