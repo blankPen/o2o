@@ -7,6 +7,7 @@ import {
 import { Select } from 'antd';
 import History from 'common/History';
 import Img from 'common/Img';
+import moment from 'moment';
 import * as actions from 'actions/OrderAction';
 import { deleteAddress } from 'actions/AddressAction';
 import Dialog from 'components/common/Dialog';
@@ -17,9 +18,10 @@ function mapStateToProps({
     orderState,
     common
 }) {
+    console.log(orderState.orderInfo)
     return {
         userInfo: common.userInfo,
-        order: orderState.orderInfo,
+        order: orderState.orderInfo || {},
         addressList: orderState.addressList
     };
 }
@@ -43,11 +45,15 @@ export class OrderPreview extends React.Component {
                 remark: '',
                 invoice: '21312313',
                 paymentMethod: 0,
-                deliveryTime:"14:00"
+                deliveryTime:"",
+                goodsIds: undefined,
+                nums: undefined,
+                storeId: undefined,
+                memberId: undefined,
+                addressId: undefined,
             }
         }
     }
-
     componentWillMount(){
         this.loadOrderDetail();
         this.loadAddress();
@@ -65,10 +71,24 @@ export class OrderPreview extends React.Component {
             memberId,
             goodsIds: goodsIds.join(','),
             nums: nums.join(','),
-        },(res)=>{
-            this.setState({
-                selectAddress: res.data.address
-            });
+        },({data,result})=>{
+            if(result == 1){
+                let FORMAT_TEMP = 'YYYY-MM-DD HH:mm:ss';
+                this.now = moment().format(FORMAT_TEMP);
+                this.setState({
+                    selectAddress: data.address || {},
+                    postData: {
+                        ...this.state.postData,
+                        goodsIds: goodsIds.join(','),
+                        nums: nums.join(','),
+                        storeId,
+                        memberId,
+                        addressId: data.address && data.address.addressId,
+                        deliveryTime: this.now,
+                        paymentMethod: data.store.paymentMethod!=2?data.store.paymentMethod:0
+                    }
+                });
+            }
         }));
     }
     loadAddress(){
@@ -79,9 +99,6 @@ export class OrderPreview extends React.Component {
             storeId,
             memberId,
         }));
-    }
-    handleChange = (value) => {
-        console.log(`selected ${value}`);
     }
     onChangeValue(key,value){
         value = value.target ? value.target.value : value;
@@ -104,20 +121,35 @@ export class OrderPreview extends React.Component {
             let adr = this.state.selectAddress || {};
             if(adr.addressId = id){
                 this.setState({
-                    selectAddress: {}
+                    selectAddress: {},
+                    postData: {
+                        ...this.state.postData,
+                        addressId: undefined,
+                    }
                 });
             }
-        }))
+        }));
     }
     selectAddress=(address)=>{
         this.setState({
-            selectAddress: address
+            selectAddress: address,
+            postData: {
+                ...this.state.postData,
+                addressId: address.addressId,
+            }
         });
     }
     toggleAddressDialog=()=>{
         this.setState({
             show_address_dialog:!this.state.show_address_dialog
         });
+    }
+    onPay=()=>{
+        let values = this.state.postData;
+        console.log(values);
+        this.props.dispatch(actions.saveOrder(values,(res)=>{
+
+        }));
     }
     showEditDialog(address,e){
         e.stopPropagation();
@@ -159,7 +191,7 @@ export class OrderPreview extends React.Component {
                 <div key={address.addressId} className={className}
                     onClick={address.isDeliveryRange ==1 && this.selectAddress.bind(this,address)}>
                     <div className="address-out-scope">
-                        该地址不在配送范围内
+                        不在配送范围内
                     </div>
                     <div className="member-top">
                         <span className="member-name">{address.trueName}</span>
@@ -230,10 +262,12 @@ export class OrderPreview extends React.Component {
                         <div className="operation-label">
                             优惠券：
                         </div>
-                        <Select style={{ width: 200 }} onChange={this.handleChange}>
+                        <Select style={{ width: 200 }} onChange={this.changeSendTime}>
                             { salesCampaignList.length?
                                 salesCampaignList.map((item,i)=>{
-                                    return <Option value="lucy">Lucy</Option>
+                                    return <Option key={i} value={item.decreasePrice+''}>
+                                        {item.name}
+                                    </Option>
                                 }):
                                 <Option value="none">没有可用的优惠券</Option>}
                         </Select>
@@ -246,9 +280,11 @@ export class OrderPreview extends React.Component {
         );
     }
     renderPayMethod(){
+        const { store={} } = this.props.order;
+        let flag = store.paymentMethod;
         let data = [
-            {value:0,label:'在线支付'},
-            {value:1,label:'餐到付款'}
+            {value:1,label:'餐到付款',disabled: flag==0 },
+            {value:0,label:'在线支付',disabled: flag==1 },
         ];
         let paymentMethod = this.state.postData.paymentMethod;
         return (
@@ -259,6 +295,8 @@ export class OrderPreview extends React.Component {
                         <button
                             key={item.value}
                             type='button'
+                            disabled={item.disabled}
+                            title={item.disabled?`该商店不支持${item.label}`:''}
                             className={'btn'+(paymentMethod == item.value?' btn-select':'')}
                             onClick={this.onChangeValue.bind(this,'paymentMethod',item.value)}
                         >
@@ -269,9 +307,30 @@ export class OrderPreview extends React.Component {
             </div>
         )
     }
+    renderTimeSelector(){
+        let opts = [];
+        let FORMAT_TEMP = 'YYYY-MM-DD HH:mm:ss';
+        opts.push(<Option key='now' value={this.now}>立即送出</Option>);
+        let startTime = moment(moment(this.now).format('YYYY-MM-DD HH:00:00'));
+        startTime = +new Date(startTime.format(FORMAT_TEMP))+60*60*1000;
+        for (var i = 0; i < 10; i++) {
+            let time = moment(startTime + i*20*60*1000);
+            opts.push(<Option key={i} value={time.format(FORMAT_TEMP)}>{time.format('HH:mm')}</Option>);
+        }
+        return (
+            <div className="preorder-time">
+                <span>期望送出时间：</span>
+                <Select
+                    style={{ width: 92 }}
+                    value={this.state.postData.deliveryTime}
+                    onChange={this.onChangeValue.bind(this,'deliveryTime')}>
+                    {opts}
+                </Select>
+            </div>
+        )
+    }
     render(){
-        const { store={} } = this.props.order;
-
+        const { store={},totalPrice } = this.props.order;
 
         return(
             <div className="preview-body">
@@ -312,28 +371,23 @@ export class OrderPreview extends React.Component {
                                         发票信息：
                                     </span>
                                     <div className="message-box">
-                                        <input
-                                            type="text"
-                                            className="message-input"
-                                            onChange={this.onChangeValue.bind(this,'invoice')}
-                                            value={this.state.postData.invoice}
-                                        />
+                                        {store.isOpenInvoice == 1?
+                                            <input
+                                                className="message-input"
+                                                onChange={this.onChangeValue.bind(this,'invoice')}
+                                                value={this.state.postData.invoice}
+                                            />:
+                                            undefined
+                                        }
                                     </div>
                                 </div>
                                 {this.renderPayMethod()}
                             </div>
                         </div>
-                       <div className="preorder-time">
-                            <span>期望送出时间：</span>
-                            <Select defaultValue="now" style={{ width: 92 }} onChange={this.handleChange}>
-                                  <Option value="now">立即送出</Option>
-                                  <Option value="14:00">14:00</Option>
-                                  <Option value="14:20">14:20</Option>
-                            </Select>
-                        </div>
+                        {this.renderTimeSelector()}
                         <div className="order-info clearfix">
                             <div className="need-pay">
-                                您需要支付<span className="need-price">￥117</span>
+                                您需要支付<span className="need-price">￥{totalPrice}</span>
                             </div>
                             <div className="app-download">
                                 <div className="download-label">
@@ -344,11 +398,14 @@ export class OrderPreview extends React.Component {
                                     去下载
                                 </div>
                             </div>
-                            <div className="to-pay">
-                                去付款
+                            <div className="to-pay" onClick={this.onPay}>
+                                {this.state.postData.paymentMethod == 1?
+                                '确认订单':'去付款'}
                             </div>
                             <div className="send-by">
-                                * 由 美团专送 提供专业高品质送餐服务
+                                * {store.shippingMethod == 1?
+                                    '由 雷铭专送 提供专业高品质送餐服务':
+                                    '由 商家自身 提供送餐服务'}
                             </div>
                         </div>
                     </div>

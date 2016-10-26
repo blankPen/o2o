@@ -85,7 +85,6 @@
             width: 590px;
             background: #fff;
             border: 1px solid #ebebeb;
-            ;
             .address-info {
                 padding: 30px;
                 padding-bottom: 0;
@@ -123,7 +122,30 @@
                             border: 1px solid #eeeeee;
                             position: relative;
                             &.address-checked{
-                                border-color: #fa9700;
+                                border-color: @active-color;
+                                &:after{
+                                    @iconSize: 20px;
+                                    transform: scale(0.5);
+                                    transform-origin: 100% 100%;
+                                    display: inline-block;
+                                    content: "\f00c";
+                                    font-family: FontAwesome;;
+                                    position: absolute;
+                                    width: 0;
+                                    height: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    color: #fff;
+                                    font-size: 15px;
+                                    line-height: 15px;
+                                    vertical-align: middle;
+                                    text-align: center;
+                                    background: transparent;
+                                    border-top: @iconSize solid transparent;
+                                    border-left: @iconSize solid transparent;
+                                    border-right: @iconSize solid @active-color;
+                                    border-bottom: @iconSize solid @active-color;
+                                }
                             }
                             &:hover {
                                 .member-top {
@@ -165,7 +187,7 @@
                                     display: none;
                                     span {
                                         margin-left: 10px;
-                                        color: #fa9700;
+                                        color: @active-color;
                                         cursor: pointer;
                                     }
                                 }
@@ -206,17 +228,21 @@
                         .choose-way {
                             display: inline-block;
                             .btn {
-                                background: #ececec;
+                                background: #fff;
                                 width: 75px;
                                 height: 20px;
                                 border: 1px solid #e4e4e4;
                                 cursor: pointer;
                                 outline: none;
                                 margin-right: 20px;
+                                &:disabled{
+                                    background: #ececec;
+                                    cursor: no-drop;
+                                }
                             }
                             .btn-select {
-                                border: 1px solid #fa9700;
-                                color: #fa9700;
+                                border: 1px solid @active-color;
+                                color: @active-color;
                                 background-color: #fff;
                             }
                         }
@@ -242,7 +268,7 @@
                     font-weight: bold;
                     .need-price {
                         font-size: 24px;
-                        color: #fa9700;
+                        color: @active-color;
                         font-weight: bold;
                     }
                 }

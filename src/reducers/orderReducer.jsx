@@ -20,6 +20,6 @@ export default handleActions({
     },
 
 }, {
-    orderInfo:[],
+    orderInfo: {},
     addressList: []
 });

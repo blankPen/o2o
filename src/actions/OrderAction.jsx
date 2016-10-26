@@ -43,7 +43,7 @@ export function saveOrder(params,callback){
                 //     type: 'get/order/info',
                 //     orderInfo: res.data
                 // })
-                call && call(res);
+                callback && callback(res);
             }
         })
     }
