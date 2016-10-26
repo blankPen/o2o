@@ -233,29 +233,19 @@ let index = class extends React.Component {
   validatorDcode=(rule, value, callback)=>{
     console.log(" 验证验证码。。。");
     let phone=this.props.form.getFieldValue('phone');
-    let bool=false;
-    this.props.form.validateFields(['phone'],(errors,values)=>{
-      if (errors) {
-        callback();
-        return;
-      }
-      bool=true;
-    });
-    if(bool){
-      let validateCode=this.props.form.getFieldValue('Dcode');
-      this.props.dispatch(getCheckCode({
-          "validateCode" : validateCode,
-          "type" : this.state.type,
-          "mobile" : phone
-        },(re)=> {
-          if(re.result==1){
-              callback();
-          } else {
-            callback([new Error('动态码验证失败')]);
-          }
+    let validateCode=this.props.form.getFieldValue('Dcode');
+    this.props.dispatch(getCheckCode({
+        "validateCode" : validateCode,
+        "type" : this.state.type,
+        "mobile" : phone
+      },(re)=> {
+        if(re.result==1){
+            callback();
+        } else {
+          callback([new Error('动态码验证失败')]);
         }
-      ))
-    }
+      }
+    ))
   }
   handerOnFocus=()=>{
     this.setState({
@@ -268,7 +258,9 @@ let index = class extends React.Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.a);
+    if(this.a){
+      clearInterval(this.a);
+    }
   }
   render() {
     return (

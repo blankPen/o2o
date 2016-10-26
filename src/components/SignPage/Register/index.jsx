@@ -131,28 +131,18 @@ let index= class extends React.Component {
     console.log(" 验证验证码。。。");
     let phone=this.props.form.getFieldValue('phone');
     let validateCode=this.props.form.getFieldValue('Dcode');
-    let bool=false;
-    this.props.form.validateFields(['phone'],(errors,values)=>{
-      if (errors) {
-        callback();
-        return;
-      }
-      bool=true;
-    });
-    if (bool) {
-      this.props.dispatch(getCheckCode({
-          "validateCode" : validateCode,
-          "type" : this.state.type,
-          "mobile" : phone
-        },(re)=> {
-          if(re.result==1){
-              callback();
-          } else {
-            callback([new Error('动态码验证失败')]);
-          }
+    this.props.dispatch(getCheckCode({
+        "validateCode" : validateCode,
+        "type" : this.state.type,
+        "mobile" : phone
+      },(re)=> {
+        if(re.result==1){
+            callback();
+        } else {
+          callback([new Error('动态码验证失败')]);
         }
-      ))
-    }
+      }
+    ))
   }
   renderPassStrengthBar(type) {
     const strength = type === 'pass' ? this.state.passStrength : this.state.rePassStrength;
@@ -167,7 +157,6 @@ let index= class extends React.Component {
       M: '中',
       H: '强',
     };
-
     return (
       <div>
         <ul className={classSet}>
@@ -244,7 +233,9 @@ let index= class extends React.Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.a);
+    if(this.b){
+      clearInterval(this.b);
+    }
   }
 
   handerOnFocus=()=>{
