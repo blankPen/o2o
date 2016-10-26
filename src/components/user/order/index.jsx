@@ -18,8 +18,9 @@ import ListView from 'components/common/ListView';
 import Img from 'common/Img';
 import MenuList from './MenuList.jsx';
 import History from 'common/History';
+import {TimeConvert} from 'components/common/TimeConvert.jsx';
 
-const moment = require('moment');
+
 function mapStateToProps({
     common,
     userState
@@ -129,6 +130,7 @@ export class MyOrder extends React.Component {
                 return "未知";
         }
     }
+    
     goDetail=(e)=>{
         let data=this.props.data||{};
         
@@ -195,7 +197,7 @@ export class MyOrder extends React.Component {
     render(){
         let data=this.props.data||{};
         let state=this.returnState(data.orderState);
-        let day = moment.unix(1318781876).format('YYYY-MM-DD h:mm');
+        let day = TimeConvert.minsCon(data.createTime,'ymdhms');
         return(
             <div className="orderDescs">
                 <div className="theOrder" onClick={this.zk.bind(null,data.orderId)}>
