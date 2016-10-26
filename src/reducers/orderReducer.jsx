@@ -18,8 +18,15 @@ export default handleActions({
             addressList: action.list
         }
     },
+    'get/order/coupon/list': (state, action) => {
+        return {
+            ...state,
+            couponList: action.list
+        }
+    },
 
 }, {
     orderInfo: {},
-    addressList: []
+    addressList: [],
+    couponList: []
 });

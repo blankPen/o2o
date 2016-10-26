@@ -49,6 +49,32 @@ export function saveOrder(params,callback){
     }
 }
 /**
+ * [getCouponList description]
+ * @param  {[type]} params [description]
+ * @param  {[type]} call   [description]
+ * @return {[type]}        [description]
+ */
+export function getCouponList(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/coupon/orderCouponMemberList',
+            data: params,
+            success: function(res){
+                if(res.result == 1){
+                    dispatch({
+                        type: 'get/order/coupon/list',
+                        list: res.data
+                    })
+                }else{
+                    message.error(res.msg);
+                }
+                call && call(res);
+            }
+        })
+    }
+}
+
+/**
  * [getAddressList description]
  * @param  {[type]} params [description]
  * @param  {[type]} call   [description]

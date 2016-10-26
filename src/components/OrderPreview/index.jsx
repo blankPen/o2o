@@ -18,11 +18,11 @@ function mapStateToProps({
     orderState,
     common
 }) {
-    console.log(orderState.orderInfo)
     return {
         userInfo: common.userInfo,
         order: orderState.orderInfo || {},
-        addressList: orderState.addressList
+        addressList: orderState.addressList,
+        couponList: orderState.couponList
     };
 }
 
@@ -71,6 +71,7 @@ export class OrderPreview extends React.Component {
             memberId,
             goodsIds: goodsIds.join(','),
             nums: nums.join(','),
+            couponId: this.state.couponId
         },({data,result})=>{
             if(result == 1){
                 let FORMAT_TEMP = 'YYYY-MM-DD HH:mm:ss';
@@ -88,6 +89,7 @@ export class OrderPreview extends React.Component {
                         paymentMethod: data.store.paymentMethod!=2?data.store.paymentMethod:0
                     }
                 });
+                this.loadCoupons();
             }
         }));
     }
@@ -100,6 +102,16 @@ export class OrderPreview extends React.Component {
             memberId,
         }));
     }
+    loadCoupons(){
+        let memberId = this.props.userInfo.memberId;
+        const { storeId } = this.props.location.state;
+        let orderAmount = this.props.order.totalPrice;
+        this.props.dispatch(actions.getCouponList({
+            storeId,
+            memberId,
+            orderAmount,
+        }));
+    }
     onChangeValue(key,value){
         value = value.target ? value.target.value : value;
         this.setState({
@@ -108,6 +120,15 @@ export class OrderPreview extends React.Component {
                 [key]: value
             }
         });
+    }
+    changeDecreasePrice=(couponId)=>{
+        if(couponId != 'none'){
+            this.setState({
+                couponId
+            },()=>{
+                this.loadOrderDetail();
+            });
+        }
     }
     onAddAddress=(res)=>{
         console.log("添加地址成功",res);
@@ -224,7 +245,7 @@ export class OrderPreview extends React.Component {
     }
     rednerGoodsMenu(){
         const { goodsList=[],extraFeeList=[],salesCampaignList=[],totalPrice } = this.props.order;
-        salesCampaignList
+        const couponList = this.props.couponList;
         return (
             <div className="content-left">
                 <div className="goods-info">
@@ -262,10 +283,10 @@ export class OrderPreview extends React.Component {
                         <div className="operation-label">
                             优惠券：
                         </div>
-                        <Select style={{ width: 200 }} onChange={this.changeSendTime}>
-                            { salesCampaignList.length?
-                                salesCampaignList.map((item,i)=>{
-                                    return <Option key={i} value={item.decreasePrice+''}>
+                        <Select style={{ width: 200 }} onChange={this.changeDecreasePrice}>
+                            { couponList.length?
+                                couponList.map((item,i)=>{
+                                    return <Option key={i} value={item.id+''}>
                                         {item.name}
                                     </Option>
                                 }):
