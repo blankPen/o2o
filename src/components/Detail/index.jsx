@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import {
     connect
 } from 'react-redux';
+import History from 'common/History';
 import Img from 'common/Img';
 import * as DomUtils from 'common/utils/dom';
 import * as actions from 'actions/DetailAction';
@@ -127,6 +128,18 @@ export class Detail extends React.Component {
         });
         this.refs.cartBox && this.refs.cartBox.triggerAnim(getPosition(addId));
     }
+    toOrderPreview=()=>{
+        let memberId = this.props.userInfo.memberId;
+        let storeId = this.props.params.storeId;
+        History.push({
+            pathname: '/order_preview',
+            state: {
+               data: this.state.inCartItems,
+               storeId: storeId
+            }
+        });
+        this.props.dispatch(actions.clearCart(storeId,memberId));
+    }
     renderTooltipTitle=(type,level,num1,num2)=>{
         if(type=='time'){
             return(
@@ -185,6 +198,7 @@ export class Detail extends React.Component {
                     startPrice={data.startPrice}
                     data={this.state.inCartItems}
                     onChange={this.handleChangeCart}
+                    onSubmit={this.toOrderPreview}
                 />
                <div className="business-top">
                     <div className="content-box">

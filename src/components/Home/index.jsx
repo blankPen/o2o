@@ -127,7 +127,7 @@ export class Home extends React.Component {
             sortFielName: order,
             isOpenInvoice: special.indexOf('isOpenInvoice') == -1?0:1,
             startPrice: special.indexOf('startPrice') == -1?0:1,
-            isExpressFee: special.indexOf('isExpressFee') == -1?0:1,
+            isExpressFee: special.indexOf('isExpressFee') == -1?undefined:1,
             tagKey: discount
         }
     }

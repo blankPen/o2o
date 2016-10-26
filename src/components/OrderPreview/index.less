@@ -1,7 +1,7 @@
 @import url('../../styles/theme.less');
 .preview-body {
     width: 980px;
-    margin: auto;
+    margin: 0 auto 40px;
     .breadcrumb {
         border-left: 5px solid #6b450a;
         color: #444444;
@@ -12,6 +12,7 @@
         }
     }
     .preview-content {
+        .clearfix();
         margin-top: 20px;
         .content-left {
             float: left;
@@ -112,22 +113,49 @@
                         }
                     }
                     .select-address {
-                        padding: 0px 20px;
-                        background: #fafafa;
-                        margin-top: 15px;
-                        color: #b5b5b5;
-                        border: 1px solid #eeeeee;
-                        &:hover {
-                            .address-box {
+                        .address-box {
+                            cursor: pointer;
+                            font-size: 14px;
+                            padding: 0px 20px;
+                            margin-top: 15px;
+                            color: #b5b5b5;
+                            background: #fafafa;
+                            border: 1px solid #eeeeee;
+                            position: relative;
+                            &.address-checked{
+                                border-color: #fa9700;
+                            }
+                            &:hover {
                                 .member-top {
                                     .operation-box {
                                         display: inline-block;
                                     }
                                 }
                             }
-                        }
-                        .address-box {
-                            font-size: 14px;
+                            &.not-in-scope{
+                                &:hover {
+                                    .member-top {
+                                        .operation-box {
+                                            display: none;
+                                        }
+                                    }
+                                }
+                                .address-out-scope{
+                                    display: block;
+                                }
+                            }
+                            .address-out-scope{
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                                background: rgba(0,0,0,0.2);
+                                color: #fff;
+                                line-height: 86px;
+                                text-align: center;
+                                display: none;
+                            }
                             .member-top {
                                 border-bottom: 1px dashed #e5e5e5;
                                 height: 42px;
@@ -184,14 +212,12 @@
                                 border: 1px solid #e4e4e4;
                                 cursor: pointer;
                                 outline: none;
+                                margin-right: 20px;
                             }
                             .btn-select {
                                 border: 1px solid #fa9700;
                                 color: #fa9700;
                                 background-color: #fff;
-                            }
-                            .inline-pay {
-                                margin-left: 20px;
                             }
                         }
                     }

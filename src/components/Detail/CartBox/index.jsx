@@ -3,7 +3,7 @@
  * @Date:   2016-10-22 12:37:44
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 13:40:14
+ * @Last Modified time: 2016-10-26 10:00:26
  */
 
 'use strict';
@@ -13,6 +13,7 @@ import {
     connect
 } from 'react-redux';
 import * as DomUtils from 'common/utils/dom';
+import History from 'common/History';
 import NumInput from 'components/common/NumInput';
 import Parabola from './parabola.js';
 
@@ -96,7 +97,7 @@ export default class CartBox extends React.Component {
         }
     }
     toOrderPreview=()=>{
-        
+        this.props.onSubmit && this.props.onSubmit();
     }
 
     render() {

@@ -5,22 +5,22 @@ import {
     connect
 } from 'react-redux';
 import { Select } from 'antd';
+import History from 'common/History';
 import Img from 'common/Img';
 import * as actions from 'actions/OrderAction';
-import { getAddressList } from 'actions/AddressAction';
+import { deleteAddress } from 'actions/AddressAction';
 import Dialog from 'components/common/Dialog';
 import AddressForm from 'components/common/AddressForm';
 const Option = Select.Option;
 
 function mapStateToProps({
     orderState,
-    addressState,
     common
 }) {
     return {
-         ...orderState,
-         userInfo: common.userInfo,
-         addressList: addressState.list
+        userInfo: common.userInfo,
+        order: orderState.orderInfo,
+        addressList: orderState.addressList
     };
 }
 
@@ -31,55 +31,104 @@ export class OrderPreview extends React.Component {
 
     constructor(props) {
         super(props);
+        const { data:cartMap,storeId } = this.props.location.state;
+        if(!cartMap || !storeId){
+            History.replace('/');
+        }
         this.state={
-            show_address_dialog: true,
-            curAddress: undefined,
-            orderInfo:{
-                message:'11111',
-                invoice:'21312313',
-                pay_way:"D", //D：餐到付款 Z：在线付款
-                send_time:"14:00"
+            show_address_dialog: false,
+            editAddress: undefined,
+            selectAddress: {},
+            postData:{
+                remark: '',
+                invoice: '21312313',
+                paymentMethod: 0,
+                deliveryTime:"14:00"
             }
         }
     }
 
     componentWillMount(){
-        let memberId = this.props.userInfo && this.props.userInfo.memberId;
-        // let store_id=this.props.params&&this.props.params.store_id;
-        // 请求收货地址列表
-        this.props.dispatch(getAddressList({
-            storeId: undefined,
-            memberId
+        this.loadOrderDetail();
+        this.loadAddress();
+    }
+    loadOrderDetail(){
+        let memberId = this.props.userInfo.memberId;
+        const { data:cartMap,storeId } = this.props.location.state;
+        let goodsIds = [],nums = [];
+        Object.keys(cartMap).forEach(id => {
+            goodsIds.push(id);
+            nums.push(cartMap[id].num);
+        });
+        this.props.dispatch(actions.getOrderInfo({
+            storeId,
+            memberId,
+            goodsIds: goodsIds.join(','),
+            nums: nums.join(','),
+        },(res)=>{
+            this.setState({
+                selectAddress: res.data.address
+            });
         }));
     }
-
+    loadAddress(){
+        // 请求收货地址列表
+        let memberId = this.props.userInfo.memberId;
+        const { storeId } = this.props.location.state;
+        this.props.dispatch(actions.getAddressList({
+            storeId,
+            memberId,
+        }));
+    }
     handleChange = (value) => {
         console.log(`selected ${value}`);
     }
-
-    onAddress=(res)=>{
+    onChangeValue(key,value){
+        value = value.target ? value.target.value : value;
+        this.setState({
+            postData: {
+                ...this.state.postData,
+                [key]: value
+            }
+        });
+    }
+    onAddAddress=(res)=>{
         console.log("添加地址成功",res);
         this.toggleAddressDialog();
+        this.loadAddress();
+    }
+    onDelAddress=(id,e)=>{
+        e.stopPropagation();
+        this.props.dispatch(deleteAddress(id,()=>{
+            this.loadAddress();
+            let adr = this.state.selectAddress || {};
+            if(adr.addressId = id){
+                this.setState({
+                    selectAddress: {}
+                });
+            }
+        }))
+    }
+    selectAddress=(address)=>{
+        this.setState({
+            selectAddress: address
+        });
     }
     toggleAddressDialog=()=>{
         this.setState({
             show_address_dialog:!this.state.show_address_dialog
         });
     }
-    showEditDialog(address){
+    showEditDialog(address,e){
+        e.stopPropagation();
         this.setState({
             show_address_dialog: true,
-            curAddress: address
+            editAddress: address
         });
     }
     renderAddressDialog=()=>{
-        let title = '';
-        let address = this.state.curAddress || {};
-        if(address.addressId){
-            title = '修改地址'
-        }else{
-            title = '添加新地址'
-        }
+        let address = this.state.editAddress || {};
+        let title = address.addressId ? '修改地址' : '添加新地址';
         return(
             <Dialog
                 visible={this.state.show_address_dialog}
@@ -89,20 +138,33 @@ export class OrderPreview extends React.Component {
                 <AddressForm
                     key={address.addressId || 'add'}
                     data={address}
-                    onSubmit={this.onAddress}
+                    onSubmit={this.onAddAddress}
                     onCancel={this.toggleAddressDialog}/>
             </Dialog>
         )
     }
     renderAddressList(){
+        let selectAddress = this.state.selectAddress;
         let list = this.props.addressList;
         return list.map((address,i)=>{
+
+            let className = "address-box";
+            if(address.addressId == selectAddress.addressId){
+                className+=" address-checked";
+            }
+            if(address.isDeliveryRange != 1){
+                className+=" not-in-scope";
+            }
             return (
-                <div key={address.addressId} className="address-box">
+                <div key={address.addressId} className={className}
+                    onClick={address.isDeliveryRange ==1 && this.selectAddress.bind(this,address)}>
+                    <div className="address-out-scope">
+                        该地址不在配送范围内
+                    </div>
                     <div className="member-top">
                         <span className="member-name">{address.trueName}</span>
                         <span className="member-sex">
-                            {address.sex=='0'?'先生：':'女生：'}
+                            {address.sex=='1'?'先生：':'女生：'}
                         </span>
                         <span className="member-phone">
                             {address.mobPhone}
@@ -111,28 +173,105 @@ export class OrderPreview extends React.Component {
                             <span onClick={this.showEditDialog.bind(this,address)}>
                                 修改
                             </span>
-                            <span>删除</span>
+                            <span onClick={this.onDelAddress.bind(this,address.addressId)}>
+                                删除
+                            </span>
                         </span>
                     </div>
                     <div className="address-bottom">
-                        <span className="address-area">
-                            {address.areaInfo}
-                        </span>
                         <span className="address-line">
                             {address.address}
+                        </span>
+                        <span className="address-area">
+                            {address.areaInfo}
                         </span>
                     </div>
                 </div>
             );
         })
     }
+    rednerGoodsMenu(){
+        const { goodsList=[],extraFeeList=[],salesCampaignList=[],totalPrice } = this.props.order;
+        salesCampaignList
+        return (
+            <div className="content-left">
+                <div className="goods-info">
+                    <div className="info-item head">
+                        <div className="left-info">菜品</div>
+                        <div className="right-price">价格/份数</div>
+                    </div>
+                    {goodsList.map((item,i) => {
+                        return (
+                            <div key={i} className="info-item">
+                                <div className="left-info">{item.goodsName}</div>
+                                <div className="right-price">
+                                    ¥{item.goodsPrice}*{item.goodsNum}
+                                </div>
+                            </div>
+                        );
+                    })}
+                    {extraFeeList.map((item,i)=>{
+                        return (
+                             <div key={i} className="info-item">
+                                <div className="left-info">{item.chargName}</div>
+                                <div className="right-price">
+                                    {`¥${item.amount}`}
+                                </div>
+                            </div>
+                        )
+                    })}
+                    <div className="info-item total">
+                        <div className="left-info">合计</div>
+                        <div className="right-price">¥{totalPrice}</div>
+                    </div>
+                </div>
+                <div className="info-footer">
+                    <div className="operation">
+                        <div className="operation-label">
+                            优惠券：
+                        </div>
+                        <Select style={{ width: 200 }} onChange={this.handleChange}>
+                            { salesCampaignList.length?
+                                salesCampaignList.map((item,i)=>{
+                                    return <Option value="lucy">Lucy</Option>
+                                }):
+                                <Option value="none">没有可用的优惠券</Option>}
+                        </Select>
+                    </div>
+                </div>
+                <div className="footer-img">
+                    <Img src='order-bot-bg1.png'></Img>
+                </div>
+            </div>
+        );
+    }
+    renderPayMethod(){
+        let data = [
+            {value:0,label:'在线支付'},
+            {value:1,label:'餐到付款'}
+        ];
+        let paymentMethod = this.state.postData.paymentMethod;
+        return (
+            <div className="pay-way">
+                <span className="pay-way-label">付款方式：</span>
+                <div className="choose-way">
+                    {data.map(item=>
+                        <button
+                            key={item.value}
+                            type='button'
+                            className={'btn'+(paymentMethod == item.value?' btn-select':'')}
+                            onClick={this.onChangeValue.bind(this,'paymentMethod',item.value)}
+                        >
+                            {item.label}
+                        </button>
+                    )}
+                </div>
+            </div>
+        )
+    }
     render(){
-        let goodsList = this.props.goodsList ||[];
-        let extraFeeList = this.props.extraFeeList ||[];
-        let store = this.props.store||{};
-        let address = this.props.address||{};
-        let afterPayClass = "after-pay btn"+(this.state.orderInfo.pay_way=="D"?' btn-select':'');
-        let inLinePayClass = "inline-pay btn"+(this.state.orderInfo.pay_way=="Z"?' btn-select':'');
+        const { store={} } = this.props.order;
+
 
         return(
             <div className="preview-body">
@@ -141,55 +280,7 @@ export class OrderPreview extends React.Component {
                 </div>
                 {this.renderAddressDialog()}
                 <div className="preview-content">
-                    <div className="content-left">
-                        <div className="goods-info">
-                            <div className="info-item head">
-                                <div className="left-info">菜品</div>
-                                <div className="right-price">价格/份数</div>
-                            </div>
-                            {goodsList.map((item,i)=>{
-                                return (
-                                     <div className="info-item">
-                                        <div className="left-info">{item.goodsName}</div>
-                                        <div className="right-price">
-                                            {`¥${item.goodsPrice}*${item.goodsNum}`}
-                                        </div>
-                                    </div>
-                                )
-                            })}
-
-                            {extraFeeList.map((item,i)=>{
-                                return (
-                                     <div className="info-item">
-                                        <div className="left-info">{item.chargName}</div>
-                                        <div className="right-price">
-                                            {`¥${item.amount}`}
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                            <div className="info-item total">
-                                <div className="left-info">合计</div>
-                                <div className="right-price">{`¥${this.props.totalPrice||0}`}</div>
-                            </div>
-                        </div>
-                        <div className="info-footer">
-                            <div className="operation">
-                                <div className="operation-label">
-                                    优惠券：
-                                </div>
-                                <Select defaultValue="lucy" style={{ width: 200 }} onChange={this.handleChange}>
-                                  <Option value="jack">Jack</Option>
-                                  <Option value="lucy">Lucy</Option>
-                                  <Option value="disabled" disabled>Disabled</Option>
-                                  <Option value="Yiminghe">yiminghe</Option>
-                                </Select>
-                            </div>
-                        </div>
-                        <div className="footer-img">
-                            <Img src='./order-bot-bg1.png'></Img>
-                        </div>
-                    </div>
+                    {this.rednerGoodsMenu()}
                     <div className="content-right">
                         <div className="address-info">
                             <div className="top-box">
@@ -200,7 +291,7 @@ export class OrderPreview extends React.Component {
                                         添加新地址
                                     </div>
                                 </div>
-                                <div className="select-address">
+                                <div className='select-address'>
                                     {this.renderAddressList()}
                                 </div>
                                 <div className="message">
@@ -209,16 +300,10 @@ export class OrderPreview extends React.Component {
                                     </span>
                                     <div className="message-box">
                                         <input
-                                            className="message-input"
                                             type="text"
-                                            onChange={(e)=>this.setState({
-                                                        orderInfo:{
-                                                            ...this.state.orderInfo,
-                                                            message:e.target.value
-                                                        }
-                                                    })
-                                                }
-                                            value={this.state.orderInfo.message}
+                                            className="message-input"
+                                            onChange={this.onChangeValue.bind(this,'remark')}
+                                            value={this.state.postData.remark}
                                             placeholder="不要辣，多放盐等口味要求" />
                                     </div>
                                 </div>
@@ -228,54 +313,14 @@ export class OrderPreview extends React.Component {
                                     </span>
                                     <div className="message-box">
                                         <input
-                                            className="message-input"
-                                            value={this.state.orderInfo.invoice}
-                                            onChange={(e)=>this.setState({
-                                                        orderInfo:{
-                                                            ...this.state.orderInfo,
-                                                            invoice:e.target.value
-                                                        }
-                                                    })
-                                                }
                                             type="text"
+                                            className="message-input"
+                                            onChange={this.onChangeValue.bind(this,'invoice')}
+                                            value={this.state.postData.invoice}
                                         />
                                     </div>
                                 </div>
-                                <div className="pay-way">
-                                    <span className="pay-way-label">付款方式：</span>
-                                    <div className="choose-way">
-                                        <button
-                                            className={afterPayClass}
-                                            onClick={()=>{
-                                                    this.setState({
-                                                        orderInfo:{
-                                                            ...this.state.orderInfo,
-                                                            pay_way:"D"
-                                                        }
-                                                    });
-                                                 }
-                                            }
-                                            type='button'
-                                        >
-                                            餐到付款
-                                        </button>
-                                        <button
-                                            className={inLinePayClass}
-                                            type='button'
-                                            onClick={()=>{
-                                                    this.setState({
-                                                        orderInfo:{
-                                                            ...this.state.orderInfo,
-                                                            pay_way:"Z"
-                                                        }
-                                                    });
-                                                 }
-                                            }
-                                        >
-                                            在线支付
-                                        </button>
-                                    </div>
-                                </div>
+                                {this.renderPayMethod()}
                             </div>
                         </div>
                        <div className="preorder-time">

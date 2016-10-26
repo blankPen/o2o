@@ -12,7 +12,14 @@ export default handleActions({
             orderInfo: action.orderInfo
         }
     },
+    'get/order/address/list': (state, action) => {
+        return {
+            ...state,
+            addressList: action.list
+        }
+    },
 
 }, {
-    list:[]
+    orderInfo:[],
+    addressList: []
 });

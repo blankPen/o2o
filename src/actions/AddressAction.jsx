@@ -3,6 +3,29 @@ import ajax from 'common/Ajax';
 import store from 'stores';
 import { message } from 'antd'
 
+
+/**
+ * 删除地址
+ */
+
+export function deleteAddress(addressId,call){
+    return function(){
+
+        ajax({
+            url: '/rest/api/address/delAddress',
+            data: {
+                addressId
+            },
+            success: function(res){
+                if(res.result != 1){
+                    message.error(res.msg);
+                }
+                call && call(res);
+            }
+        })
+    }
+}
+
 /**
  * 添加或更新地址
  */
