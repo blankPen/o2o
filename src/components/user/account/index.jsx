@@ -26,6 +26,19 @@ import Dialog from 'components/common/Dialog/';
 import PasswordBox from '../passwordBox/';
 import NameBox from '../nameBox/';
 import MobilephoneBox from '../mobilephoneBox/';
+import PaypassBox from '../paypassBox/'
+import {
+    retrieveToLoginpass,
+    updateToLoginpass,
+    retrieveToPaypass,
+    updateToPaypass,
+    updateToMobiphone,
+    updateToName
+} from 'actions/UserAction';
+import {
+    getMemberDetail
+} from 'actions/SignPageAction';
+import Cookie from "js-cookie";
 
 function mapStateToProps({
     common
@@ -82,7 +95,9 @@ export class Account extends React.Component {
             openName: false,/*是否打开姓名修改Dialog*/
             openPhone: false,/*是否打开手机修改Dialog*/
             openPassword: false,/*是否打开密码修改Dialog*/
-            type: "modifyMobile"/* 手机绑定或者修改操作类型*/
+            openPaypass: false,/*是否打开支付密码修改Dialog*/
+            type: "findPaypassword",/* 找回支付密码操作类型*/
+            type2: "findpassword"/* 找回密码操作类型*/
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -101,11 +116,9 @@ export class Account extends React.Component {
          this.setState({
             openName:false,
             openPhone:false,
-            openPassword:false
+            openPassword:false,
+            openPaypass:false
         });
-    }
-    handleOnOk=()=>{
-        console.log("点击");
     }
     setModalVisible=(modalVisible)=> {
         this.setState({
@@ -133,35 +146,103 @@ export class Account extends React.Component {
             show_dialog: true
         })
     }
-    handleNameSubmit = (errors,values) => {
+    changePaypass=()=>{
+      this.setState({
+            dailog_title: "更改支付密码",
+            openPaypass:true,
+            show_dialog: true
+        })
+    }
+    handleNameSubmit = (errors,values,callback) => {
         if (errors) {
           console.log(' name-box表单验证错误!');
           return;
         }
         console.log('name-box表单验证成功');
         console.log(values);
+        this.props.dispatch(updateToName({
+              "memberId": this.state.userInfo.memberId,
+              "memberRealName": values.name
+            },(re)=> {
+              if(re.result==1){
+                message.success(re.msg);
+                this.props.dispatch(getMemberDetail({
+                    "memberId": this.state.userInfo.memberId
+                }));
+                this.handleOnCancel();
+                callback && callback(re);
+              }else{
+                console.log(re.msg);
+              }
+            }
+          )
+        );
     }
-    handlePhoneSubmit = (e) => {
-        e.preventDefault();
-        /*this.setState({
-            loading:true
-        })*/
-        console.log("handlePhoneSubmit");
-        this.props.form.validateFields((errors, values) => {
-          if (errors) {
-            console.log(' 表单验证错误!');
-            return;
+    handlePhoneSubmit = (errors,values,callback) => {
+      if (errors) {
+          console.log('phone-box表单验证错误!');
+          return;
+      }
+      console.log('phone-box表单验证成功');
+      console.log(values);
+      this.props.dispatch(updateToMobiphone({
+            "memberId": this.state.userInfo.memberId,
+            "validateCode": values.Dcode,
+            "mobile": values.phone
+          },(re)=> {
+            if(re.result==1){
+              message.success(re.msg);
+              this.props.dispatch(getMemberDetail({
+                  "memberId": this.state.userInfo.memberId
+              }));
+              this.handleOnCancel();
+              callback && callback(re);
+            }else{
+              console.log(re.msg);
+            }
           }
-          console.log('表单验证成功');
-          console.log(values);
-        })
+        )
+      );
     }
-    handlePasswordSubmit = (errors,values) => {
+    handlePasswordSubmit = (errors,values,callback) => {
+        let user_info = Cookie.getJSON('user_info') || undefined;
+        console.log(user_info.password+','+user_info.user_id+","+user_info.username);
         if (errors) {
             console.log('  password-box表单验证错误!');
             return;
         }
         console.log('password-box表单验证成功');
+        console.log(values);
+        this.props.dispatch(updateToLoginpass({
+              "memberId": this.state.userInfo.memberId,
+              "password": values.oldpass||"",
+              "newpassword": values.pass
+            },(re)=> {
+              if(re.result==1){
+                Cookie.set('user_info', {
+                    username: user_info.username,
+                    password:  values.pass,
+                    user_id: user_info.user_id
+                }, { expires: 7 });//cookie存储用户名密码
+                message.success(re.msg);
+                this.props.dispatch(getMemberDetail({
+                    "memberId": this.state.userInfo.memberId
+                }));
+                this.handleOnCancel();
+                callback && callback(re);
+              }else{
+                console.log(re.msg);
+              }
+            }
+          )
+        );
+    }
+    handlePayPassSubmit = (errors,values,callback) => {
+        if (errors) {
+            console.log(' paypass-box表单验证错误!');
+            return;
+        }
+        console.log('paypass-box表单验证成功');
         console.log(values);
     }
     render=()=>{
@@ -307,13 +388,13 @@ export class Account extends React.Component {
                   (
                     <span>
                       <Col span={9}><p>定期更换支付密码，安全有保障</p></Col>
-                      <Col span={5}> <Button className="btn"><Link to="/personal_center">修改</Link></Button></Col>
+                      <Col span={5}> <Button className="btn" onClick={this.changePaypass}>修改</Button></Col>
                     </span>
                   ):
                   (
                     <span>
                       <Col span={9}><p>保护账号安全，在余额支付时使用</p></Col>
-                      <Col span={5}> <Button className="btn"><Link to="/personal_center">设置</Link></Button></Col>
+                      <Col span={5}> <Button className="btn" onClick={this.changePaypass}>设置</Button></Col>
                     </span>
                   )
                 }
@@ -342,7 +423,6 @@ export class Account extends React.Component {
           <Dialog
             visible={this.state.show_dialog}
             onCancel={this.handleOnCancel}
-            onOk={this.handleOnOk}
             title={this.state.dailog_title}
             footer={[
                 <Button key="back" type="ghost" size="large" onClick={this.handleOnCancel}>取消</Button>
@@ -362,15 +442,19 @@ export class Account extends React.Component {
       const userInfo = this.state.userInfo || {};
       if(this.state.openName){
           return(
-              <NameBox info={this.state.userInfo} handleSubmit={this.handleNameSubmit}/>
+              <NameBox ref="nameBox" info={this.state.userInfo} handleSubmit={this.handleNameSubmit}/>
           )
       }else if(this.state.openPhone){
           return (
-              <MobilephoneBox info={this.state.userInfo} handleSubmit={this.handlePhoneSubmit} type={this.state.type}/>
+              <MobilephoneBox info={this.state.userInfo} handleSubmit={this.handlePhoneSubmit}/>
           );
       }else if(this.state.openPassword){
           return (
-              <PasswordBox info={this.state.userInfo} handleSubmit={this.handlePasswordSubmit}/>
+              <PasswordBox info={this.state.userInfo} handleSubmit={this.handlePasswordSubmit} type={this.state.type2}/>
+          )
+      }else if(this.state.openPaypass){
+          return (
+              <PaypassBox info={this.state.userInfo} handleSubmit={this.handlePayPassSubmit} type={this.state.type}/>
           )
       }else{
           return false;

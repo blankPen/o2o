@@ -55,7 +55,6 @@ let index= class extends React.Component {
       type:"registerValidate",
       dirty: false,
       passBarShow: false,
-      rePassBarShow: false,
       passStrength: 'L',
       rePassStrength: 'L',
       openFormError:false,

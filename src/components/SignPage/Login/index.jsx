@@ -109,7 +109,7 @@ let index = class extends React.Component {
               "validateCode": values.Dcode,
               "username": values.phone
           },(re)=> {
-            if(re.result==1){
+            if(re.result===1){
               console.log('手机号码登录成功');
               message.success("登录成功");
             }else{
@@ -148,7 +148,7 @@ let index = class extends React.Component {
             "password": values.password,
             "username": values.name
           },(re)=> {
-            if(re.result==1){
+            if(re.result===1){
               console.log('其他账号登录成功');
               message.success("登录成功");
             }else{
@@ -198,7 +198,7 @@ let index = class extends React.Component {
               "type": this.state.type,
               "mobile": phone
           },(re)=> {
-            if(re.result==1){
+            if(re.result===1){
               this.setState({
                   wait: 60
               })
@@ -239,7 +239,7 @@ let index = class extends React.Component {
         "type" : this.state.type,
         "mobile" : phone
       },(re)=> {
-        if(re.result==1){
+        if(re.result===1){
             callback();
         } else {
           callback([new Error('动态码验证失败')]);
@@ -362,7 +362,7 @@ let index = class extends React.Component {
                   { type: 'boolean'},
                 ],
               })(
-                <Checkbox id="control-autoLogon" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
+                <Checkbox checked={true} id="control-autoLogon" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
               )}
                 <div className="sign_forgetpasssword">
                     <a href='/#/forgetpwd'>忘记密码 ？ </a>
@@ -448,7 +448,7 @@ let index = class extends React.Component {
                   {type: 'boolean'},
                 ],
               })(
-                <Checkbox id="control-autoLogon2" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
+                <Checkbox  checked={true} id="control-autoLogon2" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
               )}
               <div className="sign_forgetpasssword">
                   <a href='/#/forgetpwd'>忘记密码 ？ </a>

@@ -14,6 +14,11 @@ import {
   Row,
   Col
 } from 'antd';
+import {
+    getMemberDetail,
+    getVerifyCode,
+    getCheckCode
+} from 'actions/SignPageAction';
 
 import classNames from 'classnames';
 const FormItem = Form.Item;
@@ -44,11 +49,67 @@ export class index extends React.Component {
     		userInfo: props.info,
     		dirty: false,
             passBarShow: false,
-            rePassBarShow: false,
             passStrength: 'L',
-            rePassStrength: 'L'
+            rePassStrength: 'L',
+            wait: 0,/* 验证码发送倒计时秒数，默认0，最大60*/
+        	type: props.type
     	}
   	}
+  	sendVCode=()=>{
+        console.log("发送验证码。。。");
+        let phone=this.state.userInfo.memberMobile;
+	      this.props.dispatch(getVerifyCode({
+	          "type": this.state.type,
+	          "mobile": phone
+	      },(re)=> {
+	        if(re.result==1){
+	          this.setState({
+	              wait: 60
+	          })
+	          message.success("验证码已发送请查收");
+	          console.log(re.data.verifyCode);
+	          this.e = setInterval(() => {
+	              if (this.state.wait == -1) {
+	                  clearInterval(this.e);
+	              }
+	              this.setState({
+	                  wait: this.state.wait - 1
+	              })
+	          }, 1000)
+	        } else {
+	            this.setState({
+	                wait: 0,
+	                openFormError: true,
+	                validate_info: re.msg
+	            })
+	        }
+	      }
+	    )
+	  )
+    }
+
+    validatorVcode=(rule, value, callback)=>{
+        console.log(" 验证验证码。。。");
+        let phone=this.state.userInfo.memberMobile;
+        let validateCode=this.props.form.getFieldValue('Vcode');
+        this.props.dispatch(getCheckCode({
+            "validateCode" : validateCode,
+            "type" : this.state.type,
+            "mobile" : phone
+          },(re)=> {
+            if(re.result==1){
+                callback();
+            } else {
+              callback([new Error('动态码验证失败')]);
+            }
+          }
+        ))
+    }
+    componentWillUnmount() {
+      if(this.e){
+        clearInterval(this.e);
+      }
+    }
   	renderPassStrengthBar(type) {
 	    const strength = type === 'pass' ? this.state.passStrength : this.state.rePassStrength;
 	    const classSet = classNames({
@@ -85,7 +146,7 @@ export class index extends React.Component {
 	    );
     }
     checkOldPass=(rule, value, callback)=>{
-    	console.log("你的旧密码为："+ value);
+    	console.log("您的旧密码为："+ value);
     	callback();
     }
     checkPass=(rule, value, callback)=> {
@@ -140,14 +201,21 @@ export class index extends React.Component {
           });
         }
     }
-
+    resetForm=()=> {
+	    this.props.form.resetFields();
+	}
   	render() {
   		const {
 	      getFieldDecorator,
 	      getFieldError,
 	      isFieldValidating
 	    } = this.props.form;
-	    const userInfo = this.state.userInfo || {};
+	    const userInfo = this.props.info || {};
+	    let wait=this.state.wait;
+	    let phone="";
+	    if(userInfo){
+	       phone=(userInfo.isBind===1)?userInfo.memberMobile.substring(0,3) + "****" + userInfo.memberMobile.substring(8,11) : "尚未绑定手机号码";
+	    }
 	    return (
 	     	<div className="password-box">
 	            <Form horizontal
@@ -155,11 +223,14 @@ export class index extends React.Component {
 		            	e.preventDefault();
 				        console.log("handlePasswordSubmit");
 				        this.props.form.validateFields((errors, values) => {
-					        this.props.handleSubmit(errors,values);
+					        this.props.handleSubmit(errors,values,()=>{
+					        	console.log("回调，刷新password-box表单。。。。");
+					        	this.resetForm();
+					        });
 				        })
 				    }}
 	            >
-	            {userInfo.isSettingPwd==1?
+	            {userInfo.isSettingPwd===1?
 	            	<FormItem
 	                  id="control-oldpass"
 	                  label="旧密码"
@@ -182,7 +253,8 @@ export class index extends React.Component {
 	                  )}
 	                </FormItem>
 	            :
-	        	undefined}
+	        		undefined
+	        	}
 	                <FormItem
 	                  id="control-pass"
 	                  label="创建密码"
@@ -192,7 +264,7 @@ export class index extends React.Component {
 	                >
 	                  {getFieldDecorator('pass', {
 	                    rules: [
-	                      { required: true, whitespace: true, message: '请输入你的密码' },
+	                      { required: true, whitespace: true, message: '请输入您的密码' },
 	                      { validator: this.checkPass },
 	                    ],
 	                  })(
@@ -238,6 +310,47 @@ export class index extends React.Component {
 	                    />
 	                  )}
 	                </FormItem>
+	                {!(userInfo.isSettingPwd===1)?
+	                    (
+	                      <span>
+	                        <div className="bind_phone_style">
+	                          <Row>
+	                              <Col span={7}>
+	                                  <span className="bind_phone_lable">已绑定的手机：</span>
+	                              </Col>
+	                              <Col span={12}>
+	                                  <span className="bind_phone_text">{phone}</span>
+	                              </Col>
+	                          </Row>
+	                        </div>
+	                        <FormItem
+	                          id="control-Vcode"
+	                          {...formItemLayout}
+	                          className="validatCodeType"
+	                          label="短信验证码"
+	                          hasFeedback
+	                          help={isFieldValidating('Vcode') ? 'validating...' : (getFieldError('Vcode') || []).join(', ')}
+	                        >
+	                          {getFieldDecorator('Vcode', {
+	                              rules: [
+	                                { required: true, message: '验证码不能为空' },
+	                                { validator: this.validatorVcode }
+	                              ],
+	                          })(
+	                            <Input id="control-Vcode" placeholder="验证码"/>
+	                          )}
+                              <Button
+                                  disabled={wait === 'loading' || wait > 0}
+                                  className="input-group-addon"
+                                  onClick={this.sendVCode}>
+                                  {wait === 'loading'?<Icon type="loading" /> :wait > 0? `(${wait})s后重新获取` : "免费获取验证码"}
+                              </Button>
+	                        </FormItem>
+	                      </span>
+	                    )
+	                  :
+	                    undefined
+	                  }
 	                <Button
 	                    type="primary"
 	                    htmlType="submit"

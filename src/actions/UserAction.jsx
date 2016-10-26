@@ -105,3 +105,103 @@ export function removeCollect(storeid,id,call){
         })
     }
 }
+
+/*
+ * @Author: MoCheng
+ */
+/**
+ * [updateToName  更新姓名]
+ */
+export function updateToName(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/member/updateMemberName',
+            data: {
+                ...params
+            },
+            success: function(res){
+                call && call(res);
+            }
+        })
+    }
+}
+/**
+ * [updateToMobiphone  更新手机号码]
+ */
+export function updateToMobiphone(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/member/bindMobile',
+            data: {
+                ...params
+            },
+            success: function(res){
+                call && call(res);
+            }
+        })
+    }
+}
+/**
+ * [updateToPaypass  更新支付密码]
+ */
+export function updateToPaypass(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/member/updatePayPassword',
+            data: {
+                ...params
+            },
+            success: function(res){
+                call && call(res);
+            }
+        })
+    }
+}
+/**
+ * [retrieveToPaypass  找回支付密码]
+ */
+export function retrieveToPaypass(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/member/findPayPassword',
+            data: {
+                ...params
+            },
+            success: function(res){
+                call && call(res);
+            }
+        })
+    }
+}
+/**
+ * [updateToLoginpass  更新登录密码]
+ */
+export function updateToLoginpass(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/member/updatePassword',
+            data: {
+                ...params
+            },
+            success: function(res){
+                call && call(res);
+            }
+        })
+    }
+}
+/**
+ * [retrieveToLoginpass  找回登录密码]
+ */
+export function retrieveToLoginpass(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/member/findPassword',
+            data: {
+                ...params
+            },
+            success: function(res){
+                call && call(res);
+            }
+        })
+    }
+}

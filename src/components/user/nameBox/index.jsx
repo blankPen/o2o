@@ -39,7 +39,6 @@ export class index extends React.Component {
   	constructor(props) {
     	super(props);
     	this.state={
-    		userInfo: props.info,
     		dirty: false,
             passBarShow: false,
             rePassBarShow: false,
@@ -47,13 +46,16 @@ export class index extends React.Component {
             rePassStrength: 'L'
     	}
   	}
+  	resetForm=()=> {
+	    this.props.form.resetFields();
+	}
   	render() {
   		const {
 	      getFieldDecorator,
 	      getFieldError,
 	      isFieldValidating
 	    } = this.props.form;
-	    const userInfo = this.state.userInfo || {};
+	    const userInfo = this.props.info || {};
 	    return (
 	     	<div className="name-box">
 	          	<Form horizontal
@@ -61,11 +63,14 @@ export class index extends React.Component {
 		            	e.preventDefault();
 				        console.log("handleNameSubmit");
 				        this.props.form.validateFields((errors, values) => {
-					        this.props.handleSubmit(errors,values);
+					        this.props.handleSubmit(errors,values,()=>{
+					        	console.log("回调，刷新name-box表单。。。。");
+					        	this.resetForm();
+					        });
 				        })
 				    }}
 			    >
-	          {userInfo.memberTruename?
+	          	{userInfo.memberTruename?
 	              <div className="old_name_style">
 	                  <Row>
 	                      <Col span={7}>
