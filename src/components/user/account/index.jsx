@@ -22,6 +22,11 @@ import {
   Col
 } from 'antd';
 import { Link } from 'react-router';
+import Dialog from 'components/common/Dialog/';
+import PasswordBox from '../passwordBox/';
+import NameBox from '../nameBox/';
+import MobilephoneBox from '../mobilephoneBox/';
+
 function mapStateToProps({
     common
 }){
@@ -37,36 +42,47 @@ export class Account extends React.Component {
     }
     resetState(userInfo) {
       console.log(userInfo);
-      let percent=0;//0% 8% 30% 60%
-      let progress_loginPassword=false,progress_payPassword=false,progress_phone=false;
+      let percent=3;//0% 3% 33% 68%
+      let progress_name=true,progress_loginPassword=false,progress_payPassword=false,progress_phone=false;
       if (userInfo) {
+       /* progress_name=userInfo.memberTruename?true:false;*/
         progress_loginPassword=(userInfo.isSettingPwd===1)?true:false;
         progress_payPassword=userInfo.payPassword?true:false;
         progress_phone=(userInfo.isBind===1)?true:false;
-        if(progress_loginPassword&&progress_payPassword&&progress_phone){//35% 65% 100%
+        if(progress_name&&progress_loginPassword&&progress_payPassword&&progress_phone){//35% 65% 100%
             console.log("全部验证通过");
             percent=percent>8?percent>30?100:65:35;
-        }else if(!progress_loginPassword&&!progress_payPassword&&!progress_phone){//不操作
+        }else if(!progress_name&&!progress_loginPassword&&!progress_payPassword&&!progress_phone){//不操作
           console.log("全部验证不通过")
-        }else {//13%
+        }else{//11%
           console.log("其他验证通过");
+         if(progress_name){
+           percent+=8;
+         }
          if(progress_loginPassword){
-           percent+=13;
+           percent+=8;
          }
          if(progress_payPassword){
-           percent+=13;
+           percent+=8;
          }
          if(progress_phone){
-           percent+=13;
+           percent+=8;
          }
         }
       }
         return {
             userInfo: userInfo || {},
             progress_percent: percent,/*进度百分比: 0 10 20 30*/
+            progress_name: progress_name,/* 姓名进度*/
             progress_loginPassword: progress_loginPassword,/*登录密码进度*/
             progress_payPassword: progress_payPassword,/*支付密码进度*/
-            progress_phone: progress_phone/*手机号进度*/
+            progress_phone: progress_phone,/*手机号进度*/
+            dailog_title: "",/*Dialog标题*/
+            show_dialog:false,/*是否开启Dialog*/
+            openName: false,/*是否打开姓名修改Dialog*/
+            openPhone: false,/*是否打开手机修改Dialog*/
+            openPassword: false,/*是否打开密码修改Dialog*/
+            type: "modifyMobile"/* 手机绑定或者修改操作类型*/
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -80,17 +96,88 @@ export class Account extends React.Component {
         userInfo:this.props.userInfo || {}
       })
     }
+    handleOnCancel=()=>{
+        this.setModalVisible(false);
+         this.setState({
+            openName:false,
+            openPhone:false,
+            openPassword:false
+        });
+    }
+    handleOnOk=()=>{
+        console.log("点击");
+    }
+    setModalVisible=(modalVisible)=> {
+        this.setState({
+            show_dialog:modalVisible
+        });
+    }
+    changeName=()=>{
+        this.setState({
+            dailog_title: "更改用户名",
+            openName:true,
+            show_dialog: true,
+        });
+    }
+    changePhone=()=>{
+        this.setState({
+            dailog_title: "更改手机号码",
+            openPhone:true,
+            show_dialog: true,
+        });
+    }
+    changePassword=()=>{
+        this.setState({
+            dailog_title: "更改登录密码",
+            openPassword:true,
+            show_dialog: true
+        })
+    }
+    handleNameSubmit = (errors,values) => {
+        if (errors) {
+          console.log(' name-box表单验证错误!');
+          return;
+        }
+        console.log('name-box表单验证成功');
+        console.log(values);
+    }
+    handlePhoneSubmit = (e) => {
+        e.preventDefault();
+        /*this.setState({
+            loading:true
+        })*/
+        console.log("handlePhoneSubmit");
+        this.props.form.validateFields((errors, values) => {
+          if (errors) {
+            console.log(' 表单验证错误!');
+            return;
+          }
+          console.log('表单验证成功');
+          console.log(values);
+        })
+    }
+    handlePasswordSubmit = (errors,values) => {
+        if (errors) {
+            console.log('  password-box表单验证错误!');
+            return;
+        }
+        console.log('password-box表单验证成功');
+        console.log(values);
+    }
     render=()=>{
       let userInfo=this.props.userInfo||{};
+      let progress_name=this.state.progress_name;
       let progress_loginPassword=this.state.progress_loginPassword;
       let progress_payPassword=this.state.progress_payPassword;
       let progress_phone=this.state.progress_phone;
-      console.log(progress_loginPassword+","+progress_payPassword+","+progress_phone);
+      console.log(progress_name+","+progress_loginPassword+","+progress_payPassword+","+progress_phone);
       let phone="";
       let password="";
+      let username="";
       if(userInfo){
         phone=progress_phone?userInfo.memberMobile.substring(0,3) + "****" + userInfo.memberMobile.substring(8,11) : "尚未绑定手机号码";
-        password=progress_loginPassword===1?"******" : "尚未设置密码";
+        password=progress_loginPassword?"******" : "尚未设置密码";
+        username=progress_name?userInfo.memberTruename: " 默认用户";
       }
       let percent=this.state.progress_percent;
 
@@ -148,93 +235,146 @@ export class Account extends React.Component {
               <div className="tips">{status_d}</div>
           </div>
           <div className="userexinfo-form">
-              <form >
-                  <div className="userexinfo-form__section">
-                    <Row>
-                      <Col span={2}><i className={progress_loginPassword?"fa fa-check-circle success":"fa fa-exclamation-circle error"}></i></Col>{/*fa-exclamation-circle fa-check-circle*/}
-                      <Col span={4}><span>登录密码</span></Col>
-                      <Col span={4}>{progress_loginPassword?<span className="status_span">等级{status_p}</span>:<span className="error">未设置</span>}</Col>
-                      {progress_loginPassword?
-                        (
-                          <span>
-                            <Col span={9}><p>提升密码安全程度到强，您的账号更安全</p></Col>
-                            <Col span={5}> <Button className="btn"><Link to="/personal_center">修改</Link></Button></Col>
-                          </span>
-                        ):
-                        (
-                          <span>
-                            <Col span={9}><p>设置登录密码，下次登录更便捷</p></Col>
-                            <Col span={5}> <Button className="btn"><Link to="/personal_center">设置</Link></Button></Col>
-                          </span>
-                        )
-                      }
-                    </Row>
-                  </div>
-                  <div className="userexinfo-form__section">
-                    <Row>
-                      <Col span={2}><i className={progress_phone?"fa fa-check-circle success":"fa fa-exclamation-circle error"}></i></Col>
-                      <Col span={4}><span>手机号</span></Col>
-                      <Col span={4}>{progress_phone?<span className="success">已绑定</span>:<span className="error">未绑定</span>}</Col>
-                      {progress_phone?
-                        (
-                          <span>
-                            <Col span={9}><p>您验证的手机：{phone}</p></Col>
-                            <Col span={5}> <Button className="btn"><Link to="/personal_center">换绑</Link></Button></Col>
-                          </span>
-                        ):
-                        (
-                          <span>
-                            <Col span={9}><p>绑定手机号码，帮助您找回密码</p></Col>
-                            <Col span={5}> <Button className="btn"><Link to="/personal_center">绑定</Link></Button></Col>
-                          </span>
-                        )
-                      }
-                    </Row>
-                  </div>
-                  <div className="userexinfo-form__section">
-                    <Row>
-                      <Col span={2}><i className={progress_payPassword?"fa fa-check-circle success":"fa fa-exclamation-circle error"}></i></Col>
-                      <Col span={4}><span>支付密码</span></Col>
-                      <Col span={4}>{progress_payPassword?<span className="success">已设置</span>:<span className="error">未设置</span>}</Col>
-                      {progress_payPassword?
-                        (
-                          <span>
-                            <Col span={9}><p>定期更换支付密码，安全有保障</p></Col>
-                            <Col span={5}> <Button className="btn"><Link to="/personal_center">修改</Link></Button></Col>
-                          </span>
-                        ):
-                        (
-                          <span>
-                            <Col span={9}><p>保护账号安全，在余额支付时使用</p></Col>
-                            <Col span={5}> <Button className="btn"><Link to="/personal_center">设置</Link></Button></Col>
-                          </span>
-                        )
-                      }
-                    </Row>
-                  </div>
-                  {/*<div className="userexinfo-form__section">
-                    <Row>
-                      <Col span={2}><i className="fa fa-exclamation-circle"></i></Col>
-                      <Col span={4}><span>收货地址</span></Col>
-                      <Col span={4}><span>未设置</span></Col>
-                      <Col span={9}><p>设置收货地址，帮助你更快捷的点餐</p></Col>
-                      <Col span={5}><Button className="btn"><Link to="/personal_center"> 添加</Link></Button></Col>
-                    </Row>
-                  </div>
-                  <div className="userexinfo-form__section">
-                    <Row>
-                      <Col span={2}><i className={progress_email?"fa fa-check-circle success":"fa fa-exclamation-circle error"}></i></Col>
-                      <Col span={4}><span>邮箱</span></Col>
-                      <Col span={4}>{progress_email?<span className="success">已设置</span>:<span className="error">未设置</span>}</Col>
-                      <Col span={9}><p>绑定邮箱，帮助您找回密码</p></Col>
-                      <Col span={5}><Button className="btn"><Link to="/personal_center"> 设置</Link></Button></Col>
-                    </Row>
-                  </div>
-                  */}
-              </form>
+            <div className="userexinfo-form__section">
+              <Row>
+                <Col span={2}><i className={progress_name?"fa fa-check-circle success":"fa fa-exclamation-circle error"}></i></Col>{/*fa-exclamation-circle fa-check-circle*/}
+                <Col span={4}><span>用户名</span></Col>
+                <Col span={4}>{progress_name?<span className="success">已设置</span>:<span className="error">未设置</span>}</Col>
+                {progress_name?
+                  (
+                    <span>
+                      <Col span={9}><p>您的姓名为：{username}</p></Col>
+                      <Col span={5}> <Button className="btn" onClick={this.changeName}>修改</Button></Col>
+                    </span>
+                  ):
+                  (
+                    <span>
+                      <Col span={9}><p>您的姓名为空，请输入您的姓名</p></Col>
+                      <Col span={5}> <Button className="btn" onClick={this.changeName}>设置</Button></Col>
+                    </span>
+                  )
+                }
+              </Row>
+            </div>
+            <div className="userexinfo-form__section">
+              <Row>
+                <Col span={2}><i className={progress_loginPassword?"fa fa-check-circle success":"fa fa-exclamation-circle error"}></i></Col>{/*fa-exclamation-circle fa-check-circle*/}
+                <Col span={4}><span>登录密码</span></Col>
+                <Col span={4}>{progress_loginPassword?<span className="status_span">等级{status_p}</span>:<span className="error">未设置</span>}</Col>
+                {progress_loginPassword?
+                  (
+                    <span>
+                      <Col span={9}><p>提升密码安全程度到强，您的账号更安全</p></Col>
+                      <Col span={5}> <Button className="btn" onClick={this.changePassword}>修改</Button></Col>
+                    </span>
+                  ):
+                  (
+                    <span>
+                      <Col span={9}><p>设置登录密码，下次登录更便捷</p></Col>
+                      <Col span={5}> <Button className="btn" onClick={this.changePassword}>设置</Button></Col>
+                    </span>
+                  )
+                }
+              </Row>
+            </div>
+            <div className="userexinfo-form__section">
+              <Row>
+                <Col span={2}><i className={progress_phone?"fa fa-check-circle success":"fa fa-exclamation-circle error"}></i></Col>
+                <Col span={4}><span>手机号</span></Col>
+                <Col span={4}>{progress_phone?<span className="success">已绑定</span>:<span className="error">未绑定</span>}</Col>
+                {progress_phone?
+                  (
+                    <span>
+                      <Col span={9}><p>您验证的手机：{phone}</p></Col>
+                      <Col span={5}> <Button className="btn" onClick={this.changePhone}>换绑</Button></Col>
+                    </span>
+                  ):
+                  (
+                    <span>
+                      <Col span={9}><p>绑定手机号码，帮助您找回密码</p></Col>
+                      <Col span={5}> <Button className="btn" onClick={this.changePhone}>绑定</Button></Col>
+                    </span>
+                  )
+                }
+              </Row>
+            </div>
+            <div className="userexinfo-form__section">
+              <Row>
+                <Col span={2}><i className={progress_payPassword?"fa fa-check-circle success":"fa fa-exclamation-circle error"}></i></Col>
+                <Col span={4}><span>支付密码</span></Col>
+                <Col span={4}>{progress_payPassword?<span className="success">已设置</span>:<span className="error">未设置</span>}</Col>
+                {progress_payPassword?
+                  (
+                    <span>
+                      <Col span={9}><p>定期更换支付密码，安全有保障</p></Col>
+                      <Col span={5}> <Button className="btn"><Link to="/personal_center">修改</Link></Button></Col>
+                    </span>
+                  ):
+                  (
+                    <span>
+                      <Col span={9}><p>保护账号安全，在余额支付时使用</p></Col>
+                      <Col span={5}> <Button className="btn"><Link to="/personal_center">设置</Link></Button></Col>
+                    </span>
+                  )
+                }
+              </Row>
+            </div>
+            {/*<div className="userexinfo-form__section">
+              <Row>
+                <Col span={2}><i className="fa fa-exclamation-circle"></i></Col>
+                <Col span={4}><span>收货地址</span></Col>
+                <Col span={4}><span>未设置</span></Col>
+                <Col span={9}><p>设置收货地址，帮助你更快捷的点餐</p></Col>
+                <Col span={5}><Button className="btn"><Link to="/personal_center"> 添加</Link></Button></Col>
+              </Row>
+            </div>
+            <div className="userexinfo-form__section">
+              <Row>
+                <Col span={2}><i className={progress_email?"fa fa-check-circle success":"fa fa-exclamation-circle error"}></i></Col>
+                <Col span={4}><span>邮箱</span></Col>
+                <Col span={4}>{progress_email?<span className="success">已设置</span>:<span className="error">未设置</span>}</Col>
+                <Col span={9}><p>绑定邮箱，帮助您找回密码</p></Col>
+                <Col span={5}><Button className="btn"><Link to="/personal_center"> 设置</Link></Button></Col>
+              </Row>
+            </div>
+            */}
           </div>
-      </div>
+          <Dialog
+            visible={this.state.show_dialog}
+            onCancel={this.handleOnCancel}
+            onOk={this.handleOnOk}
+            title={this.state.dailog_title}
+            footer={[
+                <Button key="back" type="ghost" size="large" onClick={this.handleOnCancel}>取消</Button>
+            ]}
+          >
+            {this._popUpBox()}
+          </Dialog>
+        </div>
       );
+    }
+    _popUpBox=()=>{
+      /*const {
+        getFieldDecorator,
+        getFieldError,
+        isFieldValidating
+      } = this.props.form;*/
+      const userInfo = this.state.userInfo || {};
+      if(this.state.openName){
+          return(
+              <NameBox info={this.state.userInfo} handleSubmit={this.handleNameSubmit}/>
+          )
+      }else if(this.state.openPhone){
+          return (
+              <MobilephoneBox info={this.state.userInfo} handleSubmit={this.handlePhoneSubmit} type={this.state.type}/>
+          );
+      }else if(this.state.openPassword){
+          return (
+              <PasswordBox info={this.state.userInfo} handleSubmit={this.handlePasswordSubmit}/>
+          )
+      }else{
+          return false;
+      }
     }
 }
 
