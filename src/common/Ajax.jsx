@@ -1,4 +1,6 @@
-import reqwest from 'reqwest'
+import reqwest from 'reqwest';
+import History from 'common/History';
+import { message } from 'antd';
 
 export default function(opt){
     let call_succ = opt.success;
@@ -9,17 +11,13 @@ export default function(opt){
         cache: 'false',
         ...opt
     };
-    opt.success = (result)=> {
-        // setTimeout(()=>{
-
-            // if(this && this.isMounted) {
-            //     if(this.isMounted()) {
-            //         call_succ && call_succ.call(this, result);
-            //     }
-            // } else {
-            call_succ && call_succ.call(this, result);
-            // }
-        // },10000);
+    opt.success = (res)=> {
+        if(res.result == 2){
+            History.push('/login');
+            message.error(res.msg);
+        }else{
+            call_succ && call_succ.call(this, res);
+        }
     };
     reqwest(opt);
 }
