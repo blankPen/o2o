@@ -52,7 +52,6 @@ export class Detail extends React.Component {
         let memberId = this.props.userInfo.memberId;
         let storeId = this.props.params.storeId;
         let data = actions.getCartList(storeId,memberId);
-        console.log(data)
         this.state = {
             inCartItems: data || {},
             is_show_category:true
@@ -170,6 +169,10 @@ export class Detail extends React.Component {
     render() {
         let data = this.props.storeDetail ||{};
         let categoryList = [];
+        let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.startBusinessTime}:00`)).getTime(),
+            endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.endBusinessTime}:00`)).getTime();
+        // 判断是否在营业中
+        let isOpen = Date.now() >= beginTime && Date.now() <= endTime;
         let classList = this.props.classAndGoodsList.map((item,i)=>{
             categoryList.push(
                 <Category
@@ -179,6 +182,7 @@ export class Detail extends React.Component {
                     title={item.stcName}
                     inCartItems={this.state.inCartItems}
                     onAdd={this.handleAddCart}
+                    isOpen={isOpen}
                 />
             );
             return(
@@ -195,6 +199,7 @@ export class Detail extends React.Component {
             <div className="detail-body">
                 <CartBox
                     ref='cartBox'
+                    isOpen={isOpen}
                     startPrice={data.startPrice}
                     data={this.state.inCartItems}
                     onChange={this.handleChangeCart}
@@ -372,7 +377,7 @@ export class RatedBox extends React.Component {
                 <div className="rate-filter">
                     <div className="filter-item">
                         <RadioGroup onChange={this.filterChange}
-                                    value={this.state.rateSearchData.gevalType}
+                            value={this.state.rateSearchData.gevalType}
                         >
                             <Radio key="a" value={0}>
                                 全部评价<span>{`(${data.allReview||0})`}</span>
@@ -503,6 +508,7 @@ export class Category extends React.Component {
                             data={item}
                             inCartNum={goods && goods.num}
                             onAdd={this.props.onAdd}
+                            isOpen={this.props.isOpen}
                         />
                     })}
                 </div>
@@ -550,10 +556,12 @@ export class CategoryItem extends React.Component {
                 </div>
                 <div className="labels clearfix">
                     <div className="price">{'￥'+data.goodsStorePrice+data.unitName}</div>
-                    <div className="add" onClick={this.onAdd}>
-                        <i className="fa fa-plus"></i>
-                    </div>
-                    {!!this.props.inCartNum &&
+                    {this.props.isOpen?
+                        <div className="add" onClick={this.onAdd}>
+                            <i className="fa fa-plus"></i>
+                        </div> :
+                        <div className="rest">休息中</div>}
+                    {this.props.isOpen && !!this.props.inCartNum &&
                         <div className="add-num">{this.props.inCartNum}</div>}
                 </div>
             </div>

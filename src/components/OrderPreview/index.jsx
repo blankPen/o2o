@@ -4,7 +4,7 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import { Select } from 'antd';
+import { Select,message } from 'antd';
 import History from 'common/History';
 import Img from 'common/Img';
 import moment from 'moment';
@@ -41,6 +41,7 @@ export class OrderPreview extends React.Component {
             show_address_dialog: false,
             editAddress: undefined,
             selectAddress: {},
+            couponId: '',
             postData:{
                 remark: '',
                 invoice: '21312313',
@@ -122,13 +123,11 @@ export class OrderPreview extends React.Component {
         });
     }
     changeDecreasePrice=(couponId)=>{
-        if(couponId != 'none'){
-            this.setState({
-                couponId
-            },()=>{
-                this.loadOrderDetail();
-            });
-        }
+        this.setState({
+            couponId
+        },()=>{
+            this.loadOrderDetail();
+        });
     }
     onAddAddress=(res)=>{
         console.log("添加地址成功",res);
@@ -169,7 +168,11 @@ export class OrderPreview extends React.Component {
         let values = this.state.postData;
         console.log(values);
         this.props.dispatch(actions.saveOrder(values,(res)=>{
+            if(res.result == 1){
 
+            }else{
+                message.error(res.msg);
+            }
         }));
     }
     showEditDialog(address,e){
@@ -283,14 +286,17 @@ export class OrderPreview extends React.Component {
                         <div className="operation-label">
                             优惠券：
                         </div>
-                        <Select style={{ width: 200 }} onChange={this.changeDecreasePrice}>
+                        <Select style={{ width: 200 }}
+                            value={this.state.couponId}
+                            onChange={this.changeDecreasePrice}>
                             { couponList.length?
-                                couponList.map((item,i)=>{
-                                    return <Option key={i} value={item.id+''}>
-                                        {item.name}
-                                    </Option>
-                                }):
-                                <Option value="none">没有可用的优惠券</Option>}
+                                <Option value={''}>请选择优惠券</Option> :
+                                <Option value={''}>没有可用的优惠券</Option>}
+                            {couponList.map((item,i)=>{
+                                return <Option key={i} value={item.id+''}>
+                                    {item.name}
+                                </Option>
+                            })}
                         </Select>
                     </div>
                 </div>
@@ -329,13 +335,23 @@ export class OrderPreview extends React.Component {
         )
     }
     renderTimeSelector(){
+        let store = this.props.order.store || {};
         let opts = [];
         let FORMAT_TEMP = 'YYYY-MM-DD HH:mm:ss';
         opts.push(<Option key='now' value={this.now}>立即送出</Option>);
         let startTime = moment(moment(this.now).format('YYYY-MM-DD HH:00:00'));
         startTime = +new Date(startTime.format(FORMAT_TEMP))+60*60*1000;
+
+        let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${store.startBusinessTime}:00`)).getTime(),
+            endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${store.endBusinessTime}:00`)).getTime();
+        if(new Date(this.now).getTime() < beginTime || new Date(this.now).getTime()>endTime){
+            History.push(`/detail/${store.storeId}`);
+            message.error('订单已失效，请重新下单');
+        }
         for (var i = 0; i < 10; i++) {
-            let time = moment(startTime + i*20*60*1000);
+            let time = startTime + i*20*60*1000;
+            if(time > endTime) break;
+            time = moment(time);
             opts.push(<Option key={i} value={time.format(FORMAT_TEMP)}>{time.format('HH:mm')}</Option>);
         }
         return (

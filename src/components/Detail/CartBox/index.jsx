@@ -3,7 +3,7 @@
  * @Date:   2016-10-22 12:37:44
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-26 10:00:26
+ * @Last Modified time: 2016-10-26 22:16:44
  */
 
 'use strict';
@@ -99,16 +99,29 @@ export default class CartBox extends React.Component {
     toOrderPreview=()=>{
         this.props.onSubmit && this.props.onSubmit();
     }
-
+    renderRest(){
+        return (
+            <div className="cart-box">
+                <div className="btn-box">
+                    <div ref='icon' className="icon">
+                        <i className="fa fa-shopping-cart"></i>
+                    </div>
+                    <button disabled className="submit">休息中</button>
+                </div>
+            </div>
+        )
+    }
     render() {
         let { open } = this.state;
-        const { startPrice } = this.props;
+        const { startPrice,isOpen } = this.props;
         const {
             totalNum,
             totalPrice,
             orderList,
         } = this.parseData();
         open = totalNum && open;
+
+        if(!isOpen){ return this.renderRest(); }
         return (
             <div className="cart-box">
                 <div className={"order-box"+(open?' open':'')}>
