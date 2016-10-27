@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   chenjingwei
- * @Last Modified time: 2016-10-24 22:16:55
+ * @Last Modified time: 2016-10-26 16:01:17
  */
 
 'use strict';
@@ -37,6 +37,8 @@ import PersonalCenter from 'components/user/personalCenter/';
 import OrderPreview from 'components/OrderPreview/';
 import Feedback from 'components/feedback';
 import Search from 'components/Search/';
+import Payment from 'components/Payment/';
+
 
 import {
     getMemberDetail
@@ -80,6 +82,7 @@ export class index extends React.Component {
                         <Route path="/login" component={Login}/>
                         <Route path="/register" component={Register}/>
                         <Route path="/forgetpwd" component={Forgetpwd}/>
+                        <Route path="/payment" component={Payment}/>
                     </Route>
                 </Router>
             </Provider>
