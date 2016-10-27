@@ -4,10 +4,12 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import { Timeline, Icon,Button } from 'antd';
+import { Timeline, Icon,Button,message,Spin, Alert } from 'antd';
 import {
     getOrderList,
-    getMenuList
+    getMenuList,
+    selectItem,
+    theAjax
 } from 'actions/UserAction';
 import {
   Link
@@ -29,26 +31,18 @@ function mapStateToProps({
         orderState:userState
     };
 }
-export class Timelines extends React.Component {
+//时间轴单条组件
+export class Line extends React.Component {
     constructor(props) {
         super(props);
         this.state={
             dsjtext:"",//倒计时文本
             ispay:true,//是否可支付
-            show_dialog:false,//dialog是否显示
-            dailog_title:"",//dialog标题
-            dailog_text:""//dialog文本
         }
     }
-    componentWillReceiveProps(nextProps){
-        if(nextProps.detail&&nextProps.detail.createTime&&(!this.ds)){
-            this.orderDjs(nextProps.detail);
-        }
+    componentDidMount(){
+        this.orderDjs(this.props.detail);
     }
-    // componentDidMount(){
-    //     console.log("this.detail：",this.props.detail);
-    //     this.orderDjs();
-    // }
     //销毁组件时关闭定时器
     componentWillUnmount(){
         this.ds&&clearInterval(this.ds);
@@ -84,47 +78,9 @@ export class Timelines extends React.Component {
             }
         }.bind(this),1000);
     }
-    returnState=(state)=>{
-         switch(state){
-            case "0":
-                return "已取消";
-            case "10":
-                return "待付款";
-            case "20":
-                return "在线支付";
-            case "21":
-                return "待发货";
-            case "30":
-                return "待收货";
-            case "40":
-                return "交易完成";
-            case "50":
-                return "货到付款待接单";
-            case "60":
-                return "已确认";
-            default:
-                return "未知";
-        }
-    }
-    isNext=(data)=>{
-    	let item=this.props.data&&this.props.data[this.props.data.length-1];
-    	if(item&&item.changeState){
-    		return this.returnState(item.changeState);
-    	}else{
-    		return false;
-    	}
-    }
-    tousu=()=>{
-        let userinfo=this.props.userInfo||{};
-        History.push({ pathname: "/feedback", state: {
-            memberId:userinfo.memberId,
-            phone:userinfo.memberMobile,
-            orderSn:this.props.detail&&this.props.detail.orderSn
-        } });
-    }
     //继续付款
     goPay=()=>{
-        this.setState({
+        this.props.handleOnCancel({
             show_dialog:true,
             dailog_title:"继续付款",
             dailog_text:""
@@ -135,89 +91,231 @@ export class Timelines extends React.Component {
     }
     //取消订单
     clearOrder=(orderState)=>{
-        this.setState({
-            show_dialog:true,
-            dailog_title:"取消订单",
-            dailog_text:"请联系商家："+this.props.detail.storeTels
+        let detail=this.props.detail||{};
+        this.props.loading(true,()=>{
+            //可以直接取消
+            if(detail.orderState==10||detail.orderState==20||detail.orderState==50){
+                this.props.dispatch(theAjax("/rest/api/order/cancleOrder",{
+                    orderSn:detail.orderSn
+                },(res)=>{
+                    if(res.result){
+                        message.success(res.msg);
+                        this.props.refresh();
+                    }else{
+                        message.error(res.msg);
+                    }
+                },()=>{
+                    message.error("服务器异常,请尝试刷新页面!");
+                }));
+            }else if(detail.orderState!=40){//需要联系商家取消
+                this.props.handleOnCancel({
+                    show_dialog:true,
+                    dailog_title:"取消订单",
+                    dailog_text:"请联系商家："+this.props.detail.storeTels
+                });
+            }
+            this.props.loading(false);
         });
-        //可以直接取消
-        if(orderState==10||orderState==20||orderState==50){
-
-        }else if(orderState!=40){//需要联系商家取消
-
-        }
+        
     }
     //调往指定页面
     goUrl=(url)=>{
         History.push(url);
     }
+    //用户只能是 10:待付款;20 在线支付待接单 50货到付款待接单 这三个状态能取消
+    /*
+    确认收货只能 30
+    取消订单 10 20 50
+    删除只能删除 0和40 两个状态
+    投诉 21  30 40 60 四个状态
+    催单21.60
+    */
+    render(){
+        let item=this.props.item||{};
+        let detail=this.props.detail||{};
+        let orderState=detail.orderState;
+        let succ=(<Icon type="check-circle-o" style={{ fontSize: '26px','color':'green' }} />);
+        let error=(<Icon type="clock-circle-o" style={{ fontSize: '26px','color':'red'  }} />);
+        return(
+             <Timeline.Item dot={this.props.isError?error:succ}>
+                <span className="line-title">{item.stateInfo}</span>
+                <span className="line-time">{item.createTimeStr}</span>
+                <div className="daifukuan" style={this.props.display}> 
+                    <div className="djs">
+                        {orderState=="10"?this.state.dsjtext:null}
+                        {orderState=="0"?"订单已被取消":null}
+                        {orderState=="30"?"预计在"+detail.predictedArrivalTime+"送达，请耐心等待!":null}
+                    </div>
+                    {orderState=="0"?(<div className="tip">
+                        你的订单由于商家暂时无法配送已被商家取消
+                    </div>):null}
+                    <div className="btnlist">
+                        {orderState=="0"?(<span className="btn jixu" onClick={this.goUrl.bind(null,"/")}>选择其他商家</span>):null}
+                        {orderState=="10"?(<span className="btn jixu" onClick={this.goPay}>继续付款</span>):null}
+                        {orderState=="30"?(<span className="btn jixu" onClick={this.cuidan}>确认收货</span>):null}
+                        {(orderState=="21"&&orderState=="60")&&detail.reminderStatus==0?(<span className="btn clear" onClick={this.cuidan}>我要催单</span>):null}
+                        {(orderState!="0"&&orderState!="40")?(<span className="btn clear" onClick={this.clearOrder}>取消订单</span>):null}
+                        {(orderState=="21"||orderState=="30"||orderState=="40"||orderState=="60")&&detail.complaintStatus==0?(<span className="btn clear" onClick={this.tousu}>订单反馈</span>):null}
+
+                    </div>
+                </div>
+            </Timeline.Item>
+            );
+    }
+}
+export class Timelines extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state={
+            dsjtext:"",//倒计时文本
+            ispay:true,//是否可支付
+            show_dialog:false,//dialog是否显示
+            dailog_title:"",//dialog标题
+            dailog_text:""//dialog文本
+        }
+    }
+    
+    
+    tousu=()=>{
+        let userinfo=this.props.userInfo||{};
+        History.push({ pathname: "/feedback", state: {
+            memberId:userinfo.memberId,
+            phone:userinfo.memberMobile,
+            orderSn:this.props.detail&&this.props.detail.orderSn
+        } });
+    }
+    
     returnTimeList=()=>{
         let detail=this.props.detail||{};
         let orderState=this.props.detail&&this.props.detail.orderState;
-        let succ=(<Icon type="check-circle-o" style={{ fontSize: '26px','color':'green' }} />);
-        let error=(<Icon type="clock-circle-o" style={{ fontSize: '26px','color':'red'  }} />);
         let list=(detail.orderLogList||[]).map((item,i)=>{
             let display={"display":"none"};
             if(orderState!="10"&&orderState!="0"&&i==detail.orderLogList.length-1&&orderState!="40"){
                 display={"display":"block"};
             }
-                        return (
-                            <Timeline.Item dot={succ} key={i}>
-                                <span className="line-title">{item.stateInfo}</span>
-                                <span className="line-time">{item.createTimeStr}</span>
-                                <div className="daifukuan" style={display}> 
-                                    <div className="djs">
-                                        预计在{detail.predictedArrivalTime}送达，请耐心等待!
-                                    </div>
-                                    <div className="btnlist">
-                                        <span className="btn jixu" onClick={this.cuidan}>确认收货</span>
-                                        <span className="btn clear" onClick={this.cuidan}>我要催单</span>
-                                        <span className="btn clear" onClick={this.clearOrder.bind(null,orderState)}>取消订单</span>
-                                        
-                                    </div>
-                                </div>
-                            </Timeline.Item>
-                            );
-                    });
+            return (
+                <Line loading={this.props.loading} refresh={this.props.refresh}
+                    handleOnCancel={this.handleOnCancel}
+                    item={item} 
+                    key={i} 
+                    detail={detail} 
+                    display={display}>
+                </Line>
+                );
+        });
         // if(true){
         if(orderState=="10"){
-            list[0]=(<Timeline.Item dot={succ} key="0">
-                        <span className="line-title">订单提交成功，等待付款</span>
-                        <span className="line-time">{TimeConvert.minsCon(detail.createTime,"ymdhms")}</span>
-                        <div className="daifukuan"> 
-                            <div className="djs">
-                                {this.state.dsjtext}
-                            </div>
-                            <div className="btnlist">
-                                <span className="btn jixu" onClick={this.goPay}>继续付款</span>
-                                <span className="btn clear" onClick={this.clearOrder.bind(null,orderState)}>取消订单</span>
-                            </div>
-                        </div>
-                    </Timeline.Item>);
+            let display={"display":"block"};
+            let item={stateInfo:"订单提交成功，等待付款",createTimeStr:TimeConvert.minsCon(detail.createTime,"ymdhms")};
+            list[0]=(<Line loading={this.props.loading} refresh={this.props.refresh}
+                        handleOnCancel={this.handleOnCancel}
+                        item={item} 
+                        key="daifukuan" 
+                        detail={detail} 
+                        display={display}>
+                    </Line>);
         }else if(orderState=="0"){
-            list[detail.orderLogList.length-1]=(<Timeline.Item dot={succ} key="clear">
-                        <span className="line-title">订单取消</span>
-                        <span className="line-time">{TimeConvert.minsCon(detail.createTime,"ymdhms")}</span>
-                        <div className="daifukuan"> 
-                            <div className="djs">
-                                订单已被取消
-                            </div>
-                            <div className="tip">
-                                你的订单由于商家暂时无法配送已被商家取消
-                            </div>
-                            <div className="btnlist">
-                                <span className="btn jixu" onClick={this.goUrl.bind(null,"/")}>选择其他商家</span>
-                                <span className="btn clear" onClick={this.tousu}>订单反馈</span>
-                            </div>
-                        </div>
-                    </Timeline.Item>);
+            let display={"display":"block"};
+            let item=detail.orderLogList[detail.orderLogList.length-1];
+
+            list[detail.orderLogList.length-1]=(<Line loading={this.props.loading} refresh={this.props.refresh}
+                                                    handleOnCancel={this.handleOnCancel}
+                                                    item={item} 
+                                                    key="clear" 
+                                                    detail={detail} 
+                                                    display={display}>
+                                                </Line>);
+        }
+        if(orderState!="40"&&orderState!="0"){
+            list=this.pushError(list,orderState);
         }
         return list;
     }
-    //隐藏dialog
-    handleOnCancel=()=>{
+    //时间轴未完成步骤
+    pushError=(list,orderState)=>{
+        let detail=this.props.detail||{};
+        let display={"display":"none"};
+        let item={stateInfo:"已付款,待商家确认订单",createTimeStr:""};
+        if(orderState==50||orderState==10){
+            if(orderState==50){
+                item={stateInfo:"货到付款,待商家确认订单",createTimeStr:""};
+            }
+            orderState=-1;
+        }
+        switch(orderState){
+            case -1:
+                // return "代付款";
+                list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
+                                handleOnCancel={this.handleOnCancel}
+                                item={item} 
+                                isError={true}
+                                key="yifukuan" 
+                                detail={detail} 
+                                display={display}>
+                                </Line>);
+            // case 50:
+            //     // return "货到付款待接单";
+            //     item={stateInfo:"货到付款,待商家确认订单",createTimeStr:""};
+            //     list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
+            //                     item={item} 
+            //                     isError={true}
+            //                     key="daijiedan" 
+            //                     detail={detail} 
+            //                     display={display}>
+            //                     </Line>);
+            case 60:
+                // return "已确认";
+                item={stateInfo:"商家正在准备商品",createTimeStr:""};
+                list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
+                                handleOnCancel={this.handleOnCancel}
+                                item={item} 
+                                isError={true}
+                                key="daifahuo" 
+                                detail={detail} 
+                                display={display}>
+                                </Line>);
+           
+            case 21:
+                // return "待发货";
+                item={stateInfo:"商家已发货，等待收货",createTimeStr:""};
+                list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
+                                handleOnCancel={this.handleOnCancel}
+                                item={item} 
+                                isError={true} 
+                                key="yifahuo" 
+                                detail={detail} 
+                                display={display}>
+                                </Line>);
+            case 30:
+                // return "待收货";
+                item={stateInfo:"我已收货",createTimeStr:""};
+                list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
+                                handleOnCancel={this.handleOnCancel}
+                                item={item} 
+                                isError={true}
+                                key="yishouhuo" 
+                                detail={detail} 
+                                display={display}>
+                                </Line>);
+            default:
+                item={stateInfo:"订单完成",createTimeStr:""};
+                list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
+                    handleOnCancel={this.handleOnCancel}
+                    item={item}
+                    isError={true} 
+                    key="succ" 
+                    detail={detail} 
+                    display={display}>
+                    </Line>);
+        }
+        return list;
+    }
+    //切换dialog显示
+    handleOnCancel=(data={})=>{
         this.setState({
-            show_dialog:false
+            show_dialog:data.show_dialog,
+            dailog_title:data.dailog_title||"",
+            dailog_text:data.dailog_text||""
         });
     }
     //送达时间：predictedArrivalTime  商家电话storeTels 
@@ -227,15 +325,6 @@ export class Timelines extends React.Component {
         let succ=(<Icon type="check-circle-o" style={{ fontSize: '26px','color':'green' }} />);
         let error=(<Icon type="clock-circle-o" style={{ fontSize: '26px','color':'red'  }} />);
      	let list = this.returnTimeList();
-     	let istrue=this.isNext();
-     	if(istrue){
-     		list.push(
-     		<Timeline.Item dot={error} key="thelast">
-                <span className="line-title">{istrue}</span>
-            </Timeline.Item>
-     		);
-     	}
-     	
         return(
             <span style={{"width":"100%"}}>
                 <Timeline>
@@ -247,15 +336,16 @@ export class Timelines extends React.Component {
                     onOk={this.handleOnCancel}
                     title={this.state.dailog_title}
                     footer={[
-                        <Button key="back" type="ghost" size="large" onClick={this.handleOnCancel}>确认</Button>
+                        <Button key="back" type="primary" size="large" onClick={this.handleOnCancel}>确认</Button>
                     ]}
                   > 
                     {this.state.dailog_text}
                 </Dialog>
+
                 <div className="tousu">
                     <div className="tousu-hezi">
                         商家没有送餐？您可以致电客服 <span>010-65546961</span> 
-                        {orderState==21||orderState==30||orderState==40||orderState==60?(
+                        {(orderState==21||orderState==30||orderState==40||orderState==60)&&data.complaintStatus==0?(
                             <div style={{"display":"inline-block"}}>或 <span onClick={this.tousu}>投诉商家</span>。</div>
                             ):null}
                         
@@ -269,71 +359,106 @@ export class Timelines extends React.Component {
 export class MenuList extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+            loading:false
+        }
     }
     componentDidMount(){
-        this.props.dispatch(getMenuList(this.props.orderId));
+         this.setState({
+            loading:true
+        },this.props.dispatch(getMenuList(this.props.orderId,()=>{
+            this.setState({
+                loading:false
+            });
+        })));
+        // this.props.dispatch(getMenuList(this.props.orderId));
     }
-
+    detailRefresh=()=>{
+        this.setState({
+            loading:true
+        },this.props.dispatch(selectItem("",()=>{
+            this.setState({
+                loading:false
+            });
+        })));
+    }
+    loading=(flag,call)=>{
+        this.setState({
+            loading:!!flag
+        },call&&call());
+    }
+    refresh=()=>{
+        this.props.dispatch(selectItem(""));
+        this.props.refresh();
+    }
      render(){
         let detail=this.props.orderState.detail||{};
         let address=detail.address||{};
         
         return(
             <div className="yincang-active yincang clearfix ">
-                <div className="lfetlist">
-                    <div className="head">菜品共 <span>{detail.orderGoodsList&&detail.orderGoodsList.length||0}</span> 份，总价 <span>¥{detail.orderAmount}</span> </div>
-                    <ul className="caidan">
-                    {(detail.orderGoodsList||[]).map((item,i)=>{
-                        let price=parseFloat(item.goodsPrice)/parseInt(item.goodsNum);
-                        price=price.toFixed(2);
-                    	return (
-                    		<li key={i}>
-	                            <span className="name">{item.goodsName}</span>
-	                            <span className="pirce">¥{price}*{item.goodsNum}</span>
-	                        </li>
-                    		);
-                    })}
-                    {(detail.orderCampaignList||[]).map((item,i)=>{
-                    	return (
-                    		<li key={item.id} className="special">
-	                            <span className="name">{item.campaignName}</span>
-	                            <span className="pirce">-¥{item.campaignPrice}</span>
-	                        </li>
-                    		);
-                    })}
-	                    {detail.shippingFee?(<li className="dashed">
-                            <span className="name">配送费</span>
-                            <span className="pirce">￥{detail.shippingFee}</span>
-                        </li>):null}
-	                    {detail.boxPrice?(<li>
-                            <span className="name">餐盒费</span>
-                            <span className="pirce">￥{detail.boxPrice}</span>
-                        </li>):null}
-	                    <li>
-	                        <span className="name">优惠金额</span>
-	                        <span className="pirce">￥{detail.discount}</span>
-	                    </li>
-                    </ul>
-                    <ul className="personalDesc">
-                        <li>地址：{address.address+"("+address.areaInfo+")"}</li>
-                        <li>姓名：{address.trueName}({address.sex=="1"?"先生":"女士"})</li>
-                        <li>电话：{address.mobPhone}</li>
-                        {detail.orderMessage?(<li>备注：（{detail.orderMessage}）</li>):null}
-                    </ul>
-                    <div className="orderfooter">本订单由 {detail.shippingName} 提供专业高品质送餐服务</div>
-                </div>
-                <div className="rightTimeline">
-                    <Timelines 
-                    userInfo={this.props.userInfo} 
-                    detail={this.props.orderState.detail} 
-                    data={detail.orderLogList}></Timelines>
-                </div>
-
+                <Spin tip="获取中..."  spinning={this.state.loading}>
+                    <div className="lfetlist">
+                        <div className="head">菜品共 <span>{detail.orderGoodsList&&detail.orderGoodsList.length||0}</span> 份，总价 <span>¥{detail.orderAmount}</span> </div>
+                        <ul className="caidan">
+                        {(detail.orderGoodsList||[]).map((item,i)=>{
+                            let price=parseFloat(item.goodsPrice)/parseInt(item.goodsNum);
+                            price=price.toFixed(2);
+                        	return (
+                        		<li key={i}>
+    	                            <span className="name">{item.goodsName}</span>
+    	                            <span className="pirce">¥{price}*{item.goodsNum}</span>
+    	                        </li>
+                        		);
+                        })}
+                        {(detail.orderCampaignList||[]).map((item,i)=>{
+                        	return (
+                        		<li key={item.id} className="special">
+    	                            <span className="name">{item.campaignName}</span>
+    	                            <span className="pirce">-¥{item.campaignPrice}</span>
+    	                        </li>
+                        		);
+                        })}
+    	                    {detail.shippingFee?(<li className="dashed">
+                                <span className="name">配送费</span>
+                                <span className="pirce">￥{detail.shippingFee}</span>
+                            </li>):null}
+    	                    {detail.boxPrice?(<li>
+                                <span className="name">餐盒费</span>
+                                <span className="pirce">￥{detail.boxPrice}</span>
+                            </li>):null}
+    	                    <li>
+    	                        <span className="name">优惠金额</span>
+    	                        <span className="pirce">￥{detail.discount}</span>
+    	                    </li>
+                        </ul>
+                        <ul className="personalDesc">
+                            <li>地址：{address.address+"("+address.areaInfo+")"}</li>
+                            <li>姓名：{address.trueName}({address.sex=="1"?"先生":"女士"})</li>
+                            <li>电话：{address.mobPhone}</li>
+                            {detail.orderMessage?(<li>备注：（{detail.orderMessage}）</li>):null}
+                        </ul>
+                        <div className="orderfooter">本订单由 {detail.shippingName} 提供专业高品质送餐服务</div>
+                    </div>
+                    <div className="rightTimeline">
+                        <Timelines 
+                        loading={this.loading}
+                        refresh={this.refresh}
+                        userInfo={this.props.userInfo} 
+                        detail={this.props.orderState.detail} 
+                        data={detail.orderLogList}></Timelines>
+                    </div>
+                </Spin>
             </div>
             
             );
      }
 }
-export default connect(
+MenuList =connect(
     mapStateToProps
 )(MenuList)
+Line =connect(
+    mapStateToProps
+)(Line)
+
+export default MenuList;

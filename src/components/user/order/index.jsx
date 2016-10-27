@@ -4,7 +4,7 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import { Timeline, Icon,message } from 'antd';
+import { Timeline, Icon,message,Spin } from 'antd';
 import {
     getOrderList,
     getMenuList,
@@ -37,18 +37,26 @@ export class Order extends React.Component {
         this.state={
             searchData:{
                 memberId:props.userInfo&&props.userInfo.memberId
-            }
+            },
+            loading:false
         }
     }
-    componentDidMount(){
-        // this.props.dispatch(getOrderList(""));
+    // componentWillMount(){
+    //     console.log("comdid");
+    //     this.loading(true);
+    // }
+    loading=(flag,call)=>{
+        this.setState({
+            loading:!!flag
+        },call&&call());
     }
-    
     onLoad=(params, callback)=>{
-        console.log("params:",params);
         this.props.dispatch(getOrderList(params, (res) => {
             callback(res.totalRows > res.pageSize * res.pageNo);
         }));
+        this.setState({
+            loading:false
+        });
     }
     renderFooter=(loading,hasMore,self)=>{
         let list = this.props.orderState&&this.props.orderState.list || [];
@@ -61,14 +69,24 @@ export class Order extends React.Component {
                 );
         }
     }
-    refresh=()=>{
-        this.refs.listview.refresh();
+    refresh=(flag)=>{
+        if(flag){
+            this.refs.listview.refresh();
+        }else{
+            this.setState({
+                loading:true
+            },()=>{
+                this.refs.listview.refresh();
+            });
+        }
+        
     }
     render(){
         let list = this.props.orderState&&this.props.orderState.list;
         let memberId=this.props.userInfo&&this.props.userInfo.memberId;
         return(
             <span>
+                <Spin tip="请求中..." spinning={this.state.loading}>
                 <ListView
                     ref="listview"
                     dataSource={list}
@@ -77,6 +95,7 @@ export class Order extends React.Component {
                     renderFooter={this.renderFooter}
                 >
                     <MyOrder 
+                    loading={this.loading}
                     memberId={memberId}
                     refresh={this.refresh}
                     selectItem={this.props.orderState&&this.props.orderState.selectId} 
@@ -87,6 +106,7 @@ export class Order extends React.Component {
                         <MyOrder key={i} data={item} dispatch={this.props.dispatch}></MyOrder>
                         );
                 })*/}
+                </Spin>
             </span>
             );
      }
@@ -148,52 +168,60 @@ export class MyOrder extends React.Component {
         } else {
             window.event.cancelBubble = true;
         }
+        this.props.loading(true,()=>{
+            let data=this.props.data||{};
+            this.props.dispatch(theAjax("/rest/api/order/delOrder",{
+                orderId:data.orderId
+            },(res)=>{
+                if(res.result){
+                    message.success(res.msg);
+                    this.props.refresh(true);
+                }else{
+                    message.error(res.msg);
+                }
+            },()=>{
+                message.error("服务器异常,请尝试刷新页面!");
+            }));
+        });
+        
+    }
+    //再来一单
+    aginOrder=()=>{
         let data=this.props.data||{};
-        this.props.dispatch(theAjax("/rest/api/order/delOrder",{
-            orderId:data.orderId
-        },(res)=>{
-            if(res.result){
-                message.success(res.msg);
-                this.props.refresh();
-            }else{
-                message.error(res.msg);
-            }
-        },()=>{
-            message.error("服务器异常,请尝试刷新页面!");
-        }));
+        History.push("/detail/"+data.storeId);
     }
     //取消订单
-    clearOrder=()=>{
-        let data=this.props.data||{};
-        this.props.dispatch(theAjax("/rest/api/order/cancleOrder",{
-            orderSn:data.orderSn
-        },(res)=>{
-            if(res.result){
-                message.success(res.msg);
-                this.props.refresh();
-            }else{
-                message.error(res.msg);
-            }
-        },()=>{
-            message.error("服务器异常,请尝试刷新页面!");
-        }));
-    }
+    // clearOrder=()=>{
+    //     let data=this.props.data||{};
+    //     this.props.dispatch(theAjax("/rest/api/order/cancleOrder",{
+    //         orderSn:data.orderSn
+    //     },(res)=>{
+    //         if(res.result){
+    //             message.success(res.msg);
+    //             this.props.refresh();
+    //         }else{
+    //             message.error(res.msg);
+    //         }
+    //     },()=>{
+    //         message.error("服务器异常,请尝试刷新页面!");
+    //     }));
+    // }
     //确认收货
-    enterOrder=()=>{
-        let data=this.props.data||{};
-        this.props.dispatch(theAjax("/rest/api/order/finishOrder",{
-            orderSn:data.orderSn
-        },(res)=>{
-            if(res.result){
-                message.success(res.msg);
-                this.props.refresh();
-            }else{
-                message.error(res.msg);
-            }
-        },()=>{
-            message.error("服务器异常,请尝试刷新页面!");
-        }));
-    }
+    // enterOrder=()=>{
+    //     let data=this.props.data||{};
+    //     this.props.dispatch(theAjax("/rest/api/order/finishOrder",{
+    //         orderSn:data.orderSn
+    //     },(res)=>{
+    //         if(res.result){
+    //             message.success(res.msg);
+    //             this.props.refresh();
+    //         }else{
+    //             message.error(res.msg);
+    //         }
+    //     },()=>{
+    //         message.error("服务器异常,请尝试刷新页面!");
+    //     }));
+    // }
     render(){
         let data=this.props.data||{};
         let state=this.returnState(data.orderState);
@@ -216,9 +244,8 @@ export class MyOrder extends React.Component {
                         <div className="time thedesc">下单时间：{day}</div>
                     </div>
                     <div className="orderdesc orderdesc-right">
-                        {data.orderState==30?(<div className="btnlist orderbtn" onClick={this.enterOrder}>确认收货</div>):null}
-                        {data.orderState==10||data.orderState==20||data.orderState==50?
-                            (<div className="btnlist orderbtn" onClick={this.clearOrder}>取消订单</div>):null}
+                        {data.orderState==40?
+                            (<div className="btnlist orderbtn" onClick={this.aginOrder}>再来订单</div>):null}
                         {data.orderState==0||data.orderState==40?(
                         <div className="btnlist remove" onClick={this.removeOrder}> 
                             删除订单
@@ -228,7 +255,7 @@ export class MyOrder extends React.Component {
                     
                 </div>
                 {data.orderId==this.props.selectItem?(
-                    <MenuList dispatch={this.props.dispatch} orderId={data.orderId} />
+                    <MenuList refresh={this.props.refresh} dispatch={this.props.dispatch} orderId={data.orderId} />
                     ):null}
                 
             </div>

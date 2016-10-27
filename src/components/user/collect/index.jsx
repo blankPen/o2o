@@ -11,7 +11,7 @@ import {
     getCollectList,
     removeCollect
 } from 'actions/UserAction';
-import { Timeline, Icon,Rate ,message } from 'antd';
+import { Timeline, Icon,Rate ,message,Spin } from 'antd';
 import History from 'common/History';
 function mapStateToProps({
     common,
@@ -25,23 +25,38 @@ function mapStateToProps({
 export class CollectList extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+            loading:false
+        }
     }
     componentDidMount(){
         this.refresh();
     }
-    componentWillReceiveProps=(nextProps)=>{
-        if(nextProps.userInfo!=this.props.userInfo){
-            this.props.dispatch(getCollectList(nextProps.userInfo.memberId));
-        }
-    }
+    // componentWillReceiveProps=(nextProps)=>{
+    //     if(nextProps.userInfo!=this.props.userInfo){
+    //         this.props.dispatch(getCollectList(nextProps.userInfo.memberId));
+    //     }
+    // }
     refresh=()=>{
         let user=this.props.userInfo||{};
-        this.props.dispatch(getCollectList(user.memberId));
+        this.setState({
+            loading:true
+        },()=>{
+            this.props.dispatch(getCollectList(user.memberId,()=>{
+                this.setState({
+                    loading:false
+                });
+            }));
+        });
     }
     render(){
         let list = this.props.collectState.collectList || [];
         return(
              <div className="collectlist ">
+                <Spin tip="请求中..." spinning={this.state.loading}>
+                <div className="collect-title">
+                    收藏的商家
+                </div>
                 <ul className="clearfix collectul">
                     {list.map((item,i)=>{
                         return (<Collect 
@@ -52,7 +67,7 @@ export class CollectList extends React.Component {
                                         refresh={this.refresh} />);
                     })}
                 </ul>
-                
+                </Spin>
             </div>
             );
         

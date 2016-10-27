@@ -61,12 +61,13 @@ export function getMenuList(id,call){
     }
 }
 //设置选择某个订单展开
-export function selectItem(id){
+export function selectItem(id,call){
     return function(dispatch) {
         dispatch({
             type: 'order/selectItem',
             id: id
-        })
+        });
+        call&&call();
     }
 }
 //我的收藏请求
