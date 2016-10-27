@@ -48,7 +48,8 @@ export class index extends React.Component {
         userInfo: props.info,
         dirty: false,
         wait: 0,/* 验证码发送倒计时秒数，默认0，最大60*/
-        type: props.type
+        type: props.type,
+        retrieveOrUpdata:props.status||false /* true： 修改 false： 找回*/
       }
     }
     sendVCode=()=>{
@@ -159,7 +160,7 @@ export class index extends React.Component {
                 })
             }}
               >
-              {userInfo.payPassword?
+              {this.state.retrieveOrUpdata?
                 <FormItem
                     id="control-oldpass"
                     label="旧支付密码"
@@ -233,7 +234,7 @@ export class index extends React.Component {
                       />
                     )}
                   </FormItem>
-                  {!userInfo.payPassword?
+                  {!this.state.retrieveOrUpdata?
                     (
                       <span>
                         <div className="bind_phone_style">

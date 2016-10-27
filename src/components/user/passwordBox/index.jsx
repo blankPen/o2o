@@ -52,12 +52,26 @@ export class index extends React.Component {
             passStrength: 'L',
             rePassStrength: 'L',
             wait: 0,/* 验证码发送倒计时秒数，默认0，最大60*/
-        	type: props.type
+        	type: props.type,
+        	openEditPhone: props.edit||false,/* true： 开启 false： 关闭*/
+        	retrieveOrUpdata:props.status||false /* true： 修改 false： 找回*/
     	}
   	}
+  	phoneExists = (rule, value, callback) => {
+      if(value==""){
+        callback([new Error('手机号码不能为空！')]);
+      }else {
+          callback();
+      }
+    }
   	sendVCode=()=>{
         console.log("发送验证码。。。");
-        let phone=this.state.userInfo.memberMobile;
+        let phone;
+        if(this.state.userInfo){
+        	phone=this.state.userInfo.memberMobile;
+        }else{
+        	phone=this.props.form.getFieldValue('phone');
+        }
 	      this.props.dispatch(getVerifyCode({
 	          "type": this.state.type,
 	          "mobile": phone
@@ -90,7 +104,12 @@ export class index extends React.Component {
 
     validatorVcode=(rule, value, callback)=>{
         console.log(" 验证验证码。。。");
-        let phone=this.state.userInfo.memberMobile;
+        let phone;
+        if(this.state.userInfo){
+        	phone=this.state.userInfo.memberMobile;
+        }else{
+        	phone=this.props.form.getFieldValue('phone');
+        }
         let validateCode=this.props.form.getFieldValue('Vcode');
         this.props.dispatch(getCheckCode({
             "validateCode" : validateCode,
@@ -230,7 +249,7 @@ export class index extends React.Component {
 				        })
 				    }}
 	            >
-	            {userInfo.isSettingPwd===1?
+	            {this.state.retrieveOrUpdata?
 	            	<FormItem
 	                  id="control-oldpass"
 	                  label="旧密码"
@@ -310,19 +329,41 @@ export class index extends React.Component {
 	                    />
 	                  )}
 	                </FormItem>
-	                {!(userInfo.isSettingPwd===1)?
+	                {!this.state.retrieveOrUpdata?
 	                    (
 	                      <span>
-	                        <div className="bind_phone_style">
-	                          <Row>
-	                              <Col span={7}>
-	                                  <span className="bind_phone_lable">已绑定的手机：</span>
-	                              </Col>
-	                              <Col span={12}>
-	                                  <span className="bind_phone_text">{phone}</span>
-	                              </Col>
-	                          </Row>
-	                        </div>
+	                        {this.state.openEditPhone?
+	                          (
+	                            <FormItem
+	                              id="control-phone"
+	                              {...formItemLayout}
+	                              label="输入您绑定的手机号"
+	                              hasFeedback
+	                              help={isFieldValidating('phone') ? 'validating...' : (getFieldError('phone') || []).join(', ')}
+	                            >
+	                              {getFieldDecorator('phone', {
+	                                rules: [
+	                                  {  required: true, pattern: /^1((3[0-9]|4[57]|5[0-35-9]|7[0678]|8[0-9])\d{8}$)/ , message: '手机号码格式不正确！' },
+	                                  {  validator: this.phoneExists }
+	                                ],
+	                              })(
+	                                <Input id="control-phone" placeholder="" />
+	                              )}
+	                            </FormItem>
+	                          ):
+	                          (
+	                            <div className="bind_phone_style">
+	                              <Row>
+	                                  <Col span={7}>
+	                                      <span className="bind_phone_lable">已绑定的手机：</span>
+	                                  </Col>
+	                                  <Col span={12}>
+	                                      <span className="bind_phone_text">{phone}</span>
+	                                  </Col>
+	                              </Row>
+	                            </div>
+	                          )
+	                        }
 	                        <FormItem
 	                          id="control-Vcode"
 	                          {...formItemLayout}

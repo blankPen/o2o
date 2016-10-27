@@ -20,14 +20,15 @@ import {
 }
 from 'react-router'
 import store from 'stores';
-import { requireSetPosition } from 'common/Permission'
+import {
+    requireSetPosition
+} from 'common/Permission'
 
 import PublicMain from 'components/public/Main/';
 import Home from 'components/Home/';
 import Detail from 'components/Detail/';
 import Login from 'components/SignPage/Login/';
 import Register from 'components/SignPage/Register/';
-import Forgetpwd from 'components/Forgetpwd/';
 import Maper from 'components/Map/';
 import Account from 'components/user/account/';
 import Order from 'components/user/order/';
@@ -79,7 +80,6 @@ export class index extends React.Component {
                         <Route path='/map' component={Maper} />
                         <Route path="/login" component={Login}/>
                         <Route path="/register" component={Register}/>
-                        <Route path="/forgetpwd" component={Forgetpwd}/>
                     </Route>
                 </Router>
             </Provider>
@@ -92,13 +92,13 @@ export default connect(
 )(index)
 
 // 自动登录
-function autoLogin(rextState, replace, callback){
+function autoLogin(rextState, replace, callback) {
     // 7天自动登录
     let user_info = Cookie.getJSON('user_info') || undefined;
     // session缓存
     let user_id = sessionStorage.getItem("user_id") || (user_info ? user_info.user_id : undefined);
     user_id = user_id || (user_info && user_info.user_id);
-    if(user_id){ // id存在，自动登录
+    if (user_id) { // id存在，自动登录
         store.dispatch(getMemberDetail({
             "memberId": user_id
         }, (re) => {
@@ -109,7 +109,7 @@ function autoLogin(rextState, replace, callback){
                 console.log("用户信息获取失败");
             }
         }))
-    }else{
+    } else {
         // 未登录
         callback();
     }

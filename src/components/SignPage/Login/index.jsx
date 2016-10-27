@@ -24,6 +24,11 @@ import {
     getCheckCode
 } from 'actions/SignPageAction';
 import Aggrement from 'components/SignPage/Aggrement/';
+import {
+    retrieveToLoginpass
+} from 'actions/UserAction';
+import PasswordBox from 'components/user/passwordBox/';
+import Dialog from 'components/common/Dialog/';
 
 const FormItem = Form.Item;
 const createForm = Form.create;
@@ -60,7 +65,10 @@ let index = class extends React.Component {
       openFormError:false,
       validate_info: "",
       type:"loginValidate",
-      modalVisible: false
+      modalVisible: false,
+      openRevicesPass:false,
+      show_dialog:false,/*是否开启Dialog*/
+      type2: "findpassword"/* 找回密码操作类型*/
     }
   }
   noop() {
@@ -256,11 +264,56 @@ let index = class extends React.Component {
   setModalVisible=(modalVisible)=> {
     this.setState({ modalVisible });
   }
+  setModalVisible2=(modalVisible)=> {
+    this.setState({
+        show_dialog:modalVisible
+    });
+  }
 
   componentWillUnmount() {
     if(this.a){
       clearInterval(this.a);
     }
+    if(this.close_form){
+       clearInterval(this.close_form);
+    }
+  }
+  handleOnCancel=()=>{
+      this.setModalVisible2(false);
+      this.setState({
+          openRevicesPass:false
+      });
+  }
+  handleRetrievePassword=(errors,values,callback)=>{//找回登录密码
+      if (errors) {
+          console.log('Retrieve-password-box表单验证错误!');
+          this.close_form=setInterval(()=>{
+            console.log("监控回调中。。。");
+            if(!this.state.show_dialog){
+              callback && callback();
+              clearInterval(this.close_form);
+            }
+          },1000);
+          return;
+      }
+      console.log('Retrieve-password-box表单验证成功');
+      console.log(values);
+      this.props.dispatch(retrieveToLoginpass({
+          "mobile": values.phone,
+          "validateCode": values.Vcode,
+          "newpassword": values.pass
+        },(re)=> {
+          if(re.result==1){
+            message.success(re.msg);
+              this.handleOnCancel();
+              callback && callback(re);
+            }else{
+              message.error(re.msg);
+              console.log(re.msg);
+            }
+          }
+        )
+      );
   }
   render() {
     return (
@@ -305,6 +358,16 @@ let index = class extends React.Component {
         >
           <Aggrement/>
         </Modal>
+        <Dialog
+          visible={this.state.show_dialog}
+          onCancel={this.handleOnCancel}
+          title="找回登录密码"
+          footer={[
+              <Button key="back" type="ghost" size="large" onClick={this.handleOnCancel}>取消</Button>
+          ]}
+        >
+          <PasswordBox info={this.state.userInfo} handleSubmit={this.handleRetrievePassword} type={this.state.type2} edit={true}/>
+        </Dialog>
       </div>
     );
   }
@@ -365,7 +428,12 @@ let index = class extends React.Component {
                 <Checkbox checked={true} id="control-autoLogon" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
               )}
                 <div className="sign_forgetpasssword">
-                    <a href='/#/forgetpwd'>忘记密码 ？ </a>
+                    <a href='javascript:void(0);' onClick={()=>{
+                      this.setState({
+                          openRevicesPass:true,
+                          show_dialog: true
+                      })
+                    }}>忘记密码 ？ </a>
                 </div>
             </FormItem>
           </div>
@@ -451,7 +519,12 @@ let index = class extends React.Component {
                 <Checkbox  checked={true} id="control-autoLogon2" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
               )}
               <div className="sign_forgetpasssword">
-                  <a href='/#/forgetpwd'>忘记密码 ？ </a>
+                  <a href='javascript:void(0);' onClick={()=>{
+                    this.setState({
+                        openRevicesPass:true,
+                        show_dialog: true
+                    })
+                  }}>忘记密码 ？ </a>
               </div>
             </FormItem>
           </div>

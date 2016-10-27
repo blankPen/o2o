@@ -28,9 +28,7 @@ import NameBox from '../nameBox/';
 import MobilephoneBox from '../mobilephoneBox/';
 import PaypassBox from '../paypassBox/'
 import {
-    retrieveToLoginpass,
     updateToLoginpass,
-    retrieveToPaypass,
     updateToPaypass,
     updateToMobiphone,
     updateToName
@@ -153,7 +151,7 @@ export class Account extends React.Component {
             show_dialog: true
         })
     }
-    handleNameSubmit = (errors,values,callback) => {
+    handleNameSubmit = (errors,values,callback) => {//修改姓名
         if (errors) {
           console.log(' name-box表单验证错误!');
           return;
@@ -179,7 +177,7 @@ export class Account extends React.Component {
           )
         );
     }
-    handlePhoneSubmit = (errors,values,callback) => {
+    handlePhoneSubmit = (errors,values,callback) => {//修改手机
       if (errors) {
           console.log('phone-box表单验证错误!');
           return;
@@ -206,7 +204,7 @@ export class Account extends React.Component {
         )
       );
     }
-    handlePasswordSubmit = (errors,values,callback) => {
+    handlePasswordSubmit = (errors,values,callback) => {//修改登录密码
         let user_info = Cookie.getJSON('user_info') || undefined;
         console.log(user_info.password+','+user_info.user_id+","+user_info.username);
         if (errors) {
@@ -240,13 +238,32 @@ export class Account extends React.Component {
           )
         );
     }
-    handlePayPassSubmit = (errors,values,callback) => {
+    handlePayPassSubmit = (errors,values,callback) => {//修改支付密码
         if (errors) {
             console.log(' paypass-box表单验证错误!');
             return;
         }
         console.log('paypass-box表单验证成功');
         console.log(values);
+        this.props.dispatch(updateToPaypass({
+              "memberId": this.state.userInfo.memberId,
+              "password": values.oldpass||"",
+              "newpassword": values.pass
+            },(re)=> {
+              if(re.result==1){
+                message.success(re.msg);
+                this.props.dispatch(getMemberDetail({
+                    "memberId": this.state.userInfo.memberId
+                }));
+                this.handleOnCancel();
+                callback && callback(re);
+              }else{
+                message.error(re.msg);
+                console.log(re.msg);
+              }
+            }
+          )
+        );
     }
     render=()=>{
       let userInfo=this.props.userInfo||{};
@@ -453,11 +470,11 @@ export class Account extends React.Component {
           );
       }else if(this.state.openPassword){
           return (
-              <PasswordBox info={this.state.userInfo} handleSubmit={this.handlePasswordSubmit} type={this.state.type2}/>
+              <PasswordBox info={this.state.userInfo} handleSubmit={this.handlePasswordSubmit} type={this.state.type2} status={userInfo.isSettingPwd===1?true:false}/>
           )
       }else if(this.state.openPaypass){
           return (
-              <PaypassBox info={this.state.userInfo} handleSubmit={this.handlePayPassSubmit} type={this.state.type}/>
+              <PaypassBox info={this.state.userInfo} handleSubmit={this.handlePayPassSubmit} type={this.state.type} status={userInfo.payPassword?true:false}/>
           )
       }else{
           return false;

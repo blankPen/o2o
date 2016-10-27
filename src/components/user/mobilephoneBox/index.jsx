@@ -198,6 +198,7 @@ export class index extends React.Component {
       this.props.form.resetFields();
     }
   	render() {
+      const userInfo = this.props.info || {};
 	    return (
 	     	  <div className="phone-box">
           	<Form horizontal onSubmit={this.handlePhoneSubmit}
@@ -214,7 +215,28 @@ export class index extends React.Component {
             >
             {this._stepOne()}
             {this._stepTwo()}
-            {this.state.nextStep?
+            {userInfo.isBind===1?
+              (
+                <span>
+                  {this.state.nextStep?
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      size="large"
+                    >
+                      确定
+                    </Button>
+                  :
+                    <div
+                      className="next_btn"
+                      onClick={this.handleNext}
+                    >
+                      下一步
+                    </div>
+                  }
+                </span>
+              )
+              :
                 <Button
                   type="primary"
                   htmlType="submit"
@@ -222,14 +244,8 @@ export class index extends React.Component {
                 >
                   确定
                 </Button>
-              :
-                <div
-                  className="next_btn"
-                  onClick={this.handleNext}
-                >
-                  下一步
-                </div>
             }
+
           </Form>
         </div>
 	    );
@@ -252,7 +268,7 @@ export class index extends React.Component {
             {userInfo.isBind===1?
                 (
                 <div className="stepOne_style">
-                  <span className="step_title"> 第1步</span>
+                  <span className="step_title"> 第一步</span>
                   <div className="bind_phone_style">
                     <Row>
                         <Col span={7}>
@@ -301,7 +317,7 @@ export class index extends React.Component {
       if(this.state.nextStep){
         return(
           <div className="stepTwo_style">
-            <span className="step_title"> 第2步</span>
+            <span className="step_title"> 第二步</span>
             {this._default()}
           </div>
         )
