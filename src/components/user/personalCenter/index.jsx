@@ -245,7 +245,7 @@ export class index extends React.Component {
                     </div>
                 </div>
                 <Row className="userexinfo-form__section">
-                    <Col span={6} >
+                    <Col span={4} >
                         <div className="userimg">
                             <i className="fa fa-user"></i>
                         </div>
@@ -253,12 +253,12 @@ export class index extends React.Component {
                     <Col span={6}>
                         姓名：
                     </Col>
-                    <Col span={6} >
+                    <Col span={8} >
                         {userInfo.memberTruename}
                     </Col>
                 </Row>
                 <Row className="userexinfo-form__section">
-                    <Col span={6} >
+                    <Col span={4} >
                         <div className="userimg">
                             <i className="fa fa-key"></i>
                         </div>
@@ -266,19 +266,19 @@ export class index extends React.Component {
                     <Col span={6}>
                         密码：
                     </Col>
-                    <Col span={6} >
+                    <Col span={8} >
                         {password}
                     </Col>
                     {userInfo.isSettingPwd===1?
                         <Col span={6}>
-                            <Button className="btn" onClick={this.revicesPassword}>找回</Button>
+                            <a href='javascript:void(0);' className="btn" onClick={this.revicesPassword}>忘记密码 ？ </a>
                         </Col>
                     :
                         undefined
                     }
                 </Row>
                  <Row className="userexinfo-form__section">
-                    <Col span={6} >
+                    <Col span={4} >
                         <div className="userimg">
                             <i className="fa fa-key"></i>
                         </div>
@@ -286,19 +286,19 @@ export class index extends React.Component {
                     <Col span={6}>
                         支付密码：
                     </Col>
-                    <Col span={6} >
+                    <Col span={8} >
                         {paypass}
                     </Col>
                     {userInfo.payPassword?
                         <Col span={6}>
-                            <Button className="btn" onClick={this.revicesPayPassword}>找回</Button>
+                            <a href='javascript:void(0);' className="btn" onClick={this.revicesPayPassword}>忘记支付密码 ？ </a>
                         </Col>
                     :
                         undefined
                     }
                 </Row>
                 <Row className="userexinfo-form__section">
-                    <Col span={6}>
+                    <Col span={4}>
                         <div className="userimg">
                             <i className="fa fa-mobile-phone"></i>
                         </div>
@@ -306,13 +306,13 @@ export class index extends React.Component {
                     <Col span={6}>
                         手机号：
                     </Col>
-                    <Col span={6} >
+                    <Col span={8} >
                         {phone}
                     </Col>
                     {/*<Button className="btn" onClick={this.changePhone}>更换</Button>*/}
                 </Row>
                 <Row className="userexinfo-form__section">
-                    <Col  span={6} >
+                    <Col  span={4} >
                         <div className="userimg">
                             <i className="fa fa-credit-card"></i>
                         </div>
@@ -320,11 +320,11 @@ export class index extends React.Component {
                     <Col span={6}>
                         我的钱包：
                     </Col>
-                    <Col span={6} >
+                    <Col span={8} >
                         {userInfo.availablePredeposit}
                     </Col>
                     <Col span={6} >
-                        <Button className="btn"><Link to="/personal_center">充值</Link></Button>
+                        <a href='javascript:void(0);' className="btn" >余额不足 ？ </a>
                     </Col>
                 </Row>
                 <div className="userexinfo-form__footer">
