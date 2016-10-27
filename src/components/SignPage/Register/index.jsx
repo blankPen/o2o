@@ -267,7 +267,7 @@ let index= class extends React.Component {
         this.props.dispatch(register({
               "password": values.pass,
               "validateCode": values.Dcode,
-              "name": values.name
+              "name": values.phone
             },(re)=> {
               if(re.result==1){
                 console.log('注册成功');
