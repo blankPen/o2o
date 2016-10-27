@@ -26,6 +26,14 @@ import {getRealPath} from 'common/Img'
 import {
   Link
 } from 'react-router';
+import PasswordBox from 'components/user/passwordBox/';
+import PaypassBox from 'components/user/paypassBox/'
+import Dialog from 'components/common/Dialog/';
+import {
+    retrieveToLoginpass,
+    retrieveToPaypass
+} from 'actions/UserAction';
+import Cookie from "js-cookie";
 
 function mapStateToProps({
     common
@@ -74,7 +82,13 @@ export class index extends React.Component {
     }
     resetState(userInfo) {
         return {
-            userInfo: userInfo || {}
+            userInfo: userInfo || {},
+            dailog_title:"",
+            openRevicesPass:false,/*找回密码开启*/
+            openRevicesPayPass:false,/*找回支付密码开启*/
+            show_dialog:false,/*是否开启Dialog*/
+            type2: "findpassword",/* 找回密码操作类型*/
+            type: "findPaypassword"/* 找回支付密码操作类型*/
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -88,12 +102,101 @@ export class index extends React.Component {
             userInfo: this.props.userInfo || {},
         })
     }
+    setModalVisible=(modalVisible)=> {
+        this.setState({
+            show_dialog:modalVisible
+        });
+    }
+    handleOnCancel=()=>{
+      this.setModalVisible(false);
+      this.setState({
+          dailog_title:"",
+          openRevicesPass:false,
+          openRevicesPayPass:false
+      });
+    }
+    revicesPassword=()=>{
+        this.setState({
+          dailog_title:"找回登录密码",
+          openRevicesPass:true,
+          show_dialog:true
+        });
+    }
+    revicesPayPassword=()=>{
+        this.setState({
+          dailog_title:"找回支付密码",
+          openRevicesPayPass:true,
+          show_dialog:true
+        });
+    }
+    handleRetrievePayPassword=(errors,values,callback)=>{//找回支付密码
+        if (errors) {
+          console.log('Retrieve-Paypassword-box表单验证错误!');
+          return;
+        }
+        console.log('Retrieve-Paypassword-box表单验证成功');
+        console.log(values);
+        this.props.dispatch(retrieveToPaypass({
+          "memberId": this.state.userInfo.memberId,
+          "validateCode": values.Vcode,
+          "newpassword": values.pass
+        },(re)=> {
+          if(re.result==1){
+              message.success(re.msg);
+              this.props.dispatch(getMemberDetail({
+                "memberId": this.state.userInfo.memberId
+              }));
+              this.handleOnCancel();
+              callback && callback(re);
+            }else{
+              message.error(re.msg);
+              console.log(re.msg);
+            }
+          }
+        )
+      );
+    }
+    handleRetrievePassword=(errors,values,callback)=>{//找回登录密码
+      let user_info = Cookie.getJSON('user_info') || undefined;
+      console.log(user_info.password+','+user_info.user_id+","+user_info.username);
+      if (errors) {
+          console.log('Retrieve-password-box表单验证错误!');
+          return;
+      }
+      console.log('Retrieve-password-box表单验证成功');
+      console.log(values);
+      this.props.dispatch(retrieveToLoginpass({
+          "mobile": this.state.userInfo.memberMobile,
+          "validateCode": values.Vcode,
+          "newpassword": values.pass
+        },(re)=> {
+          if(re.result==1){
+            Cookie.set('user_info', {
+                username: user_info.username,
+                password:  values.pass,
+                user_id: user_info.user_id
+            }, { expires: 7 });//cookie存储用户名密码
+                message.success(re.msg);
+                this.props.dispatch(getMemberDetail({
+                    "memberId": this.state.userInfo.memberId
+                }));
+                this.handleOnCancel();
+                callback && callback(re);
+            }else{
+              message.error(re.msg);
+              console.log(re.msg);
+            }
+          }
+        )
+      );
+    }
     render() {
         const userInfo = this.state.userInfo || {};
-        let phone,password;
+        let phone,password,paypass;
         if(userInfo){
             phone=(userInfo.isBind===1)?userInfo.memberMobile.substring(0,3) + "****" + userInfo.memberMobile.substring(8,11) : "尚未绑定手机号码";
             password=(userInfo.isSettingPwd===1)?"******" : "尚未设置密码";
+            paypass=(userInfo.payPassword)?"******" : "尚未设置支付密码";
         }
         const props = { //上传请求
             action: '/rest/api/member/updateMemberFace',
@@ -142,60 +245,87 @@ export class index extends React.Component {
                     </div>
                 </div>
                 <Row className="userexinfo-form__section">
-                    <Col span={5} >
+                    <Col span={6} >
                         <div className="userimg">
                             <i className="fa fa-user"></i>
                         </div>
                     </Col>
-                    <Col span={8} className="username">
+                    <Col span={6}>
                         姓名：
                     </Col>
-                    <Col span={8} className="userinfo">
+                    <Col span={6} >
                         {userInfo.memberTruename}
                     </Col>
-                   {/* <Button className="btn" onClick={this.changeName}>修改</Button>*/}
                 </Row>
                 <Row className="userexinfo-form__section">
-                    <Col span={5} >
+                    <Col span={6} >
                         <div className="userimg">
                             <i className="fa fa-key"></i>
                         </div>
                     </Col>
-                    <Col span={8} className="username">
+                    <Col span={6}>
                         密码：
                     </Col>
-                    <Col span={8} className="userinfo">
+                    <Col span={6} >
                         {password}
                     </Col>
-                    {/*<Button className="btn" onClick={this.changePassword}>修改</Button>*/}
+                    {userInfo.isSettingPwd===1?
+                        <Col span={6}>
+                            <Button className="btn" onClick={this.revicesPassword}>找回</Button>
+                        </Col>
+                    :
+                        undefined
+                    }
+                </Row>
+                 <Row className="userexinfo-form__section">
+                    <Col span={6} >
+                        <div className="userimg">
+                            <i className="fa fa-key"></i>
+                        </div>
+                    </Col>
+                    <Col span={6}>
+                        支付密码：
+                    </Col>
+                    <Col span={6} >
+                        {paypass}
+                    </Col>
+                    {userInfo.payPassword?
+                        <Col span={6}>
+                            <Button className="btn" onClick={this.revicesPayPassword}>找回</Button>
+                        </Col>
+                    :
+                        undefined
+                    }
                 </Row>
                 <Row className="userexinfo-form__section">
-                    <Col span={5}>
+                    <Col span={6}>
                         <div className="userimg">
                             <i className="fa fa-mobile-phone"></i>
                         </div>
                     </Col>
-                    <Col span={8} className="username">
+                    <Col span={6}>
                         手机号：
                     </Col>
-                    <Col span={8} className="userinfo">
+                    <Col span={6} >
                         {phone}
                     </Col>
                     {/*<Button className="btn" onClick={this.changePhone}>更换</Button>*/}
                 </Row>
                 <Row className="userexinfo-form__section">
-                    <Col  span={5} >
+                    <Col  span={6} >
                         <div className="userimg">
                             <i className="fa fa-credit-card"></i>
                         </div>
                     </Col>
-                    <Col span={8} className="username">
+                    <Col span={6}>
                         我的钱包：
                     </Col>
-                    <Col span={8} className="userinfo">
+                    <Col span={6} >
                         {userInfo.availablePredeposit}
                     </Col>
-                   {/* <Button className="btn"><Link to="/personal_center">充值</Link></Button>*/}
+                    <Col span={6} >
+                        <Button className="btn"><Link to="/personal_center">充值</Link></Button>
+                    </Col>
                 </Row>
                 <div className="userexinfo-form__footer">
                     <span>收藏的店铺：{userInfo.favStoreCount}</span>
@@ -203,8 +333,31 @@ export class index extends React.Component {
                    {/* <span>会员积分：{userInfo.memberConsumePoints}</span>*/}
                 </div>
             </div>
+            <Dialog
+              visible={this.state.show_dialog}
+              onCancel={this.handleOnCancel}
+              title={this.state.dailog_title}
+              footer={[
+                  <Button key="back" type="ghost" size="large" onClick={this.handleOnCancel}>取消</Button>
+              ]}
+            >
+              {this._dialogForm()}
+            </Dialog>
         </div>
         );
+    }
+    _dialogForm=()=>{
+        if(this.state.openRevicesPass){
+           return (
+                <PasswordBox info={this.state.userInfo} handleSubmit={this.handleRetrievePassword} type={this.state.type2}/>
+           );
+        }else if(this.state.openRevicesPayPass){
+           return (
+                <PaypassBox info={this.state.userInfo} handleSubmit={this.handleRetrievePayPassword} type={this.state.type}/>
+           );
+        }else{
+            return false;
+        }
     }
 }
 

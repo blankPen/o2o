@@ -23,10 +23,10 @@ import {
 } from 'antd';
 import { Link } from 'react-router';
 import Dialog from 'components/common/Dialog/';
-import PasswordBox from '../passwordBox/';
-import NameBox from '../nameBox/';
-import MobilephoneBox from '../mobilephoneBox/';
-import PaypassBox from '../paypassBox/'
+import PasswordBox from 'components/user/passwordBox/';
+import NameBox from 'components/user/nameBox/';
+import MobilephoneBox from 'components/user/mobilephoneBox/';
+import PaypassBox from 'components/user/paypassBox/'
 import {
     updateToLoginpass,
     updateToPaypass,
@@ -112,6 +112,7 @@ export class Account extends React.Component {
     handleOnCancel=()=>{
         this.setModalVisible(false);
          this.setState({
+            dailog_title:"",
             openName:false,
             openPhone:false,
             openPassword:false,
