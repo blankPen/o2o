@@ -6,7 +6,7 @@ import { getPositionPoint } from 'actions/commonAction';
 
 
 /**
- * 获取评价列表
+ * 获取订单信息
  */
 
 export function getOrderInfo(params,call) {
@@ -98,4 +98,27 @@ export function getAddressList(params,call) {
             }
         })
     }
+}
+
+export function getPayInfo(orderSn,call){
+    return function(dispatch){
+        ajax({
+            url:'/rest/api/order/goToPay',
+            data:{orderSn:orderSn},
+            success:function(res){
+                dispatch({
+                    type:'get/pay/info',
+                    payInfo:res.data
+                });
+                call&&call(res);
+            }
+        });
+    }
+
+
+
+
+
+
+
 }

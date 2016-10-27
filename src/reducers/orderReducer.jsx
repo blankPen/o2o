@@ -24,9 +24,16 @@ export default handleActions({
             couponList: action.list
         }
     },
+    'get/pay/info':(state,action) =>{
+        return{
+            ...state,
+            payInfo:action.payInfo
+        }
+    }
 
 }, {
     orderInfo: {},
     addressList: [],
-    couponList: []
+    couponList: [],
+    payInfo:{}
 });

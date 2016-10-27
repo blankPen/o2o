@@ -11,6 +11,7 @@ import * as DomUtils from 'common/utils/dom';
 import * as actions from 'actions/DetailAction';
 import { Rate,Tooltip ,Tabs,Radio,Checkbox,Affix} from 'antd';
 import CartBox from 'components/Detail/CartBox/';
+import Loading from 'components/common/Loading/'
 const moment = require('moment');
 
 
@@ -54,7 +55,8 @@ export class Detail extends React.Component {
         let data = actions.getCartList(storeId,memberId);
         this.state = {
             inCartItems: data || {},
-            is_show_category:true
+            is_show_category:true,
+            show_loading:true
         }
     }
     componentWillUnmount() {
@@ -70,7 +72,11 @@ export class Detail extends React.Component {
             storeId,
             memberId,
         }));
-        this.props.dispatch(actions.getClassAndGoodsList({storeId}));
+        this.props.dispatch(actions.getClassAndGoodsList({storeId},()=>{
+            this.setState({
+                show_loading:false
+            })
+        }));
     }
     componentWillReceiveProps(nextProps) {
         if(nextProps.params.storeId != this.props.params.storeId ||
@@ -196,6 +202,7 @@ export class Detail extends React.Component {
             );
         });
         return (
+            <Loading isLoading={this.state.show_loading} >
             <div className="detail-body">
                 <CartBox
                     ref='cartBox'
@@ -322,6 +329,8 @@ export class Detail extends React.Component {
                     </div>
                </div>
             </div>
+               </Loading>
+
         );
     }
 }

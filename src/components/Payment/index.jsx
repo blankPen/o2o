@@ -10,11 +10,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Img from 'common/Img';
 import { Radio } from 'antd';
+import * as actions from'actions/OrderAction'
 const RadioGroup = Radio.Group;
 
-function mapStateToProps(state) {
+function mapStateToProps({orderState}) {
   return {
-
+    payInfo : orderState.payInfo||{}
   };
 }
 
@@ -33,6 +34,11 @@ export class Payment extends React.Component {
         }
     }
 
+
+    componentWillMount(){
+        this.props.dispatch(actions.getPayInfo('20161027102515160'));
+    }
+
     changePayWay =(e)=>{
         this.setState({
           value: e.target.value,
@@ -40,6 +46,7 @@ export class Payment extends React.Component {
     }
 
     render() {
+        let data = this.props.payInfo;
         return (
             <div className="payment">
                 <div className="payment-head">
@@ -62,10 +69,10 @@ export class Payment extends React.Component {
                     </div>
                     <div className="order-info">
                         <div className="left-info">
-                            项目：肯德基宅急送(北新桥店）-2785180542818284
+                            {`项目：${data.storeName} - ${data.orderSn}`}
                         </div>
                         <div className="right-price">
-                            应付金额：<span className="price">¥124.00</span>
+                            应付金额：<span className="price">{`¥${data.orderAmount||0}`}</span>
                         </div>
                     </div>
                     <div className="tabs-head">
@@ -73,7 +80,7 @@ export class Payment extends React.Component {
                         <div className="right-opinion">意见反馈</div>
                     </div>
                     <div className="pay-way-box">
-                        <RadioGroup onChange={this.onChange} value={this.state.value}>
+                        <RadioGroup onChange={this.changePayWay} value={this.state.value}>
                             <Radio key="a" value={1}>
                                 <div className="pay-way">
                                     <Img src='https://p1.meituan.net/pay/pc_wxqrpay.png'></Img>
@@ -89,7 +96,7 @@ export class Payment extends React.Component {
                     <div className="determine-payment">
                         <div className="right-content">
                             <div className="pay-price">
-                                支付：<span className="price">¥124.00</span>
+                                支付：<span className="price">{`¥${data.orderAmount||0}`}</span>
                             </div>
                             <div className="option">
                                 <div className="back">
@@ -117,6 +124,7 @@ export class Steps extends React.Component {
 
     this.labelList=['1.提交订单','2. 选择支付方式','3. 购买成功'];
   }
+
 
   render() {
     let steps = [];
