@@ -203,133 +203,133 @@ export class Detail extends React.Component {
         });
         return (
             <Loading isLoading={this.state.show_loading} >
-            <div className="detail-body">
-                <CartBox
-                    ref='cartBox'
-                    isOpen={isOpen}
-                    startPrice={data.startPrice}
-                    data={this.state.inCartItems}
-                    onChange={this.handleChangeCart}
-                    onSubmit={this.toOrderPreview}
-                />
-               <div className="business-top">
-                    <div className="content-box">
-                        <div className="left-box">
-                            <Img className="business-logo" src={data.storeLogo} />
-                            <div className="business-box">
-                                <div className="business-name">
-                                    {data.storeName}
-                                    <i className="fa fa-caret-down hide"></i>
+                <div className="detail-body">
+                    <CartBox
+                        ref='cartBox'
+                        isOpen={isOpen}
+                        startPrice={data.startPrice}
+                        data={this.state.inCartItems}
+                        onChange={this.handleChangeCart}
+                        onSubmit={this.toOrderPreview}
+                    />
+                   <div className="business-top">
+                        <div className="content-box">
+                            <div className="left-box">
+                                <Img className="business-logo" src={data.storeLogo} />
+                                <div className="business-box">
+                                    <div className="business-name">
+                                        {data.storeName}
+                                        <i className="fa fa-caret-down hide"></i>
+                                    </div>
+                                    <Rate value={data.storeScore} /> {data.storeScore}
+                                    <div className="option">
+                                        <span>{data.startPrice+'元起送'}</span>
+                                        <span>{data.expressFee+'元配送费'}</span>
+                                        <span>{data.shippingMethod=='1'?'由平台费送':'由商家配送'}</span>
+                                    </div>
                                 </div>
-                                <Rate value={data.storeScore} /> {data.storeScore}
-                                <div className="option">
-                                    <span>{data.startPrice+'元起送'}</span>
-                                    <span>{data.expressFee+'元配送费'}</span>
-                                    <span>{data.shippingMethod=='1'?'由平台费送':'由商家配送'}</span>
-                                </div>
-                            </div>
-                            <div className="buttom-info">
-                                <div>{'商家地址：'+data.storeAddress}</div>
-                                <div>{'商家电话：'+data.storeTel}</div>
-                                <div>
-                                    {'营业时间：'+data.startBusinessTime+'-'+data.endBusinessTime}
+                                <div className="buttom-info">
+                                    <div>{'商家地址：'+data.storeAddress}</div>
+                                    <div>{'商家电话：'+data.storeTel}</div>
+                                    <div>
+                                        {'营业时间：'+data.startBusinessTime+'-'+data.endBusinessTime}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="right-box">
-                        <div className="rate-box">
-                            <div className="rate"><span>{data.storeScore}</span>分</div>
-                            <div className="rate-text">商家评分</div>
-                        </div>
-                        <div className="commas"></div>
-                        <Tooltip
-                            title={this.renderTooltipTitle('time',true,36,21)}
-                            placement="bottom"
-                        >
+                        <div className="right-box">
                             <div className="rate-box">
-                                <div className="rate">
-                                    <span>{data.storeDeliverycredit||0}</span>分钟
+                                <div className="rate"><span>{data.storeScore}</span>分</div>
+                                <div className="rate-text">商家评分</div>
+                            </div>
+                            <div className="commas"></div>
+                            <Tooltip
+                                title={this.renderTooltipTitle('time',true,36,21)}
+                                placement="bottom"
+                            >
+                                <div className="rate-box">
+                                    <div className="rate">
+                                        <span>{data.storeDeliverycredit||0}</span>分钟
+                                    </div>
+                                    <i className="fa fa-caret-down turn"></i>
+                                    <div className="rate-text">平均送餐时间</div>
                                 </div>
-                                <i className="fa fa-caret-down turn"></i>
-                                <div className="rate-text">平均送餐时间</div>
-                            </div>
-                        </Tooltip>
-                        <div className="commas"></div>
-                        <Tooltip
-                            title={this.renderTooltipTitle('promptness',true,91,36)}
-                            placement="bottom"
-                        >
-                            <div className="rate-box">
-                                <div className="rate"><span>91</span>%</div>
-                                <i className="fa fa-caret-down turn"></i>
-                                <div className="rate-text">及时送餐率</div>
-                            </div>
-                        </Tooltip>
-                    </div>
-                    <div className="fold-3d"></div>
-                    <div className="collection">
-                        {/*
-                            data.isStoreCollect>1?
-                                <i className="fa fa-heart is-conllect"></i>:
-                                <i className="fa fa-heart-o"></i>
-                        */}
-                        <i onClick={this.toggleCollect.bind(this,!data.isStoreCollect)}
-                            className={`fa ${!!data.isStoreCollect?'fa-heart is-conllect':'fa-heart-o'}`}></i>
-                        <span>{!!data.isStoreCollect?'已收藏':'收藏'}</span>
-                        <div className="collection-num">{data.storeCollect}</div>
-                    </div>
-               </div>
-               <div className="business-content">
-                    <div className="content-left">
-                        <div className="cate-tab">
-                         <Tabs defaultActiveKey="1" onChange={this.tabsChange}>
-                             <TabPane tab="菜单" key="1">
-                                {classList}
+                            </Tooltip>
+                            <div className="commas"></div>
+                            <Tooltip
+                                title={this.renderTooltipTitle('promptness',true,91,36)}
+                                placement="bottom"
+                            >
+                                <div className="rate-box">
+                                    <div className="rate"><span>91</span>%</div>
+                                    <i className="fa fa-caret-down turn"></i>
+                                    <div className="rate-text">及时送餐率</div>
+                                </div>
+                            </Tooltip>
+                        </div>
+                        <div className="fold-3d"></div>
+                        <div className="collection">
+                            {/*
+                                data.isStoreCollect>1?
+                                    <i className="fa fa-heart is-conllect"></i>:
+                                    <i className="fa fa-heart-o"></i>
+                            */}
+                            <i onClick={this.toggleCollect.bind(this,!data.isStoreCollect)}
+                                className={`fa ${!!data.isStoreCollect?'fa-heart is-conllect':'fa-heart-o'}`}></i>
+                            <span>{!!data.isStoreCollect?'已收藏':'收藏'}</span>
+                            <div className="collection-num">{data.storeCollect}</div>
+                        </div>
+                   </div>
+                   <div className="business-content">
+                        <div className="content-left">
+                            <div className="cate-tab">
+                             <Tabs defaultActiveKey="1" onChange={this.tabsChange}>
+                                 <TabPane tab="菜单" key="1">
+                                    {classList}
 
-                             </TabPane>
-                             <TabPane tab="评价" key="2">
-                                <RatedBox
-                                    storeId={this.props.params.storeId}
-                                    dispatch={this.props.dispatch}
-                                    evaluatList={this.props.evaluatList}
-                                    >
-                                </RatedBox>
-                             </TabPane>
-                             <TabPane tab="餐厅资质" key="3">
-                                 <div className="aptitude">
-                                     <div className="aptitude-item">
-                                         <div className="aptitude-title">营业执照</div>
-                                         <Img
-                                            isShow={true}
-                                            src='http://p1.meituan.net/xianfu/0936e7e3c04b7e873d14a8edd365743b61440.jpg'
-                                         />
+                                 </TabPane>
+                                 <TabPane tab="评价" key="2">
+                                    <RatedBox
+                                        storeId={this.props.params.storeId}
+                                        dispatch={this.props.dispatch}
+                                        evaluatList={this.props.evaluatList}
+                                        >
+                                    </RatedBox>
+                                 </TabPane>
+                                 <TabPane tab="餐厅资质" key="3">
+                                     <div className="aptitude">
+                                         <div className="aptitude-item">
+                                             <div className="aptitude-title">营业执照</div>
+                                             <Img
+                                                isShow={true}
+                                                src='http://p1.meituan.net/xianfu/0936e7e3c04b7e873d14a8edd365743b61440.jpg'
+                                             />
+                                         </div>
+                                         <div className="aptitude-item">
+                                             <div className="aptitude-title">餐饮服务许可证</div>
+                                             <Img
+                                                isShow={true}
+                                                src='http://p1.meituan.net/xianfu/18b999daee540d21de9ed40c92a94913184320.jpg'
+                                             />
+                                         </div>
                                      </div>
-                                     <div className="aptitude-item">
-                                         <div className="aptitude-title">餐饮服务许可证</div>
-                                         <Img
-                                            isShow={true}
-                                            src='http://p1.meituan.net/xianfu/18b999daee540d21de9ed40c92a94913184320.jpg'
-                                         />
-                                     </div>
-                                 </div>
-                             </TabPane>
-                         </Tabs>
+                                 </TabPane>
+                             </Tabs>
+                            </div>
+                            {this.state.is_show_category?categoryList:undefined}
                         </div>
-                        {this.state.is_show_category?categoryList:undefined}
-                    </div>
-                    <div className="content-right">
-                        <div className="notice-top">
-                            <div className="notice-title">订餐必读&商家公告</div>
-                            <div className="notice-content">订餐满100元赠送2升可乐一瓶</div>
+                        <div className="content-right">
+                            <div className="notice-top">
+                                <div className="notice-title">订餐必读&商家公告</div>
+                                <div className="notice-content">订餐满100元赠送2升可乐一瓶</div>
+                            </div>
+                            <Affix>
+                                <StoreNotice data={this.props.storeDetail}></StoreNotice>
+                            </Affix>
                         </div>
-                        <Affix>
-                            <StoreNotice data={this.props.storeDetail}></StoreNotice>
-                        </Affix>
-                    </div>
-               </div>
-            </div>
-               </Loading>
+                   </div>
+                </div>
+            </Loading>
 
         );
     }
