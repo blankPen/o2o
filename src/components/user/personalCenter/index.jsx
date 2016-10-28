@@ -323,9 +323,9 @@ export class index extends React.Component {
                     <Col span={8} >
                         {userInfo.availablePredeposit}
                     </Col>
-                    <Col span={6} >
+                   {/* <Col span={6} >
                         <a href='javascript:void(0);' className="btn" >余额不足 ？ </a>
-                    </Col>
+                    </Col>*/}
                 </Row>
                 <div className="userexinfo-form__footer">
                     <span>收藏的店铺：{userInfo.favStoreCount}</span>
