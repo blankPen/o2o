@@ -53,7 +53,7 @@ export class Payment extends React.Component {
         let orderSn = this.props.params.orderSn;
         this.props.dispatch(actions.getPayInfo(orderSn,(res)=>{
             this.setState({
-                is_loading:false
+                is_loading:false,
                 values:{
                     ...this.state.values,
                     amount:res.data.orderAmount
