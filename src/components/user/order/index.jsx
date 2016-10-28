@@ -247,7 +247,7 @@ export class MyOrder extends React.Component {
                     </div>
                     <div className="orderdesc orderdesc-right">
                         {data.orderState==40?
-                            (<div className="btnlist orderbtn" onClick={this.aginOrder}>再来订单</div>):null}
+                            (<div className="btnlist orderbtn" onClick={this.aginOrder}>再来一单</div>):null}
                         {data.orderState==0||data.orderState==40?(
                         <div className="btnlist remove" onClick={this.removeOrder}> 
                             删除订单

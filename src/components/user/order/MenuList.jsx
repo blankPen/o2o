@@ -39,10 +39,16 @@ export class Line extends React.Component {
         this.state={
             dsjtext:"",//倒计时文本
             ispay:true,//是否可支付
+            isCuiDan:false,
+            cuiDanNum:0
         }
     }
     componentDidMount(){
         this.orderDjs(this.props.detail);
+        let min=TimeConvert.dateDiff("n",new Date().getTime(),this.props.detail.creatTime); 
+        this.setState({
+            isCuiDan:min>40?true:false
+        });
     }
     //销毁组件时关闭定时器
     componentWillUnmount(){
@@ -63,6 +69,12 @@ export class Line extends React.Component {
         this.ds=setInterval(function(){
             let date=new Date().getTime();
             let times=jieshu-date;
+            if(times<1000*60*20&&this.state.cuiDanNum==0){
+                this.setState({
+                    isCuiDan:true,
+                    cuiDanNum:1
+                });
+            }
             // if(false){
             if(times<=0){
                 //订单已到期
@@ -155,6 +167,94 @@ export class Line extends React.Component {
     goUrl=(url)=>{
         History.push(url);
     }
+    //催单
+    cuidan=()=>{
+        let detail=this.props.detail||{};
+        this.props.loading(true,()=>{
+            this.props.dispatch(theAjax("/rest/api/order/reminder",{
+                orderId:detail.orderId
+            },(res)=>{
+                this.props.loading(false);
+
+                if(res.result){
+                    message.success(res.msg);
+                    this.props.refresh();
+                }else{
+                    message.error(res.msg);
+                }
+                this.setState({
+                    isCuiDan:false,
+                    cuiDanNum:1
+                });
+            },()=>{
+                this.props.loading(false);
+
+                message.error("服务器异常,请尝试刷新页面!");
+            }));
+        });
+        
+
+    }
+    //确认收货请求
+    enterOrderAjax=(detail)=>{
+        this.props.handleOnCancel({
+            loading:true
+        },()=>{
+            this.props.dispatch(theAjax("/rest/api/order/finishOrder",{
+                orderSn:detail.orderSn
+            },(res)=>{
+                this.props.handleOnCancel({
+                    loading:false
+                });
+                if(res.result){
+                    message.success(res.msg);
+                    this.props.refresh();
+                }else{
+                    message.error(res.msg);
+                }
+            },()=>{
+                this.props.handleOnCancel({
+                    loading:false
+                });
+                message.error("服务器异常,请尝试刷新页面!");
+            }));
+            
+        });
+    }
+    //确认收货
+    enterOrder=()=>{
+        let div=(<div className="clearDialog">
+                    <div className="center title">您确定已收到货物？</div>
+                    <div className="center">如需帮助，请致电客服 010-65546961</div>
+                    <div className="btnlist center">
+                        <div className="enter btn" onClick={this.enterOrderAjax.bind(null,detail)}>确定</div>
+                        <div className="clear btn" onClick={()=>{
+                            this.props.handleOnCancel({
+                                loading:false,
+                                show_dialog:false
+                            })
+                        }}>取消</div>
+                    </div>
+                </div>);
+        this.props.handleOnCancel({
+            show_dialog:true,
+            dailog_title:"确认收货",
+            dailog_text:div
+        });
+    }
+    //投诉商家
+    tousu=()=>{
+        let userinfo=this.props.userInfo||{};
+        History.push({ pathname: "/feedback", state: {
+            memberId:userinfo.memberId,
+            phone:userinfo.memberMobile,
+            orderSn:this.props.detail&&this.props.detail.orderSn
+        } });
+    }
+    //评价
+    apply=()=>{
+        
+    }
     //用户只能是 10:待付款;20 在线支付待接单 50货到付款待接单 这三个状态能取消
     /*
     确认收货只能 30
@@ -162,6 +262,7 @@ export class Line extends React.Component {
     删除只能删除 0和40 两个状态
     投诉 21  30 40 60 四个状态
     催单21.60
+    
     */
     render(){
         let item=this.props.item||{};
@@ -183,9 +284,10 @@ export class Line extends React.Component {
                         你的订单由于商家暂时无法配送已被商家取消
                     </div>):null}
                     <div className="btnlist">
+                        {orderState=="40"&&detail.evaluationStatus==0?(<span className="btn jixu" onClick={this.apply}>我要评价</span>):null}
                         {orderState=="0"?(<span className="btn jixu" onClick={this.goUrl.bind(null,"/")}>选择其他商家</span>):null}
                         {orderState=="10"&&this.state.ispay?(<span className="btn jixu" onClick={this.goPay.bind(null,detail.orderSn)}>继续付款</span>):null}
-                        {orderState=="30"?(<span className="btn jixu" onClick={this.cuidan}>确认收货</span>):null}
+                        {orderState=="30"?(<span className="btn jixu" onClick={this.enterOrder}>确认收货</span>):null}
                         {(orderState=="21"&&orderState=="60")&&detail.reminderStatus==0?(<span className="btn clear" onClick={this.cuidan}>我要催单</span>):null}
                         {(orderState!="0"&&orderState!="40")?(<span className="btn clear" onClick={this.clearOrder}>取消订单</span>):null}
                         {(orderState=="21"||orderState=="30"||orderState=="40"||orderState=="60")&&detail.complaintStatus==0?(<span className="btn clear" onClick={this.tousu}>订单反馈</span>):null}
@@ -224,7 +326,7 @@ export class Timelines extends React.Component {
         let orderState=this.props.detail&&this.props.detail.orderState;
         let list=(detail.orderLogList||[]).map((item,i)=>{
             let display={"display":"none"};
-            if(orderState!="10"&&orderState!="0"&&i==detail.orderLogList.length-1&&orderState!="40"){
+            if(i==detail.orderLogList.length-1){
                 display={"display":"block"};
             }
             return (
