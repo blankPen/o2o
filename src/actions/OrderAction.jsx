@@ -114,11 +114,28 @@ export function getPayInfo(orderSn,call){
             }
         });
     }
+}
 
+export function toWeiXinPay(params,call){
+    return function(dispatch){
+        ajax({
+            url:'/rest/api/wxpay/towxpayInfo',
+            data:{...params},
+            success:function(res){
+                call&&call(res)
+            }
+        });
+    }
+}
 
-
-
-
-
-
+export function toAliPay(params,call){
+    return function(dispatch){
+        ajax({
+            url:'/rest/api/alipay/alipaySignOrderInfo',
+            data:{...params},
+            success:function(res){
+                call&&call(res)
+            }
+        });
+    }
 }
