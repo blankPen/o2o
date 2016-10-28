@@ -10,7 +10,7 @@
 import React from 'react';
 import './Img/index.less';
 
-const IMG_SERVER = 'http://o2o.leimingtech.com/';
+const IMG_SERVER = 'http://testo2oimage.leimingtech.com/';
 
 const reqWithContext = require.context('../images', true, /\.(png|jpg|gif)$/);
 

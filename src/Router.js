@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   chenjingwei
- * @Last Modified time: 2016-10-26 16:01:17
+ * @Last Modified time: 2016-10-28 10:15:21
  */
 
 'use strict';
@@ -82,7 +82,7 @@ export class index extends React.Component {
                         <Route path='/map' component={Maper} />
                         <Route path="/login" component={Login}/>
                         <Route path="/register" component={Register}/>
-                        <Route path="/payment" component={Payment}/>
+                        <Route path="/payment/:orderSn" component={Payment}/>
                     </Route>
                 </Router>
             </Provider>

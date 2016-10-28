@@ -169,7 +169,7 @@ export class OrderPreview extends React.Component {
         console.log(values);
         this.props.dispatch(actions.saveOrder(values,(res)=>{
             if(res.result == 1){
-
+                History.push('/payment/'+res.data.orderSn);
             }else{
                 message.error(res.msg);
             }
