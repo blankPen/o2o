@@ -80,43 +80,75 @@ export class Line extends React.Component {
         }.bind(this),1000);
     }
     //继续付款
-    goPay=()=>{
-        this.props.handleOnCancel({
-            show_dialog:true,
-            dailog_title:"继续付款",
-            dailog_text:""
-        });
+    goPay=(orderSn)=>{
         if(!this.state.ispay){
+            message.error("订单异常，请刷新页面重试!");
             return;
         }
+        History.push("/payment/"+orderSn);
+    }
+    //取消订单请求
+    clearAjax=(detail)=>{
+        
+        this.props.handleOnCancel({
+            loading:true
+        },()=>{
+            this.props.dispatch(theAjax("/rest/api/order/cancleOrder",{
+                orderSn:detail.orderSn
+            },(res)=>{
+                this.props.handleOnCancel({
+                    loading:false
+                });
+                if(res.result){
+                    message.success(res.msg);
+                    this.props.refresh();
+                }else{
+                    message.error(res.msg);
+                }
+            },()=>{
+                this.props.handleOnCancel({
+                    loading:false
+                });
+                message.error("服务器异常,请尝试刷新页面!");
+            }));
+            
+        });
     }
     //取消订单
-    clearOrder=(orderState)=>{
+    clearOrder=()=>{
         let detail=this.props.detail||{};
-        this.props.loading(true,()=>{
-            //可以直接取消
-            if(detail.orderState==10||detail.orderState==20||detail.orderState==50){
-                this.props.dispatch(theAjax("/rest/api/order/cancleOrder",{
-                    orderSn:detail.orderSn
-                },(res)=>{
-                    if(res.result){
-                        message.success(res.msg);
-                        this.props.refresh();
-                    }else{
-                        message.error(res.msg);
-                    }
-                },()=>{
-                    message.error("服务器异常,请尝试刷新页面!");
-                }));
-            }else if(detail.orderState!=40){//需要联系商家取消
-                this.props.handleOnCancel({
-                    show_dialog:true,
-                    dailog_title:"取消订单",
-                    dailog_text:"请联系商家："+this.props.detail.storeTels
-                });
-            }
-            this.props.loading(false);
-        });
+        if(detail.orderState==10||detail.orderState==20||detail.orderState==50){
+            let div=(<div className="clearDialog">
+                        <div className="center title">真的要取消此订单？</div>
+                        <div className="center">若您已成功扣款，但订单仍显示未付款，建议您刷新页面查看最新状态。</div>
+                        <div className="center">如需帮助，请致电客服 010-65546961</div>
+                        <div className="btnlist center">
+                            <div className="enter btn" onClick={this.clearAjax.bind(null,detail)}>嗯，是的</div>
+                            <div className="clear btn" onClick={()=>{
+                                this.props.handleOnCancel({
+                                    loading:false,
+                                    show_dialog:false
+                                })
+                            }}>不，再等等</div>
+                        </div>
+                    </div>);
+            this.props.handleOnCancel({
+                show_dialog:true,
+                dailog_title:"取消订单",
+                dailog_text:div
+            });
+        }else if(detail.orderState!=40){//需要联系商家取消
+            this.props.handleOnCancel({
+                show_dialog:true,
+                dailog_title:"取消订单",
+                dailog_text:"请联系商家："+this.props.detail.storeTels
+            });
+        }
+        // this.props.loading(true,()=>{
+        //     //可以直接取消
+            
+        //     this.props.loading(false);
+        // });
         
     }
     //调往指定页面
@@ -152,7 +184,7 @@ export class Line extends React.Component {
                     </div>):null}
                     <div className="btnlist">
                         {orderState=="0"?(<span className="btn jixu" onClick={this.goUrl.bind(null,"/")}>选择其他商家</span>):null}
-                        {orderState=="10"?(<span className="btn jixu" onClick={this.goPay}>继续付款</span>):null}
+                        {orderState=="10"&&this.state.ispay?(<span className="btn jixu" onClick={this.goPay.bind(null,detail.orderSn)}>继续付款</span>):null}
                         {orderState=="30"?(<span className="btn jixu" onClick={this.cuidan}>确认收货</span>):null}
                         {(orderState=="21"&&orderState=="60")&&detail.reminderStatus==0?(<span className="btn clear" onClick={this.cuidan}>我要催单</span>):null}
                         {(orderState!="0"&&orderState!="40")?(<span className="btn clear" onClick={this.clearOrder}>取消订单</span>):null}
@@ -170,6 +202,7 @@ export class Timelines extends React.Component {
         this.state={
             dsjtext:"",//倒计时文本
             ispay:true,//是否可支付
+            loading:false,
             show_dialog:false,//dialog是否显示
             dailog_title:"",//dialog标题
             dailog_text:""//dialog文本
@@ -312,12 +345,11 @@ export class Timelines extends React.Component {
         return list;
     }
     //切换dialog显示
-    handleOnCancel=(data={})=>{
+    handleOnCancel=(data={},call)=>{
         this.setState({
-            show_dialog:data.show_dialog,
-            dailog_title:data.dailog_title||"",
-            dailog_text:data.dailog_text||""
-        });
+            ...this.state,
+            ...data
+        },call&&call());
     }
     //送达时间：predictedArrivalTime  商家电话storeTels 
      render(){
@@ -331,18 +363,18 @@ export class Timelines extends React.Component {
                 <Timeline>
                     {list}
                 </Timeline>
+                
                 <Dialog
                     visible={this.state.show_dialog}
                     onCancel={this.handleOnCancel}
                     onOk={this.handleOnCancel}
                     title={this.state.dailog_title}
-                    footer={[
-                        <Button key="back" type="primary" size="large" onClick={this.handleOnCancel}>确认</Button>
-                    ]}
                   > 
+                    <Loading  isLoading={this.state.loading}>
                     {this.state.dailog_text}
-                </Dialog>
+                    </Loading>
 
+                </Dialog>
                 <div className="tousu">
                     <div className="tousu-hezi">
                         商家没有送餐？您可以致电客服 <span>010-65546961</span> 

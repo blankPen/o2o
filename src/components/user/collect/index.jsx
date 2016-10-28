@@ -81,9 +81,6 @@ export class Collect extends React.Component {
         super(props);
     }
     
-    handleChange=(value)=>{
-
-    }
     renderTags(list){
         let smallTags = [];
         let bigTags = [];
@@ -139,7 +136,7 @@ export class Collect extends React.Component {
                                 <div className="title">{data.storeName}</div>
                                 {isOpen?(<div className="starAndNum">
                                     <div className="star">
-                                        <Rate allowHalf disabled count={5} onChange={this.handleChange} value={data.storeScore||0} />{data.storeScore||0}分
+                                        <Rate allowHalf disabled count={5}  value={data.storeScore||0} />{data.storeScore||0}分
                                     </div>
                                     <div className="num">月售 {data.storeMonSales} 单</div>
                                 </div>):(
