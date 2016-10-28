@@ -44,7 +44,7 @@ export class OrderPreview extends React.Component {
             couponId: '',
             postData:{
                 remark: '',
-                invoice: '21312313',
+                invoice: '',
                 paymentMethod: 0,
                 deliveryTime:"",
                 goodsIds: undefined,

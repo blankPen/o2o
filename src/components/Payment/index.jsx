@@ -13,6 +13,7 @@ import { Radio } from 'antd';
 import * as actions from'actions/OrderAction';
 import Loading from'components/common/Loading/';
 import History from 'common/History';
+import {TimeConvert} from 'components/common/TimeConvert.jsx';
 
 const RadioGroup = Radio.Group;
 
@@ -67,12 +68,12 @@ export class Payment extends React.Component {
         this.orderDjs(this.props.payInfo);
     }
 
+    componentWillUnmount(){
+        this.ds&&clearInterval(this.ds);
+    }
+
     orderDjs=(data)=>{
-        let creatTime=data.createTime||new Date();
-        if(data.orderState!="10"){
-            this.ds&&clearInterval(this.ds);
-            return ;
-        }
+        let creatTime=data.createTime||new Date().getTime();
         if(!creatTime){
             this.ds&&clearInterval(this.ds);
             return;
@@ -87,7 +88,8 @@ export class Payment extends React.Component {
             }else{
                 let t=TimeConvert.secondTohms(times/1000,"array_ms");
                 this.setState({
-                    dsjtext:"请在"+t.fen+"分"+t.miao+"秒内支付，过时订单将自动取消。"
+                    minute:t.fen,
+                    second:t.miao
                 });
             }
         }.bind(this),1000);
@@ -111,6 +113,10 @@ export class Payment extends React.Component {
                 //History.push('');
             }));
         }
+    }
+
+    goBackToUpdate=()=>{
+        History.push('/order');
     }
 
     render() {
@@ -168,7 +174,7 @@ export class Payment extends React.Component {
                                     支付：<span className="price">{`¥${data.orderAmount||0}`}</span>
                                 </div>
                                 <div className="option">
-                                    <div className="back">
+                                    <div className="back" onClick={this.goBackToUpdate}>
                                         返回修改订单
                                     </div>
                                     <div className="to-pay" onClick={this.toPayOrder}>

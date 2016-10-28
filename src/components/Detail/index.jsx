@@ -230,7 +230,7 @@ export class Detail extends React.Component {
                                 </div>
                                 <div className="buttom-info">
                                     <div>{'商家地址：'+data.storeAddress}</div>
-                                    <div>{'商家电话：'+data.storeTel}</div>
+                                    <div>{'商家电话：'+data.storeTels}</div>
                                     <div>
                                         {'营业时间：'+data.startBusinessTime+'-'+data.endBusinessTime}
                                     </div>
