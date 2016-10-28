@@ -4,7 +4,8 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import { Timeline, Icon,Button,message,Spin, Alert } from 'antd';
+import { Timeline, Icon,Button,message } from 'antd';
+import Loading from 'components/common/Loading/';
 import {
     getOrderList,
     getMenuList,
@@ -397,7 +398,7 @@ export class MenuList extends React.Component {
         
         return(
             <div className="yincang-active yincang clearfix ">
-                <Spin tip="获取中..."  spinning={this.state.loading}>
+                <Loading  isLoading={this.state.loading}>
                     <div className="lfetlist">
                         <div className="head">菜品共 <span>{detail.orderGoodsList&&detail.orderGoodsList.length||0}</span> 份，总价 <span>¥{detail.orderAmount}</span> </div>
                         <ul className="caidan">
@@ -448,7 +449,7 @@ export class MenuList extends React.Component {
                         detail={this.props.orderState.detail} 
                         data={detail.orderLogList}></Timelines>
                     </div>
-                </Spin>
+                </Loading>
             </div>
             
             );

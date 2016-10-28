@@ -4,7 +4,9 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import { Timeline, Icon,message,Spin } from 'antd';
+import { Timeline, Icon,message } from 'antd';
+import Loading from 'components/common/Loading/'
+
 import {
     getOrderList,
     getMenuList,
@@ -86,7 +88,7 @@ export class Order extends React.Component {
         let memberId=this.props.userInfo&&this.props.userInfo.memberId;
         return(
             <span>
-                <Spin tip="请求中..." spinning={this.state.loading}>
+                <Loading  isLoading={this.state.loading}>
                 <ListView
                     ref="listview"
                     dataSource={list}
@@ -106,7 +108,7 @@ export class Order extends React.Component {
                         <MyOrder key={i} data={item} dispatch={this.props.dispatch}></MyOrder>
                         );
                 })*/}
-                </Spin>
+                </Loading>
             </span>
             );
      }

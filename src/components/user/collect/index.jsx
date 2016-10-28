@@ -11,8 +11,11 @@ import {
     getCollectList,
     removeCollect
 } from 'actions/UserAction';
-import { Timeline, Icon,Rate ,message,Spin } from 'antd';
+import { Timeline, Icon,Rate ,message } from 'antd';
+import Loading from 'components/common/Loading/'
 import History from 'common/History';
+const moment = require('moment');
+
 function mapStateToProps({
     common,
     userState
@@ -53,7 +56,7 @@ export class CollectList extends React.Component {
         let list = this.props.collectState.collectList || [];
         return(
              <div className="collectlist ">
-                <Spin tip="请求中..." spinning={this.state.loading}>
+                <Loading isLoading={this.state.loading}>
                 <div className="collect-title">
                     收藏的商家
                 </div>
@@ -67,7 +70,7 @@ export class CollectList extends React.Component {
                                         refresh={this.refresh} />);
                     })}
                 </ul>
-                </Spin>
+                </Loading>
             </div>
             );
         
@@ -123,7 +126,10 @@ export class Collect extends React.Component {
     render(){
         let data=this.props.data||{};
         let tagObj = this.renderTags(data.tagList||[]);
-        
+        let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.startBusinessTime}:00`)).getTime(),
+            endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.endBusinessTime}:00`)).getTime();
+        // 判断是否在营业中
+        let isOpen = Date.now() >= beginTime && Date.now() <= endTime;
         return(
             <li className="collectli collect" onClick={this.goShop}>
                             <div className="collect-top">
@@ -131,12 +137,14 @@ export class Collect extends React.Component {
                                     <Img src={data.storeLogo} />
                                 </div>
                                 <div className="title">{data.storeName}</div>
-                                <div className="starAndNum">
+                                {isOpen?(<div className="starAndNum">
                                     <div className="star">
                                         <Rate allowHalf disabled count={5} onChange={this.handleChange} value={data.storeScore||0} />{data.storeScore||0}分
                                     </div>
                                     <div className="num">月售 {data.storeMonSales} 单</div>
-                                </div>
+                                </div>):(
+                                    <div className="xiuxi">休息中，不接受订单</div>
+                                )}
                                 <div className="sendDesc">
                                     <span className="theys qisong">起送:￥{data.startPrice}</span>
                                     <span className="theys peisong">{data.expressFee?data.expressFee+"元":"免"}配送费</span>
