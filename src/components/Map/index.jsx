@@ -234,7 +234,7 @@ export class Maper extends React.Component {
             <div className='page-map'>
                 <div className="map-header">
                     <div className="container">
-                        <Img className='logo' src='http://waimai.meituan.com/static/img/logos/small_4.png' />
+                        <Img className='logo' src="./logo.png" style={{"width":"111px","height":"37px"}} />
                         <span className="sign-box">
                             <UserBox/>
                         </span>
