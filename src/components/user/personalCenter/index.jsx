@@ -328,7 +328,7 @@ export class index extends React.Component {
                     </Col>*/}
                 </Row>
                 <div className="userexinfo-form__footer">
-                    <span>收藏的店铺：{userInfo.favStoreCount}</span>
+                    <span>收藏的店铺：<Link className="span_yellow" to="/collect">{userInfo.favStoreCount}</Link></span>
                     <span>优惠券数量：{userInfo.couponCount}</span>
                    {/* <span>会员积分：{userInfo.memberConsumePoints}</span>*/}
                 </div>
