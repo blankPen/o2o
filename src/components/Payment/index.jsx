@@ -14,6 +14,7 @@ import * as actions from'actions/OrderAction';
 import Loading from'components/common/Loading/';
 import History from 'common/History';
 import {TimeConvert} from 'components/common/TimeConvert.jsx';
+import Dialog from 'components/common/Dialog/';
 
 const RadioGroup = Radio.Group;
 
@@ -41,11 +42,18 @@ export class Payment extends React.Component {
             second:'00',
             payWay:1,    // 1：微信 2：支付宝
             is_loading:true,
+            showDialog:false,
+            renderDialogType:'is',//is :选择支付成功或失败 wx:微信扫码支付
             values:{
                 memberId:memberId,
                 orderSn:orderSn,
                 amount:0
             }
+        }
+
+        this.renderMap={
+            is:this.renderIsPaySuccess(),
+            wx:this.renderWeixinPay()
         }
     }
 
@@ -72,6 +80,11 @@ export class Payment extends React.Component {
         this.ds&&clearInterval(this.ds);
     }
 
+    toogleRenderDialog=()=>{
+        this.setState({
+            showDialog:!this.state.showDialog
+        });
+    }
     orderDjs=(data)=>{
         let creatTime=data.createTime||new Date().getTime();
         if(!creatTime){
@@ -101,10 +114,15 @@ export class Payment extends React.Component {
         });
     }
 
+    renderDialog=()=>{
+        return this.renderWeixinPay();
+    }
+
     toPayOrder =()=>{
         let payWay = this.state.payWay;
         let values = this.state.values;
         if(payWay=='1'){ //微信支付
+            this.toogleRenderDialog();
             this.props.dispatch(actions.toWeiXinPay(values,()=>{
                 //History.push('');
             }));
@@ -119,10 +137,78 @@ export class Payment extends React.Component {
         History.push('/order');
     }
 
+    renderWeixinPay=()=>{
+        return(
+            <div className="weixin-body clearfix">
+                <div className="left-code">
+                    <div className="title">
+                        <div className="title-1">
+                            请使用
+                            <span className="change-color">
+                                微信
+                                <span className="icon-scan"></span>
+                                扫一扫
+                            </span>
+                        </div>
+                        <div className="title-2">
+                            扫描二维码支付
+                        </div>
+                    </div>
+                    <div className="code-img">
+                        <Img src='code-demo.png'></Img>
+                    </div>
+                    <div className="code-footer">
+                        <i className="fa fa-clock-o"></i>
+                        <span className="footer-tips">
+                            二维码有效时间为2小时，请尽快支付
+                        </span>
+                    </div>
+                </div>
+                <div className="right-img">
+                    <Img src='weixin-phone.jpg'></Img>
+                </div>
+            </div>
+        )
+    }
+
+    renderIsPaySuccess=()=>{
+        return(
+            <div className="pay-success-body">
+                <div className="left-icon">
+                    <i className="fa  fa-exclamation-circle"></i>
+                </div>
+                <div className="right-content">
+                    <div className="tips">
+                        请您在新打开的页面上完成付款
+                    </div>
+                    <div className="tips-2">
+                        付款完成之前请不要关闭此窗口。
+                    </div>
+                    <div className="tips-3">
+                        完成付款后请根据您的情况点击下面的按钮：
+                    </div>
+                    <div className="btn-bar">
+                        <button className="pay-btn" type='button'>已完成付款</button>
+                        <button className="pay-btn" type='button'>付款遇到问题</button>
+                    </div>
+                    <div className="back-choose">
+                        返回选择其他支付方式
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         let data = this.props.payInfo;
         return (
             <Loading isLoading={this.state.is_loading}>
+                <Dialog
+                  visible={this.state.showDialog}
+                  onCancel={this.toogleRenderDialog}
+                >
+                  {this.renderMap[this.state.renderDialogType]}
+                </Dialog>
                 <div className="payment">
                     <div className="payment-head">
                         <div className="left-logo">
@@ -135,7 +221,6 @@ export class Payment extends React.Component {
                     <div className="payment-body">
                         <div className="time-bar">
                             <div className="left-icon">
-                                <i className="fa"></i>
                             </div>
                             <div className="right-time">
                                 请在<span>{this.state.minute+":"+this.state.second}</span>

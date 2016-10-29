@@ -46,14 +46,23 @@
             height: 60px;
             background-color: #fff5e4;
             border: 1px solid #ffe4bf;
+            padding: 0 10px;
             .left-icon{
                 display: inline-block;
+                width: 40px;
+                height: 40px;
+                background-image: url('../../images/icon-common.png');
+                background-position: -120px -48px;
+                background-size: 168px;
+                vertical-align: middle;
             }
             .right-time{
                 display: inline-block;
                 line-height: 60px;
                 color: #666;
                 font-size: 14px;
+                vertical-align: middle;
+                margin-left: 10px;
                 span{
                     display: inline-block;
                     color: #f76120;
@@ -177,5 +186,86 @@
     }
 
 }
+.ant-modal{
+    width: auto !important;
+    max-width: 700px;
+    .ant-modal-content{
+        .ant-modal-body{
+            padding:0;
+
+            .weixin-body{
+                width: 700px !important;
+               
+                .left-code{
+                    float: left;
+                    padding: 30px;
+                    width: 300px;
+
+                    .title{
+                        font-size: 16px;
+                        color: #676767;
+                        .title-1,.title-2{
+                            text-align: center;
+
+                            .change-color{
+                                color: #fd8825;
+                                margin-left: 5px;
+
+                                .icon-scan{
+                                    width: 17px;
+                                    height: 17px;
+                                    display: inline-block;
+                                    background-image: url('../../images/icon-common.png');
+                                    background-position: 0 -88px;
+                                    background-size: 168px;
+                                    margin: 0 5px;
+                                    vertical-align: text-bottom;
+                                }
+                            }
+                        }
+                    }
+
+                    .code-img{
+                        margin-top:20px;
+                        text-align: center;
+                        padding: 20px;
+                        width: 100%;
+                        border:1px solid #ddd;
+                        border-bottom: 0;
+
+                        img{
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                    .code-footer{
+                        text-align: center;
+                        line-height: 40px;
+                        border: 1px solid #ddd;
+                        border-top: 0;
+                        background: #f7f7f7;
+                        color: #fd8825;
+                        i{
+                            font-size: 16px;
+                            margin-right: 5px;
+                            vertical-align: text-bottom;
+                        }
+                    }
+                }
+                .right-img{
+                    float: right;
+                    width: 347px;
+                    background-color: #f7f7f7;
+
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 

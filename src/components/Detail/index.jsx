@@ -381,6 +381,7 @@ export class RatedBox extends React.Component {
     render(){
         let data = this.props.evaluatList&&this.props.evaluatList.shopEvaluateTagSave||{};
         let list = this.props.evaluatList&&this.props.evaluatList.evaluateGoodList||[];
+        let greatReview = data.allReview - data.mediumReview - data.badReview;
         return(
             <div className="rated-box">
                 <div className="rate-filter">
@@ -391,7 +392,10 @@ export class RatedBox extends React.Component {
                             <Radio key="a" value={0}>
                                 全部评价<span>{`(${data.allReview||0})`}</span>
                             </Radio>
-                            <Radio key="b" value={1}>好评<span>(726)</span></Radio>
+                            <Radio key="b" value={1}>
+                                好评
+                                <span>{`(${greatReview||0})`}</span>
+                            </Radio>
                             <Radio key="c" value={2}>
                                 中评<span>{`(${data.mediumReview||0})`}</span>
                             </Radio>
