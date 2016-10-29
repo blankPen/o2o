@@ -126,28 +126,28 @@ export class Account extends React.Component {
     }
     changeName=()=>{
         this.setState({
-            dailog_title: "更改用户名",
+            dailog_title: this.state.progress_name?"更改用户名":"设置用户名",
             openName:true,
             show_dialog: true,
         });
     }
     changePhone=()=>{
         this.setState({
-            dailog_title: "更改手机号码",
+            dailog_title: this.state.progress_phone?"换绑手机号码":"绑定手机号码",
             openPhone:true,
             show_dialog: true,
         });
     }
     changePassword=()=>{
         this.setState({
-            dailog_title: "更改登录密码",
+            dailog_title: this.state.progress_loginPassword?"更改登录密码":"设置登录密码",
             openPassword:true,
             show_dialog: true
         })
     }
     changePaypass=()=>{
       this.setState({
-            dailog_title: "更改支付密码",
+            dailog_title: this.state.progress_payPassword?"更改支付密码":"设置支付密码",
             openPaypass:true,
             show_dialog: true
         })
@@ -345,7 +345,7 @@ export class Account extends React.Component {
                 {progress_name?
                   (
                     <span>
-                      <Col span={9}><p>您的姓名为：{username}</p></Col>
+                      <Col span={9}><p>您的用户名为：{username}</p></Col>
                       <Col span={5}> <Button className="btn" onClick={this.changeName}>修改</Button></Col>
                     </span>
                   ):
