@@ -490,6 +490,7 @@ let index= class extends React.Component {
             visible={this.state.modalVisible}
             width="100%"
             style={{ top: 0 }}
+            onCancel={() => this.setModalVisible(false)}
             onOk={() => this.setModalVisible(false)}
           >
             <Aggrement/>

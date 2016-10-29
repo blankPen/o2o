@@ -105,13 +105,17 @@ input::-webkit-input-placeholder{
 
 
 .full-screen-modal{
-    .ant-modal-close-x,.ant-btn-ghost{
-        display:none;
-    }
     .ant-btn-primary{
         position: relative;
         left: -45%;
         width: 100px;
+    }
+    .ant-modal-content{
+        .ant-modal-footer{
+            .ant-btn-ghost{
+                display: none;
+            }
+        }
     }
 }
 .open-image-modal{
