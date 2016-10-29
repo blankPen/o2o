@@ -6,7 +6,11 @@
 
 'use strict';
 import ajax from 'common/Ajax';
-import { getPositionPoint } from 'actions/commonAction'
+import { getPositionPoint } from 'actions/commonAction';
+import {
+    getMemberDetail
+} from 'actions/SignPageAction';
+import store from 'stores';
 
 //一般请求后台用方法
 export function theAjax(url,data,call,error){
@@ -92,6 +96,7 @@ export function getCollectList(id,call){
 }
 //删除收藏
 export function removeCollect(storeid,id,call){
+    let userInfo = store.getState().common.userInfo;
     return function(dispatch) {
         ajax({
             url: '/rest/api/store/storecollection',
@@ -101,6 +106,11 @@ export function removeCollect(storeid,id,call){
                 memberId:id
             },
             success: function(res){
+                if(res.result == 1){
+                    dispatch(getMemberDetail({
+                        "memberId": userInfo.memberId
+                    }));
+                }
                 call && call(res);
             }
         })

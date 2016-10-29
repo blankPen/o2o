@@ -2,7 +2,10 @@
 import ajax from 'common/Ajax';
 import store from 'stores';
 import storejs from 'storejs';
-import { message } from 'antd'
+import { message } from 'antd';
+import {
+    getMemberDetail
+} from 'actions/SignPageAction';
 
 // 收藏店铺
 export function collectStore(storeId,status,callback){
@@ -22,7 +25,10 @@ export function collectStore(storeId,status,callback){
                             type: 'toggle/collect',
                             status: res.isfav,
                         })
-                        message.success(`${status?'收藏':'取消收藏'}成功`)
+                        message.success(`${status?'收藏':'取消收藏'}成功`);
+                        dispatch(getMemberDetail({
+                            "memberId": userInfo.memberId
+                        }));
                         callback && callback(res);
                     }
                 }

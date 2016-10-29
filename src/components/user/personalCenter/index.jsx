@@ -329,7 +329,7 @@ export class index extends React.Component {
                 </Row>
                 <div className="userexinfo-form__footer">
                     <span>收藏的店铺：{userInfo.favStoreCount}</span>
-                    <span>收藏的商品：{userInfo.favGoodsCount}</span>
+                    <span>优惠券数量：{userInfo.couponCount}</span>
                    {/* <span>会员积分：{userInfo.memberConsumePoints}</span>*/}
                 </div>
             </div>
