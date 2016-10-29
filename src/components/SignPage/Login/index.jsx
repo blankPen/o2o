@@ -68,7 +68,8 @@ let index = class extends React.Component {
       modalVisible: false,
       openRevicesPass:false,
       show_dialog:false,/*是否开启Dialog*/
-      type2: "findpassword"/* 找回密码操作类型*/
+      type2: "findpassword",/* 找回密码操作类型*/
+      loading:false
     }
   }
   noop() {
@@ -100,12 +101,16 @@ let index = class extends React.Component {
   handleSubmitPhone = (e) => {
     e.preventDefault();
     console.log("phoneSubmit");
+    this.setState({
+      loading:true
+    });
     this.props.form.validateFields((errors, values) => {
       if (errors) {
         console.log(' 表单验证错误!');
         this.setState({
           openFormError: true,
-          validate_info: '登录信息不完整!'
+          validate_info: '登录信息不完整!',
+          loading:false
         })
         return;
       }
@@ -125,7 +130,8 @@ let index = class extends React.Component {
               btn.disabled = false;
               this.setState({
                 openFormError: true,
-                validate_info: re.msg
+                validate_info: re.msg,
+                loading:false
               })
             }
           }
@@ -139,12 +145,16 @@ let index = class extends React.Component {
   handleSubmitOther = (e) => {
     e.preventDefault();
     console.log("otherSubmit");
+    this.setState({
+      loading:true
+    });
     this.props.form.validateFields((errors, values) => {
       if (errors) {
         console.log(' 表单验证错误!');
         this.setState({
           openFormError: true,
-          validate_info: '登录信息不完整!'
+          validate_info: '登录信息不完整!',
+          loading:false
         })
         return;
       }
@@ -164,7 +174,8 @@ let index = class extends React.Component {
               btn.disabled=false;
               this.setState({
                 openFormError: true,
-                validate_info: re.msg
+                validate_info: re.msg,
+                loading:false
               })
             }
           }
@@ -442,6 +453,7 @@ let index = class extends React.Component {
             htmlType="submit"
             className="sign_btn"
             id="other_btn"
+            loading={this.state.loading}
             >
              登 录
           </Button>
@@ -533,6 +545,7 @@ let index = class extends React.Component {
             htmlType="submit"
             className="sign_btn"
             id="phone_btn"
+            loading={this.state.loading}
             >
             登 录
           </Button>

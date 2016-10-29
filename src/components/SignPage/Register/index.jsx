@@ -60,7 +60,8 @@ let index= class extends React.Component {
       openFormError:false,
       validate_info: "",
       clickAggrement:false,
-      modalVisible: false
+      modalVisible: false,
+      loading:false
     }
   }
 
@@ -247,12 +248,16 @@ let index= class extends React.Component {
   handleSubmit=(e)=>{
     e.preventDefault();
     console.log("registerSubmit");
+    this.setState({
+      loading:true
+    });
     this.props.form.validateFields((errors, values) => {
       if (errors) {
         console.log(' 表单验证错误!');
         this.setState({
           openFormError: true,
-          validate_info: '注册信息不完整!'
+          validate_info: '注册信息不完整!',
+          loading:false
         })
         return;
       }
@@ -276,13 +281,18 @@ let index= class extends React.Component {
                 console.log("注册失败");
                 this.setState({
                   openFormError: true,
-                  validate_info: re.msg
+                  validate_info: re.msg,
+                  loading:false
                 })
                 /*this.resetForm();*/
               }
             }
           )
         )
+      }else{
+        this.setState({
+          loading:false
+        })
       }
     });
   }
@@ -440,6 +450,7 @@ let index= class extends React.Component {
                       htmlType="submit"
                       className={this.state.clickAggrement?"sign_btn":"sign_btn sign_btn_disable"}
                       disabled={!this.state.clickAggrement}
+                      loading={this.state.loading}
                       >
                        同意以下协议并注册
                     </Button>
