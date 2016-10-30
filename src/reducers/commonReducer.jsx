@@ -32,7 +32,8 @@ export default handleActions({
         }
     },
     'login/success':(state, action) => {
-        Cookie.set('user_info', action.cookieInfo, { expires: 7 });//cookie存储用户名密码
+        console.log("cookie保存期限："+action.expires+"天");
+        Cookie.set('user_info', action.cookieInfo, { expires: action.expires });//cookie存储用户名密码
         sessionStorage.setItem('user_id',action.info.memberId);//session存储用户id
         return {
             ...state,

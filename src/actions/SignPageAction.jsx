@@ -38,7 +38,8 @@ export function phoneLogin(params,call) {
         ajax({
             url: '/rest/api/login/loginByCode',
             data: {
-                ...params
+                "validateCode": params.validateCode,
+                "username": params.username
             },
             success: function(res){
                 console.log(res);
@@ -46,7 +47,8 @@ export function phoneLogin(params,call) {
                     dispatch({
                         type: 'login/success',
                         info: res.data,
-                        cookieInfo: { username: params.username, password: params.validateCode, user_id: res.data.memberId  }
+                        cookieInfo: { username: params.username, password: params.validateCode, user_id: res.data.memberId  },
+                        expires: params.expires
                     })
                     History.push('/');
                 }
@@ -63,7 +65,8 @@ export function otherLogin(params,call) {
         ajax({
             url: '/rest/api/login/login',
             data: {
-                ...params
+                "password": params.password,
+                "username": params.username
             },
             success: function(res){
                 console.log(res);
@@ -71,7 +74,8 @@ export function otherLogin(params,call) {
                     dispatch({
                         type: 'login/success',
                         info: res.data,
-                        cookieInfo: { username: params.username, password: params.password, user_id: res.data.memberId  }
+                        cookieInfo: { username: params.username, password: params.password, user_id: res.data.memberId  },
+                        expires: params.expires
                     })
                     History.push('/');
                 }
@@ -96,7 +100,8 @@ export function register(params,call) {
                     dispatch({
                         type: 'login/success',
                         info: res.data,
-                        cookieInfo: { username: params.name, password: params.password, user_id: res.data.memberId  }
+                        cookieInfo: { username: params.name, password: params.password, user_id: res.data.memberId  },
+                        expires: 7
                     })
                     History.push('/');
                 }

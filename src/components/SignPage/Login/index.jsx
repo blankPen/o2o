@@ -118,9 +118,15 @@ let index = class extends React.Component {
       console.log(values);
       let btn=document.getElementById('phone_btn')
       btn.disabled = true;
+      let expires=0;
+      if (values.autoLogon2) {
+        console.log("勾选自动登陆");
+        expires=7;
+      }
       this.props.dispatch(phoneLogin({
               "validateCode": values.Dcode,
-              "username": values.phone
+              "username": values.phone,
+              "expires":expires
           },(re)=> {
             if(re.result===1){
               console.log('手机号码登录成功');
@@ -137,9 +143,6 @@ let index = class extends React.Component {
           }
         )
       )
-      if (values.autoLogon2) {
-        console.log("勾选自动登陆");
-      }
     });
   }
   handleSubmitOther = (e) => {
@@ -162,9 +165,15 @@ let index = class extends React.Component {
       console.log(values);
       let btn=document.getElementById('other_btn')
       btn.disabled = true;
+      let expires=0;
+      if (values.autoLogon) {
+        console.log("勾选自动登陆");
+        expires=7;
+      }
       this.props.dispatch(otherLogin({
             "password": values.password,
-            "username": values.name
+            "username": values.name,
+            "expires":expires
           },(re)=> {
             if(re.result===1){
               console.log('其他账号登录成功');
@@ -181,9 +190,6 @@ let index = class extends React.Component {
           }
         )
       )
-      if (values.autoLogon) {
-        console.log("勾选自动登陆");
-      }
     });
   }
   onChangeFrom = () => {
@@ -432,11 +438,13 @@ let index = class extends React.Component {
               {...formItemLayout}
             >
               {getFieldDecorator('autoLogon', {
+                valuePropName: 'checked',
+                initialValue: false,
                 rules: [
                   { type: 'boolean'},
                 ],
               })(
-                <Checkbox checked={true} id="control-autoLogon" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
+                <Checkbox id="control-autoLogon" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
               )}
                 <div className="sign_forgetpasssword">
                     <a href='javascript:void(0);' onClick={()=>{
@@ -524,11 +532,13 @@ let index = class extends React.Component {
               {...formItemLayout}
               >
               {getFieldDecorator('autoLogon2', {
+                valuePropName: 'checked',
+                initialValue: false,
                 rules: [
                   {type: 'boolean'},
                 ],
               })(
-                <Checkbox  checked={true} id="control-autoLogon2" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
+                <Checkbox  id="control-autoLogon2" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
               )}
               <div className="sign_forgetpasssword">
                   <a href='javascript:void(0);' onClick={()=>{
