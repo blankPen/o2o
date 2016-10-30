@@ -286,6 +286,19 @@ export class index extends React.Component {
                 <Row className="userexinfo-form__section">
                     <Col span={4} >
                         <div className="userimg">
+                            <i className="fa fa-user"></i>
+                        </div>
+                    </Col>
+                    <Col span={6}>
+                         用户名：
+                    </Col>
+                    <Col span={8} >
+                        {userInfo.memberTruename}
+                    </Col>
+                </Row>
+                <Row className="userexinfo-form__section">
+                    <Col span={4} >
+                        <div className="userimg">
                             <i className={userInfo.memberSex===0?"fa fa-female":"fa fa-male"}></i>
                         </div>
                     </Col>
@@ -297,19 +310,6 @@ export class index extends React.Component {
                     </Col>
                     <Col span={6}>
                         <a href='javascript:void(0);' className="btn" onClick={this.changeSex}>修改 </a>
-                    </Col>
-                </Row>
-                <Row className="userexinfo-form__section">
-                    <Col span={4} >
-                        <div className="userimg">
-                            <i className="fa fa-user"></i>
-                        </div>
-                    </Col>
-                    <Col span={6}>
-                         用户名：
-                    </Col>
-                    <Col span={8} >
-                        {userInfo.memberTruename}
                     </Col>
                 </Row>
                 <Row className="userexinfo-form__section">
