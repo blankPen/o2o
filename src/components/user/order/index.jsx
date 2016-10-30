@@ -124,12 +124,14 @@ export class MyOrder extends React.Component {
             zk:false
         }
     }
+    //选择展开订单详情
     zk=(id)=>{
         if(id==this.props.selectItem){
             id="";
         }
         this.props.dispatch(selectItem(id));
     }
+
    returnState=(state)=>{
          switch(state){
             case 0:
@@ -152,7 +154,7 @@ export class MyOrder extends React.Component {
                 return "未知";
         }
     }
-    
+    //去店铺详情页
     goDetail=(e)=>{
         let data=this.props.data||{};
         

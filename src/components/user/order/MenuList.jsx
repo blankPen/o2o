@@ -39,8 +39,8 @@ export class Line extends React.Component {
         this.state={
             dsjtext:"",//倒计时文本
             ispay:true,//是否可支付
-            isCuiDan:false,
-            cuiDanNum:0
+            isCuiDan:false,//是否可催单
+            cuiDanNum:0//记录当前页无刷新是否催单
         }
     }
     componentDidMount(){
@@ -253,7 +253,7 @@ export class Line extends React.Component {
     }
     //评价
     apply=()=>{
-        
+        History.push("/apply");
     }
     //用户只能是 10:待付款;20 在线支付待接单 50货到付款待接单 这三个状态能取消
     /*
