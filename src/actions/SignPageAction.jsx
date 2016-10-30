@@ -3,7 +3,7 @@
  */
 'use strict';
 import ajax from 'common/Ajax';
-import History from 'common/History'
+import History from 'common/History';
 
 /**
  * [getMemberDetail   获取用户信息]
@@ -104,6 +104,9 @@ export function register(params,call) {
                         expires: 7
                     })
                     History.push('/');
+                    dispatch(getMemberDetail({
+                        "memberId": res.data.memberId
+                    }));
                 }
                 call && call(res);
             }

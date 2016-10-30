@@ -463,12 +463,13 @@ let index= class extends React.Component {
                   {...formItemLayout}
                 >
                   {getFieldDecorator('checkAggrement', {
+                    valuePropName: 'checked',
+                    initialValue: this.state.clickAggrement,
                     rules: [
                       { type: 'boolean'},
                     ],
                   })(
                     <Checkbox
-                      checked={this.state.clickAggrement}
                       id="control-checkAggrement"
                       className="ant-checkbox-vertical"
                       onClick={(e) => {
