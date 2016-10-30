@@ -27,11 +27,13 @@ import {
   Link
 } from 'react-router';
 import PasswordBox from 'components/user/passwordBox/';
-import PaypassBox from 'components/user/paypassBox/'
+import PaypassBox from 'components/user/paypassBox/';
+import SexBox from 'components/user/sexBox/';
 import Dialog from 'components/common/Dialog/';
 import {
     retrieveToLoginpass,
-    retrieveToPaypass
+    retrieveToPaypass,
+    updateToSex
 } from 'actions/UserAction';
 import Cookie from "js-cookie";
 
@@ -86,6 +88,7 @@ export class index extends React.Component {
             dailog_title:"",
             openRevicesPass:false,/*找回密码开启*/
             openRevicesPayPass:false,/*找回支付密码开启*/
+            openChangeSex:false,/*性别修改开启*/
             show_dialog:false,/*是否开启Dialog*/
             type2: "findpassword",/* 找回密码操作类型*/
             type: "findPaypassword"/* 找回支付密码操作类型*/
@@ -98,6 +101,9 @@ export class index extends React.Component {
     }
     componentWillMount = () => {
         console.log("componentWillMount");
+        this.props.dispatch(getMemberDetail({
+          "memberId": this.state.userInfo.memberId
+        }));
         this.setState({
             userInfo: this.props.userInfo || {},
         })
@@ -112,7 +118,8 @@ export class index extends React.Component {
       this.setState({
           dailog_title:"",
           openRevicesPass:false,
-          openRevicesPayPass:false
+          openRevicesPayPass:false,
+          openChangeSex: false
       });
     }
     revicesPassword=()=>{
@@ -129,14 +136,46 @@ export class index extends React.Component {
           show_dialog:true
         });
     }
+    changeSex=()=>{
+      this.setState({
+        dailog_title:"设置性别",
+        openChangeSex:true,
+        show_dialog:true
+      });
+    }
+    handleSexSubmit=(errors,values,callback)=>{//修改性别
+      if (errors) {
+        console.log('sex-box表单验证错误!');
+        return;
+      }
+      console.log('sex-box表单验证成功');
+      console.log(values);
+      this.props.dispatch(updateToSex({
+          "memberSex": values.sex
+        },(re)=> {
+          if(re.result==1){
+              message.success(re.msg);
+              this.props.dispatch(getMemberDetail({
+                "memberId": this.state.userInfo.memberId
+              }));
+              this.handleOnCancel();
+              callback && callback(re);
+            }else{
+              message.error(re.msg);
+              console.log(re.msg);
+            }
+          }
+        )
+      );
+    }
     handleRetrievePayPassword=(errors,values,callback)=>{//找回支付密码
-        if (errors) {
-          console.log('Retrieve-Paypassword-box表单验证错误!');
-          return;
-        }
-        console.log('Retrieve-Paypassword-box表单验证成功');
-        console.log(values);
-        this.props.dispatch(retrieveToPaypass({
+      if (errors) {
+        console.log('Retrieve-Paypassword-box表单验证错误!');
+        return;
+      }
+      console.log('Retrieve-Paypassword-box表单验证成功');
+      console.log(values);
+      this.props.dispatch(retrieveToPaypass({
           "memberId": this.state.userInfo.memberId,
           "validateCode": values.Vcode,
           "newpassword": values.pass
@@ -230,8 +269,8 @@ export class index extends React.Component {
             <div className="userexinfo-form">
                 <div className="userexinfo-form__header">
                     <div className="section-div-1">
-                        <span>账号：{userInfo.memberName}</span>
-                        <span>性别：{userInfo.memberSex===1?"男":"女"}</span>
+                      <span>账号：<Link className="span_yellow" to="/account">{userInfo.memberName}</Link></span>
+                       {/* <span>性别：{userInfo.memberSex===1?"男":"女"}</span>*/}
                     </div>
                     {/*<div className="section-div-1">
                         <span>生日：{userInfo.memberBirthday}</span>
@@ -247,11 +286,27 @@ export class index extends React.Component {
                 <Row className="userexinfo-form__section">
                     <Col span={4} >
                         <div className="userimg">
+                            <i className={userInfo.memberSex===0?"fa fa-female":"fa fa-male"}></i>
+                        </div>
+                    </Col>
+                    <Col span={6}>
+                         性别：
+                    </Col>
+                    <Col span={8} >
+                        {userInfo.memberSex===1?"男":"女"}
+                    </Col>
+                    <Col span={6}>
+                        <a href='javascript:void(0);' className="btn" onClick={this.changeSex}>修改 </a>
+                    </Col>
+                </Row>
+                <Row className="userexinfo-form__section">
+                    <Col span={4} >
+                        <div className="userimg">
                             <i className="fa fa-user"></i>
                         </div>
                     </Col>
                     <Col span={6}>
-                        姓名：
+                         用户名：
                     </Col>
                     <Col span={8} >
                         {userInfo.memberTruename}
@@ -314,14 +369,14 @@ export class index extends React.Component {
                 <Row className="userexinfo-form__section">
                     <Col  span={4} >
                         <div className="userimg">
-                            <i className="fa fa-credit-card"></i>
+                            <i className="fa fa-money"></i>
                         </div>
                     </Col>
                     <Col span={6}>
-                        我的钱包：
+                        我的余额：
                     </Col>
                     <Col span={8} >
-                        {userInfo.availablePredeposit}
+                        {userInfo.availablePredeposit}&nbsp;&nbsp;<i className="fa fa-yen"></i>
                     </Col>
                    {/* <Col span={6} >
                         <a href='javascript:void(0);' className="btn" >余额不足 ？ </a>
@@ -349,12 +404,16 @@ export class index extends React.Component {
     _dialogForm=()=>{
         if(this.state.openRevicesPass){
            return (
-                <PasswordBox info={this.state.userInfo} handleSubmit={this.handleRetrievePassword} type={this.state.type2}/>
+              <PasswordBox info={this.state.userInfo} handleSubmit={this.handleRetrievePassword} type={this.state.type2}/>
            );
         }else if(this.state.openRevicesPayPass){
            return (
-                <PaypassBox info={this.state.userInfo} handleSubmit={this.handleRetrievePayPassword} type={this.state.type}/>
+              <PaypassBox info={this.state.userInfo} handleSubmit={this.handleRetrievePayPassword} type={this.state.type}/>
            );
+        }else if(this.state.openChangeSex){
+          return (
+              <SexBox info={this.state.userInfo} handleSubmit={this.handleSexSubmit}/>
+          )
         }else{
             return false;
         }

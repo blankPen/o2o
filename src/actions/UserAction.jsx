@@ -216,3 +216,19 @@ export function retrieveToLoginpass(params,call) {
         })
     }
 }
+/**
+ * [updateToSex  修改性别]
+ */
+export function updateToSex(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/member/updateMemberSex',
+            data: {
+                ...params
+            },
+            success: function(res){
+                call && call(res);
+            }
+        })
+    }
+}
