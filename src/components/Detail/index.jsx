@@ -66,6 +66,7 @@ export class Detail extends React.Component {
         this.props.dispatch(actions.saveCartList(storeId,memberId,data));
     }
     componentWillMount=()=>{
+        this.now = moment().format('YYYY-MM-DD HH:mm:ss');
         let memberId = this.props.userInfo.memberId;
         let storeId = this.props.params.storeId;
         this.props.dispatch(actions.getStoreDetail({
@@ -177,6 +178,7 @@ export class Detail extends React.Component {
         let categoryList = [];
         let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.startBusinessTime}:00`)).getTime(),
             endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.endBusinessTime}:00`)).getTime();
+        console.log(this.props)
         // 判断是否在营业中
         let isOpen = Date.now() >= beginTime && Date.now() <= endTime;
         let classList = this.props.classAndGoodsList.map((item,i)=>{

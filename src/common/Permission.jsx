@@ -3,12 +3,12 @@
 * @Date:   2016-10-24 10:51:14
 * @Desc: this_is_desc
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-24 11:03:46
+* @Last Modified time: 2016-10-31 11:16:08
 */
 
 'use strict';
 import store from 'stores';
-
+import React from 'react';
 import {
     Link
 } from 'react-router';
