@@ -3,7 +3,7 @@
  * @Date:   2016-10-20 09:26:57
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-25 16:02:38
+ * @Last Modified time: 2016-10-31 10:49:09
  */
 
 'use strict';
@@ -140,7 +140,7 @@ BaiduMap.prototype = {
         return ac;
     },
     // 根据坐标数组创建marker
-    createMarks(data) {
+    createMarks(data,opt) {
         var self = this;
         var makerSize = new BMap.Size(28, 39);
         // 清除上次查询的遮盖物
@@ -159,6 +159,7 @@ BaiduMap.prototype = {
             // 添加点击监听
             marker.addEventListener("click", function(e) {
                 self.openMarkWindow(item);
+                opt.click && opt.click(item,i);
             });
         });
     },

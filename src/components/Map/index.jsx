@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 21:02:26
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 10:28:08
+ * @Last Modified time: 2016-10-31 10:50:34
  */
 
 'use strict';
@@ -113,12 +113,11 @@ export class Maper extends React.Component {
         },callback);
     }
     handleCitySelect=(value)=>{
-        console.log(value)
         this.setState({
             selectCity: value,
             cityControl: false,
             searchResult: [],
-            activeResult: 0,
+            activeResultIndex: 0,
         });
         this.maper.map.centerAndZoom(value,12);
     }
@@ -143,10 +142,16 @@ export class Maper extends React.Component {
             }
             this.setState({
                 searchResult: res,
-                activeResult: 0,
+                activeResultIndex: 0,
                 openMap: true
             });
-            this.maper.createMarks(res);
+            this.maper.createMarks(res,{
+                click: (item,i)=>{
+                    this.setState({
+                        activeResultIndex: i
+                    });
+                }
+            });
             res[0] && this.maper.openMarkWindow(res[0]);
         });
     }

@@ -486,11 +486,10 @@ let index= class extends React.Component {
           <Footer/>
           <Modal
             className="full-screen-modal"
-            title="《雷铭O2O用户协议》"
             wrapClassName="vertical-center-modal"
             visible={this.state.modalVisible}
             width="100%"
-            style={{ top: 0 }}
+            style={{ top: 10 }}
             onCancel={() => this.setModalVisible(false)}
             onOk={() => this.setModalVisible(false)}
           >

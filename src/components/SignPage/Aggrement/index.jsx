@@ -3,17 +3,8 @@
  */
 import './index.less';
 import React from 'react';
-import {
-  connect
-} from 'react-redux';
 
-function mapStateToProps(state) {
-  return {
-
-  };
-}
-
-export class index extends React.Component {
+export default class index extends React.Component {
   static propTypes = {
     name: React.PropTypes.string,
   };
@@ -250,8 +241,3 @@ export class index extends React.Component {
     );
   }
 }
-
-export default connect(
-  mapStateToProps,
-// Implement map dispatch to props
-)(index)

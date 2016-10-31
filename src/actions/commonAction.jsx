@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:48:10
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 11:22:16
+ * @Last Modified time: 2016-10-31 10:42:15
  */
 
 'use strict';
@@ -15,12 +15,15 @@ import storejs from 'storejs';
 // 坐标相关
 export function savePosition(position) {
     position = {
-        point: position.point,
+        point: {...position.point},
         city: position.city,
         title: position.title,
         address: position.address,
     };
     let hp = getHistoryPositions() || [];
+    hp = hp.filter((p)=>{
+        return !_.isEqual(position, p);
+    });
     hp.unshift(position);
     // 最多缓存5个地址
     if(hp.length >= 5){
