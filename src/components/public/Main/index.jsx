@@ -9,6 +9,7 @@ import Dialog from 'components/common/Dialog';
 import TopNav from 'components/common/TopNav';
 import Header from 'components/common/Header';
 import Footer from 'components/common/Footer';
+import Elevator from 'components/common/Elevator';
 import LoginSingle from 'components/SignPage/LoginSingle/';
 function mapStateToProps({ common }) {
     return {
@@ -31,6 +32,7 @@ export class Main extends React.Component {
     render() {
         return (
             <div className='application'>
+                <Elevator/>
                 { !this.props.isLogin &&
                     <Dialog
                         title='请登录雷铭账号'
