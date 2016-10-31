@@ -3,7 +3,7 @@
  * @Date:   2016-10-20 17:58:42
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 13:59:14
+ * @Last Modified time: 2016-10-31 10:28:39
  */
 
 'use strict';
@@ -32,7 +32,7 @@ export default class CitySelector extends React.Component {
         return data.map((item) => <li key={item.city_id} >{item.real}</li>);
     }
     renderFields() {
-        this.searchArray = [];
+        let searchArray = [];
         let fields = cityData.map((items, i) => {
             if (items.length) {
                 return (
@@ -40,7 +40,7 @@ export default class CitySelector extends React.Component {
                         <span className="letter">{letter[i]}</span>
                         <ul>
                             {items.map((item)=>{
-                                this.searchArray.push(item.real);
+                                searchArray.push(item.real);
                                 return <li key={item.city_id}
                                     onClick={this.handleChange.bind(this,item.real)}>{item.real}</li>
                             })}
@@ -49,28 +49,33 @@ export default class CitySelector extends React.Component {
                 )
             }
         });
-
-        return fields;
+        return {
+            searchArray,
+            fields
+        }
     }
     render() {
+        let { fields,searchArray } = this.renderFields();
         return (
             <div className='city-selector-wrap'>
                 <div className="tool-bar">
 
                     <div className="guess-city">
                         <span>猜你在：</span>
-                        <a onClick={this.handleChange.bind(this,this.props.guessCity)}>{this.props.guessCity}</a>
+                        <a onClick={this.handleChange.bind(this,this.props.guessCity)}>
+                            {this.props.guessCity}
+                        </a>
                     </div>
                     <div className="city-search-wrap">
                         <span>直接搜索</span>
                         <AutoComplete
                             style={{ width: 200 }}
-                            dataSource={this.searchArray}
-                            handleSelect={this.handleChange}
+                            dataSource={searchArray}
+                            onSelect={this.handleChange}
                         />
                     </div>
                 </div>
-                {this.renderFields()}
+                {fields}
             </div>
         );
     }
