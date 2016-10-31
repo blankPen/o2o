@@ -14,7 +14,7 @@ import {
 } from 'react-router';
 import History from 'common/History';
 import { getPosition } from 'actions/commonAction';
-import { toggleLoginDialog } from 'actions/signPageAction';
+import { toggleLoginDialog } from 'actions/SignPageAction';
 function noop() {}
 
 // 第一次访问需要设置地址
