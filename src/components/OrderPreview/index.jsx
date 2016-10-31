@@ -164,16 +164,31 @@ export class OrderPreview extends React.Component {
             show_address_dialog:!this.state.show_address_dialog
         });
     }
+    checkValues({remark, invoice, paymentMethod, deliveryTime, goodsIds, nums, storeId, memberId, addressId}){
+        let flag = true;
+        if(!addressId){
+            message.error('请选择收货地址');
+            flag = false;
+        }else if(paymentMethod === undefined){
+            message.error('请选择支付方式');
+            flag = false;
+        }else if(!goodsIds || !nums || !storeId || !memberId){
+            message.error('订单已失效，请重新下单');
+            flag = false;
+        }
+        return flag;
+    }
     onPay=()=>{
         let values = this.state.postData;
-        console.log(values);
-        this.props.dispatch(actions.saveOrder(values,(res)=>{
-            if(res.result == 1){
-                History.push('/payment/'+res.data.orderSn);
-            }else{
-                message.error(res.msg);
-            }
-        }));
+        if(this.checkValues(values)){
+            this.props.dispatch(actions.saveOrder(values,(res)=>{
+                if(res.result == 1){
+                    History.push('/payment/'+res.data.orderSn);
+                }else{
+                    message.error(res.msg);
+                }
+            }));
+        }
     }
     showEditDialog(address,e){
         e.stopPropagation();
