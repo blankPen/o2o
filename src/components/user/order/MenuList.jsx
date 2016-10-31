@@ -282,7 +282,7 @@ export class Line extends React.Component {
                         {orderState=="30"?"预计在"+detail.predictedArrivalTime+"送达，请耐心等待!":null}
                     </div>
                     {orderState=="0"?(<div className="tip">
-                        你的订单由于商家暂时无法配送已被商家取消
+                        你的订单由于商家暂时无法配送或支付超时已被取消
                     </div>):null}
                     <div className="btnlist">
                         {orderState=="40"&&detail.evaluationStatus==0?(<span className="btn jixu" onClick={this.apply}>我要评价</span>):null}
@@ -469,8 +469,14 @@ export class Timelines extends React.Component {
                 
                 <Dialog
                     visible={this.state.show_dialog}
-                    onCancel={this.handleOnCancel}
-                    onOk={this.handleOnCancel}
+                    onCancel={
+                        ()=>{
+                            this.handleOnCancel({show_dialog:false});
+                        }
+                    }
+                    onOk={()=>{
+                            this.handleOnCancel({show_dialog:false});
+                        }}
                     title={this.state.dailog_title}
                   > 
                     <Loading  isLoading={this.state.loading}>
