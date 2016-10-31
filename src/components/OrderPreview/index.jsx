@@ -230,9 +230,7 @@ export class OrderPreview extends React.Component {
             return (
                 <div key={address.addressId} className={className}
                     onClick={address.isDeliveryRange ==1 && this.selectAddress.bind(this,address)}>
-                    <div className="address-out-scope">
-                        不在配送范围内
-                    </div>
+                    <div className="order-icon i-address-unavail-flag"></div>
                     <div className="member-top">
                         <span className="member-name">{address.trueName}</span>
                         <span className="member-sex">

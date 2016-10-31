@@ -3,7 +3,7 @@
  * @Date:   2016-10-25 17:19:49
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 13:53:57
+ * @Last Modified time: 2016-10-31 14:53:18
  */
 
 'use strict';
@@ -172,7 +172,6 @@ export class AddressForm extends React.Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    // className='item-address'
                     label="收餐地址"
                     help='请输入地址，并在下拉框中选择'
                 >
