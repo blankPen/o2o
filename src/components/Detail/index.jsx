@@ -136,7 +136,6 @@ export class Detail extends React.Component {
     toOrderPreview=()=>{
         let memberId = this.props.userInfo.memberId;
         let storeId = this.props.params.storeId;
-        this.isOrder = true;
         this.props.dispatch(actions.clearCart(storeId,memberId));
         History.push({
             pathname: '/order_preview',

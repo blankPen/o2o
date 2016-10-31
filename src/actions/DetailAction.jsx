@@ -136,3 +136,28 @@ export function clearCart(storeId,memberId = "global"){
         storejs.set(CART_KEY,data);
     }
 }
+
+export function getStoreCountByMap(res,callback){
+    return function(dispatch){
+        let data = '';
+        res.forEach(item=>{
+            data+=`&atitude=${item.point.lat}&longitude=${item.point.lng}`
+        });
+        ajax({
+            url: '/rest/api/store/storeCount',
+            type: 'get',
+            data: data,
+            success: function(result){
+                if(result.result == 1){
+                    res = res.map((item,i)=>{
+                        item.count = result.data[i];
+                        return item;
+                    });
+                    callback && callback(res);
+                }else{
+                    message.error(result.msg);
+                }
+            }
+        })
+    }
+}

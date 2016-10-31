@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:48:10
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 13:28:31
+ * @Last Modified time: 2016-10-31 15:22:11
  */
 
 'use strict';
@@ -49,4 +49,3 @@ export function getPositionPoint(){
 export function getHistoryPositions(){
     return storejs.get('history-position') || [];
 }
-

@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 21:02:26
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 10:50:34
+ * @Last Modified time: 2016-10-31 15:41:43
  */
 
 'use strict';
@@ -18,6 +18,7 @@ import History from 'common/History';
 import BaiduMap from 'common/BaiduMap';
 import * as DomUtils from 'common/utils/dom';
 import { savePosition,getHistoryPositions } from 'actions/commonAction';
+import { getStoreCountByMap } from 'actions/DetailAction';
 import UserBox from 'components/common/UserBox';
 import CitySelector from 'components/Map/CitySelector/'
 
@@ -134,25 +135,28 @@ export class Maper extends React.Component {
     }
     searchMap=(value)=>{
         this.maper.setPlace(value || this.state.searchKey,(results)=>{
-            let res = [];
+            let r = [];
             if(results){
                 for (var i = 0; i < results.getCurrentNumPois(); i ++){
-                    res.push(results.getPoi(i));
+                    r.push(results.getPoi(i));
                 }
             }
-            this.setState({
-                searchResult: res,
-                activeResultIndex: 0,
-                openMap: true
-            });
-            this.maper.createMarks(res,{
-                click: (item,i)=>{
-                    this.setState({
-                        activeResultIndex: i
-                    });
-                }
-            });
-            res[0] && this.maper.openMarkWindow(res[0]);
+            this.props.dispatch(getStoreCountByMap(r,(res)=>{
+                console.log(res)
+                this.setState({
+                    searchResult: res,
+                    activeResultIndex: 0,
+                    openMap: true
+                });
+                this.maper.createMarks(res,{
+                    click: (item,i)=>{
+                        this.setState({
+                            activeResultIndex: i
+                        });
+                    }
+                });
+                res[0] && this.maper.openMarkWindow(res[0]);
+            }))
         });
     }
     renderSearchControl(){
@@ -228,7 +232,7 @@ export class Maper extends React.Component {
                     <div className="content">
                         <div className="title">{item.title}</div>
                         <div className="address">{item.address}</div>
-                        <div className="nearby">附近有<span>1772</span>家外卖餐厅</div>
+                        <div className="nearby">附近有<span>{item.count}</span>家外卖餐厅</div>
                     </div>
                 </div>
             );
