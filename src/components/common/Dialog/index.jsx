@@ -24,7 +24,7 @@ export default class Dialog extends React.Component {
         return (
             <Modal
                 title={this.props.title}
-                className={'dialog'+(this.props.className || '')}
+                className={'dialog '+(this.props.className || '')}
                 visible={this.props.visible}
                 onCancel={this.props.onCancel}
                 onOk={this.props.onOk}

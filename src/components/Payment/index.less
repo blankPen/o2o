@@ -186,15 +186,123 @@
     }
 
 }
-.ant-modal{
-    width: auto !important;
-    max-width: 700px;
+
+.out-time-dialog{
+    width: 370px !important;
+
+    .dialog-body{
+        padding: 20px !important;
+        text-align: center;
+
+        .out-time-body{
+            .tips{
+                .left-icon{
+                    display: inline-block;
+                    vertical-align: middle;
+                    font-size: 60px;
+                    i{
+                        color: #36b7aa;
+                    }
+                }
+                .right-text{
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin-left: 20px;
+                    font-size: 14px;
+                    color: #7c7c7c;
+                }
+            }
+            .return-order{
+                display: inline-block;
+                width: 120px;
+                line-height: 40px;
+                text-align: center;
+                font-size: 16px;
+                color: #6b4613;
+                background: #fdc844;
+                border-radius: 3px;
+                font-weight: 500;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.pay-success-dialog{
+    width: 450px !important;
+
+    .dialog-body{
+        padding: 20px !important;
+
+        .pay-success-body{
+            .left-icon{
+                display: inline-block;
+                font-size: 60px;
+                i{
+                    color: #36b7aa;
+                }
+            }
+
+            .right-content{
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: 30px;
+
+                .tips{
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #676767;
+                }
+                .tips-2{
+                    margin-top: 10px;
+                }
+                .tips-2,.tips-3{
+                    color: #6b6b6b;
+                }
+
+                .btn-bar{
+                    margin-top: 15px;
+
+                    button{
+                        background: #fdc842;
+                        border: none;
+                        line-height: 40px;
+                        font-size: 14px;
+                        font-weight: 500;
+                        color: #6b4613;
+                        text-align: center;
+                        width: 120px;
+                        border-radius: 2px;
+                        border-bottom: 1px solid #b6871e;
+                        cursor: pointer;
+                        outline: none;
+                    }
+
+                    .pay-faile{
+                        margin-left: 20px;
+                    }
+                }
+
+                .back-choose{
+                    margin-top: 15px;
+                    color: #fdc639;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+.weixin-pay-dialog{
+    width: 700px !important;
     .ant-modal-content{
+       
         .ant-modal-body{
             padding:0;
-
+          .dialog-body{
+            padding:0;
+          }
             .weixin-body{
-                width: 700px !important;
+                width: 700px;
                
                 .left-code{
                     float: left;
@@ -265,7 +373,10 @@
             }
         }
     }
+    
 }
+
+
 
 
 

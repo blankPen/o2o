@@ -119,8 +119,8 @@ export function getPayInfo(orderSn,call){
 export function toWeiXinPay(params,call){
     return function(dispatch){
         ajax({
-            url:'/rest/api/wxpay/towxpayInfo',
-            data:{...params},
+            url:'/rest/api/order/wxPay',
+            data:{paysn:params},
             success:function(res){
                 call&&call(res)
             }
@@ -131,7 +131,7 @@ export function toWeiXinPay(params,call){
 export function toAliPay(params,call){
     return function(dispatch){
         ajax({
-            url:'/rest/api/alipay/alipaySignOrderInfo',
+            url:'/rest/api/order/zfbPay',
             data:{...params},
             success:function(res){
                 call&&call(res)
