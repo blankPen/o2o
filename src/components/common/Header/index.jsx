@@ -140,9 +140,9 @@ export class Header extends React.Component {
                             我的外卖
                         </Link>
                         <span>|</span>
-                        <Link to='/' className='menu-item'>
-                            加盟合作
-                        </Link>
+                        <a href='http://testo2o.leimingtech.com/leimingtech-seller/' className='menu-item'>
+                            商家入驻
+                        </a>
                     </div>
                     {this.renderSearch()}
                 </div>

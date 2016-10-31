@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 13:47:24
+ * @Last Modified time: 2016-10-31 16:02:38
  */
 
 'use strict';
@@ -41,6 +41,7 @@ import Feedback from 'components/feedback';
 import Search from 'components/Search/';
 import Payment from 'components/Payment/';
 import PaySucc from 'components/paysucc/';
+import NotFound from 'components/common/404'
 
 
 import {
@@ -87,6 +88,8 @@ export class index extends React.Component {
                         <Route path="/login" component={Login}/>
                         <Route path="/register" component={Register}/>
                         <Route path="/payment/:orderSn" component={Payment}/>
+                        <Route path='/404' component={NotFound} ></Route>
+                        <Redirect path='*' to='/404' />
                     </Route>
                 </Router>
             </Provider>
