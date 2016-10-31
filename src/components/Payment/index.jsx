@@ -134,8 +134,8 @@ export class Payment extends React.Component {
         let id = setInterval(()=>{
             this.props.dispatch(actions.getPayResult(this.paySn,(res)=>{
                 if(res.payState=="1"){
-                    console.log("支付成功");
                     clearInterval(this.state.interval_id);
+                    History.push('/paysucc/'+this.props.params.orderSn);
                 }
             }));
         },2500);
@@ -185,6 +185,10 @@ export class Payment extends React.Component {
                 }
             }));
         }else if(payWay=='2'){//支付宝支付
+            this.setState({
+                renderDialogType:'is'
+            });
+            this.toogleRenderDialog(); 
             let url = window.location.host+'/rest/api/order/getPaystate?paysn='+this.paySn;
             window.open(url);
         }
@@ -192,6 +196,17 @@ export class Payment extends React.Component {
 
     goBackToUpdate=()=>{
         History.push('/order');
+    }
+
+    finishPay= (flag)=>{
+        this.props.dispatch(actions.getPayResult(this.paySn,(res)=>{
+            if(res.payState=="1"){
+                History.push('/paysucc/'+this.props.params.orderSn);
+            }else{
+                console.log('支付失败')
+                this.toogleRenderDialog(); 
+            }
+        }));
     }
 
     renderWeixinPay=()=>{
@@ -245,8 +260,12 @@ export class Payment extends React.Component {
                         完成付款后请根据您的情况点击下面的按钮：
                     </div>
                     <div className="btn-bar">
-                        <button className="pay-btn" type='button'>已完成付款</button>
-                        <button className="pay-faile" type='button'>付款遇到问题</button>
+                        <button className="pay-btn" onClick={()=>this.finishPay(true)}>
+                            已完成付款
+                        </button>
+                        <button className="pay-faile" onClick={()=>this.finishPay(false)}>
+                            付款遇到问题
+                        </button>
                     </div>
                     <div className="back-choose">
                         返回选择其他支付方式
