@@ -78,6 +78,9 @@ export class Payment extends React.Component {
 
     toogleRenderDialog=()=>{
         clearInterval(this.state.interval_id);
+        if(this.state.renderDialogType=='ot'){//如果是已超时
+            History.push('/order');
+        }
         this.setState({
             showDialog:!this.state.showDialog
         });
@@ -144,12 +147,12 @@ export class Payment extends React.Component {
         let payWay = this.state.payWay;
         let values = this.state.values;
         let index = this.state.tab_index;
-        let value = {
-            amount:this.props.payInfo.orderAmount,
-            payPassword:this.refs.pwd.value,
-            orderSn:this.props.params.orderSn
-        }
-        if(index==2){
+        if(index==2){ //如果是余额支付
+            let value = {
+                amount:this.props.payInfo.orderAmount,
+                payPassword:this.refs.pwd.value,
+                orderSn:this.props.params.orderSn
+            }
             this.props.dispatch(actions.toPredepositPay(value,(res)=>{
                 if(res.result==1){
                     //余额支付成功
@@ -256,7 +259,7 @@ export class Payment extends React.Component {
                     </div>
                     <div className="right-text">已超过支付时间，该订单自动取消！</div>
                 </div>
-                <div className="return-order">
+                <div className="return-order" onClick={this.goBackToUpdate}>
                     返回重新下单
                 </div>
             </div>
