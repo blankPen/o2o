@@ -3,7 +3,7 @@
 * @Date:   2016-10-24 10:51:14
 * @Desc: this_is_desc
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-31 11:16:08
+* @Last Modified time: 2016-10-31 13:48:58
 */
 
 'use strict';
@@ -14,6 +14,7 @@ import {
 } from 'react-router';
 import History from 'common/History';
 import { getPosition } from 'actions/commonAction';
+import { toggleLoginDialog } from 'actions/signPageAction';
 function noop() {}
 
 // 第一次访问需要设置地址
@@ -23,6 +24,15 @@ export function requireSetPosition(rextState, replace, callback){
         History.replace('/map');
     }else{
         callback();
+    }
+}
+// 访问需要登录权限
+export function requireLogin(rextState, replace, callback){
+    let userInfo = store.getState().common.userInfo;
+    if(userInfo){
+        callback();
+    }else{
+        History.replace('/login');
     }
 }
 
@@ -47,7 +57,8 @@ export function needLogin(el, opt = {}) {
         return React.cloneElement(el, {
             ...opt,
             onClick: function(e) {
-                History.push('/login');
+                // History.push('/login');
+                store.dispatch(toggleLoginDialog(true));
                 e.preventDefault();
                 e.stopPropagation();
             }

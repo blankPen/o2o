@@ -4,13 +4,16 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
+import { toggleLoginDialog } from 'actions/SignPageAction';
+import Dialog from 'components/common/Dialog';
 import TopNav from 'components/common/TopNav';
 import Header from 'components/common/Header';
 import Footer from 'components/common/Footer';
-
-function mapStateToProps(state) {
+import LoginSingle from 'components/SignPage/LoginSingle/';
+function mapStateToProps({ common }) {
     return {
-
+        showLogin: common.show_login_dialog,
+        isLogin: !!common.userInfo
     };
 }
 
@@ -22,10 +25,23 @@ export class Main extends React.Component {
     constructor(props) {
         super(props);
     }
-
+    closeLogin=()=>{
+        this.props.dispatch(toggleLoginDialog(false));
+    }
     render() {
         return (
             <div className='application'>
+                { !this.props.isLogin &&
+                    <Dialog
+                        title='请登录雷铭账号'
+                        className='dialog-login'
+                        width={400}
+                        visible={this.props.showLogin}
+                        onCancel={this.closeLogin}
+                    >
+                        <LoginSingle redirect={false}/>
+                    </Dialog>
+                }
                 <TopNav/>
                 <Header/>
                 <div className="page-wrap">

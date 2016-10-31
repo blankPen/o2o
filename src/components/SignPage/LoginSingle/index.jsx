@@ -1,3 +1,4 @@
+import './index.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -44,9 +45,11 @@ function mapStateToProps({
 
 let index= class  extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string,
+    redirect: React.PropTypes.any,
   };
-
+  static defaultProps = {
+    redirect: '/'
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -115,25 +118,23 @@ let index= class  extends React.Component {
         expires=7;
       }
       this.props.dispatch(phoneLogin({
-              "validateCode": values.Dcode,
-              "username": values.phone,
-              "expires":expires
-          },(re)=> {
-            if(re.result===1){
-              console.log('手机号码登录成功');
-              message.success("登录成功");
-            }else{
-              console.log("手机号码登录失败");
-              btn.disabled = false;
-              this.setState({
-                openFormError: true,
-                validate_info: re.msg,
-                loading:false
-              })
-            }
-          }
-        )
-      )
+        "validateCode": values.Dcode,
+        "username": values.phone,
+        "expires": expires
+      }, (re) => {
+        if (re.result === 1) {
+          console.log('手机号码登录成功');
+          message.success("登录成功");
+        } else {
+          console.log("手机号码登录失败");
+          btn.disabled = false;
+          this.setState({
+            openFormError: true,
+            validate_info: re.msg,
+            loading: false
+          })
+        }
+      },this.props.redirect))
     });
   }
   handleSubmitOther = (e) => {
@@ -162,25 +163,23 @@ let index= class  extends React.Component {
         expires=7;
       }
       this.props.dispatch(otherLogin({
-            "password": values.password,
-            "username": values.name,
-            "expires":expires
-          },(re)=> {
-            if(re.result===1){
-              console.log('其他账号登录成功');
-              message.success("登录成功");
-            }else{
-              console.log("其他账号登录失败");
-              btn.disabled=false;
-              this.setState({
-                openFormError: true,
-                validate_info: re.msg,
-                loading:false
-              })
-            }
-          }
-        )
-      )
+        "password": values.password,
+        "username": values.name,
+        "expires": expires
+      }, (re) => {
+        if (re.result === 1) {
+          console.log('其他账号登录成功');
+          message.success("登录成功");
+        } else {
+          console.log("其他账号登录失败");
+          btn.disabled = false;
+          this.setState({
+            openFormError: true,
+            validate_info: re.msg,
+            loading: false
+          })
+        }
+      },this.props.redirect))
     });
   }
   onChangeFrom = () => {

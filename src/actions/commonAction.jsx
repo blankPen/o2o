@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:48:10
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 10:42:15
+ * @Last Modified time: 2016-10-31 13:28:31
  */
 
 'use strict';
@@ -11,6 +11,7 @@ import ajax from 'common/Ajax';
 import store from 'stores';
 import Cookie from 'js-cookie';
 import storejs from 'storejs';
+
 
 // 坐标相关
 export function savePosition(position) {

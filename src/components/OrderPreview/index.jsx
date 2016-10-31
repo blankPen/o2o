@@ -161,7 +161,8 @@ export class OrderPreview extends React.Component {
     }
     toggleAddressDialog=()=>{
         this.setState({
-            show_address_dialog:!this.state.show_address_dialog
+            show_address_dialog:!this.state.show_address_dialog,
+            editAddress: !this.state.show_address_dialog?this.state.editAddress:undefined
         });
     }
     checkValues({remark, invoice, paymentMethod, deliveryTime, goodsIds, nums, storeId, memberId, addressId}){

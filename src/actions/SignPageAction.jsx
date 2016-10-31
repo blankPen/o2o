@@ -4,7 +4,15 @@
 'use strict';
 import ajax from 'common/Ajax';
 import History from 'common/History';
-
+/**
+ * 控制登录弹框显隐
+ */
+export function toggleLoginDialog(flag){
+    return {
+        type: 'toggle/dialog/login',
+        status: flag
+    };
+}
 /**
  * [getMemberDetail   获取用户信息]
  */
@@ -33,7 +41,7 @@ export function getMemberDetail(params,call) {
 /**
  * [phoneLogin  手机账号登录]
  */
-export function phoneLogin(params,call) {
+export function phoneLogin(params,call,redirect) {
     return function(dispatch) {
         ajax({
             url: '/rest/api/login/loginByCode',
@@ -50,7 +58,9 @@ export function phoneLogin(params,call) {
                         cookieInfo: { username: params.username, password: params.validateCode, user_id: res.data.memberId  },
                         expires: params.expires
                     })
-                    History.push('/');
+                    if(redirect){
+                        History.push(redirect);
+                    }
                 }
                 call && call(res);
             }
@@ -60,7 +70,7 @@ export function phoneLogin(params,call) {
 /**
  * [otherLogin 其他账号登录]
  */
-export function otherLogin(params,call) {
+export function otherLogin(params,call,redirect) {
     return function(dispatch) {
         ajax({
             url: '/rest/api/login/login',
@@ -77,7 +87,9 @@ export function otherLogin(params,call) {
                         cookieInfo: { username: params.username, password: params.password, user_id: res.data.memberId  },
                         expires: params.expires
                     })
-                    History.push('/');
+                    if(redirect){
+                        History.push(redirect);
+                    }
                 }
                 call && call(res);
             }
@@ -118,10 +130,17 @@ export function register(params,call) {
  */
 export function logout(callback){
     return function(dispatch){
-        dispatch({
-            type: 'logout/success'
+        ajax({
+            url: '/rest/api/login/logout',
+            success: (res)=>{
+                if(res.result == 1){
+                    dispatch({
+                        type: 'logout/success'
+                    })
+                }
+            }
         })
-        History.push('/login');
+        // History.push('/login');
     }
 }
 /**

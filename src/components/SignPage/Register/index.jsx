@@ -488,7 +488,7 @@ let index= class extends React.Component {
             className="full-screen-modal"
             wrapClassName="vertical-center-modal"
             visible={this.state.modalVisible}
-            width="100%"
+            width={800}
             style={{ top: 10 }}
             onCancel={() => this.setModalVisible(false)}
             onOk={() => this.setModalVisible(false)}
