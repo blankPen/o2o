@@ -3,12 +3,13 @@
  * @Date:   2016-10-31 15:57:37
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 16:10:14
+ * @Last Modified time: 2016-10-31 17:40:16
  */
 
 'use strict';
 import './index.less';
 import React from 'react';
+import { Link } from 'react-router';
 import Img from 'common/Img';
 import History from 'common/History';
 
@@ -45,7 +46,7 @@ export default class index extends React.Component {
                     <div className="bg">
                         <Img src='404bg.png' />
                     </div>
-                    <div className="time">返回首页 {this.state.time}</div>
+                    <Link to='/' className="time">返回首页 {this.state.time}</Link>
                 </div>
             </div>
         );

@@ -3,7 +3,7 @@
  * @Date:   2016-10-31 16:29:55
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 17:36:33
+ * @Last Modified time: 2016-10-31 17:53:09
  */
 
 'use strict';
@@ -49,13 +49,20 @@ export default class Elevator extends React.Component {
         }
     }
     render() {
+        let userInfo = this.props.userInfo || {};
         return (
             <div className="elevator" style={{marginLeft: this.getOffsetLeft()}}>
                 {this.state.inNextPage &&
                     <a className="top" onClick={this.goTop}>
                         <i className="i-icon i-backtop"></i>
                     </a> }
-                <Link className='fb' to='/' >意见反馈</Link>
+                <Link className='fb' to={{
+                    pathname: "/feedback",
+                    state: {
+                        memberId: userInfo.memberId,
+                        phone: userInfo.memberMobile,
+                    }
+                }} >意见反馈</Link>
             </div>
         );
     }
