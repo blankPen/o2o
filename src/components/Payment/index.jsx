@@ -42,20 +42,19 @@ export class Payment extends React.Component {
             minute:'00',
             second:'00',
             payWay:1,    // 1：微信 2：支付宝
-            is_loading:true,
-            showDialog:false,
+            is_loading:true, //是否加载
+            showDialog:false, //是否显示弹框
             renderDialogType:'wx',//is :选择支付成功或失败 wx:微信扫码支付 ot:支付超时
-            wx_code:'',
-            interval_id:0,
-            tab_index:1
+            interval_id:0, //定时器ID
+            tab_index:1 //1：线上支付 2：余额支付
         }
 
-        this.renderMap={
+        this.renderMap={ //弹框内容的map
             is:this.renderIsPaySuccess(),
             wx:this.renderWeixinPay(),
             ot:this.renderOutTime()
         }
-        this.dialogClassMap={
+        this.dialogClassMap={ //弹框的class的map
             is:'pay-success-dialog',
             wx:'weixin-pay-dialog',
             ot:'out-time-dialog'
@@ -64,8 +63,9 @@ export class Payment extends React.Component {
 
 
     componentWillMount(){
+        //请求订单信息
         this.props.dispatch(actions.getPayInfo(this.props.params.orderSn,(res)=>{
-            this.paySn = this.props.payInfo.paySn;
+            this.paySn = this.props.payInfo.paySn; //为了方便之后取参
             this.orderDjs(this.props.payInfo);
             this.setState({
                 is_loading:false
@@ -73,12 +73,14 @@ export class Payment extends React.Component {
         }));
     }
     componentWillUnmount(){
-        this.ds&&clearInterval(this.ds);
+        this.ds&&clearInterval(this.ds); //清除倒计时
     }
 
-    toogleRenderDialog=()=>{
-        clearInterval(this.state.interval_id);
-        if(this.state.renderDialogType=='ot'){//如果是已超时
+    toogleRenderDialog=()=>{    //切换弹框状态
+
+        clearInterval(this.state.interval_id); //清除请求订单状态的定时器
+
+        if(this.state.renderDialogType=='ot'){//如果是已超时，跳转订单页
             History.push('/order');
         }
         
@@ -86,7 +88,7 @@ export class Payment extends React.Component {
             showDialog:!this.state.showDialog
         });
     }
-    orderDjs=(data)=>{
+    orderDjs=(data)=>{  
         let creatTime=data.createTime||new Date().getTime();
         if(!creatTime){
             this.ds&&clearInterval(this.ds);
@@ -126,11 +128,7 @@ export class Payment extends React.Component {
         });
     }
 
-    renderDialog=()=>{
-        return this.renderWeixinPay();
-    }
-
-    getPayResult=()=>{
+    getPayResult=()=>{ //微信支付下，定时获取订单的状态
         let id = setInterval(()=>{
             this.props.dispatch(actions.getPayResult(this.paySn,(res)=>{
                 if(res.payState=="1"){
@@ -144,7 +142,7 @@ export class Payment extends React.Component {
         });
     }
 
-    toPayOrder =()=>{
+    toPayOrder =()=>{   //去付款
         let payWay = this.state.payWay;
         let values = this.state.values;
         let index = this.state.tab_index;
@@ -209,7 +207,7 @@ export class Payment extends React.Component {
         }));
     }
 
-    renderWeixinPay=()=>{
+    renderWeixinPay=()=>{  //微信弹框
         return(
             <div className="weixin-body clearfix">
                 <div className="left-code">
@@ -243,7 +241,7 @@ export class Payment extends React.Component {
         )
     }
 
-    renderIsPaySuccess=()=>{
+    renderIsPaySuccess=()=>{ //是否支付成功弹框
         return(
             <div className="pay-success-body">
                 <div className="left-icon">
@@ -275,7 +273,7 @@ export class Payment extends React.Component {
         )
     }
 
-    renderOutTime=()=>{
+    renderOutTime=()=>{ //超时弹框
         return(
             <div className="out-time-body">
                 <div className="tips">
