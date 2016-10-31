@@ -4,21 +4,41 @@ import React from 'react';
 import {
   Link
 } from 'react-router';
+import {
+    connect
+} from 'react-redux';
+import {
+    theAjax
+} from 'actions/UserAction';
 import Img from 'common/Img';
+import {TimeConvert} from 'components/common/TimeConvert.jsx';
 
-export default class PaySucc extends React.Component {
+
+function mapStateToProps(state) {
+    return{};    
+}
+export class PaySucc extends React.Component {
      constructor(props) {
         super(props);
-        
+        this.state={
+            mobPhone:"",
+            orderReceiving:"",
+            arrive:""
+        }
+    }
+    componentDidMount(){
+        this.props.dispatch(getMenuList(this.props.params.orderId||"",(res)=>{
+            let yujimin=res.data.paymentTime+15*60*1000;
+            let songda=res.data.paymentTime+60*60*1000;
+            let min=TimeConvert("n",new Date().getTime(),yujimin);
+            this.setState({
+                mobPhone:res.data.address.mobPhone,
+                orderReceiving:min,
+                arrive:TimeConvert.secondTohms(songda/1000,"hm")
+            });
+        }));
     }
     render(){
-        let data=this.props.data||{};
-        /**从父容器接受参数 data
-        *@parms:
-        *phone:手机号码;
-        *orderReceiving:预计接单时间;
-        *arrive:预计到达时间
-        */
         
         return(
             <div className="paysucc clearfix">
@@ -31,19 +51,19 @@ export default class PaySucc extends React.Component {
                             <span className="text">支付成功!</span>
                         </div>
                         <div className="desc">
-                            请保持您的手机{data.phone||"00****00"}畅通，方便送餐人员联系您。
+                            请保持您的手机{this.state.mobPhone||"00****00"}畅通，方便送餐人员联系您。
                         </div>
                         <div className="jiedan">
                             <div className="theys">
                                 <i className="fa fa-clock-o" />
                                 预计接单时间 
-                                <span className="import">{data.orderReceiving||0}</span>
+                                <span className="import">{this.state.orderReceiving||0}</span>
                                 分钟
                             </div>
                             <div className="theys">
                                 <i className="fa fa-clock-o" />
                                 预计
-                                <span className="import">{data.arrive||0}</span>
+                                <span className="import">{this.state.arrive||0}</span>
                                 左右到达
                             </div>
 
@@ -95,3 +115,7 @@ export default class PaySucc extends React.Component {
             );
     }
 }
+
+export default connect(
+    mapStateToProps,
+)(PaySucc)

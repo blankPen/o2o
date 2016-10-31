@@ -74,7 +74,7 @@ export class index extends React.Component {
                             <Route path="/detail/:storeId" component={Detail}/>
                             <Route path="/order_preview" component={OrderPreview}/>
                             <Route path="/search" component={Search}/>
-                            <Route path="/paysucc" component={PaySucc}/>
+                            <Route path="/paysucc/:orderId" component={PaySucc}/>
 
                             <Route onEnter={requireLogin} component={PersonNav}>
                                 <Route path="/order" component={Order}/>
