@@ -39,6 +39,7 @@ import OrderPreview from 'components/OrderPreview/';
 import Feedback from 'components/feedback';
 import Search from 'components/Search/';
 import Payment from 'components/Payment/';
+import PaySucc from 'components/paysucc/';
 
 
 import {
@@ -71,6 +72,8 @@ export class index extends React.Component {
                             <Route path="/detail/:storeId" component={Detail}/>
                             <Route path="/order_preview" component={OrderPreview}/>
                             <Route path="/search" component={Search}/>
+                            <Route path="/paysucc" component={PaySucc}/>
+
                             <Route path="/user" component={PersonNav}>
                                 <Route path="/order" component={Order}/>
                                 <Route path="/account" component={Account}/>

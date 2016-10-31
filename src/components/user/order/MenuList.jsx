@@ -32,6 +32,7 @@ function mapStateToProps({
         orderState:userState
     };
 }
+
 //时间轴单条组件
 export class Line extends React.Component {
     constructor(props) {
