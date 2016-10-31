@@ -2,8 +2,8 @@
  * @Author: pengzhen
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
- * @Last Modified by:   chenjingwei
- * @Last Modified time: 2016-10-28 10:15:21
+ * @Last Modified by:   pengzhen
+ * @Last Modified time: 2016-10-31 13:47:24
  */
 
 'use strict';
@@ -21,7 +21,8 @@ import {
 from 'react-router'
 import store from 'stores';
 import {
-    requireSetPosition
+    requireSetPosition,
+    requireLogin
 } from 'common/Permission'
 
 import PublicMain from 'components/public/Main/';
@@ -74,7 +75,7 @@ export class index extends React.Component {
                             <Route path="/search" component={Search}/>
                             <Route path="/paysucc" component={PaySucc}/>
 
-                            <Route path="/user" component={PersonNav}>
+                            <Route onEnter={requireLogin} component={PersonNav}>
                                 <Route path="/order" component={Order}/>
                                 <Route path="/account" component={Account}/>
                                 <Route path="/collect" component={Collect}/>

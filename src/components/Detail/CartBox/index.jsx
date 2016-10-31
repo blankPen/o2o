@@ -3,7 +3,7 @@
  * @Date:   2016-10-22 12:37:44
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-26 22:16:44
+ * @Last Modified time: 2016-10-31 11:15:26
  */
 
 'use strict';
@@ -14,6 +14,7 @@ import {
 } from 'react-redux';
 import * as DomUtils from 'common/utils/dom';
 import History from 'common/History';
+import { needLogin } from 'common/Permission';
 import NumInput from 'components/common/NumInput';
 import Parabola from './parabola.js';
 
@@ -150,7 +151,7 @@ export default class CartBox extends React.Component {
                     {!open && !!totalNum &&
                         <div className="count">{totalNum}份&nbsp;&nbsp;¥{totalPrice}</div>}
                     {totalPrice >= startPrice?
-                        <button className="submit" onClick={this.toOrderPreview}>去下单</button>:
+                        needLogin(<button className="submit" onClick={this.toOrderPreview}>去下单</button>):
                         <button disabled className="submit">
                             还差{startPrice-totalPrice}元起送
                         </button>

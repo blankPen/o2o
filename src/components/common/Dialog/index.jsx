@@ -3,7 +3,7 @@
  * @Date:   2016-10-24 11:33:55
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 11:43:11
+ * @Last Modified time: 2016-10-31 13:18:17
  */
 
 'use strict';
@@ -23,8 +23,9 @@ export default class Dialog extends React.Component {
     render() {
         return (
             <Modal
+                {...this.props}
                 title={this.props.title}
-                className={'dialog'+(this.props.className || '')}
+                className={'dialog '+(this.props.className || '')}
                 visible={this.props.visible}
                 onCancel={this.props.onCancel}
                 onOk={this.props.onOk}

@@ -161,19 +161,35 @@ export class OrderPreview extends React.Component {
     }
     toggleAddressDialog=()=>{
         this.setState({
-            show_address_dialog:!this.state.show_address_dialog
+            show_address_dialog:!this.state.show_address_dialog,
+            editAddress: !this.state.show_address_dialog?this.state.editAddress:undefined
         });
+    }
+    checkValues({remark, invoice, paymentMethod, deliveryTime, goodsIds, nums, storeId, memberId, addressId}){
+        let flag = true;
+        if(!addressId){
+            message.error('请选择收货地址');
+            flag = false;
+        }else if(paymentMethod === undefined){
+            message.error('请选择支付方式');
+            flag = false;
+        }else if(!goodsIds || !nums || !storeId || !memberId){
+            message.error('订单已失效，请重新下单');
+            flag = false;
+        }
+        return flag;
     }
     onPay=()=>{
         let values = this.state.postData;
-        console.log(values);
-        this.props.dispatch(actions.saveOrder(values,(res)=>{
-            if(res.result == 1){
-                History.push('/payment/'+res.data.orderSn);
-            }else{
-                message.error(res.msg);
-            }
-        }));
+        if(this.checkValues(values)){
+            this.props.dispatch(actions.saveOrder(values,(res)=>{
+                if(res.result == 1){
+                    History.push('/payment/'+res.data.orderSn);
+                }else{
+                    message.error(res.msg);
+                }
+            }));
+        }
     }
     showEditDialog(address,e){
         e.stopPropagation();
@@ -214,9 +230,7 @@ export class OrderPreview extends React.Component {
             return (
                 <div key={address.addressId} className={className}
                     onClick={address.isDeliveryRange ==1 && this.selectAddress.bind(this,address)}>
-                    <div className="address-out-scope">
-                        不在配送范围内
-                    </div>
+                    <div className="order-icon i-address-unavail-flag"></div>
                     <div className="member-top">
                         <span className="member-name">{address.trueName}</span>
                         <span className="member-sex">

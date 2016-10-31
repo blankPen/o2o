@@ -15,6 +15,7 @@ import Loading from'components/common/Loading/';
 import History from 'common/History';
 import {TimeConvert} from 'components/common/TimeConvert.jsx';
 import Dialog from 'components/common/Dialog/';
+import QRcode from 'common/qrcode'
 
 const RadioGroup = Radio.Group;
 
@@ -43,7 +44,8 @@ export class Payment extends React.Component {
             payWay:1,    // 1：微信 2：支付宝
             is_loading:true,
             showDialog:false,
-            renderDialogType:'is',//is :选择支付成功或失败 wx:微信扫码支付
+            renderDialogType:'ot',//is :选择支付成功或失败 wx:微信扫码支付 ot:支付超时
+            wx_code:'',
             values:{
                 memberId:memberId,
                 orderSn:orderSn,
@@ -53,14 +55,20 @@ export class Payment extends React.Component {
 
         this.renderMap={
             is:this.renderIsPaySuccess(),
-            wx:this.renderWeixinPay()
+            wx:this.renderWeixinPay(),
+            ot:this.renderOutTime()
+        }
+        this.dialogClassMap={
+            is:'pay-success-dialog',
+            wx:'weixin-pay-dialog',
+            ot:'out-time-dialog'
         }
     }
 
 
     componentWillMount(){
-        let orderSn = this.props.params.orderSn;
-        this.props.dispatch(actions.getPayInfo(orderSn,(res)=>{
+        this.props.dispatch(actions.getPayInfo(this.props.params.orderSn,(res)=>{
+            this.paySn = this.props.payInfo.paySn;
             this.setState({
                 is_loading:false,
                 values:{
@@ -97,6 +105,10 @@ export class Payment extends React.Component {
             let times=jieshu-date;
             if(times<=0){
                 //订单已到期
+                this.state({
+                    renderDialogType:'ot',
+                    showDialog:true
+                });
                 clearInterval(this.ds);
             }else{
                 let t=TimeConvert.secondTohms(times/1000,"array_ms");
@@ -122,13 +134,22 @@ export class Payment extends React.Component {
         let payWay = this.state.payWay;
         let values = this.state.values;
         if(payWay=='1'){ //微信支付
-            this.toogleRenderDialog();
-            this.props.dispatch(actions.toWeiXinPay(values,()=>{
-                //History.push('');
+            this.props.dispatch(actions.toWeiXinPay(this.paySn,(res)=>{
+                this.toogleRenderDialog();
+                if(res.result==1){
+                    this.setState({
+                        renderDialogType:'wx'
+                    });
+                    document.getElementById('qr_code').innerHTML= " "; 
+                    new QRcode(document.getElementById("qr_code"),{
+                        text:res.data.tocodeurl,
+                        width:300,
+                        height:300
+                    });
+                }
             }));
         }else if(payWay=='2'){//支付宝支付
-            this.props.dispatch(actions.toAliPay(values,()=>{
-                //History.push('');
+            this.props.dispatch(actions.toAliPay(this.paySn,()=>{
             }));
         }
     }
@@ -155,7 +176,7 @@ export class Payment extends React.Component {
                         </div>
                     </div>
                     <div className="code-img">
-                        <Img src='code-demo.png'></Img>
+                        <div id="qr_code" className="qr_code"></div>
                     </div>
                     <div className="code-footer">
                         <i className="fa fa-clock-o"></i>
@@ -189,11 +210,27 @@ export class Payment extends React.Component {
                     </div>
                     <div className="btn-bar">
                         <button className="pay-btn" type='button'>已完成付款</button>
-                        <button className="pay-btn" type='button'>付款遇到问题</button>
+                        <button className="pay-faile" type='button'>付款遇到问题</button>
                     </div>
                     <div className="back-choose">
                         返回选择其他支付方式
                     </div>
+                </div>
+            </div>
+        )
+    }
+
+    renderOutTime=()=>{
+        return(
+            <div className="out-time-body">
+                <div className="tips">
+                    <div className="left-icon">
+                        <i className="fa  fa-exclamation-circle"></i>
+                    </div>
+                    <div className="right-text">已超过支付时间，该订单自动取消！</div>
+                </div>
+                <div className="return-order">
+                    返回重新下单
                 </div>
             </div>
         )
@@ -204,8 +241,9 @@ export class Payment extends React.Component {
         return (
             <Loading isLoading={this.state.is_loading}>
                 <Dialog
-                  visible={this.state.showDialog}
-                  onCancel={this.toogleRenderDialog}
+                    className={this.dialogClassMap[this.state.renderDialogType]}
+                    visible={this.state.showDialog}
+                    onCancel={this.toogleRenderDialog}
                 >
                   {this.renderMap[this.state.renderDialogType]}
                 </Dialog>

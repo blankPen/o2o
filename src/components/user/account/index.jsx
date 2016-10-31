@@ -346,13 +346,13 @@ export class Account extends React.Component {
                   (
                     <span>
                       <Col span={9}><p>您的用户名为：{username}</p></Col>
-                      <Col span={5}> <Button className="btn" onClick={this.changeName}>修改</Button></Col>
+                      <Col span={5}> <Button className="btn" type='primary' onClick={this.changeName}>修改</Button></Col>
                     </span>
                   ):
                   (
                     <span>
                       <Col span={9}><p>您的姓名为空，请输入您的姓名</p></Col>
-                      <Col span={5}> <Button className="btn" onClick={this.changeName}>设置</Button></Col>
+                      <Col span={5}> <Button className="btn" type='primary' onClick={this.changeName}>设置</Button></Col>
                     </span>
                   )
                 }
@@ -367,13 +367,13 @@ export class Account extends React.Component {
                   (
                     <span>
                       <Col span={9}><p>提升密码安全程度到强，您的账号更安全</p></Col>
-                      <Col span={5}> <Button className="btn" onClick={this.changePassword}>修改</Button></Col>
+                      <Col span={5}> <Button className="btn" type='primary' onClick={this.changePassword}>修改</Button></Col>
                     </span>
                   ):
                   (
                     <span>
                       <Col span={9}><p>设置登录密码，下次登录更便捷</p></Col>
-                      <Col span={5}> <Button className="btn" onClick={this.changePassword}>设置</Button></Col>
+                      <Col span={5}> <Button className="btn" type='primary' onClick={this.changePassword}>设置</Button></Col>
                     </span>
                   )
                 }
@@ -388,13 +388,13 @@ export class Account extends React.Component {
                   (
                     <span>
                       <Col span={9}><p>您验证的手机：{phone}</p></Col>
-                      <Col span={5}> <Button className="btn" onClick={this.changePhone}>换绑</Button></Col>
+                      <Col span={5}> <Button className="btn" type='primary' onClick={this.changePhone}>换绑</Button></Col>
                     </span>
                   ):
                   (
                     <span>
                       <Col span={9}><p>绑定手机号码，帮助您找回密码</p></Col>
-                      <Col span={5}> <Button className="btn" onClick={this.changePhone}>绑定</Button></Col>
+                      <Col span={5}> <Button className="btn" type='primary' onClick={this.changePhone}>绑定</Button></Col>
                     </span>
                   )
                 }
@@ -409,13 +409,13 @@ export class Account extends React.Component {
                   (
                     <span>
                       <Col span={9}><p>定期更换支付密码，安全有保障</p></Col>
-                      <Col span={5}> <Button className="btn" onClick={this.changePaypass}>修改</Button></Col>
+                      <Col span={5}> <Button className="btn" type='primary' onClick={this.changePaypass}>修改</Button></Col>
                     </span>
                   ):
                   (
                     <span>
                       <Col span={9}><p>保护账号安全，在余额支付时使用</p></Col>
-                      <Col span={5}> <Button className="btn" onClick={this.changePaypass}>设置</Button></Col>
+                      <Col span={5}> <Button className="btn" type='primary' onClick={this.changePaypass}>设置</Button></Col>
                     </span>
                   )
                 }

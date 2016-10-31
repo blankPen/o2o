@@ -2,7 +2,7 @@
 * @Author: pengzhen
 * @Date:   2016-10-17 20:37:32
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-25 17:06:36
+* @Last Modified time: 2016-10-31 14:18:02
 */
 
 @import url('./theme.less');
@@ -102,7 +102,53 @@ input::-webkit-input-placeholder{
         border-color: #d9d9d9;
     }
 }
-
+.ant-btn.ant-btn-primary,
+.ant-btn.ant-btn-primary.ant-btn-clicked{
+    color: @font-active-color;
+    background-color: @primary-color;
+    border-color: @primary-color;
+    outline: none;
+    box-shadow: none;
+    &:after {
+        content: none;
+    }
+    &:hover,
+    &:active,
+    &:focus{
+        color: @font-active-color;
+        border-color: @primary-color;
+    }
+}
+.ant-btn.ant-btn-ghost,
+.ant-btn.ant-btn-ghost.ant-btn-clicked{
+    background-color: #fff;
+    outline: none;
+    box-shadow: none;
+    &:after {
+        content: none;
+    }
+    &:hover,
+    &:active,
+    &:focus{
+        color: @active-color;
+        border-color: @active-color;
+    }
+}
+.ant-btn,
+.ant-btn.ant-btn-clicked{
+    background-color: #fff;
+    outline: none;
+    box-shadow: none;
+    &:after {
+        content: none;
+    }
+    &:hover,
+    &:active,
+    &:focus{
+        color: @active-color;
+        border-color: @active-color;
+    }
+}
 
 .full-screen-modal{
     .ant-btn-primary{
@@ -111,11 +157,15 @@ input::-webkit-input-placeholder{
         width: 100px;
     }
     .ant-modal-content{
+        border-radius: 0;
         .ant-modal-footer{
             .ant-btn-ghost{
                 display: none;
             }
         }
+    }
+    .ant-modal-footer{
+        border-radius: 0;
     }
 }
 .open-image-modal{
@@ -141,7 +191,7 @@ input::-webkit-input-placeholder{
         right: 100px;
     }
     .dialog-body{
-        padding: 30px;
+        // padding: 30px;
     }
     .name-box{
         .old_name_style{

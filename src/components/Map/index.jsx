@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 21:02:26
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 13:57:16
+ * @Last Modified time: 2016-10-31 10:50:34
  */
 
 'use strict';
@@ -60,9 +60,9 @@ export class Maper extends React.Component {
         this.event = DomUtils.addEventListener(window,'click',(e)=>{
             let { cityControl,historyControl } = this.state;
             let target = e.target;
-            if(cityControl && !DomUtils.contains(cityDom,target)){
-                this.toggleSelector('cityControl');
-            }
+            // if(cityControl && !DomUtils.contains(cityDom,target)){
+            //     this.toggleSelector('cityControl');
+            // }
             if(historyControl && !DomUtils.contains(historyDom,target)){
                 this.toggleSelector('historyControl');
             }
@@ -117,7 +117,7 @@ export class Maper extends React.Component {
             selectCity: value,
             cityControl: false,
             searchResult: [],
-            activeResult: 0,
+            activeResultIndex: 0,
         });
         this.maper.map.centerAndZoom(value,12);
     }
@@ -142,10 +142,16 @@ export class Maper extends React.Component {
             }
             this.setState({
                 searchResult: res,
-                activeResult: 0,
+                activeResultIndex: 0,
                 openMap: true
             });
-            this.maper.createMarks(res);
+            this.maper.createMarks(res,{
+                click: (item,i)=>{
+                    this.setState({
+                        activeResultIndex: i
+                    });
+                }
+            });
             res[0] && this.maper.openMarkWindow(res[0]);
         });
     }

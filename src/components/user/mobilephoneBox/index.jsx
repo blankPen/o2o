@@ -220,6 +220,7 @@ export class index extends React.Component {
                 <span>
                   {this.state.nextStep?
                     <Button
+                      key='submit'
                       type="primary"
                       htmlType="submit"
                       size="large"
@@ -227,12 +228,14 @@ export class index extends React.Component {
                       确定
                     </Button>
                   :
-                    <div
-                      className="next_btn"
+                    <Button
+                      key='next'
+                      type="primary"
+                      htmlType='button'
                       onClick={this.handleNext}
                     >
                       下一步
-                    </div>
+                    </Button>
                   }
                 </span>
               )
