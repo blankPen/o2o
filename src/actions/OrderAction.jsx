@@ -132,7 +132,31 @@ export function toAliPay(params,call){
     return function(dispatch){
         ajax({
             url:'/rest/api/order/zfbPay',
+            data:{paysn:params},
+            success:function(res){
+                call&&call(res)
+            }
+        });
+    }
+}
+
+export function toPredepositPay(params,call) {
+    return function(dispatch){
+        ajax({
+            url:"/rest/api/predeposit/predepositPay",
             data:{...params},
+            success:function(res){
+                call&&call(res);
+            }
+        });
+    }
+}
+
+export function getPayResult(paysn,call){
+    return function(dispatch){
+        ajax({
+            url:"/rest/api/order/getPaystate",
+            data:{paysn:paysn},
             success:function(res){
                 call&&call(res)
             }

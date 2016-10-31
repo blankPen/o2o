@@ -46,11 +46,8 @@ export class Payment extends React.Component {
             showDialog:false,
             renderDialogType:'ot',//is :选择支付成功或失败 wx:微信扫码支付 ot:支付超时
             wx_code:'',
-            values:{
-                memberId:memberId,
-                orderSn:orderSn,
-                amount:0
-            }
+            interval_id:0,
+            tab_index:1
         }
 
         this.renderMap={
@@ -69,26 +66,18 @@ export class Payment extends React.Component {
     componentWillMount(){
         this.props.dispatch(actions.getPayInfo(this.props.params.orderSn,(res)=>{
             this.paySn = this.props.payInfo.paySn;
+            this.orderDjs(this.props.payInfo);
             this.setState({
-                is_loading:false,
-                values:{
-                    ...this.state.values,
-                    amount:res.data.orderAmount
-                }
+                is_loading:false
             });
         }));
     }
-
-
-    componentDidMount(){
-        this.orderDjs(this.props.payInfo);
-    }
-
     componentWillUnmount(){
         this.ds&&clearInterval(this.ds);
     }
 
     toogleRenderDialog=()=>{
+        clearInterval(this.state.interval_id);
         this.setState({
             showDialog:!this.state.showDialog
         });
@@ -105,7 +94,7 @@ export class Payment extends React.Component {
             let times=jieshu-date;
             if(times<=0){
                 //订单已到期
-                this.state({
+                this.setState({
                     renderDialogType:'ot',
                     showDialog:true
                 });
@@ -121,8 +110,15 @@ export class Payment extends React.Component {
     }
 
     changePayWay =(e)=>{
+        clearInterval(this.state.interval_id);
         this.setState({
           payWay: e.target.value
+        });
+    }
+
+    changeTab =(index)=>{
+        this.setState({
+            tab_index:index
         });
     }
 
@@ -130,27 +126,58 @@ export class Payment extends React.Component {
         return this.renderWeixinPay();
     }
 
+    getPayResult=()=>{
+        let id = setInterval(()=>{
+            this.props.dispatch(actions.getPayResult(this.paySn,(res)=>{
+                if(res.payState=="1"){
+                    console.log("支付成功");
+                    clearInterval(this.state.interval_id);
+                }
+            }));
+        },2500);
+        this.setState({
+            interval_id:id
+        });
+    }
+
     toPayOrder =()=>{
         let payWay = this.state.payWay;
         let values = this.state.values;
+        let index = this.state.tab_index;
+        let value = {
+            amount:this.props.payInfo.orderAmount,
+            payPassword:this.refs.pwd.value,
+            orderSn:this.props.params.orderSn
+        }
+        if(index==2){
+            this.props.dispatch(actions.toPredepositPay(value,(res)=>{
+                if(res.result==1){
+                    //余额支付成功
+                }else{
+                    this.refs.pwd_tips.innerHTML = res.msg;
+                }
+            }));
+            return;
+        }
         if(payWay=='1'){ //微信支付
-            this.props.dispatch(actions.toWeiXinPay(this.paySn,(res)=>{
-                this.toogleRenderDialog();
+            this.props.dispatch(actions.toWeiXinPay(this.paySn,(res)=>{//请求微信二维码url
+                this.toogleRenderDialog(); 
                 if(res.result==1){
                     this.setState({
                         renderDialogType:'wx'
                     });
                     document.getElementById('qr_code').innerHTML= " "; 
-                    new QRcode(document.getElementById("qr_code"),{
+                    new QRcode(document.getElementById("qr_code"),{ //生成二维码
                         text:res.data.tocodeurl,
                         width:300,
                         height:300
                     });
+                    this.getPayResult();    //计时请求订单状态
                 }
             }));
         }else if(payWay=='2'){//支付宝支付
-            this.props.dispatch(actions.toAliPay(this.paySn,()=>{
-            }));
+            let url = window.location.host+'/rest/api/order/getPaystate?paysn='+this.paySn;
+            window.open(url);
         }
     }
 
@@ -239,7 +266,10 @@ export class Payment extends React.Component {
     render() {
         let data = this.props.payInfo;
         return (
-            <Loading isLoading={this.state.is_loading}>
+            <Loading 
+                isLoading={this.state.is_loading}
+                className='payment-bg'
+            >
                 <Dialog
                     className={this.dialogClassMap[this.state.renderDialogType]}
                     visible={this.state.showDialog}
@@ -273,25 +303,57 @@ export class Payment extends React.Component {
                                 应付金额：<span className="price">{`¥${data.orderAmount||0}`}</span>
                             </div>
                         </div>
-                        <div className="tabs-head">
-                            <div className="left-tab">微信/支付宝</div>
+                        <div className="tabs-head clearfix">
+                            <div 
+                                className={"tab"+(this.state.tab_index==1?' select-tab':'')} 
+                                onClick={()=>this.changeTab(1)}
+                            >
+                                微信/支付宝
+                            </div>
+                            <div 
+                                className={"tab"+(this.state.tab_index==2?' select-tab':'')} 
+                                onClick={()=>this.changeTab(2)}
+                            >
+                                余额
+                            </div>
                             <div className="right-opinion">意见反馈</div>
                         </div>
-                        <div className="pay-way-box">
-                            <RadioGroup onChange={this.changePayWay} value={this.state.payWay}>
-                                <Radio key="a" value={1}>
-                                    <div className="pay-way">
-                                        <Img src='https://p1.meituan.net/pay/pc_wxqrpay.png'></Img>
+                        {
+                            this.state.tab_index==1?(
+                                <div className="pay-way-box">
+                                    <RadioGroup 
+                                        onChange={this.changePayWay} 
+                                        value={this.state.payWay
+                                    }>
+                                        <Radio key="a" value={1}>
+                                            <div className="pay-way">
+                                                <Img 
+                                                    src='https://p1.meituan.net/pay/pc_wxqrpay.png'
+                                                ></Img>
+                                            </div>
+                                        </Radio>
+                                        <Radio key="b" value={2}>
+                                            <div className="pay-way">
+                                                <Img 
+                                                    src='https://p0.meituan.net/pay/alipaypcnew.png'
+                                                >
+                                                </Img>
+                                            </div>
+                                        </Radio>
+                                    </RadioGroup>
+                                </div>
+                            ):(
+                               <div className="left-content">
+                                    <span>请输入支付密码：</span>
+                                    <input ref='pwd' className='pwd' type="password"/>
+                                    <div className="pwd-tips" ref='pwd_tips'>
+                                        请输入账户的 支付密码，不是登录密码。
                                     </div>
-                                </Radio>
-                                <Radio key="b" value={2}>
-                                    <div className="pay-way">
-                                        <Img src='https://p0.meituan.net/pay/alipaypcnew.png'></Img>
-                                    </div>
-                                </Radio>
-                            </RadioGroup>
-                        </div>
-                        <div className="determine-payment">
+                                </div>
+                            )
+                        }
+                        <div className="determine-payment clearfix">
+                            
                             <div className="right-content">
                                 <div className="pay-price">
                                     支付：<span className="price">{`¥${data.orderAmount||0}`}</span>

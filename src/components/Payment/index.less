@@ -1,5 +1,10 @@
 @import url('../../styles/theme.less');
 
+.payment-bg{
+    background: #fff;
+    height: 100%;
+}
+
 .payment{
     width: 980px;
     margin: 0 auto;
@@ -7,7 +12,7 @@
     .payment-head{
         width: 100%;
         height: 110px;
-        margin-top: 30px;
+        padding-top: 30px;
         border-bottom: 1px solid #eee;
         .left-logo{
             display: inline-block;
@@ -103,16 +108,26 @@
             width: 100%;
             border-bottom: 2px solid #fec520;
             position: relative;
-            .left-tab{
+
+            .tab{
+                color: #666;
+                display: inline-block;
+                width: 120px;
+                text-align: center;
+                padding: 10px 15px;
+                line-height: 22px;
+                cursor: pointer;
+                background-color: #fff;
+                float: left;
+            }
+
+            .select-tab{
                 border: 2px solid #fec520;
                 border-bottom: 0;
-                color: #000;
-                line-height: 22px;
-                display: inline-block;
-                padding: 10px 15px;
                 margin-bottom: -2px;
-                background-color: #fff;
+                color: #000;
             }
+            
             .right-opinion{
                 position: absolute;
                 right: 0;
@@ -146,8 +161,23 @@
                 }
             }
         }
+        .left-content{
+            margin-top: 30px;
+            input{
+                line-height: 25px;
+                outline: none;
+                width: 200px;
+            }
+            .pwd-tips{
+                font-size: 12px;
+                margin-top: 5px;
+                color: red;
+            }
+        }
         .determine-payment{
             width: 100%;
+
+            
             .right-content{
                 float: right;
                 .pay-price{
