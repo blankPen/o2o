@@ -44,7 +44,7 @@ export class Payment extends React.Component {
             payWay:1,    // 1：微信 2：支付宝
             is_loading:true,
             showDialog:false,
-            renderDialogType:'ot',//is :选择支付成功或失败 wx:微信扫码支付 ot:支付超时
+            renderDialogType:'wx',//is :选择支付成功或失败 wx:微信扫码支付 ot:支付超时
             wx_code:'',
             interval_id:0,
             tab_index:1
@@ -81,6 +81,7 @@ export class Payment extends React.Component {
         if(this.state.renderDialogType=='ot'){//如果是已超时
             History.push('/order');
         }
+        
         this.setState({
             showDialog:!this.state.showDialog
         });
@@ -160,17 +161,22 @@ export class Payment extends React.Component {
                     this.refs.pwd_tips.innerHTML = res.msg;
                 }
             }));
+
             return;
         }
+
         if(payWay=='1'){ //微信支付
             this.props.dispatch(actions.toWeiXinPay(this.paySn,(res)=>{//请求微信二维码url
-                this.toogleRenderDialog(); 
                 if(res.result==1){
+                    this.toogleRenderDialog(); 
                     this.setState({
                         renderDialogType:'wx'
                     });
-                    document.getElementById('qr_code').innerHTML= " "; 
-                    new QRcode(document.getElementById("qr_code"),{ //生成二维码
+                    let dom = document.getElementById('qr_code');
+                    if(dom){
+                        dom.innerHTML=' ';
+                    }
+                    new QRcode(dom,{ //生成二维码
                         text:res.data.tocodeurl,
                         width:300,
                         height:300
