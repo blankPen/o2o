@@ -15,6 +15,7 @@ import Loading from'components/common/Loading/';
 import History from 'common/History';
 import {TimeConvert} from 'components/common/TimeConvert.jsx';
 import Dialog from 'components/common/Dialog/';
+import QRcode from 'common/qrcode'
 
 const RadioGroup = Radio.Group;
 
@@ -134,13 +135,17 @@ export class Payment extends React.Component {
         let values = this.state.values;
         if(payWay=='1'){ //微信支付
             this.props.dispatch(actions.toWeiXinPay(this.paySn,(res)=>{
-                console.log(res);
+                this.toogleRenderDialog();
                 if(res.result==1){
                     this.setState({
-                        renderDialogType:'wx',
-                        wx_code:res.data.tocodeurl
+                        renderDialogType:'wx'
                     });
-                    this.toogleRenderDialog();
+                    document.getElementById('qr_code').innerHTML= " "; 
+                    new QRcode(document.getElementById("qr_code"),{
+                        text:res.data.tocodeurl,
+                        width:300,
+                        height:300
+                    });
                 }
             }));
         }else if(payWay=='2'){//支付宝支付
@@ -171,7 +176,7 @@ export class Payment extends React.Component {
                         </div>
                     </div>
                     <div className="code-img">
-                        <Img src={this.state.wx_code}></Img>
+                        <div id="qr_code" className="qr_code"></div>
                     </div>
                     <div className="code-footer">
                         <i className="fa fa-clock-o"></i>
