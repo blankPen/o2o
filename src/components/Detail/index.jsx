@@ -176,11 +176,19 @@ export class Detail extends React.Component {
     render() {
         let data = this.props.storeDetail ||{};
         let categoryList = [];
-        let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.startBusinessTime}:00`)).getTime(),
-            endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.endBusinessTime}:00`)).getTime();
-        console.log(this.props)
-        // 判断是否在营业中
-        let isOpen = Date.now() >= beginTime && Date.now() <= endTime;
+
+        let isOpen = data.isOpen == 1;
+        // if(isOpen){
+            // 24小时营业
+            if(!data.startBusinessTime || !data.endBusinessTime){
+                isOpen = true;
+            }else{
+                let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.startBusinessTime}:00`)).getTime(),
+                    endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.endBusinessTime}:00`)).getTime();
+                // 判断是否在营业中
+                isOpen = Date.now() >= beginTime && Date.now() <= endTime;
+            }
+        // }
         let classList = this.props.classAndGoodsList.map((item,i)=>{
             categoryList.push(
                 <Category
@@ -234,7 +242,10 @@ export class Detail extends React.Component {
                                     <div>{'商家地址：'+data.storeAddress}</div>
                                     <div>{'商家电话：'+data.storeTels}</div>
                                     <div>
-                                        {'营业时间：'+data.startBusinessTime+'-'+data.endBusinessTime}
+                                        营业时间：{
+                                            data.startBusinessTime && data.endBusinessTime ?
+                                            data.startBusinessTime+'-'+data.endBusinessTime
+                                            : '24小时营业'}
                                     </div>
                                 </div>
                             </div>
