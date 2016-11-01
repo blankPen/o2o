@@ -16,13 +16,17 @@ import {
   Link
 } from 'react-router';
 import Dialog from 'components/common/Dialog/';
-
+import {
+    saveEvaluateInfo
+} from 'actions/OrderAction';
 import ListView from 'components/common/ListView';
 import Img from 'common/Img';
 import History from 'common/History';
 import {TimeConvert} from 'components/common/TimeConvert.jsx';
+import ReceivingFinish from 'components/user/order/ReceivingFinish/';
 
 const moment = require('moment');
+
 function mapStateToProps({
     common,
     userState
@@ -32,6 +36,7 @@ function mapStateToProps({
         orderState:userState
     };
 }
+
 //时间轴单条组件
 export class Line extends React.Component {
     constructor(props) {
@@ -45,7 +50,7 @@ export class Line extends React.Component {
     }
     componentDidMount(){
         this.orderDjs(this.props.detail);
-        let min=TimeConvert.dateDiff("n",new Date().getTime(),this.props.detail.creatTime); 
+        let min=TimeConvert.dateDiff("n",new Date().getTime(),this.props.detail.creatTime);
         this.setState({
             isCuiDan:min>40?true:false
         });
@@ -83,6 +88,7 @@ export class Line extends React.Component {
                     ispay:false
                 });
                 clearInterval(this.ds);
+                this.props.refresh();
             }else{
                 let t=TimeConvert.secondTohms(times/1000,"array_ms");
                 this.setState({
@@ -101,7 +107,7 @@ export class Line extends React.Component {
     }
     //取消订单请求
     clearAjax=(detail)=>{
-        
+
         this.props.handleOnCancel({
             loading:true
         },()=>{
@@ -123,7 +129,7 @@ export class Line extends React.Component {
                 });
                 message.error("服务器异常,请尝试刷新页面!");
             }));
-            
+
         });
     }
     //取消订单
@@ -158,10 +164,10 @@ export class Line extends React.Component {
         }
         // this.props.loading(true,()=>{
         //     //可以直接取消
-            
+
         //     this.props.loading(false);
         // });
-        
+
     }
     //调往指定页面
     goUrl=(url)=>{
@@ -192,7 +198,7 @@ export class Line extends React.Component {
                 message.error("服务器异常,请尝试刷新页面!");
             }));
         });
-        
+
 
     }
     //确认收货请求
@@ -218,7 +224,7 @@ export class Line extends React.Component {
                 });
                 message.error("服务器异常,请尝试刷新页面!");
             }));
-            
+
         });
     }
     //确认收货
@@ -262,7 +268,7 @@ export class Line extends React.Component {
     删除只能删除 0和40 两个状态
     投诉 21  30 40 60 四个状态
     催单21.60
-    
+
     */
     render(){
         let item=this.props.item||{};
@@ -274,14 +280,14 @@ export class Line extends React.Component {
              <Timeline.Item dot={this.props.isError?error:succ}>
                 <span className="line-title">{item.stateInfo}</span>
                 <span className="line-time">{item.createTimeStr}</span>
-                <div className="daifukuan" style={this.props.display}> 
+                <div className="daifukuan" style={this.props.display}>
                     <div className="djs">
                         {orderState=="10"?this.state.dsjtext:null}
                         {orderState=="0"?"订单已被取消":null}
                         {orderState=="30"?"预计在"+detail.predictedArrivalTime+"送达，请耐心等待!":null}
                     </div>
                     {orderState=="0"?(<div className="tip">
-                        你的订单由于商家暂时无法配送已被商家取消
+                        你的订单由于商家暂时无法配送或支付超时已被取消
                     </div>):null}
                     <div className="btnlist">
                         {orderState=="40"&&detail.evaluationStatus==0?(<span className="btn jixu" onClick={this.apply}>我要评价</span>):null}
@@ -298,6 +304,7 @@ export class Line extends React.Component {
             );
     }
 }
+//订单时间轴组件
 export class Timelines extends React.Component {
     constructor(props) {
         super(props);
@@ -310,8 +317,9 @@ export class Timelines extends React.Component {
             dailog_text:""//dialog文本
         }
     }
+
     
-    
+    //投诉
     tousu=()=>{
         let userinfo=this.props.userInfo||{};
         History.push({ pathname: "/feedback", state: {
@@ -320,7 +328,8 @@ export class Timelines extends React.Component {
             orderSn:this.props.detail&&this.props.detail.orderSn
         } });
     }
-    
+
+    //逻辑计算返回的时间树
     returnTimeList=()=>{
         let detail=this.props.detail||{};
         let orderState=this.props.detail&&this.props.detail.orderState;
@@ -332,9 +341,9 @@ export class Timelines extends React.Component {
             return (
                 <Line loading={this.props.loading} refresh={this.props.refresh}
                     handleOnCancel={this.handleOnCancel}
-                    item={item} 
-                    key={i} 
-                    detail={detail} 
+                    item={item}
+                    key={i}
+                    detail={detail}
                     display={display}>
                 </Line>
                 );
@@ -345,9 +354,9 @@ export class Timelines extends React.Component {
             let item={stateInfo:"订单提交成功，等待付款",createTimeStr:TimeConvert.minsCon(detail.createTime,"ymdhms")};
             list[0]=(<Line loading={this.props.loading} refresh={this.props.refresh}
                         handleOnCancel={this.handleOnCancel}
-                        item={item} 
-                        key="daifukuan" 
-                        detail={detail} 
+                        item={item}
+                        key="daifukuan"
+                        detail={detail}
                         display={display}>
                     </Line>);
         }else if(orderState=="0"){
@@ -356,9 +365,9 @@ export class Timelines extends React.Component {
 
             list[detail.orderLogList.length-1]=(<Line loading={this.props.loading} refresh={this.props.refresh}
                                                     handleOnCancel={this.handleOnCancel}
-                                                    item={item} 
-                                                    key="clear" 
-                                                    detail={detail} 
+                                                    item={item}
+                                                    key="clear"
+                                                    detail={detail}
                                                     display={display}>
                                                 </Line>);
         }
@@ -383,20 +392,20 @@ export class Timelines extends React.Component {
                 // return "代付款";
                 list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
                                 handleOnCancel={this.handleOnCancel}
-                                item={item} 
+                                item={item}
                                 isError={true}
-                                key="yifukuan" 
-                                detail={detail} 
+                                key="yifukuan"
+                                detail={detail}
                                 display={display}>
                                 </Line>);
             // case 50:
             //     // return "货到付款待接单";
             //     item={stateInfo:"货到付款,待商家确认订单",createTimeStr:""};
             //     list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
-            //                     item={item} 
+            //                     item={item}
             //                     isError={true}
-            //                     key="daijiedan" 
-            //                     detail={detail} 
+            //                     key="daijiedan"
+            //                     detail={detail}
             //                     display={display}>
             //                     </Line>);
             case 60:
@@ -404,22 +413,22 @@ export class Timelines extends React.Component {
                 item={stateInfo:"商家正在准备商品",createTimeStr:""};
                 list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
                                 handleOnCancel={this.handleOnCancel}
-                                item={item} 
+                                item={item}
                                 isError={true}
-                                key="daifahuo" 
-                                detail={detail} 
+                                key="daifahuo"
+                                detail={detail}
                                 display={display}>
                                 </Line>);
-           
+
             case 21:
                 // return "待发货";
                 item={stateInfo:"商家已发货，等待收货",createTimeStr:""};
                 list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
                                 handleOnCancel={this.handleOnCancel}
-                                item={item} 
-                                isError={true} 
-                                key="yifahuo" 
-                                detail={detail} 
+                                item={item}
+                                isError={true}
+                                key="yifahuo"
+                                detail={detail}
                                 display={display}>
                                 </Line>);
             case 30:
@@ -427,10 +436,10 @@ export class Timelines extends React.Component {
                 item={stateInfo:"我已收货",createTimeStr:""};
                 list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
                                 handleOnCancel={this.handleOnCancel}
-                                item={item} 
+                                item={item}
                                 isError={true}
-                                key="yishouhuo" 
-                                detail={detail} 
+                                key="yishouhuo"
+                                detail={detail}
                                 display={display}>
                                 </Line>);
             default:
@@ -438,9 +447,9 @@ export class Timelines extends React.Component {
                 list.push(<Line loading={this.props.loading} refresh={this.props.refresh}
                     handleOnCancel={this.handleOnCancel}
                     item={item}
-                    isError={true} 
-                    key="succ" 
-                    detail={detail} 
+                    isError={true}
+                    key="succ"
+                    detail={detail}
                     display={display}>
                     </Line>);
         }
@@ -453,7 +462,7 @@ export class Timelines extends React.Component {
             ...data
         },call&&call());
     }
-    //送达时间：predictedArrivalTime  商家电话storeTels 
+    //送达时间：predictedArrivalTime  商家电话storeTels
      render(){
      	let data=this.props.data||[];
         let orderState=this.props.detail&&this.props.detail.orderState;
@@ -465,13 +474,19 @@ export class Timelines extends React.Component {
                 <Timeline>
                     {list}
                 </Timeline>
-                
+
                 <Dialog
                     visible={this.state.show_dialog}
-                    onCancel={this.handleOnCancel}
-                    onOk={this.handleOnCancel}
+                    onCancel={
+                        ()=>{
+                            this.handleOnCancel({show_dialog:false});
+                        }
+                    }
+                    onOk={()=>{
+                            this.handleOnCancel({show_dialog:false});
+                        }}
                     title={this.state.dailog_title}
-                  > 
+                  >
                     <Loading  isLoading={this.state.loading}>
                     {this.state.dailog_text}
                     </Loading>
@@ -479,11 +494,11 @@ export class Timelines extends React.Component {
                 </Dialog>
                 <div className="tousu">
                     <div className="tousu-hezi">
-                        商家没有送餐？您可以致电客服 <span>010-65546961</span> 
+                        商家没有送餐？您可以致电客服 <span>010-65546961</span>
                         {(orderState==21||orderState==30||orderState==40||orderState==60)&&data.complaintStatus==0?(
                             <div style={{"display":"inline-block"}}>或 <span onClick={this.tousu}>投诉商家</span>。</div>
                             ):null}
-                        
+
                     </div>
                 </div>
             </span>
@@ -495,7 +510,8 @@ export class MenuList extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            loading:false
+            loading:false,
+            showReceiving:true
         }
     }
     componentDidMount(){
@@ -508,6 +524,7 @@ export class MenuList extends React.Component {
         })));
         // this.props.dispatch(getMenuList(this.props.orderId));
     }
+    //详情刷新
     detailRefresh=()=>{
         this.setState({
             loading:true
@@ -517,19 +534,51 @@ export class MenuList extends React.Component {
             });
         })));
     }
+    //设置弹出框的显示状态
     loading=(flag,call)=>{
         this.setState({
             loading:!!flag
         },call&&call());
     }
+    //订单列表刷新,同时设置不选择展开订单
     refresh=()=>{
         this.props.dispatch(selectItem(""));
         this.props.refresh();
     }
+    closeToReceiving=(errors,values,callback)=>{
+        let detail=this.props.orderState.detail||{};
+       // console.log(detail);//detail.orderId,detail.storeId
+        if (errors) {
+            console.log(' 表单验证错误!');
+            return;
+        }
+        console.log('表单验证成功');
+        console.log(values);
+        this.props.dispatch(saveEvaluateInfo({
+              "orderId": detail.orderId,
+              "shopComments": values.add,
+              "shopStar": values.shoprate,
+              "productStepLike": values.foods,
+              "storeId": detail.storeId,
+              "numberOfStars": values.rate
+            },(re)=> {
+              if(re.result==1){
+                message.success(re.msg);
+                this.setState({
+                    showReceiving:false
+                });
+                callback && callback(re);
+              }else{
+                message.error(re.msg);
+                console.log(re.msg);
+              }
+            }
+        ));
+    }
      render(){
         let detail=this.props.orderState.detail||{};
         let address=detail.address||{};
-        
+        let orderState=this.props.detail&&this.props.detail.orderState;
         return(
             <div className="yincang-active yincang clearfix ">
                 <Loading  isLoading={this.state.loading}>
@@ -576,19 +625,41 @@ export class MenuList extends React.Component {
                         <div className="orderfooter">本订单由 {detail.shippingName} 提供专业高品质送餐服务</div>
                     </div>
                     <div className="rightTimeline">
-                        <Timelines 
-                        loading={this.loading}
-                        refresh={this.refresh}
-                        userInfo={this.props.userInfo} 
-                        detail={this.props.orderState.detail} 
-                        data={detail.orderLogList}></Timelines>
+                        {this.state.showReceiving?
+                        (
+                            <div style={{width:"100%"}}>
+                                {orderState=="40"&&detail.evaluationStatus==0?
+                                    (<ReceivingFinish detail={detail} handleSubmit={this.closeToReceiving}/>)
+                                :
+                                    (
+                                        <Timelines
+                                            loading={this.loading}
+                                            refresh={this.refresh}
+                                            userInfo={this.props.userInfo}
+                                            detail={this.props.orderState.detail}
+                                            data={detail.orderLogList}>
+                                        </Timelines>
+                                    )
+                                }
+                            </div>
+                        ):
+                        (
+                            <Timelines
+                                loading={this.loading}
+                                refresh={this.refresh}
+                                userInfo={this.props.userInfo}
+                                detail={this.props.orderState.detail}
+                                data={detail.orderLogList}>
+                            </Timelines>
+                        )}
                     </div>
                 </Loading>
             </div>
-            
+
             );
      }
 }
+
 MenuList =connect(
     mapStateToProps
 )(MenuList)

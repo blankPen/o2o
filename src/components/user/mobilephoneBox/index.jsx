@@ -11,7 +11,8 @@ import {
   Icon,
   message,
   Row,
-  Col
+  Col,
+  Steps
 } from 'antd';
 import {
     getMemberDetail,
@@ -21,6 +22,7 @@ import {
 
 const FormItem = Form.Item;
 const createForm = Form.create;
+const Step = Steps.Step;
 const formItemLayout = {
   labelCol: {
     span: 7
@@ -213,6 +215,13 @@ export class index extends React.Component {
                   })
               }}
             >
+            {userInfo.isBind===1?(
+              <Steps current={this.state.nextStep?2:1}>
+                <Step title="第一步" description="已绑定的手机号码" />
+                <Step title="第二步" description="绑定新的手机号码" />
+                <Step title="完成" />
+              </Steps>
+            ):undefined}
             {this._stepOne()}
             {this._stepTwo()}
             {userInfo.isBind===1?
@@ -271,7 +280,6 @@ export class index extends React.Component {
             {userInfo.isBind===1?
                 (
                 <div className="stepOne_style">
-                  <span className="step_title"> 第一步</span>
                   <div className="bind_phone_style">
                     <Row>
                         <Col span={7}>
@@ -320,7 +328,6 @@ export class index extends React.Component {
       if(this.state.nextStep){
         return(
           <div className="stepTwo_style">
-            <span className="step_title"> 第二步</span>
             {this._default()}
           </div>
         )
