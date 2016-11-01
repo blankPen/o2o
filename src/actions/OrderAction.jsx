@@ -170,6 +170,7 @@ export function getPayResult(paysn,call){
 export function saveEvaluateInfo(params,call) {
     return function(dispatch) {
         ajax({
+            contentType:"multipart/form-data; boundary=---------------------------7d33a816d302b6 ",
             url: '/rest/api/order/saveEvaluatePage',
             data: {
                 ...params
