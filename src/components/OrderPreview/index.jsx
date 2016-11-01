@@ -184,7 +184,13 @@ export class OrderPreview extends React.Component {
         if(this.checkValues(values)){
             this.props.dispatch(actions.saveOrder(values,(res)=>{
                 if(res.result == 1){
-                    History.push('/payment/'+res.data.orderSn);
+                    if(this.state.postData.paymentMethod == 1){
+                        // 餐到付款
+                        History.push('/user/order');
+                    }else{
+                        // 线上支付
+                        History.push('/payment/'+res.data.orderSn);
+                    }
                 }else{
                     message.error(res.msg);
                 }

@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-01 11:43:59
+ * @Last Modified time: 2016-11-01 11:59:07
  */
 
 'use strict';
@@ -90,7 +90,10 @@ export class index extends React.Component {
                         <Route path='/map' component={asyncLoader(Maper)} />
                         <Route path="/login" component={asyncLoader(Login)}/>
                         <Route path="/register" component={asyncLoader(Register)}/>
-                        <Route path="/payment/:orderSn" component={asyncLoader(Payment)}/>
+                        <Route path='/payment' >
+                            <IndexRoute component={asyncLoader(Payment)} />
+                            <Route path=":orderSn" component={asyncLoader(Payment)}/>
+                        </Route>
                         <Route path='/404' component={NotFound} ></Route>
                         <Redirect path='*' to='/404' />
                     </Route>

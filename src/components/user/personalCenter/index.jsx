@@ -22,7 +22,6 @@ import {
 import {
     getMemberDetail
 } from 'actions/SignPageAction';
-import {getRealPath} from 'common/Img'
 import {
   Link
 } from 'react-router';
@@ -378,9 +377,9 @@ export class index extends React.Component {
                     <Col span={8} >
                         {userInfo.availablePredeposit}&nbsp;&nbsp;<i className="fa fa-yen"></i>
                     </Col>
-                   {/* <Col span={6} >
-                        <a href='javascript:void(0);' className="btn" >余额不足 ？ </a>
-                    </Col>*/}
+                   {<Col span={6} >
+                        <Link to='/payment' className="btn" >充值</Link>
+                    </Col>}
                 </Row>
                 <div className="userexinfo-form__footer">
                     <span>收藏的店铺：<Link className="span_yellow" to="/collect">{userInfo.favStoreCount}</Link></span>
