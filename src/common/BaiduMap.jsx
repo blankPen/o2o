@@ -3,7 +3,7 @@
  * @Date:   2016-10-20 09:26:57
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 10:49:09
+ * @Last Modified time: 2016-10-31 15:40:17
  */
 
 'use strict';
@@ -174,7 +174,7 @@ BaiduMap.prototype = {
         var content = `<div class="bd-info-box">
                 <div class="bd-info-box-title">${data.title}</div>
                 <div class="bd-info-box-addr">地址：${data.address}</div>
-                <div class="bd-info-box-nearby">附近有<span>1309</span>家外卖餐厅</div>
+                <div class="bd-info-box-nearby">附近有<span>${data.count}</span>家外卖餐厅</div>
                 <div class="btn-group">
                     <a class="btn-start" href="#/map?status=${BaiduMap.STATUS_SAVE_POSITION}">开始订餐</a>
                 </div>

@@ -59,12 +59,6 @@ export class Detail extends React.Component {
             show_loading:true
         }
     }
-    componentWillUnmount() {
-        let memberId = this.props.userInfo.memberId;
-        let storeId = this.props.params.storeId;
-        let data = this.state.inCartItems;
-        this.props.dispatch(actions.saveCartList(storeId,memberId,data));
-    }
     componentWillMount=()=>{
         this.now = moment().format('YYYY-MM-DD HH:mm:ss');
         let memberId = this.props.userInfo.memberId;
@@ -99,7 +93,6 @@ export class Detail extends React.Component {
         if(key==2){
             this.props.dispatch(actions.getStoreEvaluatList({storeId:storeId}));
         }
-        console.log(key);
     }
     menuClick = (key)=>{
         let el = ReactDOM.findDOMNode(this.refs[key]);
@@ -107,6 +100,12 @@ export class Detail extends React.Component {
             let offset = DomUtils.getOffset(el).top;
             DomUtils.scrollTo(offset);
         }
+    }
+    saveCartList=()=>{
+        let memberId = this.props.userInfo.memberId;
+        let storeId = this.props.params.storeId;
+        let data = this.state.inCartItems;
+        this.props.dispatch(actions.saveCartList(storeId,memberId,data));
     }
     handleAddCart=(data)=>{
         let newItems = {...this.state.inCartItems};
@@ -121,7 +120,7 @@ export class Detail extends React.Component {
         newItems[data.goodsId] = goods;
         this.setState({
             inCartItems: newItems
-        });
+        },this.saveCartList);
         this.refs.cartBox && this.refs.cartBox.triggerAnim(getPosition(data.goodsId));
     }
     toggleCollect=(flag)=>{
@@ -131,12 +130,13 @@ export class Detail extends React.Component {
     handleChangeCart=(value,addId)=>{
         this.setState({
             inCartItems: value
-        });
+        },this.saveCartList);
         this.refs.cartBox && this.refs.cartBox.triggerAnim(getPosition(addId));
     }
     toOrderPreview=()=>{
         let memberId = this.props.userInfo.memberId;
         let storeId = this.props.params.storeId;
+        this.props.dispatch(actions.clearCart(storeId,memberId));
         History.push({
             pathname: '/order_preview',
             state: {
@@ -144,7 +144,6 @@ export class Detail extends React.Component {
                storeId: storeId
             }
         });
-        this.props.dispatch(actions.clearCart(storeId,memberId));
     }
     renderTooltipTitle=(type,level,num1,num2)=>{
         if(type=='time'){

@@ -137,6 +137,7 @@ export function logout(callback){
                     dispatch({
                         type: 'logout/success'
                     })
+                    location.reload();
                 }
             }
         })

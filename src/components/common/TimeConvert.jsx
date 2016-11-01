@@ -120,7 +120,9 @@ var TimeConvert = {
 		}
 		if (format == 'hms') { //时分秒
 			return hours + ": " + min + ": " + s;
-		} else if (format == 'ms') { //分秒
+		}else if (format == 'hm') { //分秒
+			return hours + ": " + min;
+		}else if (format == 'ms') { //分秒
 			return min + ": " + s;
 		}else if (format == 'array_ms') { //分秒
 			return {fen:min,miao:s};

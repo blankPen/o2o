@@ -317,18 +317,6 @@ export class Timelines extends React.Component {
             dailog_text:""//dialog文本
         }
     }
-
-    
-    //投诉
-    tousu=()=>{
-        let userinfo=this.props.userInfo||{};
-        History.push({ pathname: "/feedback", state: {
-            memberId:userinfo.memberId,
-            phone:userinfo.memberMobile,
-            orderSn:this.props.detail&&this.props.detail.orderSn
-        } });
-    }
-
     //逻辑计算返回的时间树
     returnTimeList=()=>{
         let detail=this.props.detail||{};

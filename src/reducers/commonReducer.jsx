@@ -3,7 +3,7 @@
 * @Date:   2016-10-19 17:18:52
 * @Desc: this_is_desc
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-31 13:33:49
+* @Last Modified time: 2016-10-31 14:35:29
 */
 
 'use strict';
@@ -25,6 +25,11 @@ const DEFAULT_POSITION = hp.length ? hp[0] : {
 };
 export const stateName = 'common';
 export default handleActions({
+    '@@router/LOCATION_CHANGE': (state, action) => {
+        // 页面切换 滚动条置顶
+        setScrollTop(0);
+        return state;
+    },
     'set/position': (state, action) => {
         return {
             ...state,
@@ -65,3 +70,9 @@ export default handleActions({
     position: DEFAULT_POSITION,
     show_login_dialog: false
 });
+
+
+function setScrollTop(scroll_top) {
+    document.documentElement.scrollTop = scroll_top;
+    document.body.scrollTop = scroll_top;
+}

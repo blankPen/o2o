@@ -184,7 +184,13 @@ export class OrderPreview extends React.Component {
         if(this.checkValues(values)){
             this.props.dispatch(actions.saveOrder(values,(res)=>{
                 if(res.result == 1){
-                    History.push('/payment/'+res.data.orderSn);
+                    if(this.state.postData.paymentMethod == 1){
+                        // 餐到付款
+                        History.push('/user/order');
+                    }else{
+                        // 线上支付
+                        History.push('/payment/'+res.data.orderSn);
+                    }
                 }else{
                     message.error(res.msg);
                 }
@@ -230,9 +236,7 @@ export class OrderPreview extends React.Component {
             return (
                 <div key={address.addressId} className={className}
                     onClick={address.isDeliveryRange ==1 && this.selectAddress.bind(this,address)}>
-                    <div className="address-out-scope">
-                        不在配送范围内
-                    </div>
+                    <div className="order-icon i-address-unavail-flag"></div>
                     <div className="member-top">
                         <span className="member-name">{address.trueName}</span>
                         <span className="member-sex">

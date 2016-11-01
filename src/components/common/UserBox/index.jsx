@@ -3,7 +3,7 @@
  * @Date:   2016-10-21 17:47:08
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-25 10:05:35
+ * @Last Modified time: 2016-11-01 11:42:39
  */
 
 'use strict';
@@ -51,8 +51,8 @@ export class index extends React.Component {
                     <i className="fa fa-fw fa-angle-down"></i>
                 </span>
                 <ul className="login-menu">
-                    <li><Link to='/order'>我的外卖订单</Link></li>
-                    <li><Link to='/collect'>我的收藏夹</Link></li>
+                    <li><Link to='/user/order'>我的外卖订单</Link></li>
+                    <li><Link to='/user/collect'>我的收藏夹</Link></li>
                     <li><a onClick={this.logout}>退出</a></li>
                 </ul>
             </div>

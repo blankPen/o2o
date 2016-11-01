@@ -3,7 +3,7 @@
  * @Date:   2016-10-25 17:19:49
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 13:53:57
+ * @Last Modified time: 2016-11-01 11:16:48
  */
 
 'use strict';
@@ -12,7 +12,7 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import { Form, Input, Button, Checkbox, Radio, Tooltip, Icon } from 'antd';
+import { Form, Input, Button, Radio} from 'antd';
 import BaiduMap from 'common/BaiduMap';
 import { updateAddress } from 'actions/AddressAction'
 const FormItem = Form.Item;
@@ -172,7 +172,6 @@ export class AddressForm extends React.Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    // className='item-address'
                     label="收餐地址"
                     help='请输入地址，并在下拉框中选择'
                 >

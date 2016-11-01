@@ -27,7 +27,7 @@ export default class Loading extends React.Component {
 
     render() {
         return (
-            <div className="loading-body">
+            <div className={"loading-body "+(this.props.className||'')}>
                 <Spin tip="正在努力加载中..." spinning={this.props.isLoading}>
                     {this.props.children}
                 </Spin>

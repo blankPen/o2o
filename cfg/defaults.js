@@ -8,7 +8,7 @@
 
 const path = require('path');
 const srcPath = path.join(__dirname, '/../src');
-const dfltPort = 8000;
+const dfltPort = 7389;
 
 /**
  * Get the default modules object for webpack
@@ -23,27 +23,22 @@ function getDefaultModules() {
       //   loader: 'eslint-loader'
       // }
     ],
-    loaders: [
-      {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader'
-      },
-      {
-        test: /\.less/,
-        loader: 'style-loader!css-loader!less-loader'
-      },
-      {
-        test: /\.(png|jpg|gif|woff|woff2)$/,
-        loader: 'url-loader?limit=8192'
-      },
-      {
-        test: /\.(mp4|ogg)$/,
-        loader: 'file-loader'
-      }, {
-        test: /\.(woff|woff2|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=application/font-woff'
-      },
-    ]
+    loaders: [{
+      test: /\.css$/,
+      loader: 'style-loader!css-loader'
+    }, {
+      test: /\.less/,
+      loader: 'style-loader!css-loader!less-loader'
+    }, {
+      test: /\.(png|jpg|gif|woff|woff2)$/,
+      loader: 'url-loader?limit=8192'
+    }, {
+      test: /\.(mp4|ogg)$/,
+      loader: 'file-loader'
+    }, {
+      test: /\.(woff|woff2|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/font-woff'
+    }, ]
   };
 }
 

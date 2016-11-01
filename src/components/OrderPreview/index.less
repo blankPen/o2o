@@ -151,33 +151,34 @@
                                 .member-top {
                                     .operation-box {
                                         display: inline-block;
+                                        position: relative;
+                                        z-index: 2;
                                     }
                                 }
                             }
+                            .i-address-unavail-flag{
+                                position: absolute;
+                                right: 41px;
+                                bottom: 13px;
+                                display: none;
+                            }
                             &.not-in-scope{
-                                &:hover {
-                                    .member-top {
-                                        .operation-box {
-                                            display: none;
-                                        }
-                                    }
-                                }
-                                .address-out-scope{
+                                .i-address-unavail-flag{
                                     display: block;
                                 }
                             }
-                            .address-out-scope{
-                                position: absolute;
-                                top: 0;
-                                left: 0;
-                                right: 0;
-                                bottom: 0;
-                                background: rgba(0,0,0,0.2);
-                                color: #fff;
-                                line-height: 86px;
-                                text-align: center;
-                                display: none;
-                            }
+                            // .address-out-scope{
+                            //     position: absolute;
+                            //     top: 0;
+                            //     left: 0;
+                            //     right: 0;
+                            //     bottom: 0;
+                            //     background: rgba(0,0,0,0.2);
+                            //     color: #fff;
+                            //     line-height: 86px;
+                            //     text-align: center;
+                            //     display: none;
+                            // }
                             .member-top {
                                 border-bottom: 1px dashed #e5e5e5;
                                 height: 42px;
@@ -330,3 +331,54 @@
         }
     }
 }
+
+.order-icon {
+    background-image: url(../../images/sprite/order-icon_1.png);
+    background-repeat: no-repeat;
+    image-rendering: -webkit-optimize-contrast;
+    /*解决在chrome下小图标的问题*/
+    display: inline-block;
+}
+
+.i-address-unavail-flag {
+    width: 134px;
+    height: 60px;
+    background-position: 0 -90px;
+}
+
+.i-add-addr {
+    width: 22px;
+    height: 22px;
+    background-position: 0 -26px;
+}
+
+.i-addr-check {
+    width: 24px;
+    height: 24px;
+    background-position: 0 0;
+}
+
+.i-unfold {
+    width: 44px;
+    height: 18px;
+    background-position: 0 -70px;
+}
+
+.i-fold {
+    width: 44px;
+    height: 18px;
+    background-position: 0 -50px;
+}
+
+.i-unfold-text {
+    width: 106px;
+    height: 25px;
+    background-position: 0 -166px;
+}
+
+.i-fold-text {
+    width: 106px;
+    height: 25px;
+    background-position: 0 -203px;
+}
+
