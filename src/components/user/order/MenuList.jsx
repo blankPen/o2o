@@ -84,6 +84,7 @@ export class Line extends React.Component {
                     ispay:false
                 });
                 clearInterval(this.ds);
+                this.props.refresh();
             }else{
                 let t=TimeConvert.secondTohms(times/1000,"array_ms");
                 this.setState({
@@ -299,6 +300,7 @@ export class Line extends React.Component {
             );
     }
 }
+//订单时间轴组件
 export class Timelines extends React.Component {
     constructor(props) {
         super(props);
@@ -312,7 +314,7 @@ export class Timelines extends React.Component {
         }
     }
     
-    
+    //投诉
     tousu=()=>{
         let userinfo=this.props.userInfo||{};
         History.push({ pathname: "/feedback", state: {
@@ -321,7 +323,7 @@ export class Timelines extends React.Component {
             orderSn:this.props.detail&&this.props.detail.orderSn
         } });
     }
-    
+    //逻辑计算返回的时间树
     returnTimeList=()=>{
         let detail=this.props.detail||{};
         let orderState=this.props.detail&&this.props.detail.orderState;
@@ -515,6 +517,7 @@ export class MenuList extends React.Component {
         })));
         // this.props.dispatch(getMenuList(this.props.orderId));
     }
+    //详情刷新
     detailRefresh=()=>{
         this.setState({
             loading:true
@@ -524,11 +527,13 @@ export class MenuList extends React.Component {
             });
         })));
     }
+    //设置弹出框的显示状态
     loading=(flag,call)=>{
         this.setState({
             loading:!!flag
         },call&&call());
     }
+    //订单列表刷新,同时设置不选择展开订单
     refresh=()=>{
         this.props.dispatch(selectItem(""));
         this.props.refresh();
