@@ -3,7 +3,7 @@
  * @Date:   2016-10-20 09:26:57
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-01 15:01:20
+ * @Last Modified time: 2016-11-01 15:34:41
  */
 
 'use strict';
@@ -19,8 +19,6 @@ const defaultParams = {
     minZoom: 8,
     maxZoom: 18
 }
-
-
 
 const BaiduMap = function(id, callback,flag) {
 

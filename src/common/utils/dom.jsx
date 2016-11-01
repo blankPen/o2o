@@ -3,7 +3,7 @@
  * @Date:   2016-07-02 17:24:49
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 17:24:57
+ * @Last Modified time: 2016-11-01 17:10:43
  */
 
 'use strict';
@@ -194,4 +194,10 @@ export function getWindowHeight() {　　
         windowHeight = document.body.clientHeight;　　
     }　　
     return windowHeight;
+}
+
+export function getQueryString(name) {
+   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
+   var r = window.location.hash.split('?')[1].match(reg);
+   if (r!=null) return unescape(r[2]); return null;
 }

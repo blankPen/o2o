@@ -4,6 +4,7 @@
 'use strict';
 import ajax from 'common/Ajax';
 import History from 'common/History';
+import { message } from 'antd';
 /**
  * 控制登录弹框显隐
  */
@@ -177,3 +178,27 @@ export function getCheckCode(params,call) {
     }
 }
 
+export function thirdLogin(params,call){
+    return function(dispatch){
+        ajax({
+            url: '/rest/api/member/thirdLogin',
+            data: params,
+            success: function(res){
+                if(res.result == 1){
+                    dispatch({
+                        type: 'login/success',
+                        info: res.data,
+                        cookieInfo: {
+                            username: params.username,
+                            password: params.validateCode,
+                            user_id: res.data.memberId
+                        },
+                        expires: params.expires
+                    })
+                }else{
+                    message.error(res.msg);
+                }
+            }
+        })
+    }
+}

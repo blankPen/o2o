@@ -42,6 +42,10 @@ module.exports = {
         //target: 'http://115.28.68.78:8888/leimingtech-front/',
         target:'http://testo2o.leimingtech.com/leimingtech-front/',
         changeOrigin: true
+      },
+      '/sns/*':{
+        target:'https://api.weixin.qq.com/',
+        changeOrigin: true
       }
     }
   },
