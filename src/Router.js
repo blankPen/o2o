@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-01 11:59:07
+ * @Last Modified time: 2016-11-01 17:12:18
  */
 
 'use strict';
@@ -23,7 +23,7 @@ import store from 'stores';
 import {
     requireSetPosition,
     requireLogin
-} from 'common/Permission'
+} from 'common/Permission';
 import asyncLoader from 'common/asyncLoader';
 
 import PublicMain from 'components/public/Main/';

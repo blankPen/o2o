@@ -17,6 +17,7 @@ import {
     getCheckCode
 } from 'actions/SignPageAction';
 import Aggrement from 'components/SignPage/Aggrement/';
+import OtherLogin from 'components/SignPage/OtherLogin/';
 import {
     retrieveToLoginpass
 } from 'actions/UserAction';
@@ -445,13 +446,7 @@ let index= class  extends React.Component {
           <div className="sign_agreement">
             <span className="agreement_left">还没有账号？</span><a className="agreement_right" href="/#/register">免费注册</a>
           </div>
-          <div className="other-login">
-            <div className="title">其他方式登录</div>
-            <div className="btn-box">
-              <a className="btn-qq"><i className="fa fa-qq"></i></a>
-              <a className="btn-wechat"><i className="fa fa-wechat"></i></a>
-            </div>
-          </div>
+          <OtherLogin dispatch={this.props.dispatch}/>
         </Form>
       );
     } else {

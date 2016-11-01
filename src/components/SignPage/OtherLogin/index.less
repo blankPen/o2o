@@ -1,0 +1,73 @@
+/*
+* @Author: pengzhen
+* @Date:   2016-11-01 16:19:03
+* @Last Modified by:   pengzhen
+* @Last Modified time: 2016-11-01 16:52:08
+*/
+
+.other-login {
+    padding-top: 10px;
+    text-align: center;
+    .title {
+        line-height: 30px;
+        position: relative;
+        &:before,
+        &:after {
+            content: '';
+            width: 35%;
+            height: 1px;
+            background: #ddd;
+            position: absolute;
+            top: 50%;
+        }
+        &:before {
+            left: 0;
+        }
+        &:after {
+            right: 0;
+        }
+    }
+    .btn-box {
+        display: inline-block;
+        @btnSize: 36px;
+        a {
+            display: inline-block;
+            margin: 5px 15px 0;
+            width: @btnSize;
+            height: @btnSize;
+            line-height: @btnSize;
+            text-align: center;
+            border-radius: 50%;
+            background: #b5b9bc;
+            color: #fff;
+            font-size: @btnSize*0.6;
+        }
+        .btn-qq {
+            background: #2b99ff;
+        }
+        .btn-wechat {
+            background: #00b33b;
+        }
+    }
+    .wx-wrap{
+        &.show{
+            display: block;
+        }
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 10px;
+        i{
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+            font-size: 1.5em;
+        }
+    }
+}
