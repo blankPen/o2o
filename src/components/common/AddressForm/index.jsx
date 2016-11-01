@@ -3,7 +3,7 @@
  * @Date:   2016-10-25 17:19:49
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 14:53:18
+ * @Last Modified time: 2016-11-01 11:16:48
  */
 
 'use strict';
@@ -12,7 +12,7 @@ import React from 'react';
 import {
     connect
 } from 'react-redux';
-import { Form, Input, Button, Checkbox, Radio, Tooltip, Icon } from 'antd';
+import { Form, Input, Button, Radio} from 'antd';
 import BaiduMap from 'common/BaiduMap';
 import { updateAddress } from 'actions/AddressAction'
 const FormItem = Form.Item;
