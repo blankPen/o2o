@@ -123,10 +123,22 @@ export class Collect extends React.Component {
     render(){
         let data=this.props.data||{};
         let tagObj = this.renderTags(data.tagList||[]);
-        let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.startBusinessTime}:00`)).getTime(),
-            endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.endBusinessTime}:00`)).getTime();
-        // 判断是否在营业中
-        let isOpen = Date.now() >= beginTime && Date.now() <= endTime;
+        // let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.startBusinessTime}:00`)).getTime(),
+        //     endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.endBusinessTime}:00`)).getTime();
+        // // 判断是否在营业中
+        // let isOpen = Date.now() >= beginTime && Date.now() <= endTime;
+        let isOpen = data.isOpen == 1;
+        if(isOpen){
+            // 24小时营业
+            if(!data.startBusinessTime || !data.endBusinessTime){
+                isOpen = true;
+            }else{
+                let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.startBusinessTime}:00`)).getTime(),
+                    endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.endBusinessTime}:00`)).getTime();
+                // 判断是否在营业中
+                isOpen = Date.now() >= beginTime && Date.now() <= endTime;
+            }
+        }
         return(
             <li className="collectli collect" onClick={this.goShop}>
                             <div className="collect-top">
