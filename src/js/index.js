@@ -195,7 +195,7 @@ if(isCanvasSupported){
   c.height = 100;			
   var cw = c.width;
   var ch = c.height;	
-  document.body.appendChild(c);	
+  document.getElementById("app").appendChild(c);	
   var cl = new lightLoader(c, cw, ch);				
   
   setupRAF();
