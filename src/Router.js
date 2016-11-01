@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-01 10:58:55
+ * @Last Modified time: 2016-11-01 11:41:52
  */
 
 'use strict';
@@ -73,16 +73,17 @@ export class index extends React.Component {
                     <Route onEnter={autoLogin}>
                         <Route path='/' component={PublicMain} onEnter={requireSetPosition}>
                             <IndexRoute component={asyncLoader(Home)} />
-                            <Route path="/detail/:storeId" component={asyncLoader(Detail)}/>
-                            <Route path="/order_preview" component={asyncLoader(OrderPreview)}/>
-                            <Route path="/search" component={asyncLoader(Search)}/>
-                            <Route path="/paysucc/:orderId" component={asyncLoader(PaySucc)}/>
+                            <Route path="detail/:storeId" component={asyncLoader(Detail)}/>
+                            <Route path="order_preview" component={asyncLoader(OrderPreview)}/>
+                            <Route path="search" component={asyncLoader(Search)}/>
+                            <Route path="paysucc/:orderId" component={asyncLoader(PaySucc)}/>
 
-                            <Route onEnter={requireLogin} component={PersonNav}>
-                                <Route path="/order" component={asyncLoader(Order)}/>
-                                <Route path="/account" component={asyncLoader(Account)}/>
-                                <Route path="/collect" component={asyncLoader(Collect)}/>
-                                <Route path="/personal_center" component={asyncLoader(PersonalCenter)}/>
+                            <Route path="user" onEnter={requireLogin} component={PersonNav}>
+                                <IndexRoute component={asyncLoader(Order)} />
+                                <Route path="order" component={asyncLoader(Order)}/>
+                                <Route path="safe" component={asyncLoader(Account)}/>
+                                <Route path="collect" component={asyncLoader(Collect)}/>
+                                <Route path="info" component={asyncLoader(PersonalCenter)}/>
                             </Route>
                             <Route path="/feedback" component={asyncLoader(Feedback)}/>
                         </Route>

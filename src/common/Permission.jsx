@@ -3,7 +3,7 @@
 * @Date:   2016-10-24 10:51:14
 * @Desc: this_is_desc
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-31 13:48:58
+* @Last Modified time: 2016-11-01 11:27:58
 */
 
 'use strict';
@@ -29,6 +29,7 @@ export function requireSetPosition(rextState, replace, callback){
 // 访问需要登录权限
 export function requireLogin(rextState, replace, callback){
     let userInfo = store.getState().common.userInfo;
+    console.log("requireLogin",userInfo)
     if(userInfo){
         callback();
     }else{

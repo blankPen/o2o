@@ -136,7 +136,7 @@ export class Header extends React.Component {
                             首页
                         </Link>
                         <span>|</span>
-                        <Link to='/order' className='menu-item'>
+                        <Link to='/user/order' className='menu-item'>
                             我的外卖
                         </Link>
                         <span>|</span>

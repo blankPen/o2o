@@ -1,8 +1,8 @@
 /*
 * @Author: chenjingwei
 * @Date:   2016-10-26 15:31:52
-* @Last Modified by:   chenjingwei
-* @Last Modified time: 2016-10-26 15:31:52
+* @Last Modified by:   pengzhen
+* @Last Modified time: 2016-11-01 11:42:55
 */
 
 import './index.less';
@@ -84,14 +84,14 @@ export class Payment extends React.Component {
         clearInterval(this.state.interval_id); //清除请求订单状态的定时器
 
         if(this.state.renderDialogType=='ot'){//如果是已超时，跳转订单页
-            History.push('/order');
+            History.push('/user/order');
         }
-        
+
         this.setState({
             showDialog:!this.state.showDialog
         });
     }
-    orderDjs=(data)=>{  
+    orderDjs=(data)=>{
         let creatTime=data.createTime||new Date().getTime();
         if(!creatTime){
             this.ds&&clearInterval(this.ds);
@@ -171,7 +171,7 @@ export class Payment extends React.Component {
         if(payWay=='1'){ //微信支付
             this.props.dispatch(actions.toWeiXinPay(this.paySn,(res)=>{//请求微信二维码url
                 if(res.result==1){
-                    this.toogleRenderDialog(); 
+                    this.toogleRenderDialog();
                     this.setState({
                         renderDialogType:'wx'
                     });
@@ -191,14 +191,14 @@ export class Payment extends React.Component {
             this.setState({
                 renderDialogType:'is'
             });
-            this.toogleRenderDialog(); 
+            this.toogleRenderDialog();
             let url = window.location.host+'/rest/api/order/getPaystate?paysn='+this.paySn;
             window.open(url);
         }
     }
 
     goBackToUpdate=()=>{
-        History.push('/order');
+        History.push('/user/order');
     }
 
     finishPay= (flag)=>{
@@ -207,7 +207,7 @@ export class Payment extends React.Component {
                 History.push('/paysucc/'+this.props.params.orderSn);
             }else{
                 console.log('支付失败')
-                this.toogleRenderDialog(); 
+                this.toogleRenderDialog();
             }
         }));
     }
@@ -301,14 +301,14 @@ export class Payment extends React.Component {
         return(
              <div>
                 <div className="tabs-head clearfix">
-                    <div 
-                        className={tab1_class} 
+                    <div
+                        className={tab1_class}
                         onClick={()=>this.changeTab(1)}
                     >
                         微信/支付宝
                     </div>
-                    <div 
-                        className={tab2_class} 
+                    <div
+                        className={tab2_class}
                         onClick={()=>this.changeTab(2)}
                     >
                         {
@@ -322,20 +322,20 @@ export class Payment extends React.Component {
                 {
                     this.state.tab_index==1?(
                         <div className="pay-way-box">
-                            <RadioGroup 
-                                onChange={this.changePayWay} 
+                            <RadioGroup
+                                onChange={this.changePayWay}
                                 value={this.state.payWay
                             }>
                                 <Radio key="a" value={1}>
                                     <div className="pay-way">
-                                        <Img 
+                                        <Img
                                             src='https://p1.meituan.net/pay/pc_wxqrpay.png'
                                         ></Img>
                                     </div>
                                 </Radio>
                                 <Radio key="b" value={2}>
                                     <div className="pay-way">
-                                        <Img 
+                                        <Img
                                             src='https://p0.meituan.net/pay/alipaypcnew.png'
                                         >
                                         </Img>
@@ -362,7 +362,7 @@ export class Payment extends React.Component {
     render() {
         let data = this.props.payInfo;
         return (
-            <Loading 
+            <Loading
                 isLoading={this.state.is_loading}
                 className='payment-bg'
             >
@@ -439,10 +439,10 @@ export class Steps extends React.Component {
     let currentStep = this.props.currentStep||2;
     for(let i=1;i<=3;i++){
         steps.push(
-            <div 
+            <div
                 key={i}
                 className={
-                "step"+(currentStep>=i?(currentStep==i?' is_finish is_current':' is_finish'):'')} 
+                "step"+(currentStep>=i?(currentStep==i?' is_finish is_current':' is_finish'):'')}
             >
                {this.labelList[i-1]}
             </div>

@@ -15,7 +15,7 @@ import {TimeConvert} from 'components/common/TimeConvert.jsx';
 
 
 function mapStateToProps(state) {
-    return{};    
+    return{};
 }
 export class PaySucc extends React.Component {
      constructor(props) {
@@ -39,7 +39,7 @@ export class PaySucc extends React.Component {
         }));
     }
     render(){
-        
+
         return(
             <div className="paysucc clearfix">
                 <div className="succ-left">
@@ -56,7 +56,7 @@ export class PaySucc extends React.Component {
                         <div className="jiedan">
                             <div className="theys">
                                 <i className="fa fa-clock-o" />
-                                预计接单时间 
+                                预计接单时间
                                 <span className="import">{this.state.orderReceiving||0}</span>
                                 分钟
                             </div>
@@ -69,7 +69,7 @@ export class PaySucc extends React.Component {
 
                         </div>
                         <div className="goorder">
-                            <Link to={"/order"}>
+                            <Link to={"/user/order"}>
                                 查看我的订单
                             </Link>
                         </div>
