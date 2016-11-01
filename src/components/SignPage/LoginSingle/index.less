@@ -2,9 +2,9 @@
 * @Author: pengzhen
 * @Date:   2016-10-31 13:11:21
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-31 13:17:39
+* @Last Modified time: 2016-11-01 14:25:15
 */
-
+@import url('../../../styles/theme.less');
 .loginsingle_box {
     .ant-form-item {
         margin-bottom: 0px;
@@ -145,6 +145,7 @@
     }
     .sign_agreement {
         margin-top: 15px;
+        .clearfix();
         .agreement_left {
             float: left
         }
@@ -156,6 +157,52 @@
             color: #FA9700;
             &:hover {
                 text-decoration: underline;
+            }
+        }
+    }
+
+    .other-login{
+        padding-top: 10px;
+        text-align: center;
+        .title{
+            line-height: 30px;
+            position: relative;
+            &:before,
+            &:after{
+                content: '';
+                width: 35%;
+                height: 1px;
+                background: #ddd;
+                position: absolute;
+                top: 50%;
+            }
+            &:before{
+                left: 0;
+            }
+            &:after{
+                right: 0;
+            }
+        }
+        .btn-box{
+            display: inline-block;
+            @btnSize: 36px;
+            a{
+                display: inline-block;
+                margin: 5px 15px 0;
+                width: @btnSize;
+                height: @btnSize;
+                line-height: @btnSize;
+                text-align: center;
+                border-radius: 50%;
+                background: #b5b9bc;
+                color: #fff;
+                font-size: @btnSize*0.6;
+            }
+            .btn-qq{
+                background: #2b99ff;
+            }
+            .btn-wechat{
+                background: #00b33b;
             }
         }
     }

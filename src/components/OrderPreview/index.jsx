@@ -361,16 +361,20 @@ export class OrderPreview extends React.Component {
         opts.push(<Option key='now' value={this.now}>立即送出</Option>);
         let startTime = moment(moment(this.now).format('YYYY-MM-DD HH:00:00'));
         startTime = +new Date(startTime.format(FORMAT_TEMP))+60*60*1000;
-
-        let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${store.startBusinessTime}:00`)).getTime(),
+        let beginTime,endTime;
+        if(store.startBusinessTime && store.endBusinessTime){
+            beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${store.startBusinessTime}:00`)).getTime();
             endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${store.endBusinessTime}:00`)).getTime();
-        if(new Date(this.now).getTime() < beginTime || new Date(this.now).getTime()>endTime){
-            History.push(`/detail/${store.storeId}`);
-            message.error('订单已失效，请重新下单');
+            if(new Date(this.now).getTime() < beginTime || new Date(this.now).getTime()>endTime){
+                History.push(`/detail/${store.storeId}`);
+                message.error('订单已失效，请重新下单');
+            }
+        }else{
+            // 24小时营业
         }
         for (var i = 0; i < 10; i++) {
             let time = startTime + i*20*60*1000;
-            if(time > endTime) break;
+            if(endTime && time > endTime) break;
             time = moment(time);
             opts.push(<Option key={i} value={time.format(FORMAT_TEMP)}>{time.format('HH:mm')}</Option>);
         }

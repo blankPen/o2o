@@ -9,7 +9,7 @@ import History from 'common/History';
 import Img from 'common/Img';
 import * as DomUtils from 'common/utils/dom';
 import * as actions from 'actions/DetailAction';
-import { Rate,Tooltip ,Tabs,Radio,Checkbox,Affix} from 'antd';
+import { message,Rate,Tooltip ,Tabs,Radio,Checkbox,Affix} from 'antd';
 import CartBox from 'components/Detail/CartBox/';
 import Loading from 'components/common/Loading/'
 const moment = require('moment');
@@ -137,13 +137,18 @@ export class Detail extends React.Component {
         let memberId = this.props.userInfo.memberId;
         let storeId = this.props.params.storeId;
         this.props.dispatch(actions.clearCart(storeId,memberId));
-        History.push({
-            pathname: '/order_preview',
-            state: {
-               data: this.state.inCartItems,
-               storeId: storeId
-            }
-        });
+        if(_.isEqual(this.state.inCartItems, {})){
+            message.warn('请选择要购买的商品');
+        }else{
+            History.push({
+                pathname: '/order_preview',
+                state: {
+                   data: this.state.inCartItems,
+                   storeId: storeId
+                }
+            });
+        }
+
     }
     renderTooltipTitle=(type,level,num1,num2)=>{
         if(type=='time'){
@@ -177,7 +182,7 @@ export class Detail extends React.Component {
         let categoryList = [];
 
         let isOpen = data.isOpen == 1;
-        // if(isOpen){
+        if(isOpen){
             // 24小时营业
             if(!data.startBusinessTime || !data.endBusinessTime){
                 isOpen = true;
@@ -187,7 +192,7 @@ export class Detail extends React.Component {
                 // 判断是否在营业中
                 isOpen = Date.now() >= beginTime && Date.now() <= endTime;
             }
-        // }
+        }
         let classList = this.props.classAndGoodsList.map((item,i)=>{
             categoryList.push(
                 <Category
