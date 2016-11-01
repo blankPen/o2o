@@ -36,8 +36,10 @@ export class Payment extends React.Component {
 
     constructor(props) {
         super(props);
-        let memberId = this.props.userInfo.memberId;
         let orderSn = this.props.params.orderSn;
+        let memberId = this.props.userInfo.memberId;
+        let orderAmount = this.props.payInfo.orderAmount;
+        let availablePredeposit = this.props.userInfo.availablePredeposit;
         this.state={
             minute:'00',
             second:'00',
@@ -46,7 +48,8 @@ export class Payment extends React.Component {
             showDialog:false, //是否显示弹框
             renderDialogType:'wx',//is :选择支付成功或失败 wx:微信扫码支付 ot:支付超时
             interval_id:0, //定时器ID
-            tab_index:1 //1：线上支付 2：余额支付
+            tab_index:availablePredeposit>orderAmount?2:1,//1：线上支付 2：余额支付
+            can_banlance_pay:availablePredeposit>orderAmount
         }
 
         this.renderMap={ //弹框内容的map
@@ -123,9 +126,11 @@ export class Payment extends React.Component {
     }
 
     changeTab =(index)=>{
-        this.setState({
-            tab_index:index
-        });
+        if(this.state.can_banlance_pay){
+            this.setState({
+                tab_index:index
+            });
+        }
     }
 
     getPayResult=()=>{ //微信支付下，定时获取订单的状态
@@ -289,6 +294,71 @@ export class Payment extends React.Component {
         )
     }
 
+    renderTabs=()=>{ //tabs
+        let tab1_class = "tab"+(this.state.tab_index==1?' select-tab':'');
+        let tab2_class = "tab"+(this.state.tab_index==2?' select-tab':'');
+        tab2_class += !this.state.can_banlance_pay?' unclick':'';
+        return(
+             <div>
+                <div className="tabs-head clearfix">
+                    <div 
+                        className={tab1_class} 
+                        onClick={()=>this.changeTab(1)}
+                    >
+                        微信/支付宝
+                    </div>
+                    <div 
+                        className={tab2_class} 
+                        onClick={()=>this.changeTab(2)}
+                    >
+                        {
+                            this.state.can_banlance_pay?
+                            ('余额：'+this.props.userInfo.availablePredeposit):
+                            '余额不足'
+                        }
+                    </div>
+                    <div className="right-opinion">意见反馈</div>
+                </div>
+                {
+                    this.state.tab_index==1?(
+                        <div className="pay-way-box">
+                            <RadioGroup 
+                                onChange={this.changePayWay} 
+                                value={this.state.payWay
+                            }>
+                                <Radio key="a" value={1}>
+                                    <div className="pay-way">
+                                        <Img 
+                                            src='https://p1.meituan.net/pay/pc_wxqrpay.png'
+                                        ></Img>
+                                    </div>
+                                </Radio>
+                                <Radio key="b" value={2}>
+                                    <div className="pay-way">
+                                        <Img 
+                                            src='https://p0.meituan.net/pay/alipaypcnew.png'
+                                        >
+                                        </Img>
+                                    </div>
+                                </Radio>
+                            </RadioGroup>
+                        </div>
+                    ):(
+                       <div className="left-content">
+                            <span>请输入支付密码：</span>
+                            <input ref='pwd' className='pwd' type="password"/>
+                            <div className="pwd-tips" ref='pwd_tips'>
+                                请输入账户的 支付密码，不是登录密码。
+                            </div>
+                        </div>
+                    )
+
+                }
+            </div>
+
+        )
+    }
+
     render() {
         let data = this.props.payInfo;
         return (
@@ -329,57 +399,8 @@ export class Payment extends React.Component {
                                 应付金额：<span className="price">{`¥${data.orderAmount||0}`}</span>
                             </div>
                         </div>
-                        <div className="tabs-head clearfix">
-                            <div 
-                                className={"tab"+(this.state.tab_index==1?' select-tab':'')} 
-                                onClick={()=>this.changeTab(1)}
-                            >
-                                微信/支付宝
-                            </div>
-                            <div 
-                                className={"tab"+(this.state.tab_index==2?' select-tab':'')} 
-                                onClick={()=>this.changeTab(2)}
-                            >
-                                余额
-                            </div>
-                            <div className="right-opinion">意见反馈</div>
-                        </div>
-                        {
-                            this.state.tab_index==1?(
-                                <div className="pay-way-box">
-                                    <RadioGroup 
-                                        onChange={this.changePayWay} 
-                                        value={this.state.payWay
-                                    }>
-                                        <Radio key="a" value={1}>
-                                            <div className="pay-way">
-                                                <Img 
-                                                    src='https://p1.meituan.net/pay/pc_wxqrpay.png'
-                                                ></Img>
-                                            </div>
-                                        </Radio>
-                                        <Radio key="b" value={2}>
-                                            <div className="pay-way">
-                                                <Img 
-                                                    src='https://p0.meituan.net/pay/alipaypcnew.png'
-                                                >
-                                                </Img>
-                                            </div>
-                                        </Radio>
-                                    </RadioGroup>
-                                </div>
-                            ):(
-                               <div className="left-content">
-                                    <span>请输入支付密码：</span>
-                                    <input ref='pwd' className='pwd' type="password"/>
-                                    <div className="pwd-tips" ref='pwd_tips'>
-                                        请输入账户的 支付密码，不是登录密码。
-                                    </div>
-                                </div>
-                            )
-                        }
+                       {this.renderTabs()}
                         <div className="determine-payment clearfix">
-                            
                             <div className="right-content">
                                 <div className="pay-price">
                                     支付：<span className="price">{`¥${data.orderAmount||0}`}</span>
