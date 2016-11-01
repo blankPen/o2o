@@ -2,7 +2,7 @@
 * @Author: chenjingwei
 * @Date:   2016-10-26 15:31:52
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-11-01 11:42:55
+* @Last Modified time: 2016-11-01 15:00:57
 */
 
 import './index.less';
@@ -192,7 +192,8 @@ export class Payment extends React.Component {
                 renderDialogType:'is'
             });
             this.toogleRenderDialog();
-            let url = window.location.host+'/rest/api/order/getPaystate?paysn='+this.paySn;
+            let origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+            let url = origin+'/rest/api/order/zfbPay?paysn='+this.paySn;
             window.open(url);
         }
     }

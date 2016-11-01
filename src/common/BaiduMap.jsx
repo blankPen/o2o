@@ -3,13 +3,13 @@
  * @Date:   2016-10-20 09:26:57
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 15:40:17
+ * @Last Modified time: 2016-11-01 15:01:20
  */
 
 'use strict';
 import * as DomUtils from 'common/utils/dom';
 
-const ak = 'Y5beUs8WwpN72mQWjGaMEawPl8L69G4f';
+const ak = '6te2AY8PQrW6uyBXz2AGRdCS';
 const url = `http://api.map.baidu.com/api?v=2.0&ak=${ak}`;
 
 const defaultParams = {
