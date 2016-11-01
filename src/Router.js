@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-01 11:41:52
+ * @Last Modified time: 2016-11-01 11:43:59
  */
 
 'use strict';
@@ -85,7 +85,7 @@ export class index extends React.Component {
                                 <Route path="collect" component={asyncLoader(Collect)}/>
                                 <Route path="info" component={asyncLoader(PersonalCenter)}/>
                             </Route>
-                            <Route path="/feedback" component={asyncLoader(Feedback)}/>
+                            <Route path="feedback" component={asyncLoader(Feedback)}/>
                         </Route>
                         <Route path='/map' component={asyncLoader(Maper)} />
                         <Route path="/login" component={asyncLoader(Login)}/>
