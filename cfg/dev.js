@@ -9,16 +9,37 @@ let defaultSettings = require('./defaults');
 let BowerWebpackPlugin = require('bower-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
-  entry: [
-    'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
-    'webpack/hot/only-dev-server',
-    './src/index'
-  ],
+  // entry: [
+  //   'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
+  //   'webpack/hot/only-dev-server',
+  //   './src/index'
+  // ],
+  entry: {
+    index: [
+      'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
+      'webpack/hot/only-dev-server',
+      './src/index'
+    ],
+    common: [
+      'react',
+      'react-dom',
+      'react-router',
+      'react-redux',
+      'react-router-redux',
+      'redux',
+      'reqwest',
+      'moment'
+    ],
+  },
   cache: true,
   devtool: 'eval-source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['common'], //将公共模块提取
+      minChunks: Infinity // 提取所有entry共同依赖模块
+    }),
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
     })

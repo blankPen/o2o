@@ -10,7 +10,19 @@ let defaultSettings = require('./defaults');
 let BowerWebpackPlugin = require('bower-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
-  entry: path.join(__dirname, '../src/index'),
+  entry: {
+    index: path.join(__dirname, '../src/index'),
+    common: [
+      'react',
+      'react-dom',
+      'react-router',
+      'react-redux',
+      'react-router-redux',
+      'redux',
+      'reqwest',
+      'moment'
+    ],
+  },
   cache: false,
   devtool: 'sourcemap',
   plugins: [
@@ -21,7 +33,15 @@ let config = Object.assign({}, baseConfig, {
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
     }),
-    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['common'], //将公共模块提取
+      minChunks: Infinity // 提取所有entry共同依赖模块
+    }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.NoErrorsPlugin()

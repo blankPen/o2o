@@ -14,10 +14,15 @@ module.exports = {
   port: defaultSettings.port,
   debug: true,
   devtool: 'eval',
+  // output: {
+  //   path: path.join(__dirname, '/../dist/assets'),
+  //   filename: 'app.js',
+  //   publicPath: defaultSettings.publicPath
+  // },
   output: {
-    path: path.join(__dirname, '/../dist/assets'),
-    filename: 'app.js',
-    publicPath: defaultSettings.publicPath
+    path: path.resolve(__dirname, '../dist/assets'),
+    publicPath: defaultSettings.publicPath,
+    filename: "[name].bundle.js"
   },
   devServer: {
     contentBase: './src/',
