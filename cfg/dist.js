@@ -43,7 +43,7 @@ let config = Object.assign({}, baseConfig, {
       minChunks: Infinity // 提取所有entry共同依赖模块
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
+    // new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.NoErrorsPlugin()
   ],
   module: defaultSettings.getDefaultModules()

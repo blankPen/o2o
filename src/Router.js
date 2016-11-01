@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 16:02:38
+ * @Last Modified time: 2016-11-01 10:58:55
  */
 
 'use strict';
@@ -24,24 +24,26 @@ import {
     requireSetPosition,
     requireLogin
 } from 'common/Permission'
+import asyncLoader from 'common/asyncLoader';
 
 import PublicMain from 'components/public/Main/';
-import Home from 'components/Home/';
-import Detail from 'components/Detail/';
-import Login from 'components/SignPage/Login/';
-import Register from 'components/SignPage/Register/';
-import Maper from 'components/Map/';
-import Account from 'components/user/account/';
-import Order from 'components/user/order/';
-import Collect from 'components/user/collect/';
 import PersonNav from 'components/public/PersonNav/';
-import PersonalCenter from 'components/user/personalCenter/';
-import OrderPreview from 'components/OrderPreview/';
-import Feedback from 'components/feedback';
-import Search from 'components/Search/';
-import Payment from 'components/Payment/';
-import PaySucc from 'components/paysucc/';
-import NotFound from 'components/common/404'
+import NotFound from 'components/common/404';
+
+import Home from 'bundle?lazy&name=Home!components/Home/';
+import Detail from 'bundle?lazy&name=Detail!components/Detail/';
+import Login from 'bundle?lazy&name=Login!components/SignPage/Login/';
+import Register from 'bundle?lazy&name=Register!components/SignPage/Register/';
+import Maper from 'bundle?lazy&name=Maper!components/Map/';
+import Account from 'bundle?lazy&name=Account!components/user/account/';
+import Order from 'bundle?lazy&name=Order!components/user/order/';
+import Collect from 'bundle?lazy&name=Collect!components/user/collect/';
+import PersonalCenter from 'bundle?lazy&name=PersonalCenter!components/user/personalCenter/';
+import OrderPreview from 'bundle?lazy&name=OrderPreview!components/OrderPreview/';
+import Feedback from 'bundle?lazy&name=Feedback!components/feedback';
+import Search from 'bundle?lazy&name=Search!components/Search/';
+import Payment from 'bundle?lazy&name=Payment!components/Payment/';
+import PaySucc from 'bundle?lazy&name=PaySucc!components/paysucc/';
 
 
 import {
@@ -70,24 +72,24 @@ export class index extends React.Component {
                 <Router history={this.props.history} >
                     <Route onEnter={autoLogin}>
                         <Route path='/' component={PublicMain} onEnter={requireSetPosition}>
-                            <IndexRoute component={Home} />
-                            <Route path="/detail/:storeId" component={Detail}/>
-                            <Route path="/order_preview" component={OrderPreview}/>
-                            <Route path="/search" component={Search}/>
-                            <Route path="/paysucc/:orderId" component={PaySucc}/>
+                            <IndexRoute component={asyncLoader(Home)} />
+                            <Route path="/detail/:storeId" component={asyncLoader(Detail)}/>
+                            <Route path="/order_preview" component={asyncLoader(OrderPreview)}/>
+                            <Route path="/search" component={asyncLoader(Search)}/>
+                            <Route path="/paysucc/:orderId" component={asyncLoader(PaySucc)}/>
 
                             <Route onEnter={requireLogin} component={PersonNav}>
-                                <Route path="/order" component={Order}/>
-                                <Route path="/account" component={Account}/>
-                                <Route path="/collect" component={Collect}/>
-                                <Route path="/personal_center" component={PersonalCenter}/>
+                                <Route path="/order" component={asyncLoader(Order)}/>
+                                <Route path="/account" component={asyncLoader(Account)}/>
+                                <Route path="/collect" component={asyncLoader(Collect)}/>
+                                <Route path="/personal_center" component={asyncLoader(PersonalCenter)}/>
                             </Route>
-                            <Route path="/feedback" component={Feedback}/>
+                            <Route path="/feedback" component={asyncLoader(Feedback)}/>
                         </Route>
-                        <Route path='/map' component={Maper} />
-                        <Route path="/login" component={Login}/>
-                        <Route path="/register" component={Register}/>
-                        <Route path="/payment/:orderSn" component={Payment}/>
+                        <Route path='/map' component={asyncLoader(Maper)} />
+                        <Route path="/login" component={asyncLoader(Login)}/>
+                        <Route path="/register" component={asyncLoader(Register)}/>
+                        <Route path="/payment/:orderSn" component={asyncLoader(Payment)}/>
                         <Route path='/404' component={NotFound} ></Route>
                         <Redirect path='*' to='/404' />
                     </Route>
