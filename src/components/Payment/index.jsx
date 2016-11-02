@@ -140,8 +140,6 @@ export class Payment extends React.Component {
                     clearInterval(this.state.interval_id);
                     message.success('支付成功');
                     History.push('/paysucc/'+this.props.params.orderSn+"/1");
-                }else{
-                    message.error('支付失败，请重新支付');
                 }
             }));
         },2500);
