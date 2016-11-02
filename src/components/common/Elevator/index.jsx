@@ -49,20 +49,13 @@ export default class Elevator extends React.Component {
         }
     }
     render() {
-        let userInfo = this.props.userInfo || {};
         return (
             <div className="elevator" style={{marginLeft: this.getOffsetLeft()}}>
                 {this.state.inNextPage &&
                     <a className="top" onClick={this.goTop}>
                         <i className="i-icon i-backtop"></i>
                     </a> }
-                <Link className='fb' to={{
-                    pathname: "/feedback",
-                    state: {
-                        memberId: userInfo.memberId,
-                        phone: userInfo.memberMobile,
-                    }
-                }} >意见反馈</Link>
+                <Link className='fb' to={"/feedback"} >意见反馈</Link>
             </div>
         );
     }
