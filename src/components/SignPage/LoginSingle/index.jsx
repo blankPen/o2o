@@ -446,7 +446,10 @@ let index= class  extends React.Component {
           <div className="sign_agreement">
             <span className="agreement_left">还没有账号？</span><a className="agreement_right" href="/#/register">免费注册</a>
           </div>
-          <OtherLogin dispatch={this.props.dispatch}/>
+          <OtherLogin
+            redirect={this.props.redirect}
+            location={this.props.location}
+            dispatch={this.props.dispatch} />
         </Form>
       );
     } else {
@@ -506,7 +509,7 @@ let index= class  extends React.Component {
             </FormItem>
           </div>
           <div className="infos">
-            <FormItem
+           {/* <FormItem
               id="control-autoLogon2"
               {...formItemLayout}
               >
@@ -518,7 +521,7 @@ let index= class  extends React.Component {
                 ],
               })(
                 <Checkbox  id="control-autoLogon2" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
-              )}
+              )}*/}
               <div className="sign_forgetpasssword">
                   <a href='javascript:void(0);' onClick={()=>{
                     this.setState({
@@ -527,7 +530,7 @@ let index= class  extends React.Component {
                     })
                   }}>忘记密码 ？ </a>
               </div>
-            </FormItem>
+           {/* </FormItem>*/}
           </div>
           <Button
             type="primary"

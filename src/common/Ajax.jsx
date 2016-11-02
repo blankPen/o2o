@@ -1,6 +1,10 @@
 import reqwest from 'reqwest';
 import History from 'common/History';
+import store from 'stores';
 import { message } from 'antd';
+import {
+    logout
+} from 'actions/SignPageAction';
 
 export default function(opt){
     let call_succ = opt.success;
@@ -13,7 +17,10 @@ export default function(opt){
     };
     opt.success = (res)=> {
         if(res.result == 2){
-            History.push('/login');
+            console.log("登录超时");
+            store.dispatch(logout(function(){
+                History.push('/login');
+            },false));
             message.error(res.msg);
         }else{
             call_succ && call_succ.call(this, res);

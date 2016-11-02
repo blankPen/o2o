@@ -48,10 +48,14 @@ import Recharge from 'bundle?lazy&name=Recharge!components/Recharge/';
 
 
 import {
-    getMemberDetail
+    getMemberDetail,
+    otherLogin
 } from 'actions/SignPageAction';
 import Cookie from "js-cookie";
-import History from 'common/History'
+import History from 'common/History';
+import {
+    message
+} from 'antd';
 
 function mapStateToProps(state) {
     return {
@@ -114,12 +118,17 @@ export default connect(
 
 // 自动登录
 function autoLogin(rextState, replace, callback) {
-    // 7天自动登录
+    var userInfo = store.getState().common.userInfo;
+    if (userInfo) { // store
+        console.log("store");
+        return callback();
+    }
+    // session
+    let user_id = sessionStorage.getItem("user_id");
+    // cookie
     let user_info = Cookie.getJSON('user_info') || undefined;
-    // session缓存
-    let user_id = sessionStorage.getItem("user_id") || (user_info ? user_info.user_id : undefined);
-    user_id = user_id || (user_info && user_info.user_id);
-    if (user_id) { // id存在，自动登录
+    if (user_id) { // session缓存
+        console.log("session缓存");
         store.dispatch(getMemberDetail({
             "memberId": user_id
         }, (re) => {
@@ -130,8 +139,22 @@ function autoLogin(rextState, replace, callback) {
                 console.log("用户信息获取失败");
             }
         }))
-    } else {
-        // 未登录
-        callback();
+    } else if (user_info) { // cookie  7天自动登录
+        console.log("7天自动登录");
+        store.dispatch(otherLogin({
+            "password": user_info.password,
+            "username": user_info.username
+        }, (re) => {
+            if (re.result === 1) {
+                console.log('自动登录成功');
+                message.success("自动登录成功");
+            } else {
+                console.log("自动登录失败");
+                message.error(re.msg || "自动登录失败");
+            }
+        }, '/'));
+    } else { // 未登录
+        console.log("未登录");
+        return callback();
     }
 }
