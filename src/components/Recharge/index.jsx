@@ -345,7 +345,7 @@ export class index extends React.Component {
                 <div className="recharge">
                     <div className="recharge-head">
                         <div className="left-logo">
-                            <Img alt="雷铭O2O" src="logo.png" />
+                            <Img alt="雷铭官网" src="logo.png" />
                         </div>
                         <div className="step-box">
                             <Steps></Steps>

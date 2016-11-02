@@ -125,11 +125,11 @@ export class Header extends React.Component {
                 <div className="header-content">
                     {/*<div className="sign_logo">
                         <a href='/#/'>
-                          <Img alt="雷铭O2O" src="logo.png" className="sign_img" />
+                          <Img alt="雷铭官网" src="logo.png" className="sign_img" />
                         </a>
                    </div>*/}
                     <Link to='/' className='left-logo'>
-                        <Img alt="雷铭O2O" src="logo.png" className="sign_img"/>
+                        <Img alt="雷铭官网" src="logo.png" className="sign_img"/>
                     </Link>
                     <div className="menu">
                         <Link to='/' className='menu-item'>

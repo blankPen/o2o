@@ -203,3 +203,19 @@ export function balanceRecharge(params,call) {
         })
     }
 }
+/**
+ * [myEvaluateInfo   我的评价]
+ */
+export function myEvaluateInfo(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: '/rest/api/order/myEvaluatePage',
+            data: {
+                ...params
+            },
+            success: function(res){
+                call && call(res);
+            }
+        })
+    }
+}

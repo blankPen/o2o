@@ -34,11 +34,11 @@ export class Footer extends React.Component {
                 <div className="copyright" >
                     <p className="one_line">
                         ©<span title="">2016</span>
-                        <a href="http://www.meituan.com/">雷铭O2O网团购</a>
-                             meituan.com
+                        <a href="http://www.leimingtech.com/">雷铭官网</a>
+                             www.leimingtech.com
                         <a href="http://www.beianbeian.com/beianxinxi/283f39a9-4c00-427a-97ef-3c7a9e1e0af1.html" target="_blank">京ICP证070791号</a> |
                         <a href="http://www.miitbeian.gov.cn/" target="_blank">京ICP备10211739号</a> |
-                        <a href="http://www.meituan.com/about/rules" target="_blank"> 电子公告服务规则</a>
+                        <a href="http://www.leimingtech.com" target="_blank"> 电子公告服务规则</a>
                     </p>
                     <div className="two_line">
                         <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502025545" >
