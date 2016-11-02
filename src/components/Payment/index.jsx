@@ -301,6 +301,15 @@ export class Payment extends React.Component {
         )
     }
 
+    toFeeback=()=>{
+        History.push({
+            pathname:'/feeback',
+            state:{
+                orderSn:this.props.params.orderSn
+            }
+        });
+    }
+
     renderTabs=()=>{ //tabs
         let tab1_class = "tab"+(this.state.tab_index==1?' select-tab':'');
         let tab2_class = "tab"+(this.state.tab_index==2?' select-tab':'');
@@ -324,7 +333,7 @@ export class Payment extends React.Component {
                             '余额不足'
                         }
                     </div>
-                    <div className="right-opinion">意见反馈</div>
+                    <div className="right-opinion" onClick={this.toFeeback}>意见反馈</div>
                 </div>
                 {
                     this.state.tab_index==1?(
