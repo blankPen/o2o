@@ -37,10 +37,10 @@ module.exports = {
       colors: true
     },
     proxy: {
-      '/rest/*': {
+      '/leimingtech-front/rest/*': {
         // target: 'http://o2o.leimingtech.com/leimingtech-front/',
         //target: 'http://115.28.68.78:8888/leimingtech-front/',
-        target:'http://testo2o.leimingtech.com/leimingtech-front/',
+        target:'http://testo2o.leimingtech.com/',
         changeOrigin: true
       },
       '/sns/*':{

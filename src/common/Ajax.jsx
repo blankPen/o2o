@@ -13,7 +13,7 @@ export default function(opt) {
     let call_error = opt.success;
     opt.method = opt.type || 'post';
     opt.type = opt.dataType ? (opt.dataType == 'none' ? undefined : opt.dataType) : 'json';
-    opt.url = opt.url.startWith('/rest') ? `/leimingtech-front/${opt.url}` : opt.url;
+    opt.url = opt.url.startWith('/rest') ? `/leimingtech-front${opt.url}` : opt.url;
     opt = {
         cache: 'false',
         ...opt,
