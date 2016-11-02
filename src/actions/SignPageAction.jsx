@@ -191,12 +191,13 @@ export function thirdLogin(params,call,redirect){
                         info: res.data,
                         expires: 0
                     })
+                    location.href = '/#/';
                 }else{
                     message.error(res.msg);
                 }
-                if(redirect){
-                    History.push(redirect);
-                }
+                // if(redirect){
+                //     History.push(redirect);
+                // }
             }
         })
     }

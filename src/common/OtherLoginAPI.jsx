@@ -3,7 +3,7 @@
  * @Date:   2016-11-01 15:34:55
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-02 17:13:46
+ * @Last Modified time: 2016-11-02 18:28:11
  */
 
 'use strict';
@@ -11,9 +11,9 @@ import loadJS from 'common/utils/loader';
 import ajax from 'common/Ajax';
 import reqwest from 'reqwest';
 
-let redirectUri = encodeURIComponent(location.protocol +'//'+location.host+'/#/login');
+let redirectUri = location.protocol +'//'+location.host;
 if(process.env.NODE_ENV !== 'production'){
-    redirectUri = 'http%3A%2F%2Ftesto2o.leimingtech.com%2F%23%2Flogin';
+    redirectUri = 'http://testo2o.leimingtech.com/#/';
 }
 const TencentConfig = {
     appid: 101244672,
@@ -33,15 +33,9 @@ export const QQLogin = {
         // script.src = TencentConfig.sdk;
         // document.body.appendChild(script);
     },
-    showPopup(){
-        let QC = window.QC;
-        QC.Login.showPopup({
-            appId: TencentConfig.appid,
-            redirectURI: redirectUri
-        });
-    },
     login(){
-        var link = `https://graph.qq.com/oauth2.0/authorize?response_type=code&state=qq&client_id=${TencentConfig.appid}&redirect_uri=${redirectUri}&display=pc`;
+        // var link = `https://graph.qq.com/oauth2.0/authorize?response_type=code&state=qq&client_id=${TencentConfig.appid}&redirect_uri=${redirectUri}&display=pc`;
+        var link = `https://graph.qq.com/oauth/show?which=Login&display=pc&response_type=code&client_id=${TencentConfig.appid}&redirect_uri=${redirectUri}&state=1&scope=get_user_info,get_info`
         location.href = link;
     },
     getAccessToken(code,callback){
@@ -102,7 +96,7 @@ export const WeixinLogin = {
             id: id,
             appid: WxConfig.appid,
             scope: "snsapi_login",
-            redirect_uri: redirectUri,
+            redirect_uri: encodeURIComponent(redirectUri),
             state: 'weixin'
         });
     },
@@ -145,7 +139,6 @@ export const WeixinLogin = {
 function parseParams(params){
     let res = params;
     if(typeof params === 'string'){
-        console.log(123123)
         res = parseCallback(params) || parseToken(params);
     }
     return res;
@@ -169,3 +162,4 @@ function parseToken(str){
     });
     return obj;
 }
+location.href = location.protocol+"//"+location.host+"/#/"+location.search;
