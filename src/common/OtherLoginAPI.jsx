@@ -3,7 +3,7 @@
  * @Date:   2016-11-01 15:34:55
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-02 16:59:26
+ * @Last Modified time: 2016-11-02 17:13:46
  */
 
 'use strict';
@@ -41,7 +41,7 @@ export const QQLogin = {
         });
     },
     login(){
-        var link = `https://graph.qq.com/oauth2.0/authorize?response_type=code&state=qq&client_id=${TencentConfig.appid}&redirect_uri=${redirectUri}&display=mobile`;
+        var link = `https://graph.qq.com/oauth2.0/authorize?response_type=code&state=qq&client_id=${TencentConfig.appid}&redirect_uri=${redirectUri}&display=pc`;
         location.href = link;
     },
     getAccessToken(code,callback){
