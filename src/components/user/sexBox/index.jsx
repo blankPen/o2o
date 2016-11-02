@@ -77,12 +77,12 @@ export class index extends React.Component {
           >
             {getFieldDecorator('sex', {
               rules: [
-                { required: true, message: '请选择你的性别' },
+                { required: true,type:"number", message: '请选择你的性别' },
               ],
             })(
               <RadioGroup>
-                <Radio value="1">男</Radio>
-                <Radio value="0">女</Radio>
+                <Radio value={1}>男</Radio>
+                <Radio value={0}>女</Radio>
               </RadioGroup>
             )}
            {/* <span><Icon type="info-circle-o" /> No other gender</span>*/}

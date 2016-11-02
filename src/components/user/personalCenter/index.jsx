@@ -345,7 +345,7 @@ export class index extends React.Component {
                         {userInfo.memberSex===1?"男":"女"}
                     </Col>
                     <Col span={6}>
-                        <a href='javascript:void(0);' className="btn" onClick={this.changeSex}>修改 </a>
+                        <a href='javascript:void(0);' className="btn" onClick={this.changeSex}>性别异常 ？ </a>
                     </Col>
                 </Row>
                 <Row className="userexinfo-form__section">
@@ -414,7 +414,7 @@ export class index extends React.Component {
                         {userInfo.availablePredeposit}&nbsp;&nbsp;<i className="fa fa-yen"></i>
                     </Col>
                     <Col span={6} >
-                        <a href='javascript:void(0);' className="btn" onClick={this.saveMoney}>充值 </a>
+                        <a href='javascript:void(0);' className="btn" onClick={this.saveMoney}>余额不足 ？ </a>
                     </Col>
                 </Row>
                 <div className="userexinfo-form__footer">
