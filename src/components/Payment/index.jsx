@@ -383,7 +383,7 @@ export class Payment extends React.Component {
                 <div className="payment">
                     <div className="payment-head">
                         <div className="left-logo">
-                            <Img alt="雷铭O2O" src="logo.png" />
+                        <a href="/"><Img alt="雷铭O2O" src="logo.png" /></a>
                         </div>
                         <div className="step-box">
                             <Steps></Steps>
