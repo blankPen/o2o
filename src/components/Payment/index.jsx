@@ -9,7 +9,7 @@ import './index.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import Img from 'common/Img';
-import { Radio } from 'antd';
+import { Radio,message } from 'antd';
 import * as actions from'actions/OrderAction';
 import Loading from'components/common/Loading/';
 import History from 'common/History';
@@ -205,10 +205,11 @@ export class Payment extends React.Component {
     finishPay= (flag)=>{
         this.props.dispatch(actions.getPayResult(this.paySn,(res)=>{
             if(res.payState=="1"){
+                message.success('支付成功');
                 History.push('/paysucc/'+this.props.params.orderSn);
             }else{
-                console.log('支付失败')
                 this.toogleRenderDialog();
+                message.error('支付失败，请重新支付');
             }
         }));
     }
@@ -268,7 +269,7 @@ export class Payment extends React.Component {
                             已完成付款
                         </button>
                         <button className="pay-faile" onClick={()=>this.finishPay(false)}>
-                            付款遇到问题
+                            支付失败
                         </button>
                     </div>
                     <div className="back-choose">
