@@ -275,7 +275,7 @@ export class Payment extends React.Component {
                             支付失败
                         </button>
                     </div>
-                    <div className="back-choose">
+                    <div className="back-choose" onClick={this.toogleRenderDialog}>
                         返回选择其他支付方式
                     </div>
                 </div>
