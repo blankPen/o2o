@@ -33,6 +33,7 @@ export class Main extends React.Component {
     componentWillReceiveProps(nextProps) {
         let newCode = this.getQueryString('code');
         let state = this.getQueryString('state');
+        console.log('receive',newCode,state);
         if(newCode && newCode != this.code){
             if(state == 'qq'){
                 this.getQQUserInfo(newCode);
@@ -44,6 +45,7 @@ export class Main extends React.Component {
     componentWillMount() {
         let code = this.getQueryString('code');
         let state = this.getQueryString('state');
+        console.log('did',code,state);
         if(state == 'qq'){
             this.getQQUserInfo(code);
         }else{
