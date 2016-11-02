@@ -1,10 +1,20 @@
+/*
+ * @Author: MoCheng
+ */
 import React from 'react';
 import './index.less';
 import { connect } from 'react-redux';
-import {Icon,Button,message,Form,Input,TimePicker,Rate } from 'antd';
+import store from 'stores';
+import {Icon,Button,message,Form,Input,TimePicker,Rate,Row,Col } from 'antd';
+import {
+    myEvaluateInfo
+} from 'actions/OrderAction';
+
 
 const FormItem = Form.Item;
 const createForm = Form.create;
+
+const moment = require('moment');
 
 const formItemLayout = {
   labelCol: {
@@ -14,12 +24,6 @@ const formItemLayout = {
     span: 17
   },
 };
-
-function mapStateToProps(state) {
-  return {
-
-  };
-}
 
 let ReceivingFinish =  class extends React.Component {
     static propTypes = {
@@ -235,9 +239,136 @@ let ReceivingFinish =  class extends React.Component {
         );
     }
 }
-ReceivingFinish = createForm()(ReceivingFinish);
 
-export default connect(
+
+/*function mapStateToProps(state) {
+  return {
+
+  };
+}*/
+let ViewReceiving= class extends React.Component {
+  static propTypes = {
+    name: React.PropTypes.string,
+  };
+
+  constructor(props) {
+    super(props);
+  }
+  componentWillMount() {
+    console.log("ddddd+>>>>>componentWillMount");
+    store.dispatch(myEvaluateInfo({
+          "memberId": this.props.memberId,
+        },(re)=> {
+          if(re.result==0){
+            //message.success(re.msg);
+          }else{
+            //message.error(re.msg);
+            console.log(re.msg);
+          }
+        }
+    ));
+  }
+
+  render() {
+    /*let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.startBusinessTime}:00`)).getTime(),
+                    endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.endBusinessTime}:00`)).getTime();*/
+    var currTime  = this.now = moment().format('YYYY-MM-DD HH:mm');
+    return (
+       <div className="evaluate-box">
+          <div className="evaluate_header">
+              <i className="fa fa-check-circle"></i>
+              <div className="title">我的评价</div><span>完成时间：{currTime}</span>
+          </div>
+          <div className="evaluate_body">
+                  <div className="evaluate_li">
+                      <Row>
+                        <Col span={7}>店铺评价</Col>
+                        <Col span={17}>
+                            <Rate id="control-shoprate"  value={4} />
+                            {/*<span className="star_info">点击星星打分</span>*/}
+                        </Col>
+                      </Row>
+                  </div>
+                  <div className="evaluate_li">
+                      <Row>
+                        <Col span={7}>配送评价</Col>
+                        <Col span={17}>
+                         {currTime}
+                        </Col>
+                      </Row>
+                  </div>
+                  <div className="evaluate_li">
+                      <Row>
+                        <Col span={7}>送达时间</Col>
+                        <Col span={17}>
+                          <Rate id="control-rate"  value={5} />
+                          {/*<span className="star_info">点击星星打分</span>*/}
+                        </Col>
+                      </Row>
+                  </div>
+                  <div className="evaluate_li">
+                    <Row>
+                      <Col span={7}>推介美食</Col>
+                      <Col span={17}></Col>
+                       <div className="foods_style">
+                        <Button className="foods_menu foods_menu_active_up" >
+                            番茄炒蛋
+                            <i className="fa fa-thumbs-o-up" title="赞">
+                            </i>
+                            <i className="fa fa-thumbs-o-down" title="踩">
+                            </i>
+                        </Button>
+                        <Button className="foods_menu foods_menu_active_down" >
+                            番茄炒蛋2
+                            <i className="fa fa-thumbs-o-up" title="赞">
+                            </i>
+                            <i className="fa fa-thumbs-o-down" title="踩">
+                            </i>
+                        </Button>
+                        </div>
+                    </Row>
+                      {/*<FormItem
+                        {...formItemLayout}
+                        label="推介美食"
+                      >
+                        {getFieldDecorator('foods')(
+                          <div className="foods_style">
+                              {(detail.orderGoodsList||[]).map((item,i)=>{
+                                  return(
+                                      <Button className="foods_menu" id={"btn"+i} key={i} value={item.goodsId}>
+                                          {item.goodsName}
+                                          <i className="fa fa-thumbs-o-up" title="赞"
+                                              onClick={this.clickLikes.bind(null,item.goodsId,("btn"+i))}>
+                                          </i>
+                                          <i className="fa fa-thumbs-o-down" title="踩"
+                                              onClick={this.removeLikes.bind(null,item.goodsId,("btn"+i))}>
+                                          </i>
+                                      </Button>
+                                  );
+                              })}
+                          </div>
+                        )}
+                      </FormItem>*/}
+                  </div>
+                  <div className="evaluate_li">
+                    <Row>
+                      <Col span={7}>补充评价</Col>
+                      <Col span={17}><Input id="control-add" type="textarea" rows={4} /></Col>
+                    </Row>
+                  </div>
+          </div>
+      </div>
+    );
+  }
+}
+
+ReceivingFinish = createForm()(ReceivingFinish);
+/*ViewReceiving = connect(
   mapStateToProps,
-// Implement map dispatch to props
-)(ReceivingFinish)
+)(ViewReceiving)*/
+
+export {
+  ReceivingFinish,
+  ViewReceiving
+}
+

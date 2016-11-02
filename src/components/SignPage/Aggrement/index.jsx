@@ -20,8 +20,8 @@ export default class index extends React.Component {
     return (
       <div className="aggrement_box">
         <div className="User_agreement_box">
-        <h2><b>用户服务协议</b></h2>
-        <h5>{time}</h5>
+        <h2 className="center"><b>用户服务协议</b></h2>
+        <h5 className="center">{time}</h5>
         <div className="User_agreement_tex" >
             <p>特别提醒用户认真阅读本《用户服务协议》(下称《协议》) 中各条款。除非您接受本《协议》条款，否则您无权使用本网站提供的相关服务。您的使用行为将视为对本《协议》的接受，并同意接受本《协议》各项条款的约束。<br/>
                 <br/>
@@ -38,11 +38,10 @@ export default class index extends React.Component {
                 </li>
             </ol>
             <p><br/>
-                <br/>
                 <strong>二、用户资格</strong><br/>
                 <br/>
                 只有符合下列条件之一的人员或实体才能申请成为本网站用户，可以使用本网站的服务。</p>
-            <ol className=" list-paddingleft-2">
+            <ol>
                 <li>
                     <p>年满十八岁，并具有民事权利能力和民事行为能力的自然人；</p>
                 </li>
@@ -56,8 +55,8 @@ export default class index extends React.Component {
             <p><br/>
                 无民事行为能力人、限制民事行为能力人以及无经营或特定经营资格的组织不当注册为本网站用户或超过其民事权利或行为能力范围从事交易的，其与本网站之间的协议自始无效，本网站一经发现，有权立即注销该用户，并追究其使用本网站"服务"的一切法律责任。<br/>
                 <br/>
-                <strong>三.用户的权利和义务</strong></p>
-            <ol className=" list-paddingleft-2">
+                <strong>三、用户的权利和义务</strong></p>
+            <ol>
                 <li>
                     <p>用户有权根据本协议的规定及本网站发布的相关规则，利用本网站网上交易平台登录物品、发布交易信息、查询物品信息、购买物品、与其他用户订立物品买卖合同、在本网站社区发帖、参加本网站的有关活动及有权享受本网站提供的其他的有关资讯及信息服务。</p>
                 </li>
@@ -102,9 +101,8 @@ export default class index extends React.Component {
                 </li>
             </ol>
             <p><br/>
-                <br/>
                 <strong>四、 本网站的权利和义务</strong></p>
-            <ol className=" list-paddingleft-2">
+            <ol>
                 <li>
                     <p>本网站不是传统意义上的"拍卖商"，仅为用户提供一个信息交流、进行物品买卖的平台，充当买卖双方之间的交流媒介，而非买主或卖主的代理商、合伙 &nbsp;人、雇员或雇主等经营关系人。公布在本网站上的交易物品是用户自行上传进行交易的物品，并非本网站所有。对于用户刊登物品、提供的信息或参与竞标的过程， &nbsp;本网站均不加以监视或控制，亦不介入物品的交易过程，包括运送、付款、退款、瑕疵担保及其它交易事项，且不承担因交易物品存在品质、权利上的瑕疵以及交易 &nbsp;方履行交易协议的能力而产生的任何责任，对于出现在拍卖上的物品品质、安全性或合法性，本网站均不予保证。</p>
                 </li>
@@ -123,7 +121,7 @@ export default class index extends React.Component {
                 <li>
                     <p>因网上交易平台的特殊性，本网站没有义务对所有用户的注册资料、所有的交易行为以及与交易有关的其他事项进行事先审查，但如发生以下情形，本网站有权限制用户的活动、向用户核实有关资料、发出警告通知、暂时中止、无限期地中止及拒绝向该用户提供服务：</p>
                 </li>
-                <ul className=" list-paddingleft-2">
+                <ul>
                     <li>
                         <p>用户违反本协议或因被提及而纳入本协议的文件；</p>
                     </li>
@@ -148,16 +146,15 @@ export default class index extends React.Component {
                 </li>
             </ol>
             <p><br/>
-                <br/>
                 <strong>五、服务的中断和终止</strong></p>
-            <ol className=" list-paddingleft-2">
+            <ol>
                 <li>
                     <p>在 &nbsp;本网站未向用户收取相关服务费用的情况下，本网站可自行全权决定以任何理由 &nbsp;(包括但不限于本网站认为用户已违反本协议的字面意义和精神，或用户在超过180天内未登录本网站等) &nbsp;终止对用户的服务，并不再保存用户在本网站的全部资料（包括但不限于用户信息、商品信息、交易信息等）。同时本网站可自行全权决定，在发出通知或不发出通 &nbsp;知的情况下，随时停止提供全部或部分服务。服务终止后，本网站没有义务为用户保留原用户资料或与之相关的任何信息，或转发任何未曾阅读或发送的信息给用户 &nbsp;或第三方。此外，本网站不就终止对用户的服务而对用户或任何第三方承担任何责任。</p>
                 </li>
                 <li>
                     <p>如用户向本网站提出注销本网站注册用户身份，需经本网站审核同意，由本网站注销该注册用户，用户即解除与本网站的协议关系，但本网站仍保留下列权利：</p>
                 </li>
-                <ul className=" list-paddingleft-2">
+                <ul>
                     <li>
                         <p>用户注销后，本网站有权保留该用户的资料,包括但不限于以前的用户资料、店铺资料、商品资料和交易记录等。</p>
                     </li>
@@ -168,7 +165,7 @@ export default class index extends React.Component {
                 <li>
                     <p>如存在下列情况，本网站可以通过注销用户的方式终止服务：</p>
                 </li>
-                <ul className=" list-paddingleft-2">
+                <ul>
                     <li>
                         <p>在用户违反本协议相关规定时，本网站有权终止向该用户提供服务。本网站将在中断服务时通知用户。但如该用户在被本网站终止提供服务后，再一次直接或间接或以他人名义注册为本网站用户的，本网站有权再次单方面终止为该用户提供服务；</p>
                     </li>
@@ -185,7 +182,7 @@ export default class index extends React.Component {
                 <li>
                     <p>因用户违反相关法律法规或者违反本协议规定等原因而致使本网站中断、终止对用户服务的，对于服务中断、终止之前用户交易行为依下列原则处理：</p>
                 </li>
-                <ul className=" list-paddingleft-2">
+                <ul>
                     <li>
                         <p>本网站有权决定是否在中断、终止对用户服务前将用户被中断或终止服务的情况和原因通知用户交易关系方，包括但不限于对该交易有意向但尚未达成交易的用户,参与该交易竞价的用户，已达成交易要约用户。</p>
                     </li>
@@ -204,7 +201,6 @@ export default class index extends React.Component {
                 </li>
             </ol>
             <p><br/>
-                <br/>
                 <strong>六、协议的修订</strong><br/>
                 <br/>
                 本协议可由本网站随时修订，并将修订后的协议公告于本网站之上，修订后的条款内容自公告时起生效，并成为本协议的一部分。用户若在本协议修改之后，仍继续使用本网站，则视为用户接受和自愿遵守修订后的协议。本网站行使修改或中断服务时，不需对任何第三方负责。<br/>
@@ -212,7 +208,7 @@ export default class index extends React.Component {
                 <strong>七、 本网站的责任范围</strong><br/>
                 <br/>
                 当用户接受该协议时，用户应明确了解并同意∶</p>
-            <ol className=" list-paddingleft-2">
+            <ol>
                 <li>
                     <p>是否经由本网站下载或取得任何资料，由用户自行考虑、衡量并且自负风险，因下载任何资料而导致用户电脑系统的任何损坏或资料流失，用户应负完全责任。</p>
                 </li>
@@ -222,7 +218,7 @@ export default class index extends React.Component {
                 <li>
                     <p>基于以下原因而造成的利润、商誉、使用、资料损失或其它无形损失，本网站不承担任何直接、间接、附带、特别、衍生性或惩罚性赔偿（即使本网站已被告知前款赔偿的可能性）：</p>
                 </li>
-                <ul className=" list-paddingleft-2">
+                <ul>
                     <li>
                         <p>本网站的使用或无法使用。</p>
                     </li>
@@ -247,13 +243,12 @@ export default class index extends React.Component {
                 </li>
             </ol>
             <p><br/>
-                <br/>
                 <strong>八、不可抗力</strong><br/>
                 <br/>
                 因不可抗力或者其他意外事件，使得本协议的履行不可能、不必要或者无意义的，双方均不承担责任。本合同所称之不可抗力意指不能预见、不能避免并不能克服的 &nbsp;客观情况，包括但不限于战争、台风、水灾、火灾、雷击或地震、罢工、暴动、法定疾病、黑客攻击、网络病毒、电信部门技术管制、政府行为或任何其它自然或人 &nbsp;为造成的灾难等客观情况。<br/>
                 <br/>
                 <strong>九、争议解决方式</strong></p>
-            <ol className=" list-paddingleft-2">
+            <ol>
                 <li>
                     <p>本协议及其修订本的有效性、履行和与本协议及其修订本效力有关的所有事宜，将受中华人民共和国法律管辖，任何争议仅适用中华人民共和国法律。</p>
                 </li>

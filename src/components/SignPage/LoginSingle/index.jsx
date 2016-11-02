@@ -343,11 +343,10 @@ let index= class  extends React.Component {
 
 		    <Modal
 	          className="full-screen-modal"
-	          title="《雷铭官网用户协议》"
 	          wrapClassName="vertical-center-modal"
 	          visible={this.state.modalVisible}
 	          width={800}
-	          style={{ top: 0 }}
+	          style={{ top: 10 }}
 	          onCancel={() => this.setModalVisible(false)}
 	          onOk={() => this.setModalVisible(false)}
 	        >
@@ -508,8 +507,8 @@ let index= class  extends React.Component {
             )}
             </FormItem>
           </div>
-          <div className="infos">
-           {/* <FormItem
+          {/* <div className="infos">
+           <FormItem
               id="control-autoLogon2"
               {...formItemLayout}
               >
@@ -521,7 +520,7 @@ let index= class  extends React.Component {
                 ],
               })(
                 <Checkbox  id="control-autoLogon2" className="ant-checkbox-vertical"> 7天内自动登录</Checkbox>
-              )}*/}
+              )}
               <div className="sign_forgetpasssword">
                   <a href='javascript:void(0);' onClick={()=>{
                     this.setState({
@@ -530,12 +529,12 @@ let index= class  extends React.Component {
                     })
                   }}>忘记密码 ？ </a>
               </div>
-           {/* </FormItem>*/}
-          </div>
+            </FormItem>
+          </div>*/}
           <Button
             type="primary"
             htmlType="submit"
-            className="sign_btn"
+            className="sign_btn top"
             id="phone_btn"
             loading={this.state.loading}
             >
