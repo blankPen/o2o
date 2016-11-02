@@ -331,14 +331,14 @@ export class Payment extends React.Component {
                                 <Radio key="a" value={1}>
                                     <div className="pay-way">
                                         <Img
-                                            src='alipaypcnew.png'
+                                            src='pc_wxqrpay.png'
                                         ></Img>
                                     </div>
                                 </Radio>
                                 <Radio key="b" value={2}>
                                     <div className="pay-way">
                                         <Img
-                                            src='pc_wxqrpay.png'
+                                            src='alipaypcnew.png'
                                         >
                                         </Img>
                                     </div>
