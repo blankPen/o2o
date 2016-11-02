@@ -41,7 +41,9 @@ export class Main extends React.Component {
                         visible={this.props.showLogin}
                         onCancel={this.closeLogin}
                     >
-                        <LoginSingle redirect={false}/>
+                        <LoginSingle
+                            location={this.props.location}
+                            redirect={this.props.location.pathname}/>
                     </Dialog>
                 }
                 <TopNav/>

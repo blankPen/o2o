@@ -446,7 +446,10 @@ let index= class  extends React.Component {
           <div className="sign_agreement">
             <span className="agreement_left">还没有账号？</span><a className="agreement_right" href="/#/register">免费注册</a>
           </div>
-          <OtherLogin dispatch={this.props.dispatch}/>
+          <OtherLogin
+            redirect={this.props.redirect}
+            location={this.props.location}
+            dispatch={this.props.dispatch} />
         </Form>
       );
     } else {

@@ -178,25 +178,24 @@ export function getCheckCode(params,call) {
     }
 }
 
-export function thirdLogin(params,call){
+export function thirdLogin(params,call,redirect){
     return function(dispatch){
         ajax({
             url: '/rest/api/member/thirdLogin',
             data: params,
+            type: 'get',
             success: function(res){
                 if(res.result == 1){
                     dispatch({
                         type: 'login/success',
                         info: res.data,
-                        cookieInfo: {
-                            username: params.username,
-                            password: params.validateCode,
-                            user_id: res.data.memberId
-                        },
-                        expires: params.expires
+                        expires: 0
                     })
                 }else{
                     message.error(res.msg);
+                }
+                if(redirect){
+                    History.push(redirect);
                 }
             }
         })
