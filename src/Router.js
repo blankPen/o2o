@@ -44,6 +44,7 @@ import Feedback from 'bundle?lazy&name=Feedback!components/feedback';
 import Search from 'bundle?lazy&name=Search!components/Search/';
 import Payment from 'bundle?lazy&name=Payment!components/Payment/';
 import PaySucc from 'bundle?lazy&name=PaySucc!components/paysucc/';
+import Recharge from 'bundle?lazy&name=Recharge!components/Recharge/';
 
 
 import {
@@ -76,7 +77,7 @@ export class index extends React.Component {
                             <Route path="detail/:storeId" component={asyncLoader(Detail)}/>
                             <Route path="order_preview" component={asyncLoader(OrderPreview)}/>
                             <Route path="search" component={asyncLoader(Search)}/>
-                            <Route path="paysucc/:orderId" component={asyncLoader(PaySucc)}/>
+                            <Route path="paysucc/:orderId/:type" component={asyncLoader(PaySucc)}/>
 
                             <Route path="user" onEnter={requireLogin} component={PersonNav}>
                                 <IndexRoute component={asyncLoader(Order)} />
@@ -93,6 +94,10 @@ export class index extends React.Component {
                         <Route path='/payment' >
                             <IndexRoute component={asyncLoader(Payment)} />
                             <Route path=":orderSn" component={asyncLoader(Payment)}/>
+                        </Route>
+                        <Route path='/recharge' >
+                            <IndexRoute component={asyncLoader(Recharge)} />
+                            <Route path=":orderSn" component={asyncLoader(Recharge)}/>
                         </Route>
                         <Route path='/404' component={NotFound} ></Route>
                         <Redirect path='*' to='/404' />

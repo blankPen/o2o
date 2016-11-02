@@ -8,6 +8,7 @@ import {
     connect
 } from 'react-redux';
 import Img from 'common/Img';
+import History from 'common/History';
 import {
   Button,
   Input,
@@ -29,11 +30,16 @@ import PasswordBox from 'components/user/passwordBox/';
 import PaypassBox from 'components/user/paypassBox/';
 import SexBox from 'components/user/sexBox/';
 import Dialog from 'components/common/Dialog/';
+import RechargeBox from 'components/user/rechargeBox/'
+
 import {
     retrieveToLoginpass,
     retrieveToPaypass,
     updateToSex
 } from 'actions/UserAction';
+import {
+  balanceRecharge
+} from 'actions/OrderAction';
 import Cookie from "js-cookie";
 
 function mapStateToProps({
@@ -88,6 +94,7 @@ export class index extends React.Component {
             openRevicesPass:false,/*找回密码开启*/
             openRevicesPayPass:false,/*找回支付密码开启*/
             openChangeSex:false,/*性别修改开启*/
+            openBalanceRecharge:false,
             show_dialog:false,/*是否开启Dialog*/
             type2: "findpassword",/* 找回密码操作类型*/
             type: "findPaypassword"/* 找回支付密码操作类型*/
@@ -118,22 +125,30 @@ export class index extends React.Component {
           dailog_title:"",
           openRevicesPass:false,
           openRevicesPayPass:false,
-          openChangeSex: false
+          openChangeSex: false,
+          openBalanceRecharge:false
       });
     }
     revicesPassword=()=>{
-        this.setState({
-          dailog_title:"找回登录密码",
-          openRevicesPass:true,
-          show_dialog:true
-        });
+      this.setState({
+        dailog_title:"找回登录密码",
+        openRevicesPass:true,
+        show_dialog:true
+      });
     }
     revicesPayPassword=()=>{
-        this.setState({
-          dailog_title:"找回支付密码",
-          openRevicesPayPass:true,
-          show_dialog:true
-        });
+      this.setState({
+        dailog_title:"找回支付密码",
+        openRevicesPayPass:true,
+        show_dialog:true
+      });
+    }
+    saveMoney=()=>{
+     this.setState({
+        dailog_title:"账号充值",
+        openBalanceRecharge:true,
+        show_dialog:true
+      });
     }
     changeSex=()=>{
       this.setState({
@@ -141,6 +156,28 @@ export class index extends React.Component {
         openChangeSex:true,
         show_dialog:true
       });
+    }
+    handleRechargeSubmit=(errors,values,callback)=>{//账号充值
+      if (errors) {
+        console.log('Recharge-box表单验证错误!');
+        return;
+      }
+      console.log('Recharge-box表单验证成功');
+      console.log(values);
+      this.props.dispatch(balanceRecharge({
+          "amount":values.money
+        },(re)=> {
+           /* if(re.result==1){*/
+                this.handleOnCancel();
+                callback && callback(re);
+                History.push('/recharge/'+re.data[0].pdrSn);
+            /*}else{
+              //message.error(re.msg||"充值失败");
+              console.log(re.msg);
+            }*/
+          }
+        )
+      );
     }
     handleSexSubmit=(errors,values,callback)=>{//修改性别
       if (errors) {
@@ -229,27 +266,27 @@ export class index extends React.Component {
       );
     }
     render() {
-        const userInfo = this.state.userInfo || {};
-        let phone,password,paypass;
-        if(userInfo){
-            phone=(userInfo.isBind===1)?userInfo.memberMobile.substring(0,3) + "****" + userInfo.memberMobile.substring(8,11) : "尚未绑定手机号码";
-            password=(userInfo.isSettingPwd===1)?"******" : "尚未设置密码";
-            paypass=(userInfo.payPassword)?"******" : "尚未设置支付密码";
-        }
-        const props = { //上传请求
-            action: '/rest/api/member/updateMemberFace',
-            data:{
-                memberId: userInfo.memberId
-            },
-            listType: 'text',
-            onChange: this.handleChange,
-            multiple: false,
-            // fileList: this.state.fileList,
-            name: "face",
-            accept: "image/*",
-            beforeUpload: this.beforeUpload,
-    };
-    return (
+      const userInfo = this.state.userInfo || {};
+      let phone,password,paypass;
+      if(userInfo){
+          phone=(userInfo.isBind===1)?userInfo.memberMobile.substring(0,3) + "****" + userInfo.memberMobile.substring(8,11) : "尚未绑定手机号码";
+          password=(userInfo.isSettingPwd===1)?"******" : "尚未设置密码";
+          paypass=(userInfo.payPassword)?"******" : "尚未设置支付密码";
+      }
+      const props = { //上传请求
+          action: '/rest/api/member/updateMemberFace',
+          data:{
+              memberId: userInfo.memberId
+          },
+          listType: 'text',
+          onChange: this.handleChange,
+          multiple: false,
+          // fileList: this.state.fileList,
+          name: "face",
+          accept: "image/*",
+          beforeUpload: this.beforeUpload,
+      };
+      return (
         <div className="personal-center-box">
             <div className="avatar-container">
                 <h3>亲爱的{(userInfo.memberTruename?userInfo.memberTruename:userInfo.memberName)||"默认用户"}，来上传一张头像吧</h3>
@@ -363,7 +400,6 @@ export class index extends React.Component {
                     <Col span={8} >
                         {phone}
                     </Col>
-                    {/*<Button className="btn" onClick={this.changePhone}>更换</Button>*/}
                 </Row>
                 <Row className="userexinfo-form__section">
                     <Col  span={4} >
@@ -377,9 +413,9 @@ export class index extends React.Component {
                     <Col span={8} >
                         {userInfo.availablePredeposit}&nbsp;&nbsp;<i className="fa fa-yen"></i>
                     </Col>
-                   {<Col span={6} >
-                        <Link to='/payment' className="btn" >充值</Link>
-                    </Col>}
+                    <Col span={6} >
+                        <a href='javascript:void(0);' className="btn" onClick={this.saveMoney}>充值 </a>
+                    </Col>
                 </Row>
                 <div className="userexinfo-form__footer">
                     <span>收藏的店铺：<Link className="span_yellow" to="/collect">{userInfo.favStoreCount}</Link></span>
@@ -398,7 +434,7 @@ export class index extends React.Component {
               {this._dialogForm()}
             </Dialog>
         </div>
-        );
+      );
     }
     _dialogForm=()=>{
         if(this.state.openRevicesPass){
@@ -412,6 +448,10 @@ export class index extends React.Component {
         }else if(this.state.openChangeSex){
           return (
               <SexBox info={this.state.userInfo} handleSubmit={this.handleSexSubmit}/>
+          )
+        }else if(this.state.openBalanceRecharge){
+          return (
+              <RechargeBox info={this.state.userInfo} handleSubmit={this.handleRechargeSubmit}/>
           )
         }else{
             return false;

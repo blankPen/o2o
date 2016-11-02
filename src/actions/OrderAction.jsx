@@ -181,3 +181,25 @@ export function saveEvaluateInfo(params,call) {
         })
     }
 }
+/**
+ * [balanceRecharge  余额充值]
+ */
+export function balanceRecharge(params,call) {
+    return function(dispatch) {
+        ajax({
+            url: 'rest/api/order/recharge',
+            data: {
+                ...params
+            },
+            success: function(res){
+                console.log("余额充值：");
+                console.log(res);
+                dispatch({
+                    type:'get/pay/info',
+                    payInfo:res.data[0]
+                });
+                call && call(res);
+            }
+        })
+    }
+}

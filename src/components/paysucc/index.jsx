@@ -8,7 +8,8 @@ import {
     connect
 } from 'react-redux';
 import {
-    theAjax
+    theAjax,
+    getMenuList
 } from 'actions/UserAction';
 import Img from 'common/Img';
 import {TimeConvert} from 'components/common/TimeConvert.jsx';
@@ -27,53 +28,71 @@ export class PaySucc extends React.Component {
         }
     }
     componentDidMount(){
-        this.props.dispatch(getMenuList(this.props.params.orderId||"",(res)=>{
-            let yujimin=res.data.paymentTime+15*60*1000;
-            let songda=res.data.paymentTime+60*60*1000;
-            let min=TimeConvert("n",new Date().getTime(),yujimin);
-            this.setState({
-                mobPhone:res.data.address.mobPhone,
-                orderReceiving:min,
-                arrive:TimeConvert.secondTohms(songda/1000,"hm")
-            });
-        }));
+        if(this.props.params.type==1){
+            this.props.dispatch(getMenuList(this.props.params.orderId||"",(res)=>{
+                let yujimin=res.data.paymentTime+15*60*1000;
+                let songda=res.data.paymentTime+60*60*1000;
+                let min=TimeConvert("n",new Date().getTime(),yujimin);
+                this.setState({
+                    mobPhone:res.data.address.mobPhone,
+                    orderReceiving:min,
+                    arrive:TimeConvert.secondTohms(songda/1000,"hm")
+                });
+            }));
+        }
     }
     render(){
 
         return(
             <div className="paysucc clearfix">
                 <div className="succ-left">
-                    <div className="content">
-                        <div className="title">
-                            <span className="icon">
-                                <i className="fa fa-check" />
-                            </span>
-                            <span className="text">支付成功!</span>
-                        </div>
-                        <div className="desc">
-                            请保持您的手机{this.state.mobPhone||"00****00"}畅通，方便送餐人员联系您。
-                        </div>
-                        <div className="jiedan">
-                            <div className="theys">
-                                <i className="fa fa-clock-o" />
-                                预计接单时间
-                                <span className="import">{this.state.orderReceiving||0}</span>
-                                分钟
+                    {this.props.params.type==2?(
+                        <div className="content">
+                            <div className="title">
+                                <span className="icon">
+                                    <i className="fa fa-check" />
+                                </span>
+                                <span className="text">充值成功!</span>
+                                <div className="goorder">
+                                    <Link to={"/user/info"}>
+                                        返回我的账号
+                                    </Link>
+                                </div>
                             </div>
-                            <div className="theys">
-                                <i className="fa fa-clock-o" />
-                                预计
-                                <span className="import">{this.state.arrive||0}</span>
-                                左右到达
+                        </div>
+                    ):(
+                        <div className="content">
+                            <div className="title">
+                                <span className="icon">
+                                    <i className="fa fa-check" />
+                                </span>
+                                <span className="text">支付成功!</span>
                             </div>
+                            <div className="desc">
+                                请保持您的手机{this.state.mobPhone||"00****00"}畅通，方便送餐人员联系您。
+                            </div>
+                            <div className="jiedan">
+                                <div className="theys">
+                                    <i className="fa fa-clock-o" />
+                                    预计接单时间
+                                    <span className="import">{this.state.orderReceiving||0}</span>
+                                    分钟
+                                </div>
+                                <div className="theys">
+                                    <i className="fa fa-clock-o" />
+                                    预计
+                                    <span className="import">{this.state.arrive||0}</span>
+                                    左右到达
+                                </div>
 
+                            </div>
+                            <div className="goorder">
+                                <Link to={"/user/order"}>
+                                    查看我的订单
+                                </Link>
+                            </div>
                         </div>
-                        <div className="goorder">
-                            <Link to={"/user/order"}>
-                                查看我的订单
-                            </Link>
-                        </div>
-                    </div>
+                    )}
                 </div>
                 <div className="succ-right">
                     <div className="title">下载雷鸣o2o</div>
