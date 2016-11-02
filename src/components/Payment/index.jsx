@@ -301,7 +301,7 @@ export class Payment extends React.Component {
 
     toFeeback=()=>{
         History.push({
-            pathname:'/feeback',
+            pathname:'/feedback',
             state:{
                 orderSn:this.props.params.orderSn
             }
