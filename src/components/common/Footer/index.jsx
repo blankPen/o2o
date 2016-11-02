@@ -3,12 +3,13 @@
  * @Date:   2016-10-17 20:24:06
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-17 22:35:49
+ * @Last Modified time: 2016-11-02 21:51:54
  */
 
 'use strict';
 import './index.less';
 import React from 'react';
+import Img from 'common/Img';
 import {
     connect
 } from 'react-redux';
@@ -42,7 +43,7 @@ export class Footer extends React.Component {
                     </p>
                     <div className="two_line">
                         <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502025545" >
-                            <img src="../../../images/1.png"/>
+                            <Img src="1.png"/>
                             <p>京公网安备11010502025545号</p>
                         </a>
                     </div>

@@ -28,24 +28,25 @@ export class Main extends React.Component {
 
     constructor(props) {
         super(props);
+        this.__THREELOGIN_CODE__ = window.__THREELOGIN_CODE__ || '';
+        delete window.__THREELOGIN_CODE__;
     }
 
-    componentWillReceiveProps(nextProps) {
-        let newCode = this.getQueryString('code');
-        let state = this.getQueryString('state');
-        console.log('receive',newCode,state);
-        if(newCode && newCode != this.code){
-            if(state == 'qq'){
-                this.getQQUserInfo(newCode);
-            }else{
-                this.getWxUserInfo(newCode);
-            }
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     let newCode = this.getQueryString('code');
+    //     let state = this.getQueryString('state');
+    //     console.log('receive',newCode,state);
+    //     if(newCode && newCode != this.code){
+    //         if(state == 'qq'){
+    //             this.getQQUserInfo(newCode);
+    //         }else{
+    //             this.getWxUserInfo(newCode);
+    //         }
+    //     }
+    // }
     componentWillMount() {
         let code = this.getQueryString('code');
         let state = this.getQueryString('state');
-        console.log('did',code,state);
         if(state == 'qq'){
             this.getQQUserInfo(code);
         }else{
@@ -53,8 +54,9 @@ export class Main extends React.Component {
         }
     }
     getQueryString(name) {
+        // return this.props.location.query[name];
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var res = window.location.search.split('?');
+        var res = this.__THREELOGIN_CODE__.split('?');
         if(res.length >= 2){
             var r = res[1].match(reg);
             if (r != null) return unescape(r[2]);

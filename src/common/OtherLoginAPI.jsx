@@ -3,7 +3,7 @@
  * @Date:   2016-11-01 15:34:55
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-02 18:28:11
+ * @Last Modified time: 2016-11-02 22:26:54
  */
 
 'use strict';
@@ -11,9 +11,9 @@ import loadJS from 'common/utils/loader';
 import ajax from 'common/Ajax';
 import reqwest from 'reqwest';
 
-let redirectUri = location.protocol +'//'+location.host;
+let redirectUri = location.protocol +'//'+location.host+'/leimingtech-front/rest/api/login/thirdLogin';
 if(process.env.NODE_ENV !== 'production'){
-    redirectUri = 'http://testo2o.leimingtech.com/#/';
+    redirectUri = 'http://testo2o.leimingtech.com/leimingtech-front/rest/api/login/thirdLogin';
 }
 const TencentConfig = {
     appid: 101244672,
