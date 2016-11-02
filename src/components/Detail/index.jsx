@@ -501,13 +501,14 @@ export class RateItem extends React.Component {
 
     render(){
         let data = this.props.data||{};
+        let feelText = data.gevalScore>4.5?'好评':data.gevalScore>2?'中评':'差评';
         return(
             <div className="rate-item">
                 <div className="rate-info">
                     <span className="user-name">{data.gevalFrommembername}</span>
                     <span className="all-rate">总体评价:</span>
                     <Rate value={data.gevalScore} disabled />
-                    <span className="feel">好评</span>
+                    <span className="feel">{feelText}</span>
                     <span className="rate-time">
                         评价时间
                         <span>{moment(data.gevalAddTime).format('YYYY-MM-DD')}</span>
