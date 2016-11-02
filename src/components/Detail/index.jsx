@@ -417,6 +417,39 @@ export class RatedBox extends React.Component {
         });
     }
 
+    renderRateContent=()=>{
+        let data = this.props.evaluatList&&this.props.evaluatList.shopEvaluateTagSave||{};
+        let list = this.props.evaluatList&&this.props.evaluatList.evaluateGoodList||[];
+        if(list.length>0){
+            return(
+                <div className="content-box">
+                    {list.map((item,i)=>{
+                        return(
+                            <RateItem key={i} data={item}></RateItem>
+                        )
+                    })}
+                    <div className="pagination-bar">
+                        <Pagination 
+                            defaultCurrent={1} 
+                            total={data.allReview} 
+                            onChange={this.pageChange}
+                            pageSize={15}
+                        />
+                    </div>
+                </div>
+            )
+        }else{
+            return(
+                <div className="content-box">
+                    <div className="no-content">
+                        暂无评价内容
+                    </div>
+                </div>
+            )
+        }
+        
+    }
+
     render(){
         let data = this.props.evaluatList&&this.props.evaluatList.shopEvaluateTagSave||{};
         let list = this.props.evaluatList&&this.props.evaluatList.evaluateGoodList||[];
@@ -447,21 +480,7 @@ export class RatedBox extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="content-box">
-                    {list.map((item,i)=>{
-                        return(
-                            <RateItem key={i} data={item}></RateItem>
-                        )
-                    })}
-                    <div className="pagination-bar">
-                        <Pagination 
-                            defaultCurrent={1} 
-                            total={data.allReview} 
-                            onChange={this.pageChange}
-                            pageSize={15}
-                        />
-                    </div>
-                </div>
+                {this.renderRateContent()}
             </div>
         )
     }
