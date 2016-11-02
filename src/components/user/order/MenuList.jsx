@@ -252,8 +252,6 @@ export class Line extends React.Component {
     tousu=()=>{
         let userinfo=this.props.userInfo||{};
         History.push({ pathname: "/feedback", state: {
-            memberId:userinfo.memberId,
-            phone:userinfo.memberMobile,
             orderSn:this.props.detail&&this.props.detail.orderSn
         } });
     }

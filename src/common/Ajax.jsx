@@ -10,7 +10,7 @@ export default function(opt){
     let call_succ = opt.success;
     let call_error = opt.success;
     opt.method = opt.type || 'post';
-    opt.type = opt.dataType || 'json';
+    opt.type = opt.dataType ? (opt.dataType=='none' ? undefined:opt.dataType):'json';
     opt = {
         cache: 'false',
         ...opt

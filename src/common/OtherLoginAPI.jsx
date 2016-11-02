@@ -3,25 +3,30 @@
  * @Date:   2016-11-01 15:34:55
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-02 11:28:59
+ * @Last Modified time: 2016-11-02 16:59:26
  */
 
 'use strict';
 import loadJS from 'common/utils/loader';
 import ajax from 'common/Ajax';
+import reqwest from 'reqwest';
 
-const redirectUri = encodeURIComponent(location.protocol +'//'+location.host+'/#/login');
+let redirectUri = encodeURIComponent(location.protocol +'//'+location.host+'/#/login');
+if(process.env.NODE_ENV !== 'production'){
+    redirectUri = 'http%3A%2F%2Ftesto2o.leimingtech.com%2F%23%2Flogin';
+}
 const TencentConfig = {
     appid: 101244672,
     appkey: 'dfd8be1247c2e27237f012f696be223b',
+    prefix: process.env.NODE_ENV !== 'production'?'':'https://graph.qq.com/',
 };
 
 const WxConfig = {
     sdk: 'http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js',
     appid: 'wxa98139e63a254389',
     secret: 'd38be49198dbd6df5fb347f6c231c96f',
+    prefix: process.env.NODE_ENV !== 'production'?'':'https://api.weixin.qq.com/',
 };
-
 export const QQLogin = {
     init(callback) {
         // var script = document.createElement("script");
@@ -36,8 +41,54 @@ export const QQLogin = {
         });
     },
     login(){
-        var link = `https://graph.qq.com/oauth2.0/authorize?response_type=code&state=1&client_id=${TencentConfig.appid}&redirect_uri=${redirectUri}`;
-        window.open(link);
+        var link = `https://graph.qq.com/oauth2.0/authorize?response_type=code&state=qq&client_id=${TencentConfig.appid}&redirect_uri=${redirectUri}&display=mobile`;
+        location.href = link;
+    },
+    getAccessToken(code,callback){
+        ajax({
+            type: 'get',
+            url: `${TencentConfig.prefix}oauth2.0/token?grant_type=authorization_code&client_id=${TencentConfig.appid}&client_secret=${TencentConfig.appkey}&code=${code}&redirect_uri=${redirectUri}`,
+            dataType: 'none',
+            success: function(resp){
+                console.log(resp,parseParams(resp))
+                callback && callback(parseParams(resp));
+            }
+        })
+    },
+    getOpenId(token,callback){
+        ajax({
+            type: 'get',
+            url: `${TencentConfig.prefix}oauth2.0/me?access_token=${token}`,
+            dataType: 'none',
+            success: function(resp){
+                callback && callback(parseParams(resp));
+            }
+        })
+    },
+    getUserInfo(code,callback){
+        this.getAccessToken(code,(tokenRes)=>{
+            console.log(tokenRes)
+            let token = tokenRes.access_token;
+            if(token){
+                this.getOpenId(token,(meRes)=>{
+                    let openid = meRes.openid;
+                    if(openid){
+                        ajax({
+                            type: 'get',
+                            url: `${TencentConfig.prefix}user/get_user_info?access_token=${token}&oauth_consumer_key=${TencentConfig.appid}&openid=${openid}`,
+                            success: function(res){
+                                res.openid = openid;
+                                callback && callback(res);
+                            }
+                        })
+                    }else{
+                        callback && callback(tokenRes,'获取Openid失败');
+                    }
+                })
+            }else{
+                callback(tokenRes,'获取Token失败');
+            }
+        })
     }
 };
 export const WeixinLogin = {
@@ -51,19 +102,23 @@ export const WeixinLogin = {
             id: id,
             appid: WxConfig.appid,
             scope: "snsapi_login",
-            redirect_uri: redirectUri
+            redirect_uri: redirectUri,
+            state: 'weixin'
         });
     },
     getUserInfo(code, callback) {
         this.getAccessToken(code, ({
             access_token,
             openid
-        }) => {
+        },error) => {
+            if(error){
+                return callback && callback(null,error);
+            }
             ajax({
-                url: `/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`,
+                url: `${WxConfig.prefix}/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`,
                 success: function(res) {
                     if (res.errcode) {
-                        console.log("getUserInfo", res.errcode + ":" + res.errmsg);
+                        callback && callback(null,"getUserInfo", res.errcode + ":" + res.errmsg);
                     } else {
                         callback && callback(res);
                     }
@@ -74,9 +129,10 @@ export const WeixinLogin = {
     getAccessToken(code, callback) {
         ajax({
             type: 'get',
-            url: `/sns/oauth2/access_token?appid=${WxConfig.appid}&secret=${WxConfig.secret}&code=${code}&grant_type=authorization_code`,
+            url: `${WxConfig.prefix}/sns/oauth2/access_token?appid=${WxConfig.appid}&secret=${WxConfig.secret}&code=${code}&grant_type=authorization_code`,
             success: function(res) {
                 if (res.errcode) {
+                    callback && callback(res,"getAccessToken", res.errcode + ":" + res.errmsg);
                     console.log("getAccessToken", res.errcode + ":" + res.errmsg);
                 } else {
                     callback && callback(res);
@@ -85,3 +141,31 @@ export const WeixinLogin = {
         })
     }
 };
+
+function parseParams(params){
+    let res = params;
+    if(typeof params === 'string'){
+        console.log(123123)
+        res = parseCallback(params) || parseToken(params);
+    }
+    return res;
+}
+function parseCallback(str){
+    var reg = new RegExp("callback\(.*\);","i");
+    var r = str.match(reg);
+    if(r && r.length == 2){
+        r = r[1].substr(1,r[1].length-2);
+        return JSON.parse(r);
+    }
+}
+function parseToken(str){
+    let obj = {};
+    let arr = str.split('&');
+    arr.forEach(function(item){
+        let res = item.split('=');
+        if(res.length == 2){
+            obj[res[0]] = res[1];
+        }
+    });
+    return obj;
+}

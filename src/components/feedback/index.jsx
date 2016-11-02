@@ -39,8 +39,8 @@ export class Feedback extends React.Component {
     	this.props.dispatch(theAjax("/rest/api/feedback/feeback",{
     		phoneType:"3",
     		content:value,
-    		memberId:state.memberId,
-    		phone:state.phone,
+    		memberId:this.props.userInfo.memberId,
+    		phone:this.props.userInfo.memberMobile,
     		orderSn:state.orderSn
     	},(res)=>{
     		if(res.result==1){

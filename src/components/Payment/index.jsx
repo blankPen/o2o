@@ -138,6 +138,7 @@ export class Payment extends React.Component {
             this.props.dispatch(actions.getPayResult(this.paySn,(res)=>{
                 if(res.payState=="1"){
                     clearInterval(this.state.interval_id);
+                    message.success('支付成功');
                     History.push('/paysucc/'+this.props.params.orderSn+"/1");
                 }
             }));
@@ -160,6 +161,8 @@ export class Payment extends React.Component {
             this.props.dispatch(actions.toPredepositPay(value,(res)=>{
                 if(res.result==1){
                     //余额支付成功
+                    message.success('支付成功');
+                    History.push('/paysucc/'+this.props.params.orderSn+"/1");
                 }else{
                     this.refs.pwd_tips.innerHTML = res.msg;
                 }
@@ -202,7 +205,7 @@ export class Payment extends React.Component {
         History.push('/user/order');
     }
 
-    finishPay= (flag)=>{
+    finishPay= ()=>{
         this.props.dispatch(actions.getPayResult(this.paySn,(res)=>{
             if(res.payState=="1"){
                 message.success('支付成功');
@@ -272,7 +275,7 @@ export class Payment extends React.Component {
                             支付失败
                         </button>
                     </div>
-                    <div className="back-choose">
+                    <div className="back-choose" onClick={this.toogleRenderDialog}>
                         返回选择其他支付方式
                     </div>
                 </div>
@@ -294,6 +297,15 @@ export class Payment extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    toFeeback=()=>{
+        History.push({
+            pathname:'/feedback',
+            state:{
+                orderSn:this.props.params.orderSn
+            }
+        });
     }
 
     renderTabs=()=>{ //tabs
@@ -319,7 +331,7 @@ export class Payment extends React.Component {
                             '余额不足'
                         }
                     </div>
-                    <div className="right-opinion">意见反馈</div>
+                    <div className="right-opinion" onClick={this.toFeeback}>意见反馈</div>
                 </div>
                 {
                     this.state.tab_index==1?(
@@ -331,14 +343,14 @@ export class Payment extends React.Component {
                                 <Radio key="a" value={1}>
                                     <div className="pay-way">
                                         <Img
-                                            src='https://p1.meituan.net/pay/pc_wxqrpay.png'
+                                            src='pc_wxqrpay.png'
                                         ></Img>
                                     </div>
                                 </Radio>
                                 <Radio key="b" value={2}>
                                     <div className="pay-way">
                                         <Img
-                                            src='https://p0.meituan.net/pay/alipaypcnew.png'
+                                            src='alipaypcnew.png'
                                         >
                                         </Img>
                                     </div>
@@ -378,7 +390,7 @@ export class Payment extends React.Component {
                 <div className="payment">
                     <div className="payment-head">
                         <div className="left-logo">
-                            <Img alt="雷铭O2O" src="logo.png" />
+                        <a href="/"><Img alt="雷铭O2O" src="logo.png" /></a>
                         </div>
                         <div className="step-box">
                             <Steps></Steps>

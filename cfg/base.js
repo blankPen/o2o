@@ -46,6 +46,14 @@ module.exports = {
       '/sns/*':{
         target:'https://api.weixin.qq.com/',
         changeOrigin: true
+      },
+      '/oauth2.0/*':{
+        target:'https://graph.qq.com/',
+        changeOrigin: true
+      },
+      '/user/get_user_info':{
+        target:'https://graph.qq.com/',
+        changeOrigin: true
       }
     }
   },

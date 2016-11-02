@@ -3,7 +3,7 @@
  * @Date:   2016-11-01 16:18:59
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-01 21:57:10
+ * @Last Modified time: 2016-11-02 16:28:28
  */
 
 'use strict';
@@ -13,6 +13,7 @@ import History from 'common/History';
 import * as DomUtils from 'common/utils/dom';
 import { QQLogin,WeixinLogin } from 'common/OtherLoginAPI';
 import { thirdLogin } from 'actions/SignPageAction';
+import { message } from 'antd';
 
 export default class OtherLogin extends React.Component {
     static propTypes = {
@@ -25,23 +26,62 @@ export default class OtherLogin extends React.Component {
             wx: false
         };
     }
+    componentWillReceiveProps(nextProps) {
+        let newCode = nextProps.location.query.code;
+        let state = nextProps.location.query.state;
+        if(newCode && newCode != this.code){
+            if(state == 'qq'){
+                this.getQQUserInfo(newCode);
+            }else{
+                this.getWxUserInfo(newCode);
+            }
+        }
+    }
     componentWillMount() {
-        const code = DomUtils.getQueryString('code');
-        if(code){
-            History.replace('/login');
-            WeixinLogin.getUserInfo(code,(res)=>{
-                console.log(res)
-                this.props.dispatch(thirdLogin({
-                    openId: res.openid,
-                    sex: res.sex,
-                    userName:res.nickname,
-                    avatar: res.headimgurl,
-                    type:'weixin',
-                }))
-            })
+        const { code,state } = this.props.location.query;
+        if(state == 'qq'){
+            this.getQQUserInfo(code);
+        }else{
+            this.getWxUserInfo(code);
         }
         QQLogin.init();
         WeixinLogin.init();
+    }
+    getWxUserInfo(code){
+        if(code){
+            this.code = code;
+            WeixinLogin.getUserInfo(code,(res,error)=>{
+                if(error){
+                    message.error(error);
+                }else{
+                    this.props.dispatch(thirdLogin({
+                        openId: res.openid,
+                        sex: res.sex,
+                        userName:res.nickname,
+                        avatar: res.headimgurl,
+                        type:'weixin',
+                    },null,this.props.redirect))
+                }
+            })
+        }
+    }
+    getQQUserInfo(code){
+        if(code){
+            this.code = code;
+            QQLogin.getUserInfo(code,(res,error)=>{
+                if(error){
+                    message.error(error);
+                }else{
+                    this.props.dispatch(thirdLogin({
+                        openId: res.openid,
+                        sex: res.gender == "男"?1:0,
+                        userName:res.nickname,
+                        avatar: res.figureurl_qq_2,
+                        type:'qq',
+                    },null,this.props.redirect))
+                }
+            })
+        }
     }
     toggleWx=()=>{
         this.setState({
@@ -54,36 +94,6 @@ export default class OtherLogin extends React.Component {
     }
     qqLogin=()=>{
         QQLogin.login();
-        // QQLogin.showPopup();
-        // QC.Login({
-        //        btnId:"qqLoginBtn"   //插入按钮的节点id
-        // });
-        // QC.Login({
-        //     //btnId：插入按钮的节点id，必选
-        //     btnId: "qqLoginBtn",
-        //     //用户需要确认的scope授权项，可选，默认all
-        //     scope: "all",
-        //     //按钮尺寸，可用值[A_XL| A_L| A_M| A_S|  B_M| B_S| C_S]，可选，默认B_S
-        //     size: "A_XL"
-        // }, function(reqData, opts) { //登录成功
-        //     console.log(reqData)
-        //     // //根据返回数据，更换按钮显示状态方法
-        //     // var dom = document.getElementById(opts['btnId']),
-        //     //     _logoutTemplate = [
-        //     //         //头像
-        //     //         '<span><img src="{figureurl}" class="{size_key}"/></span>',
-        //     //         //昵称
-        //     //         '<span>{nickname}</span>',
-        //     //         //退出
-        //     //         '<span><a href="javascript:QC.Login.signOut();">退出</a></span>'
-        //     //     ].join("");
-        //     // dom && (dom.innerHTML = QC.String.format(_logoutTemplate, {
-        //     //     nickname: QC.String.escHTML(reqData.nickname),
-        //     //     figureurl: reqData.figureurl
-        //     // }));
-        // }, function(opts) { //注销成功
-        //     alert('QQ登录 注销成功');
-        // });
     }
     render() {
         return (

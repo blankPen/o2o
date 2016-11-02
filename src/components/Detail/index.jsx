@@ -9,7 +9,7 @@ import History from 'common/History';
 import Img from 'common/Img';
 import * as DomUtils from 'common/utils/dom';
 import * as actions from 'actions/DetailAction';
-import { message,Rate,Tooltip ,Tabs,Radio,Checkbox,Affix} from 'antd';
+import { message,Rate,Tooltip ,Tabs,Radio,Checkbox,Affix,Pagination} from 'antd';
 import CartBox from 'components/Detail/CartBox/';
 import Loading from 'components/common/Loading/'
 const moment = require('moment');
@@ -235,7 +235,7 @@ export class Detail extends React.Component {
                                         {data.storeName}
                                         <i className="fa fa-caret-down hide"></i>
                                     </div>
-                                    <Rate value={data.storeScore} /> {data.storeScore}
+                                    <Rate value={data.storeScore} disabled /> {data.storeScore}
                                     <div className="option">
                                         <span>{data.startPrice+'元起送'}</span>
                                         <span>{data.expressFee+'元配送费'}</span>
@@ -366,7 +366,9 @@ export class RatedBox extends React.Component {
         this.state = {
             rateSearchData:{
                 gevalType:0,
-                isHaveContent:0
+                isHaveContent:0,
+                pageNo:1,
+                pageSize:15
             }
         }
     }
@@ -377,10 +379,16 @@ export class RatedBox extends React.Component {
                 ...this.state.rateSearchData,
                 gevalType:e.target.value
             }
+        },()=>{
+            this.loadRate();
         });
     }
 
     componentWillMount(){
+        this.loadRate();
+    }
+
+    loadRate=()=>{
         this.props.dispatch(
             actions.getStoreEvaluatList(
                 {storeId:this.props.storeId,search:this.state.rateSearchData}));
@@ -392,7 +400,54 @@ export class RatedBox extends React.Component {
                 ...this.state.rateSearchData,
                 isHaveContent:e.target.checked?1:0
             }
+        },()=>{
+            this.loadRate();
         });
+        
+    }
+
+    pageChange =(page)=>{
+        this.setState({
+            rateSearchData:{
+                ...this.state.rateSearchData,
+                pageNo:page
+            }
+        },()=>{
+            this.loadRate();
+        });
+    }
+
+    renderRateContent=()=>{
+        let data = this.props.evaluatList&&this.props.evaluatList.shopEvaluateTagSave||{};
+        let list = this.props.evaluatList&&this.props.evaluatList.evaluateGoodList||[];
+        if(list.length>0){
+            return(
+                <div className="content-box">
+                    {list.map((item,i)=>{
+                        return(
+                            <RateItem key={i} data={item}></RateItem>
+                        )
+                    })}
+                    <div className="pagination-bar">
+                        <Pagination 
+                            defaultCurrent={1} 
+                            total={data.allReview} 
+                            onChange={this.pageChange}
+                            pageSize={15}
+                        />
+                    </div>
+                </div>
+            )
+        }else{
+            return(
+                <div className="content-box">
+                    <div className="no-content">
+                        暂无评价内容
+                    </div>
+                </div>
+            )
+        }
+        
     }
 
     render(){
@@ -425,13 +480,7 @@ export class RatedBox extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="content-box">
-                    {list.map((item,i)=>{
-                        return(
-                            <RateItem key={i} data={item}></RateItem>
-                        )
-                    })}
-                </div>
+                {this.renderRateContent()}
             </div>
         )
     }
@@ -452,13 +501,14 @@ export class RateItem extends React.Component {
 
     render(){
         let data = this.props.data||{};
+        let feelText = data.gevalScore>4.5?'好评':data.gevalScore>2?'中评':'差评';
         return(
             <div className="rate-item">
                 <div className="rate-info">
                     <span className="user-name">{data.gevalFrommembername}</span>
                     <span className="all-rate">总体评价:</span>
-                    <Rate value={data.gevalScore} />
-                    <span className="feel">好评</span>
+                    <Rate value={data.gevalScore} disabled />
+                    <span className="feel">{feelText}</span>
                     <span className="rate-time">
                         评价时间
                         <span>{moment(data.gevalAddTime).format('YYYY-MM-DD')}</span>

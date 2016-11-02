@@ -34,7 +34,7 @@ export class index extends React.Component {
                 <Img src="waimai.png" width="603" height="383"/>
             </div>
             <div className="sign_body_rigth">
-                  <LoginSingle/>
+                  <LoginSingle location={this.props.location} />
             </div>
         </div>
         <Footer/>
