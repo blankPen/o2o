@@ -139,7 +139,7 @@ export class Payment extends React.Component {
                 if(res.payState=="1"){
                     clearInterval(this.state.interval_id);
                     message.success('支付成功');
-                    History.push('/paysucc/'+this.props.params.orderSn+"/1");
+                    History.push('/paysucc/'+this.props.payInfo.orderId+"/1");
                 }
             }));
         },2500);
@@ -162,7 +162,7 @@ export class Payment extends React.Component {
                 if(res.result==1){
                     //余额支付成功
                     message.success('支付成功');
-                    History.push('/paysucc/'+this.props.params.orderSn+"/1");
+                    History.push('/paysucc/'+this.props.params.orderId+"/1");
                 }else{
                     this.refs.pwd_tips.innerHTML = res.msg;
                 }
@@ -209,7 +209,7 @@ export class Payment extends React.Component {
         this.props.dispatch(actions.getPayResult(this.paySn,(res)=>{
             if(res.payState=="1"){
                 message.success('支付成功');
-                History.push('/paysucc/'+this.props.params.orderSn+"/1");
+                History.push('/paysucc/'+this.props.params.orderId+"/1");
             }else{
                 this.toogleRenderDialog();
                 message.error('支付失败，请重新支付');
