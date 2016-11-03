@@ -413,7 +413,7 @@ export class index extends React.Component {
                         我的余额：
                     </Col>
                     <Col span={8} >
-                        <i className="fa fa-yen">&nbsp;{userInfo.availablePredeposit}</i>
+                        <i className="fa fa-yen"></i>&nbsp;{userInfo.availablePredeposit}
                     </Col>
                     <Col span={6} >
                         <a href='javascript:void(0);' className="btn" onClick={this.saveMoney}>余额不足 ？ </a>
