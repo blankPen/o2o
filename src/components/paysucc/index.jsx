@@ -34,7 +34,7 @@ export class PaySucc extends React.Component {
             this.props.dispatch(getMenuList(this.props.params.orderId||"",(res)=>{
                 let yujimin=res.data.paymentTime+15*60*1000;
                 let songda=res.data.paymentTime+60*60*1000;
-                let min=TimeConvert("n",new Date().getTime(),yujimin);
+                let min=TimeConvert.dateDiff("n",new Date().getTime(),yujimin);
                 this.setState({
                     mobPhone:res.data.address.mobPhone,
                     orderReceiving:min,
