@@ -91,6 +91,9 @@ export class OrderPreview extends React.Component {
                     }
                 });
                 this.loadCoupons();
+            }else{
+                message.error('订单异常，请重试。');
+                History.goBack();
             }
         }));
     }

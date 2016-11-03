@@ -3,7 +3,7 @@
  * @Date:   2016-10-22 12:37:44
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 11:15:26
+ * @Last Modified time: 2016-11-03 19:09:40
  */
 
 'use strict';
@@ -45,7 +45,6 @@ export default class CartBox extends React.Component {
                 complete: ()=>{
                     document.body.removeChild(target);
                     target = null;
-                    console.log(icon)
                 }
             }).init();
         }
@@ -85,7 +84,7 @@ export default class CartBox extends React.Component {
                         <div>{goods.goodsName}</div>
                     </span>
                     <span>
-                        <NumInput value={num} onChange={this.changeItem.bind(this,id)} />
+                        <NumInput max={99} value={num} onChange={this.changeItem.bind(this,id)} />
                     </span>
                     <span>￥{goods.goodsStorePrice}</span>
                 </div>
