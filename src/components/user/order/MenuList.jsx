@@ -277,6 +277,7 @@ export class Line extends React.Component {
         let orderState=detail.orderState;
         let succ=(<Icon type="check-circle-o" style={{ fontSize: '26px','color':'green' }} />);
         let error=(<Icon type="clock-circle-o" style={{ fontSize: '26px','color':'red'  }} />);
+        let songda=detail.paymentState?TimeConvert.minsCon(detail.paymentTime+60*60*1000,"hm"):TimeConvert.minsCon(detail.createTime+60*60*1000,"hm");
         return(
              <Timeline.Item dot={this.props.isError?error:succ}>
                 <span className="line-title">{item.stateInfo}</span>
@@ -285,7 +286,7 @@ export class Line extends React.Component {
                     <div className="djs">
                         {orderState=="10"?this.state.dsjtext:null}
                         {orderState=="0"?"订单已被取消":null}
-                        {orderState=="30"?"预计在"+detail.predictedArrivalTime+"送达，请耐心等待!":null}
+                        {orderState=="30"?"预计在"+songda+"送达，请耐心等待!":null}
                     </div>
                     {orderState=="0"?(<div className="tip">
                         你的订单由于商家暂时无法配送或支付超时已被取消
@@ -500,7 +501,7 @@ export class MenuList extends React.Component {
         super(props);
         this.state={
             loading:false,
-            showReceiving:1
+            showReceiving:true
         }
     }
     componentDidMount(){
@@ -551,22 +552,16 @@ export class MenuList extends React.Component {
               "storeId": detail.storeId,
               "numberOfStars": values.rate
             },(re)=> {
-              if(re.result==0){
-                message.success(re.msg);
-               /* this.setState({
-                    showReceiving:false
-                });*/
-                this.props.dispatch(getMenuList(this.props.orderId,()=>{
-                    this.setState({
-                        loading:false,
-                        showReceiving:2
-                    });
-                }))
-                callback && callback(re);
-              }else{
-                message.error(re.msg);
-                console.log(re.msg);
-              }
+                if(re.result==1){
+                    this.props.dispatch(getMenuList(this.props.orderId,()=>{
+                        this.setState({
+                            loading:false,
+                            showReceiving:false
+                        });
+                    }))
+                }else{
+                    message.error(re.msg);
+                }
             }
         ));
     }
@@ -623,7 +618,7 @@ export class MenuList extends React.Component {
                     {orderState=="40"&&detail.evaluationStatus==0?//未评价  this.state.showReceiving===1  orderState=="40"&&detail.evaluationStatus==0?
                             (<ReceivingFinish detail={detail} handleSubmit={this.closeToReceiving}/>)
                         :orderState=="40"&&detail.evaluationStatus==1?//已评价   this.state.showReceiving===2  orderState=="40"&&detail.evaluationStatus==1?
-                            (<ViewReceiving memberId={this.props.userInfo.memberId} />)
+                            (<ViewReceiving memberId={this.props.userInfo.memberId} orderId={detail.orderId} />)
                         ://时间轴
                             (
                                 <Timelines

@@ -20,10 +20,15 @@ function mapStateToProps({
 export class Feedback extends React.Component {
 	constructor(props) {
         super(props);
+        this.disable=false;
     }
     onSend=()=>{
     	let value=this.refs.textarea.value||"";
     	let state=this.props.location.state||{};
+        if(this.disable){
+            message.error("不能提交多次哦!");
+            return;
+        }
     	if(!value.trim()){
     		message.error("不能提交空白内容!");
     		return;
@@ -32,10 +37,11 @@ export class Feedback extends React.Component {
     		message.error("内容不得超过70字!");
     		return;
     	}
-    	if(!state.phone){
+    	if(!this.props.userInfo.memberMobile){
     		message.error("还未绑定手机,无法提交反馈信息!");
     		return;
     	}
+        this.disable=true;
     	this.props.dispatch(theAjax("/rest/api/feedback/feeback",{
     		phoneType:"3",
     		content:value,
@@ -44,13 +50,16 @@ export class Feedback extends React.Component {
     		orderSn:state.orderSn
     	},(res)=>{
     		if(res.result==1){
-    			message.success(res.msg);
-    			History.go("/login");
+                message.success(res.msg+",一秒后返回主页!");
+                setTimeout(()=>{
+                    History.push("/");
+                },1000);
     		}else{
+                this.disable=false;
     			message.error(res.msg);
     		}
     		if(res.result==2){
-    			History.go("/login");
+    			History.push("/login");
     		}
     	},()=>{
     		message.error("服务器异常,请稍后再试!");
