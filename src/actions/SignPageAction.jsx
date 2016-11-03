@@ -182,10 +182,7 @@ export function thirdLogin(params,call,redirect){
     return function(dispatch){
         ajax({
             url: '/rest/api/member/thirdLogin',
-            data: {
-                ...params,
-                flag: 1,
-            },
+            data: params,
             type: 'get',
             success: function(res){
                 if(res.result == 1){

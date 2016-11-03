@@ -47,10 +47,12 @@ export class Main extends React.Component {
     componentWillMount() {
         let code = this.getQueryString('code');
         let state = this.getQueryString('state');
+        let flag = this.getQueryString('flag');
         if(code){
             this.props.dispatch(thirdLogin({
                 code,
                 state,
+                flag,
             }));
         }
         // if(state == 'weixin'){
@@ -59,16 +61,16 @@ export class Main extends React.Component {
         //     this.getQQUserInfo(code);
         // }
     }
-    // getQueryString(name) {
-    //     // return this.props.location.query[name];
-    //     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-    //     var res = this.__THREELOGIN_CODE__.split('?');
-    //     if(res.length >= 2){
-    //         var r = res[1].match(reg);
-    //         if (r != null) return unescape(r[2]);
-    //     }
-    //     return null;
-    // }
+    getQueryString(name) {
+        // return this.props.location.query[name];
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var res = this.__THREELOGIN_CODE__.split('?');
+        if(res.length >= 2){
+            var r = res[1].match(reg);
+            if (r != null) return unescape(r[2]);
+        }
+        return null;
+    }
     // getWxUserInfo(code){
     //     if(code){
     //         this.code = code;
