@@ -240,12 +240,13 @@ export class Detail extends React.Component {
                                     <div className="option">
                                         <span>{data.startPrice+'元起送'}</span>
                                         <span>{data.expressFee+'元配送费'}</span>
-                                        <span>{data.shippingMethod=='1'?'由平台费送':'由商家配送'}</span>
+                                        <span>{data.shippingMethod=='1'?'由平台配送':'由商家配送'}</span>
                                     </div>
                                 </div>
                                 <div className="buttom-info">
                                     <div>{'商家地址：'+data.storeAddress}</div>
-                                    <div>{'商家电话：'+data.storeTels}</div>
+                                   {data.storeTels?
+                                        (<div>{'商家电话：'+data.storeTels}</div>):undefined} 
                                     <div>
                                         营业时间：{
                                             data.startBusinessTime && data.endBusinessTime ?
@@ -629,7 +630,7 @@ export class CategoryItem extends React.Component {
                 </div>
                 <div className="categroy-name">{data.goodsName}</div>
                 <div className="sale-info clearfix">
-                    <div className="sold-count">月售315份</div>
+                    <div className="sold-count">{`月售${data.goodsMonSales||0}份`}</div>
                     <div className="zan-count">
                         <i className="fa fa-fw fa-thumbs-up"></i>
                        ({data.praise})

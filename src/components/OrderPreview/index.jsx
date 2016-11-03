@@ -243,7 +243,7 @@ export class OrderPreview extends React.Component {
                     <div className="member-top">
                         <span className="member-name">{address.trueName}</span>
                         <span className="member-sex">
-                            {address.sex=='1'?'先生：':'女生：'}
+                            {address.sex=='1'?'先生：':'女士：'}
                         </span>
                         <span className="member-phone">
                             {address.mobPhone}
