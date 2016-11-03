@@ -446,7 +446,7 @@ export class Steps extends React.Component {
   constructor(props) {
     super(props);
 
-    this.labelList=['1.提交订单','2. 选择支付方式','3. 购买成功'];
+    this.labelList = this.props.labelList||['1.提交订单','2. 选择支付方式','3. 购买成功'];
   }
 
 
