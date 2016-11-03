@@ -3,7 +3,7 @@
  * @Date:   2016-10-20 09:26:57
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-01 15:34:41
+ * @Last Modified time: 2016-11-03 19:23:01
  */
 
 'use strict';
@@ -112,11 +112,11 @@ BaiduMap.prototype = {
         local.search(value);
     },
     // 创建自动补全插件
-    createAutocomplete({id, onhighlight, onconfirm }) {
+    createAutocomplete({id, onhighlight, onconfirm,local }) {
         var self = this;
         var ac = new BMap.Autocomplete({
             "input": id,
-            "location": this.map
+            "location": local || this.map
         });
         ac.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
             var value = "";

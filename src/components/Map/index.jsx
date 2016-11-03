@@ -3,7 +3,7 @@
  * @Date:   2016-10-19 21:02:26
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 15:41:43
+ * @Last Modified time: 2016-11-03 19:26:08
  */
 
 'use strict';
@@ -84,19 +84,23 @@ export class Maper extends React.Component {
                     guessCity: address.addressComponents.city
                 });
             });
-             //建立一个自动完成的对象
-            maper.createAutocomplete({
-                id: "search-input",
-                // onhighlight: this.handleSearchKeyChange,
-                onconfirm: (value)=>{
-                    this.handleSearchKeyChange(value);
-                    this.searchMap(value);
-                }
-            });
+            //  //建立一个自动完成的对象
+            this.createAutocomplete(this.state.selectCity);
         })
     }
     componentWillUnmount() {
         this.event && this.event.remove();
+    }
+    createAutocomplete=(local)=>{
+        this.maper.createAutocomplete({
+            id: "search-input",
+            local,
+            // onhighlight: this.handleSearchKeyChange,
+            onconfirm: (value)=>{
+                this.handleSearchKeyChange(value);
+                this.searchMap(value);
+            }
+        });
     }
     savePosition(data){
         let { searchResult,activeResultIndex } = this.state;
@@ -120,6 +124,7 @@ export class Maper extends React.Component {
             searchResult: [],
             activeResultIndex: 0,
         });
+        this.createAutocomplete(value);
         this.maper.map.centerAndZoom(value,12);
     }
     toggleSelector(type){
