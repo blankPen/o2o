@@ -38,7 +38,7 @@ export class PaySucc extends React.Component {
                 this.setState({
                     mobPhone:res.data.address.mobPhone,
                     orderReceiving:min,
-                    arrive:TimeConvert.secondTohms(songda/1000,"hm")
+                    arrive:TimeConvert.minsCon(songda,"hm")
                 });
             }));
         }
