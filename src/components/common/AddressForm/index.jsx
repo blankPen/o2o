@@ -3,7 +3,7 @@
  * @Date:   2016-10-25 17:19:49
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-01 11:16:48
+ * @Last Modified time: 2016-11-03 19:38:28
  */
 
 'use strict';
@@ -105,6 +105,7 @@ export class AddressForm extends React.Component {
         this.setState({
             loading: false
         });
+        this.props.form.resetFields();
         this.props.onCancel();
     }
     validateHelp(name){
