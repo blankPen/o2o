@@ -77,10 +77,10 @@ const filter_order = [{
     value: 'distance'
 }, {
     label: '销量最高',
-    value: 'store_mons_ales'
+    value: 'store_mons_sales'
 }, {
     label: '评分最高',
-    value: 'storeScore'
+    value: 'store_score'
 }, {
     label: '起送价最低',
     value: 'start_price'
