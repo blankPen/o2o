@@ -25,7 +25,7 @@ export class index extends React.Component {
         <div className="sign_head">
             <div className="sign_logo">
                 <a href='/#/'>
-                  <Img alt="雷铭官网" src="logo.png" className="sign_img" />
+                  <Img alt="雷铭O2O" src="logo.png" className="sign_img" />
                 </a>
            </div>
         </div>

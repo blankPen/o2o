@@ -541,7 +541,7 @@ let index= class  extends React.Component {
             登 录
           </Button>
           <div className="sign_agreement">
-            <p>提示： 未注册雷铭官网账号的手机号，登录时将自动注册雷铭官网账号，且代表您已同意<a href="javascript:void(0);" onClick={() => this.setModalVisible(true)}>《雷铭官网网用户协议》</a></p>
+            <p>提示： 未注册雷铭O2O账号的手机号，登录时将自动注册雷铭O2O账号，且代表您已同意<a href="javascript:void(0);" onClick={() => this.setModalVisible(true)}>《雷铭O2O用户协议》</a></p>
           </div>
         </Form>
       )

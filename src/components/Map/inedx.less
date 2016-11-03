@@ -39,6 +39,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         transition: width 0.3s;
+        z-index: 1;
         &.open {
             width: 1000px;
             .map-controller{
@@ -174,7 +175,7 @@
                     min-width: 200px;
                     margin-top: 15px;
                     background: #fafafa;
-                    z-index: 100;
+                    /* z-index: 100; */
                     border: 1px solid #eee;
                     &:before {
                         content: '';
@@ -203,7 +204,7 @@
                 }
                 .selector-content {
                     width: 670px;
-                    height: 300px;
+                    height: 260px;
                     padding: 15px 25px;
                 }
             }

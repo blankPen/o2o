@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 19:40:58
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-02 18:20:24
+ * @Last Modified time: 2016-11-03 11:18:33
  */
 
 'use strict';
@@ -75,7 +75,7 @@ export class index extends React.Component {
         return (
             <Provider store={this.props.store}>
                 <Router history={this.props.history} >
-                    <Route>
+                    <Route onEnter={autoLogin}>
                         <Route path='/' component={PublicMain} onEnter={requireSetPosition}>
                             <IndexRoute component={asyncLoader(Home)} />
                             <Route path="detail/:storeId" component={asyncLoader(Detail)}/>

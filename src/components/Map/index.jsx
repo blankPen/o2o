@@ -282,10 +282,10 @@ export class Maper extends React.Component {
                     <a className="map-footer-link" href="#" target="_blank">零售招商合作申请</a>
                     </div>
                     <div className="map-footer-copyright">
-                         ©<span title="">2016</span>
-                        <a href="http://www.leimingtech.com/">雷铭官网</a>
-                             www.leimingtech.com
-                        <a target="_blank" href="#">京ICP证070791号</a> 京公网安备11010502025545号
+                         ©<span title="">2016</span>&nbsp;
+                        <a href="http://www.leimingtech.com/"  target="_blank">雷铭官网
+                             leimingtech.com</a>&nbsp;
+                        <a href="http://www.miitbeian.gov.cn/" target="_blank">京ICP备12000912号-1</a>
                     </div>
                 </div>
             </div>

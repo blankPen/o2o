@@ -122,7 +122,7 @@ export class PaySucc extends React.Component {
                             </div>
                         </a>
                     </div>*/}
-                    <div className="theys">也可以从各大手机市场下载雷铭官网app</div>
+                    <div className="theys">也可以从各大手机市场下载雷铭O2OAPP</div>
                     <div className="wxgzh">
                         <div className="wxgzh-K clearfix">
                             <Img src="wxgzh.jpg" isShow={true} />

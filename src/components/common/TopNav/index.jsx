@@ -50,7 +50,7 @@ export class TopNav extends React.Component {
                             </div>
                             <div className="home">
                                 <i className="fa fa-home mr5"></i>
-                                雷铭官网
+                                <a href="www.leimingtech.com" target="_blank">雷铭官网</a>
                             </div>
                         </div>
                     </div>
