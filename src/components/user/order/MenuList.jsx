@@ -232,6 +232,8 @@ export class Line extends React.Component {
     }
     //确认收货
     enterOrder=()=>{
+        let detail=this.props.detail||{};
+        
         let div=(<div className="clearDialog">
                     <div className="center title">您确定已收到货物？</div>
                     <div className="center">如需帮助，请致电客服 010-65546961</div>
