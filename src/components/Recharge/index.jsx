@@ -46,7 +46,7 @@ export class index extends React.Component {
             payInfo:props.payInfo,
             minute:'00',
             second:'00',
-            payWay:2,    // 1：微信 2：支付宝
+            payWay:1,    // 1：微信 2：支付宝
             is_loading:true, //是否加载
             showDialog:false, //是否显示弹框
             renderDialogType:'wx',//is :选择支付成功或失败 wx:微信扫码支付 ot:支付超时
@@ -146,6 +146,7 @@ export class index extends React.Component {
             this.props.dispatch(actions.getPayResult(this.pdrSn,(res)=>{
                 if(res.payState=="1"){
                     clearInterval(this.state.interval_id);
+                    message.success('支付成功');
                     History.push('/paysucc/'+this.props.params.orderSn+"/2");
                 }
             }));
@@ -160,7 +161,26 @@ export class index extends React.Component {
         let values = this.state.values;
         let index = this.state.tab_index;
         console.log(this.pdrSn);
-        if(payWay=='2'){//支付宝支付
+        if(payWay=='1'){ //微信支付
+            this.props.dispatch(actions.toWeiXinPay(this.pdrSn,(res)=>{//请求微信二维码url
+                if(res.result==1){
+                    this.toogleRenderDialog();
+                    this.setState({
+                        renderDialogType:'wx'
+                    });
+                    let dom = document.getElementById('qr_code');
+                    if(dom){
+                        dom.innerHTML=' ';
+                    }
+                    new QRcode(dom,{ //生成二维码
+                        text:res.data.tocodeurl,
+                        width:300,
+                        height:300
+                    });
+                    this.getPayResult();    //计时请求订单状态
+                }
+            }));
+        }else if(payWay=='2'){//支付宝支付
             this.setState({
                 renderDialogType:'is'
             });
@@ -288,7 +308,7 @@ export class index extends React.Component {
                         className={tab1_class}
                         onClick={()=>this.changeTab(1)}
                     >
-                        支付宝
+                        微信/支付宝
                     </div>
                     {/*<div
                         className={tab2_class}
@@ -309,7 +329,6 @@ export class index extends React.Component {
                                 onChange={this.changePayWay}
                                 value={this.state.payWay
                             }>
-                               {/**
                                 <Radio key="a" value={1}>
                                     <div className="pay-way">
                                         <Img
@@ -317,7 +336,6 @@ export class index extends React.Component {
                                         ></Img>
                                     </div>
                                 </Radio>
-                                **/}
                                 <Radio key="b" value={2}>
                                     <div className="pay-way">
                                         <Img
