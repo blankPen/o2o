@@ -5,7 +5,8 @@ import React from 'react';
 import './index.less';
 import { connect } from 'react-redux';
 import store from 'stores';
-import {Icon,Button,message,Form,Input,TimePicker,Rate,Row,Col } from 'antd';
+import {Icon,Button,message,Form,Input,TimePicker,Row,Col } from 'antd';
+import Rate from 'components/common/Rate';
 import {
     myEvaluateInfo
 } from 'actions/OrderAction';

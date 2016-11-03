@@ -11,7 +11,8 @@ import {
     getCollectList,
     removeCollect
 } from 'actions/UserAction';
-import { Timeline, Icon,Rate ,message } from 'antd';
+import { Timeline, Icon,message } from 'antd';
+import Rate from 'components/common/Rate';
 import Loading from 'components/common/Loading/'
 import History from 'common/History';
 const moment = require('moment');
@@ -62,25 +63,25 @@ export class CollectList extends React.Component {
                 </div>
                 <ul className="clearfix collectul">
                     {list.map((item,i)=>{
-                        return (<Collect 
-                                        key={i} 
-                                        data={item} 
+                        return (<Collect
+                                        key={i}
+                                        data={item}
                                         dispatch={this.props.dispatch}
-                                        userInfo={this.props.userInfo} 
+                                        userInfo={this.props.userInfo}
                                         refresh={this.refresh} />);
                     })}
                 </ul>
                 </Loading>
             </div>
             );
-        
+
     }
 }
 export class Collect extends React.Component {
     constructor(props) {
         super(props);
     }
-    
+
     renderTags(list){
         let smallTags = [];
         let bigTags = [];
@@ -148,7 +149,7 @@ export class Collect extends React.Component {
                                 <div className="title">{data.storeName}</div>
                                 {isOpen?(<div className="starAndNum">
                                     <div className="star">
-                                        <Rate allowHalf disabled count={5}  value={data.storeScore||0} />{data.storeScore||0}分
+                                        <Rate disabled value={data.storeScore||0} />{data.storeScore||0}分
                                     </div>
                                     <div className="num">月售 {data.storeMonSales} 单</div>
                                 </div>):(

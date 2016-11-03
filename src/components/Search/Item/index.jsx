@@ -3,7 +3,7 @@
  * @Date:   2016-10-24 18:11:42
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-24 22:13:05
+ * @Last Modified time: 2016-11-03 16:14:18
  */
 
 'use strict';
@@ -11,7 +11,7 @@ import './index.less';
 import React from 'react';
 import { Link } from 'react-router';
 import Img from 'common/Img';
-import { Rate } from 'antd';
+import Rate from 'components/common/Rate';
 
 export default class Item extends React.Component {
     static propTypes = {
