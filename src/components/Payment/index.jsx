@@ -39,7 +39,7 @@ export class Payment extends React.Component {
         let orderSn = this.props.params.orderSn;
         let memberId = this.props.userInfo.memberId;
         let orderAmount = this.props.payInfo.orderAmount;
-        let availablePredeposit = this.props.userInfo.availablePredeposit;
+        let availablePredeposit = this.props.payInfo.availablePredeposit;
         this.state={
             minute:'00',
             second:'00',
@@ -70,8 +70,12 @@ export class Payment extends React.Component {
         this.props.dispatch(actions.getPayInfo(this.props.params.orderSn,(res)=>{
             this.paySn = this.props.payInfo.paySn; //为了方便之后取参
             this.orderDjs(this.props.payInfo);
+            let orderAmount = this.props.payInfo.orderAmount;
+            let availablePredeposit = this.props.payInfo.availablePredeposit;
             this.setState({
-                is_loading:false
+                is_loading:false,
+                tab_index:availablePredeposit>orderAmount?2:1,//1：线上支付 2：余额支付
+                can_banlance_pay:availablePredeposit>orderAmount
             });
         }));
     }
@@ -162,7 +166,7 @@ export class Payment extends React.Component {
                 if(res.result==1){
                     //余额支付成功
                     message.success('支付成功');
-                    History.push('/paysucc/'+this.props.params.orderId+"/1");
+                    History.push('/paysucc/'+this.props.payInfo.orderId+"/1");
                 }else{
                     this.refs.pwd_tips.innerHTML = res.msg;
                 }
@@ -209,7 +213,7 @@ export class Payment extends React.Component {
         this.props.dispatch(actions.getPayResult(this.paySn,(res)=>{
             if(res.payState=="1"){
                 message.success('支付成功');
-                History.push('/paysucc/'+this.props.params.orderId+"/1");
+                History.push('/paysucc/'+this.props.payInfo.orderId+"/1");
             }else{
                 this.toogleRenderDialog();
                 message.error('支付失败，请重新支付');
