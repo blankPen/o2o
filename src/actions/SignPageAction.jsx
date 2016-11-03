@@ -181,9 +181,11 @@ export function getCheckCode(params,call) {
 export function thirdLogin(params,call,redirect){
     return function(dispatch){
         ajax({
-            url: '/rest/api/member/thirdLogin',
-            data: params,
-            type: 'get',
+            url: '/rest/api/login/thirdLogin',
+            data: {
+                ...params,
+                flag: 1
+            },
             success: function(res){
                 if(res.result == 1){
                     dispatch({
@@ -194,9 +196,6 @@ export function thirdLogin(params,call,redirect){
                 }else{
                     message.error(res.msg);
                 }
-                // if(redirect){
-                //     History.push(redirect);
-                // }
             }
         })
     }

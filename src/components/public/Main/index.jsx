@@ -47,19 +47,12 @@ export class Main extends React.Component {
     componentWillMount() {
         let code = this.getQueryString('code');
         let state = this.getQueryString('state');
-        let flag = this.getQueryString('flag');
         if(code){
             this.props.dispatch(thirdLogin({
                 code,
                 state,
-                flag,
             }));
         }
-        // if(state == 'weixin'){
-        //     this.getWxUserInfo(code);
-        // }else{
-        //     this.getQQUserInfo(code);
-        // }
     }
     getQueryString(name) {
         // return this.props.location.query[name];
