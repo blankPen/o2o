@@ -182,7 +182,10 @@ export function thirdLogin(params,call,redirect){
     return function(dispatch){
         ajax({
             url: '/rest/api/member/thirdLogin',
-            data: params,
+            data: {
+                ...params,
+                flag: 1,
+            },
             type: 'get',
             success: function(res){
                 if(res.result == 1){
@@ -191,7 +194,6 @@ export function thirdLogin(params,call,redirect){
                         info: res.data,
                         expires: 0
                     })
-                    location.href = '/#/';
                 }else{
                     message.error(res.msg);
                 }

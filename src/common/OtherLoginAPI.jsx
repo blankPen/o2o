@@ -3,7 +3,7 @@
  * @Date:   2016-11-01 15:34:55
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-03 10:28:38
+ * @Last Modified time: 2016-11-03 10:44:03
  */
 
 'use strict';
@@ -97,7 +97,7 @@ export const WeixinLogin = {
             appid: WxConfig.appid,
             scope: "snsapi_login",
             redirect_uri: encodeURIComponent(redirectUri),
-            state: 'weixin'
+            state: 'wx'
         });
     },
     getUserInfo(code, callback) {

@@ -47,58 +47,64 @@ export class Main extends React.Component {
     componentWillMount() {
         let code = this.getQueryString('code');
         let state = this.getQueryString('state');
-        if(state == 'weixin'){
-            this.getWxUserInfo(code);
-        }else{
-            this.getQQUserInfo(code);
-        }
-    }
-    getQueryString(name) {
-        // return this.props.location.query[name];
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var res = this.__THREELOGIN_CODE__.split('?');
-        if(res.length >= 2){
-            var r = res[1].match(reg);
-            if (r != null) return unescape(r[2]);
-        }
-        return null;
-    }
-    getWxUserInfo(code){
         if(code){
-            this.code = code;
-            WeixinLogin.getUserInfo(code,(res,error)=>{
-                if(error){
-                    message.error(error);
-                }else{
-                    this.props.dispatch(thirdLogin({
-                        openId: res.openid,
-                        sex: res.sex,
-                        userName:res.nickname,
-                        avatar: res.headimgurl,
-                        type:'weixin',
-                    },null,false))
-                }
-            })
+            this.props.dispatch(thirdLogin({
+                code,
+                state,
+            }));
         }
+        // if(state == 'weixin'){
+        //     this.getWxUserInfo(code);
+        // }else{
+        //     this.getQQUserInfo(code);
+        // }
     }
-    getQQUserInfo(code){
-        if(code){
-            this.code = code;
-            QQLogin.getUserInfo(code,(res,error)=>{
-                if(error){
-                    message.error(error);
-                }else{
-                    this.props.dispatch(thirdLogin({
-                        openId: res.openid,
-                        sex: res.gender == "男"?1:0,
-                        userName:res.nickname,
-                        avatar: res.figureurl_qq_2,
-                        type:'qq',
-                    },null,false))
-                }
-            })
-        }
-    }
+    // getQueryString(name) {
+    //     // return this.props.location.query[name];
+    //     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    //     var res = this.__THREELOGIN_CODE__.split('?');
+    //     if(res.length >= 2){
+    //         var r = res[1].match(reg);
+    //         if (r != null) return unescape(r[2]);
+    //     }
+    //     return null;
+    // }
+    // getWxUserInfo(code){
+    //     if(code){
+    //         this.code = code;
+    //         WeixinLogin.getUserInfo(code,(res,error)=>{
+    //             if(error){
+    //                 message.error(error);
+    //             }else{
+    //                 this.props.dispatch(thirdLogin({
+    //                     openId: res.openid,
+    //                     sex: res.sex,
+    //                     userName:res.nickname,
+    //                     avatar: res.headimgurl,
+    //                     type:'weixin',
+    //                 },null,false))
+    //             }
+    //         })
+    //     }
+    // }
+    // getQQUserInfo(code){
+    //     if(code){
+    //         this.code = code;
+    //         QQLogin.getUserInfo(code,(res,error)=>{
+    //             if(error){
+    //                 message.error(error);
+    //             }else{
+    //                 this.props.dispatch(thirdLogin({
+    //                     openId: res.openid,
+    //                     sex: res.gender == "男"?1:0,
+    //                     userName:res.nickname,
+    //                     avatar: res.figureurl_qq_2,
+    //                     type:'qq',
+    //                 },null,false))
+    //             }
+    //         })
+    //     }
+    // }
     closeLogin=()=>{
         this.props.dispatch(toggleLoginDialog(false));
     }
