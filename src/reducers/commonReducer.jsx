@@ -53,7 +53,8 @@ export default handleActions({
     },
     'logout/success' :(state, action)=>{
         sessionStorage.removeItem('user_id');
-        Cookie.remove('user_info', { secure: true });
+        Cookie.remove('user_info');
+        action.flag !== false && location.reload();
         return {
             ...state,
             userInfo: undefined

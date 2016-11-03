@@ -136,9 +136,9 @@ export function logout(callback,flag){
             success: (res)=>{
                 if(res.result == 1){
                     dispatch({
-                        type: 'logout/success'
+                        type: 'logout/success',
+                        flag: flag
                     })
-                    flag !== false && location.reload();
                 }
             }
         })
