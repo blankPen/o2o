@@ -77,7 +77,7 @@ const filter_order = [{
     value: 'distance'
 }, {
     label: '销量最高',
-    value: 'store_mons_sales'
+    value: 'store_mon_sales'
 }, {
     label: '评分最高',
     value: 'store_score'
