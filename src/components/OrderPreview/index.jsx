@@ -73,7 +73,7 @@ export class OrderPreview extends React.Component {
             goodsIds: goodsIds.join(','),
             nums: nums.join(','),
             couponId: this.state.couponId
-        },({data,result})=>{
+        },({data,result,msg})=>{
             if(result == 1){
                 let FORMAT_TEMP = 'YYYY-MM-DD HH:mm:ss';
                 this.now = moment().format(FORMAT_TEMP);
@@ -92,7 +92,7 @@ export class OrderPreview extends React.Component {
                 });
                 this.loadCoupons();
             }else{
-                message.error('订单异常，请重试。');
+                message.error(msg);
                 History.goBack();
             }
         }));
