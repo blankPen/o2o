@@ -6,6 +6,7 @@ import {
 } from 'react-redux';
 import { toggleLoginDialog,thirdLogin } from 'actions/SignPageAction';
 import { QQLogin,WeixinLogin } from 'common/OtherLoginAPI';
+import History from 'common/History';
 import * as DomUtils from 'common/utils/dom';
 import Dialog from 'components/common/Dialog';
 import TopNav from 'components/common/TopNav';
@@ -48,6 +49,7 @@ export class Main extends React.Component {
         let code = this.getQueryString('code');
         let state = this.getQueryString('state');
         if(code){
+            History.replace(this.props.location.pathname);
             this.props.dispatch(thirdLogin({
                 code,
                 state,

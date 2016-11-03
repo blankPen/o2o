@@ -3,7 +3,7 @@
  * @Date:   2016-11-01 15:34:55
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-03 11:15:45
+ * @Last Modified time: 2016-11-03 15:05:21
  */
 
 'use strict';
@@ -161,4 +161,3 @@ function parseToken(str){
     });
     return obj;
 }
-location.href = location.protocol+"//"+location.host+"/#/"+location.search;

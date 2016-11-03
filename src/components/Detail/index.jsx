@@ -9,7 +9,8 @@ import History from 'common/History';
 import Img from 'common/Img';
 import * as DomUtils from 'common/utils/dom';
 import * as actions from 'actions/DetailAction';
-import { message,Rate,Tooltip ,Tabs,Radio,Checkbox,Affix,Pagination} from 'antd';
+import { message,Tooltip ,Tabs,Radio,Checkbox,Affix,Pagination} from 'antd';
+import Rate from 'components/common/Rate/'
 import CartBox from 'components/Detail/CartBox/';
 import Loading from 'components/common/Loading/'
 const moment = require('moment');
@@ -403,7 +404,7 @@ export class RatedBox extends React.Component {
         },()=>{
             this.loadRate();
         });
-        
+
     }
 
     pageChange =(page)=>{
@@ -429,9 +430,9 @@ export class RatedBox extends React.Component {
                         )
                     })}
                     <div className="pagination-bar">
-                        <Pagination 
-                            defaultCurrent={1} 
-                            total={data.allReview} 
+                        <Pagination
+                            defaultCurrent={1}
+                            total={data.allReview}
                             onChange={this.pageChange}
                             pageSize={15}
                         />
@@ -447,7 +448,7 @@ export class RatedBox extends React.Component {
                 </div>
             )
         }
-        
+
     }
 
     render(){

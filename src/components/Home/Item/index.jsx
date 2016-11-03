@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:10:11
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-22 16:34:38
+ * @Last Modified time: 2016-11-03 16:14:16
  */
 
 'use strict';
@@ -12,7 +12,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Img from 'common/Img';
-import { Rate } from 'antd';
+import Rate from 'components/common/Rate';
 import { collectStore } from 'actions/DetailAction';
 
 
