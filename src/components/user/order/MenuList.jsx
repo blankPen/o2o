@@ -233,7 +233,7 @@ export class Line extends React.Component {
     //确认收货
     enterOrder=()=>{
         let detail=this.props.detail||{};
-        
+
         let div=(<div className="clearDialog">
                     <div className="center title">您确定已收到货物？</div>
                     <div className="center">如需帮助，请致电客服 010-65546961</div>
@@ -570,7 +570,8 @@ export class MenuList extends React.Component {
      render(){
         let detail=this.props.orderState.detail||{};
         let address=detail.address||{};
-        let orderState=this.props.detail&&this.props.detail.orderState;
+        let orderState=detail.orderState;
+        console.log(detail,orderState,detail.evaluationStatus);
         return(
             <div className="yincang-active yincang clearfix ">
                 <Loading  isLoading={this.state.loading}>
