@@ -90,6 +90,7 @@ export class index extends React.Component {
               rules: [
                 { validator: this.checkPrime }
               ],
+              initialValue:1
             })(
               <InputNumber style={{width:"100%"}} min={1} step={0.01}/>
             )}

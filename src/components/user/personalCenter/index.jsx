@@ -305,7 +305,7 @@ export class index extends React.Component {
             <div className="userexinfo-form">
                 <div className="userexinfo-form__header">
                     <div className="section-div-1">
-                      <span>账号：<Link className="span_yellow" to="/account">{userInfo.memberName}</Link></span>
+                      <span className="yc_text" title={userInfo.memberName}>账号：<Link className="span_yellow" to="/user/safe">{userInfo.memberName}</Link></span>
                        {/* <span>性别：{userInfo.memberSex===1?"男":"女"}</span>*/}
                     </div>
                     {/*<div className="section-div-1">
@@ -328,8 +328,10 @@ export class index extends React.Component {
                     <Col span={6}>
                          用户名：
                     </Col>
-                    <Col span={8} >
-                        {userInfo.memberTruename}
+                    <Col span={8} className="yc_text" >
+                        <span title={userInfo.memberTruename}>
+                          {userInfo.memberTruename}
+                        </span>
                     </Col>
                 </Row>
                 <Row className="userexinfo-form__section">
@@ -418,7 +420,7 @@ export class index extends React.Component {
                     </Col>
                 </Row>
                 <div className="userexinfo-form__footer">
-                    <span>收藏的店铺：<Link className="span_yellow" to="/collect">{userInfo.favStoreCount}</Link></span>
+                    <span>收藏的店铺：<Link className="span_yellow" to="/user/collect?">{userInfo.favStoreCount}</Link></span>
                     <span>优惠券数量：{userInfo.couponCount}</span>
                    {/* <span>会员积分：{userInfo.memberConsumePoints}</span>*/}
                 </div>
@@ -447,7 +449,7 @@ export class index extends React.Component {
            );
         }else if(this.state.openChangeSex){
           return (
-              <SexBox info={this.state.userInfo} handleSubmit={this.handleSexSubmit}/>
+              <SexBox info={this.state.userInfo} value={this.state.userInfo.memberSex} handleSubmit={this.handleSexSubmit}/>
           )
         }else if(this.state.openBalanceRecharge){
           return (

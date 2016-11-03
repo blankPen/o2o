@@ -45,6 +45,7 @@ export class index extends React.Component {
       this.state={
         userInfo: props.info
       }
+
     }
     resetForm=()=> {
       this.props.form.resetFields();
@@ -79,10 +80,11 @@ export class index extends React.Component {
               rules: [
                 { required: true,type:"number", message: '请选择你的性别' },
               ],
+              initialValue:this.props.value
             })(
-              <RadioGroup>
-                <Radio value={1}>男</Radio>
-                <Radio value={0}>女</Radio>
+               <RadioGroup>
+                <Radio key="man" value={1}>男</Radio>
+                <Radio key="woman" value={0}>女</Radio>
               </RadioGroup>
             )}
            {/* <span><Icon type="info-circle-o" /> No other gender</span>*/}

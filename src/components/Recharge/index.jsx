@@ -186,6 +186,14 @@ export class index extends React.Component {
             }
         }));
     }
+    toFeeback=()=>{
+        History.push({
+            pathname:'/feedback',
+            state:{
+                orderSn:this.props.params.orderSn
+            }
+        });
+    }
 
     renderWeixinPay=()=>{  //微信弹框
         return(
@@ -292,7 +300,7 @@ export class index extends React.Component {
                             '余额不足'
                         }
                     </div>*/}
-                    <div className="right-opinion">意见反馈</div>
+                    <div className="right-opinion" onClick={this.toFeeback}>意见反馈</div>
                 </div>
                 {
                     this.state.tab_index==1?(

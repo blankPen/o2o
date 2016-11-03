@@ -16,12 +16,11 @@ export default class index extends React.Component {
   }
 
   render() {
-    var time  = this.now = moment().format('YYYY-MM-DD HH:mm:ss');
     return (
       <div className="aggrement_box">
         <div className="User_agreement_box">
         <h2 className="center"><b>用户服务协议</b></h2>
-        <h5 className="center">{time}</h5>
+        <h5 className="center"></h5>
         <div className="User_agreement_tex" >
             <p>特别提醒用户认真阅读本《用户服务协议》(下称《协议》) 中各条款。除非您接受本《协议》条款，否则您无权使用本网站提供的相关服务。您的使用行为将视为对本《协议》的接受，并同意接受本《协议》各项条款的约束。<br/>
                 <br/>
