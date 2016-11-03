@@ -38,8 +38,6 @@ export class Payment extends React.Component {
         super(props);
         let orderSn = this.props.params.orderSn;
         let memberId = this.props.userInfo.memberId;
-        let orderAmount = this.props.payInfo.orderAmount;
-        let availablePredeposit = this.props.payInfo.availablePredeposit;
         this.state={
             minute:'00',
             second:'00',
@@ -48,8 +46,8 @@ export class Payment extends React.Component {
             showDialog:false, //是否显示弹框
             renderDialogType:'wx',//is :选择支付成功或失败 wx:微信扫码支付 ot:支付超时
             interval_id:0, //定时器ID
-            tab_index:availablePredeposit>orderAmount?2:1,//1：线上支付 2：余额支付
-            can_banlance_pay:availablePredeposit>orderAmount
+            tab_index:'',//1：线上支付 2：余额支付
+            can_banlance_pay:true
         }
 
         this.renderMap={ //弹框内容的map
