@@ -3,7 +3,7 @@
  * @Date:   2016-11-01 15:34:55
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-02 22:26:54
+ * @Last Modified time: 2016-11-03 10:28:38
  */
 
 'use strict';
@@ -15,7 +15,7 @@ let redirectUri = location.protocol +'//'+location.host+'/leimingtech-front/rest
 if(process.env.NODE_ENV !== 'production'){
     redirectUri = 'http://testo2o.leimingtech.com/leimingtech-front/rest/api/login/thirdLogin';
 }
-const TencentConfig = {
+const TencenxtConfig = {
     appid: 101244672,
     appkey: 'dfd8be1247c2e27237f012f696be223b',
     prefix: process.env.NODE_ENV !== 'production'?'':'https://graph.qq.com/',
@@ -35,7 +35,7 @@ export const QQLogin = {
     },
     login(){
         // var link = `https://graph.qq.com/oauth2.0/authorize?response_type=code&state=qq&client_id=${TencentConfig.appid}&redirect_uri=${redirectUri}&display=pc`;
-        var link = `https://graph.qq.com/oauth/show?which=Login&display=pc&response_type=code&client_id=${TencentConfig.appid}&redirect_uri=${redirectUri}&state=1&scope=get_user_info,get_info`
+        var link = `https://graph.qq.com/oauth/show?which=Login&display=pc&response_type=code&client_id=${TencentConfig.appid}&redirect_uri=${redirectUri}&state=qq&scope=get_user_info,get_info`
         location.href = link;
     },
     getAccessToken(code,callback){

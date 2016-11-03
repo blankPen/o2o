@@ -47,10 +47,10 @@ export class Main extends React.Component {
     componentWillMount() {
         let code = this.getQueryString('code');
         let state = this.getQueryString('state');
-        if(state == 'qq'){
-            this.getQQUserInfo(code);
-        }else{
+        if(state == 'weixin'){
             this.getWxUserInfo(code);
+        }else{
+            this.getQQUserInfo(code);
         }
     }
     getQueryString(name) {
