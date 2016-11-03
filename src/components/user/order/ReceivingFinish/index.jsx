@@ -5,7 +5,8 @@ import React from 'react';
 import './index.less';
 import { connect } from 'react-redux';
 import store from 'stores';
-import {Icon,Button,message,Form,Input,TimePicker,Rate,Row,Col } from 'antd';
+import {Icon,Button,message,Form,Input,TimePicker,Row,Col } from 'antd';
+import Rate from 'components/common/Rate';
 import {
     myEvaluateInfo
 } from 'actions/OrderAction';
@@ -18,7 +19,7 @@ const moment = require('moment');
 
 const formItemLayout = {
   labelCol: {
-    span: 7
+    span: 5
   },
   wrapperCol: {
     span: 17
@@ -126,7 +127,7 @@ let ReceivingFinish =  class extends React.Component {
                             <FormItem
                               id="control-shoprate"
                               {...formItemLayout}
-                              label="店铺评价"
+                              label="店铺评价："
                               required
                             >
                               {getFieldDecorator('shoprate', {
@@ -148,7 +149,7 @@ let ReceivingFinish =  class extends React.Component {
                             <FormItem
                               id="control-rate"
                               {...formItemLayout}
-                              label="配送评价"
+                              label="配送评价："
                               required
                             >
                               {getFieldDecorator('rate', {
@@ -170,7 +171,7 @@ let ReceivingFinish =  class extends React.Component {
                             <FormItem
                               id="control-time"
                               {...formItemLayout}
-                              label="送达时间"
+                              label="送达时间："
                             >
                               {getFieldDecorator('time', {
                                 rules: [
@@ -190,14 +191,14 @@ let ReceivingFinish =  class extends React.Component {
                         <div className="evaluate_li">
                             <FormItem
                               {...formItemLayout}
-                              label="推介美食"
+                              label="推介美食："
                             >
                               {getFieldDecorator('foods')(
                                 <div className="foods_style">
                                     {(detail.orderGoodsList||[]).map((item,i)=>{
                                         return(
-                                            <Button className="foods_menu" id={"btn"+i} key={i} value={item.goodsId}>
-                                                {item.goodsName}
+                                            <Button className="foods_menu" id={"btn"+i} key={i} value={item.goodsId} title={item.goodsName}>
+                                                <span className="btn_text" >{item.goodsName}</span>
                                                 <i className="fa fa-thumbs-o-up" title="赞"
                                                     onClick={this.clickLikes.bind(null,item.goodsId,("btn"+i))}>
                                                 </i>
@@ -215,7 +216,7 @@ let ReceivingFinish =  class extends React.Component {
                             <FormItem
                               id="control-add"
                               {...formItemLayout}
-                              label="补充评价"
+                              label="补充评价："
                             >
                               {getFieldDecorator('add')(
                                 <Input id="control-add" type="textarea" rows={4} />
@@ -223,15 +224,20 @@ let ReceivingFinish =  class extends React.Component {
                             </FormItem>
                         </div>
                         <div className="evaluate_btn">
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                className="sign_btn"
-                                id="phone_btn"
-                                >
-                                提 交
-                            </Button>
-                            <span>提交之后不能修改哦</span>
+                          <Row>
+                            <Col span={5}></Col>
+                            <Col span={17}>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    className="sign_btn"
+                                    id="phone_btn"
+                                    >
+                                    提 交
+                                </Button>
+                                <span>提交之后不能修改哦</span>
+                            </Col>
+                          </Row>
                         </div>
                     </Form>
                 </div>
@@ -253,109 +259,99 @@ let ViewReceiving= class extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state={
+      detail:{}
+    }
   }
   componentWillMount() {
-    console.log("ddddd+>>>>>componentWillMount");
     store.dispatch(myEvaluateInfo({
           "memberId": this.props.memberId,
         },(re)=> {
-          if(re.result==0){
-            //message.success(re.msg);
+          if(re.result==1){
+            console.log("获取我的评价成功");
+            (re.data||[]).map((item,i)=>{
+              if(this.props.orderId==item.orderId){
+                console.log("获取当前订单评价");
+                 this.setState({
+                    detail:item
+                 })
+              }else{
+                console.log("其他订单评价");
+              }
+            })
           }else{
-            //message.error(re.msg);
-            console.log(re.msg);
+            console.log("获取我的评价失败");
           }
         }
     ));
   }
 
   render() {
-    /*let beginTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.startBusinessTime}:00`)).getTime(),
-                    endTime = new Date(moment(this.now).format(`YYYY-MM-DD ${data.endBusinessTime}:00`)).getTime();*/
-    var currTime  = this.now = moment().format('YYYY-MM-DD HH:mm');
+    let currTime  = this.now = moment().format('YYYY-MM-DD HH:mm');
+    let detail=this.state.detail;
     return (
        <div className="evaluate-box">
-          <div className="evaluate_header">
-              <i className="fa fa-check-circle"></i>
-              <div className="title">我的评价</div><span>完成时间：{currTime}</span>
-          </div>
           <div className="evaluate_body">
-                  <div className="evaluate_li">
-                      <Row>
-                        <Col span={7}>店铺评价</Col>
-                        <Col span={17}>
-                            <Rate id="control-shoprate"  value={4} />
-                            {/*<span className="star_info">点击星星打分</span>*/}
-                        </Col>
-                      </Row>
-                  </div>
-                  <div className="evaluate_li">
-                      <Row>
-                        <Col span={7}>配送评价</Col>
-                        <Col span={17}>
-                         {currTime}
-                        </Col>
-                      </Row>
-                  </div>
-                  <div className="evaluate_li">
-                      <Row>
-                        <Col span={7}>送达时间</Col>
-                        <Col span={17}>
-                          <Rate id="control-rate"  value={5} />
+                <div className="evaluate_li">
+                    <Row className="line">
+                      <Col span={5} className="line_left"><div className="left_title">我的评价</div></Col>
+                      <Col span={17} className="line_right">
+                          <span className="left_time">完成时间：{detail && detail.gevalAddTimeStr||currTime}</span>
+                      </Col>
+                    </Row>
+                </div>
+                <div className="evaluate_li">
+                    <Row className="line">
+                      <Col span={5} className="line_left">总体评价：</Col>
+                      <Col span={17} className="line_right">
+                          <Rate id="control-shoprate" disabled  value={detail && detail.gevalScore||0} />
                           {/*<span className="star_info">点击星星打分</span>*/}
-                        </Col>
-                      </Row>
-                  </div>
-                  <div className="evaluate_li">
-                    <Row>
-                      <Col span={7}>推介美食</Col>
-                      <Col span={17}></Col>
+                      </Col>
+                    </Row>
+                </div>
+                <div className="evaluate_li">
+                    <Row className="line">
+                      <Col span={5} className="line_left">送达时间：</Col>
+                      <Col span={17} className="line_right">
+                        {detail && detail.gevalAddTimeStr||currTime}
+                      </Col>
+                    </Row>
+                </div>
+                 <div className="evaluate_li">
+                  <Row className="line">
+                    <Col span={5} className="line_left">推介美食：</Col>
+                    <Col span={17} className="line_right">
                        <div className="foods_style">
-                        <Button className="foods_menu foods_menu_active_up" >
-                            番茄炒蛋
-                            <i className="fa fa-thumbs-o-up" title="赞">
-                            </i>
-                            <i className="fa fa-thumbs-o-down" title="踩">
-                            </i>
-                        </Button>
-                        <Button className="foods_menu foods_menu_active_down" >
-                            番茄炒蛋2
-                            <i className="fa fa-thumbs-o-up" title="赞">
-                            </i>
-                            <i className="fa fa-thumbs-o-down" title="踩">
-                            </i>
-                        </Button>
+                        {detail && (detail.orderGoodsList||[]).map((item,i)=>{
+                            return(
+                              <Button key={i} size="small" className={`foods_menu ${item.caizan===0?'foods_menu_active_up':item.caizan===1?'foods_menu_active_down':''}`} title={item.goodsName} >
+                                  <span className="btn_text">{item.goodsName}</span>
+                                  <i className="fa fa-thumbs-o-up" title="赞">
+                                  </i>
+                                  <i className="fa fa-thumbs-o-down" title="踩">
+                                  </i>
+                              </Button>
+                            );
+                        })}
                         </div>
-                    </Row>
-                      {/*<FormItem
-                        {...formItemLayout}
-                        label="推介美食"
-                      >
-                        {getFieldDecorator('foods')(
-                          <div className="foods_style">
-                              {(detail.orderGoodsList||[]).map((item,i)=>{
-                                  return(
-                                      <Button className="foods_menu" id={"btn"+i} key={i} value={item.goodsId}>
-                                          {item.goodsName}
-                                          <i className="fa fa-thumbs-o-up" title="赞"
-                                              onClick={this.clickLikes.bind(null,item.goodsId,("btn"+i))}>
-                                          </i>
-                                          <i className="fa fa-thumbs-o-down" title="踩"
-                                              onClick={this.removeLikes.bind(null,item.goodsId,("btn"+i))}>
-                                          </i>
-                                      </Button>
-                                  );
-                              })}
-                          </div>
-                        )}
-                      </FormItem>*/}
-                  </div>
-                  <div className="evaluate_li">
-                    <Row>
-                      <Col span={7}>补充评价</Col>
-                      <Col span={17}><Input id="control-add" type="textarea" rows={4} /></Col>
-                    </Row>
-                  </div>
+                      </Col>
+                  </Row>
+                </div>
+                <div className="evaluate_li">
+                  <Row className="line">
+                    <Col span={5} className="line_left">补充评价：</Col>
+                    <Col span={17} className="line_right">
+                        <Input
+                          style={{ "minHeight": "82px"}}
+                          id="control-add"
+                          readOnly={true}
+                          type="textarea"
+                          autosize={true}
+                          value={detail && detail.gevalContent||""}
+                        />
+                      </Col>
+                  </Row>
+                </div>
           </div>
       </div>
     );

@@ -4,7 +4,7 @@
 .evaluate-box{
     width: 100%;
 	.evaluate_header{
-	    width: 75%;
+	    width: 90%;
     	margin: auto;
 		i{
 	        font-size: 24px;
@@ -17,8 +17,22 @@
 		}
 	}
 	.evaluate_body{
+		.evaluate_li_header{
+			margin-top: -15px;
+		}
 		.evaluate_li{
 		    margin: 15px 0;
+		    .left_title{
+			    display: inline-block;
+			    font-size: 18px;
+			    font-weight: bold;
+			}
+			.left_time{
+				position: absolute;
+				right: 0px;
+			    line-height: 25px;
+	    		color: #ccc;
+			}
 		    .ant-time-picker-large{
 				margin-left: 35px;
     			margin-right: 10px;
@@ -39,16 +53,26 @@
 		    }
 		    .foods_style{
 		    	display:inline-block;
-		    	margin-left: -5px;
+		    	margin-left: -10px;
 		    	.foods_menu{
 	    		    line-height: 24px;
     				cursor: inherit;
-				    margin-left: 5px;
+			        margin-left: 10px;
     				margin-bottom: 15px;
+				    border-radius: 20px;
+    				.btn_text{
+					    width: 55px;
+					    float: left;
+					    text-overflow: ellipsis;
+					    overflow: hidden;
+					    white-space: nowrap;
+    				}
 		    		.fa{
 						cursor: pointer;
-					    font-size: 24px;
-					    margin-left: 15px;
+				        font-size: 18px;
+		    		}
+		    		.fa-thumbs-o-up{
+	    			    margin-right: 15px;
 		    		}
 		    		.fa-thumbs-o-up:hover{
 					   color:#8dc719;
@@ -78,9 +102,19 @@
 		    		}
 		    	}
 		    }
+			.line{
+			    margin: 25px 0;
+				.line_left{
+				    text-align: right;
+				    padding-right: 15px;
+				    font-weight: bold;
+				}
+				.line_right{
+
+				}
+			}
 		}
 		.evaluate_btn{
-			text-align: center;
 			.sign_btn{
 			    margin-right: 20px;
 			}

@@ -500,7 +500,7 @@ export class MenuList extends React.Component {
         super(props);
         this.state={
             loading:false,
-            showReceiving:1
+            showReceiving:true
         }
     }
     componentDidMount(){
@@ -551,22 +551,16 @@ export class MenuList extends React.Component {
               "storeId": detail.storeId,
               "numberOfStars": values.rate
             },(re)=> {
-              if(re.result==0){
-                message.success(re.msg);
-               /* this.setState({
-                    showReceiving:false
-                });*/
-                this.props.dispatch(getMenuList(this.props.orderId,()=>{
-                    this.setState({
-                        loading:false,
-                        showReceiving:2
-                    });
-                }))
-                callback && callback(re);
-              }else{
-                message.error(re.msg);
-                console.log(re.msg);
-              }
+                if(re.result==1){
+                    this.props.dispatch(getMenuList(this.props.orderId,()=>{
+                        this.setState({
+                            loading:false,
+                            showReceiving:false
+                        });
+                    }))
+                }else{
+                    message.error(re.msg);
+                }
             }
         ));
     }
@@ -623,7 +617,7 @@ export class MenuList extends React.Component {
                     {orderState=="40"&&detail.evaluationStatus==0?//未评价  this.state.showReceiving===1  orderState=="40"&&detail.evaluationStatus==0?
                             (<ReceivingFinish detail={detail} handleSubmit={this.closeToReceiving}/>)
                         :orderState=="40"&&detail.evaluationStatus==1?//已评价   this.state.showReceiving===2  orderState=="40"&&detail.evaluationStatus==1?
-                            (<ViewReceiving memberId={this.props.userInfo.memberId} />)
+                            (<ViewReceiving memberId={this.props.userInfo.memberId} orderId={detail.orderId} />)
                         ://时间轴
                             (
                                 <Timelines
