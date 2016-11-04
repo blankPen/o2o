@@ -178,6 +178,39 @@ export class Detail extends React.Component {
             )
         }
     }
+
+    renderAdtiudeTab=()=>{
+        let data = this.props.storeDetail ||{};
+        if(data.businessLicense||data.foodLicence){
+            return(
+                <TabPane tab="餐厅资质" key="3">
+                    <div className="aptitude">
+                        {
+                            data.businessLicense?
+                            (<div className="aptitude-item">
+                                <div className="aptitude-title">营业执照</div>
+                                <Img
+                                    isShow={true}
+                                    src={data.businessLicense}
+                                />
+                            </div>):
+                            undefined
+                        }
+                        {
+                            data.foodLicence?
+                            (<div className="aptitude-item">
+                                <div className="aptitude-title">餐饮服务许可证</div>
+                                <Img
+                                    isShow={true}
+                                    src={data.foodLicence}
+                                />
+                            </div>):undefined
+                        }
+                    </div>
+                </TabPane>
+            )
+        }
+    }
     render() {
         let data = this.props.storeDetail ||{};
         let categoryList = [];
@@ -315,24 +348,7 @@ export class Detail extends React.Component {
                                         >
                                     </RatedBox>
                                  </TabPane>
-                                 <TabPane tab="餐厅资质" key="3">
-                                     <div className="aptitude">
-                                         <div className="aptitude-item">
-                                             <div className="aptitude-title">营业执照</div>
-                                             <Img
-                                                isShow={true}
-                                                src='http://p1.meituan.net/xianfu/0936e7e3c04b7e873d14a8edd365743b61440.jpg'
-                                             />
-                                         </div>
-                                         <div className="aptitude-item">
-                                             <div className="aptitude-title">餐饮服务许可证</div>
-                                             <Img
-                                                isShow={true}
-                                                src='http://p1.meituan.net/xianfu/18b999daee540d21de9ed40c92a94913184320.jpg'
-                                             />
-                                         </div>
-                                     </div>
-                                 </TabPane>
+                                 {this.renderAdtiudeTab()}
                              </Tabs>
                             </div>
                             {this.state.is_show_category?categoryList:undefined}
@@ -340,7 +356,7 @@ export class Detail extends React.Component {
                         <div className="content-right">
                             <div className="notice-top">
                                 <div className="notice-title">订餐必读&商家公告</div>
-                                <div className="notice-content">订餐满100元赠送2升可乐一瓶</div>
+                                <div className="notice-content">{data.sellerNotify}</div>
                             </div>
                             <Affix>
                                 <StoreNotice data={this.props.storeDetail}></StoreNotice>
