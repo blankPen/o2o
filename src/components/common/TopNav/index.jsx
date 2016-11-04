@@ -45,8 +45,10 @@ export class TopNav extends React.Component {
                         <UserBox/>
                         <div className="moblie-home">
                             <div className="moblie">
-                                <i className="fa fa-mobile-phone mr5"></i>
-                                手机版
+                                <Link to={"/download"}>
+                                    <i className="fa fa-mobile-phone mr5"></i>
+                                    手机版
+                                </Link>
                             </div>
                             <div className="home">
                                 <i className="fa fa-home mr5"></i>
