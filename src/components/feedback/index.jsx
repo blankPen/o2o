@@ -9,6 +9,7 @@ import {
 } from 'actions/UserAction';
 import { message } from 'antd';
 import History from 'common/History';
+import {toggleLoginDialog}  from 'actions/SignPageAction';
 
 function mapStateToProps({
 	    common
@@ -25,6 +26,11 @@ export class Feedback extends React.Component {
     onSend=()=>{
     	let value=this.refs.textarea.value||"";
     	let state=this.props.location.state||{};
+        console.log("状态：",this.props.userInfo);
+        if(!this.props.userInfo){
+            this.props.dispatch(toggleLoginDialog(true));
+            return;
+        }
         if(this.disable){
             message.error("不能提交多次哦!");
             return;
