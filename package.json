@@ -50,7 +50,7 @@
     "mocha": "^3.0.0",
     "null-loader": "^0.1.1",
     "open": "0.0.5",
-    "postcss": "^5.2.5",
+    "postcss-loader": "^1.1.0",
     "react-addons-test-utils": "^15.0.0",
     "react-hot-loader": "^1.2.9",
     "redux-actions": "^0.12.0",
