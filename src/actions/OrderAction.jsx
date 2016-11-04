@@ -100,6 +100,7 @@ export function getAddressList(params,call) {
     }
 }
 
+//获取订单信息
 export function getPayInfo(orderSn,call){
     return function(dispatch){
         ajax({
@@ -116,6 +117,7 @@ export function getPayInfo(orderSn,call){
     }
 }
 
+//获取微信二维码
 export function toWeiXinPay(params,call){
     return function(dispatch){
         ajax({
@@ -128,6 +130,7 @@ export function toWeiXinPay(params,call){
     }
 }
 
+//支付宝支付
 export function toAliPay(params,call){
     return function(dispatch){
         ajax({
@@ -140,6 +143,7 @@ export function toAliPay(params,call){
     }
 }
 
+//余额支付
 export function toPredepositPay(params,call) {
     return function(dispatch){
         ajax({
@@ -152,6 +156,7 @@ export function toPredepositPay(params,call) {
     }
 }
 
+//获取订单支付状态
 export function getPayResult(paysn,call){
     return function(dispatch){
         ajax({
