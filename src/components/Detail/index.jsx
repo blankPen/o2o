@@ -354,10 +354,14 @@ export class Detail extends React.Component {
                             {this.state.is_show_category?categoryList:undefined}
                         </div>
                         <div className="content-right">
-                            <div className="notice-top">
-                                <div className="notice-title">订餐必读&商家公告</div>
-                                <div className="notice-content">{data.sellerNotify}</div>
-                            </div>
+                            {
+                                data.sellerNotify?
+                                (<div className="notice-top">
+                                    <div className="notice-title">订餐必读&商家公告</div>
+                                    <div className="notice-content">{data.sellerNotify}</div>
+                                </div>):
+                                undefined
+                            }
                             <Affix>
                                 <StoreNotice data={this.props.storeDetail}></StoreNotice>
                             </Affix>
