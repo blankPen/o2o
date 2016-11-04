@@ -247,7 +247,10 @@ export class MyOrder extends React.Component {
                         <div className="phone thedesc">订单状态：{state}</div>
                         <div className="time thedesc">下单时间：{day}</div>
                     </div>
-                    <div className="orderdesc orderdesc-right">
+                    <div className="orderdesc orderdesc2">
+                        <div className="thedesc">点击这里查看</div>
+                    </div>
+                    <div className="orderdesc orderdesc2 orderdesc-right">
                         {data.orderState==40?
                             (<div className="btnlist orderbtn" onClick={this.aginOrder}>再来一单</div>):null}
                         {data.orderState==0||data.orderState==40?(
