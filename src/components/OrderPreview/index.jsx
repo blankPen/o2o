@@ -430,21 +430,21 @@ export class OrderPreview extends React.Component {
                                             placeholder="不要辣，多放盐等口味要求" />
                                     </div>
                                 </div>
+                            {store.openInvoice == 1?
                                 <div className="message">
                                     <span className="message-label">
                                         发票信息：
                                     </span>
                                     <div className="message-box">
-                                        {store.isOpenInvoice == 1?
+                                        
                                             <input
                                                 className="message-input"
                                                 onChange={this.onChangeValue.bind(this,'invoice')}
                                                 value={this.state.postData.invoice}
-                                            />:
-                                            undefined
-                                        }
+                                            />
                                     </div>
-                                </div>
+                                </div>:undefined
+                            }
                                 {this.renderPayMethod()}
                             </div>
                         </div>
