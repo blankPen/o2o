@@ -86,7 +86,7 @@ export class Detail extends React.Component {
             }));
         }
     }
-    tabsChange = (key)=>{
+    tabsChange = (key)=>{ //切换Tab
         let storeId = this.props.params.storeId;
         this.setState({
             is_show_category:key==1?true:false
@@ -95,20 +95,20 @@ export class Detail extends React.Component {
             this.props.dispatch(actions.getStoreEvaluatList({storeId:storeId}));
         }
     }
-    menuClick = (key)=>{
+    menuClick = (key)=>{    //菜单点击事件
         let el = ReactDOM.findDOMNode(this.refs[key]);
         if(el){
             let offset = DomUtils.getOffset(el).top;
             DomUtils.scrollTo(offset);
         }
     }
-    saveCartList=()=>{
+    saveCartList=()=>{ //保存购物车
         let memberId = this.props.userInfo.memberId;
         let storeId = this.props.params.storeId;
         let data = this.state.inCartItems;
         this.props.dispatch(actions.saveCartList(storeId,memberId,data));
     }
-    handleAddCart=(data)=>{
+    handleAddCart=(data)=>{ //加入购物车
         let newItems = {...this.state.inCartItems};
         let goods = newItems[data.goodsId];
         goods = goods ? {
@@ -124,17 +124,17 @@ export class Detail extends React.Component {
         },this.saveCartList);
         this.refs.cartBox && this.refs.cartBox.triggerAnim(getPosition(data.goodsId));
     }
-    toggleCollect=(flag)=>{
+    toggleCollect=(flag)=>{ //收藏
         let storeId = this.props.params.storeId;
         this.props.dispatch(actions.collectStore(storeId,flag));
     }
-    handleChangeCart=(value,addId)=>{
+    handleChangeCart=(value,addId)=>{ //改变购物车
         this.setState({
             inCartItems: value
         },this.saveCartList);
         this.refs.cartBox && this.refs.cartBox.triggerAnim(getPosition(addId));
     }
-    toOrderPreview=()=>{
+    toOrderPreview=()=>{    //去订单预览页
         let memberId = this.props.userInfo.memberId;
         let storeId = this.props.params.storeId;
         this.props.dispatch(actions.clearCart(storeId,memberId));
@@ -151,7 +151,7 @@ export class Detail extends React.Component {
         }
 
     }
-    renderTooltipTitle=(type,level,num1,num2)=>{
+    renderTooltipTitle=(type,level,num1,num2)=>{ 
         if(type=='time'){
             return(
                 <div>
@@ -538,40 +538,6 @@ export class RateItem extends React.Component {
                 </div>
                 <div className="user-reply">
                     {data.gevalContent}
-                </div>
-            </div>
-        )
-    }
-}
-
-export class CategoryFilter extends React.Component {
-    static propTypes = {
-        name: React.PropTypes.string,
-    };
-
-    constructor(props) {
-        super(props);
-
-    }
-    render(){
-        return(
-            <div className="category-title">
-                <div className="tag-name">{this.props.categoryName}</div>
-                <div className="category-filter">
-                    <div className="category-all">
-                        全部分类
-                    </div>
-                    <button className="category-btn category-active">
-                        默认排序
-                    </button>
-                    <button className="category-btn sale">
-                        销量
-                        <i className="fa fa-long-arrow-up"></i>
-                    </button>
-                    <button className="category-btn sale">
-                        价格
-                        <i className="fa fa-long-arrow-down"></i>
-                    </button>
                 </div>
             </div>
         )
