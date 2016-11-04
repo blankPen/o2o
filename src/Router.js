@@ -44,6 +44,7 @@ import Feedback from 'bundle?lazy&name=Feedback!components/feedback';
 import Search from 'bundle?lazy&name=Search!components/Search/';
 import Payment from 'bundle?lazy&name=Payment!components/Payment/';
 import PaySucc from 'bundle?lazy&name=PaySucc!components/paysucc/';
+import Download from 'bundle?lazy&name=PaySucc!components/Download/';
 import Recharge from 'bundle?lazy&name=Recharge!components/Recharge/';
 
 
@@ -95,6 +96,7 @@ export class index extends React.Component {
                             <Route path="feedback" component={asyncLoader(Feedback)}/>
                         </Route>
                         <Route path='/map' component={asyncLoader(Maper)} />
+                        <Route path='/download' component={asyncLoader(Download)} />
                         <Route path="/login" component={asyncLoader(Login)}/>
                         <Route path="/register" component={asyncLoader(Register)}/>
                         <Route path='/payment' >
@@ -145,7 +147,8 @@ function autoLogin(rextState, replace, callback) {
         console.log("7天自动登录");
         store.dispatch(otherLogin({
             "password": user_info.password,
-            "username": user_info.username
+            "username": user_info.username,
+            "expires": false
         }, (re) => {
             if (re.result === 1) {
                 console.log('自动登录成功');
