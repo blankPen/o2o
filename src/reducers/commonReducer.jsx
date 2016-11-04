@@ -3,7 +3,7 @@
 * @Date:   2016-10-19 17:18:52
 * @Desc: this_is_desc
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-31 14:35:29
+* @Last Modified time: 2016-11-04 16:51:58
 */
 
 'use strict';
@@ -39,7 +39,7 @@ export default handleActions({
     'login/success':(state, action) => {
         console.log("cookie保存期限："+action.expires+"天");
         Cookie.set('user_info', action.cookieInfo, { expires: action.expires });//cookie存储用户名密码
-        sessionStorage.setItem('user_id',action.info.memberId);//session存储用户id
+        Cookie.set('user_id',action.info.memberId);//session存储用户id
         return {
             ...state,
             userInfo: action.info
@@ -52,7 +52,7 @@ export default handleActions({
         }
     },
     'logout/success' :(state, action)=>{
-        sessionStorage.removeItem('user_id');
+        Cookie.remove('user_id');
         Cookie.remove('user_info');
         action.flag !== false && location.reload();
         return {
