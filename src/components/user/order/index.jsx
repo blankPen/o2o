@@ -60,6 +60,7 @@ export class Order extends React.Component {
             loading:false
         });
     }
+    //无数据返回的元素
     renderFooter=(loading,hasMore,self)=>{
         let list = this.props.orderState&&this.props.orderState.list || [];
         if(!list.length){
@@ -131,7 +132,7 @@ export class MyOrder extends React.Component {
         }
         this.props.dispatch(selectItem(id));
     }
-
+    //判断状态返回相应的描述
    returnState=(state)=>{
          switch(state){
             case 0:
