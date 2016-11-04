@@ -136,7 +136,9 @@ export function clearCart(storeId,memberId = "global"){
         storejs.set(CART_KEY,data);
     }
 }
-
+/**
+ * [getStoreCountByMap 获取指定坐标周围有多少店铺]
+ */
 export function getStoreCountByMap(res,callback){
     return function(dispatch){
         let data = '';

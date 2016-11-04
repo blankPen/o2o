@@ -3,7 +3,7 @@
  * @Date:   2016-10-17 21:48:10
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-31 15:22:11
+ * @Last Modified time: 2016-11-04 18:04:02
  */
 
 'use strict';
@@ -36,9 +36,11 @@ export function savePosition(position) {
         position
     }
 }
+// 获取当前选择的百度地图坐标对象
 export function getPosition(){
     return store.getState().common.position;
 }
+// 获取当前用户坐标值
 export function getPositionPoint(){
     let point = getPosition().point;
     return {
@@ -46,6 +48,7 @@ export function getPositionPoint(){
         atitude: point.lat,
     };
 }
+// 从localStorage里获取坐标历史记录
 export function getHistoryPositions(){
     return storejs.get('history-position') || [];
 }

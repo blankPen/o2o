@@ -3,13 +3,16 @@
  * @Date:   2016-10-17 21:48:10
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-10-21 22:59:47
+ * @Last Modified time: 2016-11-04 18:06:27
  */
 
 'use strict';
 import ajax from 'common/Ajax';
 import { getPositionPoint } from 'actions/commonAction'
 
+/**
+ * [getHomeList 获取首页店铺列表]
+ */
 export function getHomeList(params,call) {
     return function(dispatch) {
         ajax({
@@ -31,7 +34,12 @@ export function getHomeList(params,call) {
         })
     }
 }
-
+/**
+ * [getClassList 获取首页的分类列表]
+ * @param  {[type]} id   [description]
+ * @param  {[type]} call [description]
+ * @return {[type]}      [description]
+ */
 export function getClassList(id,call){
     return function(dispatch) {
         if(id !== undefined){

@@ -3,7 +3,7 @@
 * @Date:   2016-10-24 14:52:37
 * @Desc: this_is_desc
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-10-24 21:41:05
+* @Last Modified time: 2016-11-04 18:08:27
 */
 
 'use strict';
@@ -38,7 +38,6 @@ export function searchAutoComplete(value,call){
         })
     }
 }
-
 export function searchStore(params,call){
     return function(dispatch){
         ajax({
