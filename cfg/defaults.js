@@ -25,10 +25,10 @@ function getDefaultModules() {
     ],
     loaders: [{
       test: /\.css$/,
-      loader: 'style-loader!css-loader!autoprefixer-loader'
+      loader: 'style-loader!css-loader!postcss-loader'
     }, {
       test: /\.less/,
-      loader: 'style-loader!css-loader!autoprefixer-loader!less-loader'
+      loader: 'style-loader!css-loader!postcss-loader!less-loader'
     }, {
       test: /\.(png|jpg|gif|woff|woff2)$/,
       loader: 'url-loader?limit=8192'
