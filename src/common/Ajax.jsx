@@ -20,8 +20,9 @@ export default function(opt) {
         ...opt,
     };
     opt.data = opt.data || {};
-    opt.data.sign = getSign(opt.data);
     opt.data.timestamp = Date.now();
+    opt.data.sign = getSign(opt.data);
+
     opt.success = (res) => {
         if (res.result == 2) {
             console.log("登录超时");
@@ -38,11 +39,14 @@ export default function(opt) {
 
 function getSign(params={}){
     let value = '';
-    Object.keys(params).sort().map((key)=>{
-        value+=`${key}=${params[key] || ''}&`;
-    });
-    value = value.substr(0,value.length-1)
-    console.log(value)
-    return doSign(value);
+    if(typeof params == 'object'){
+        Object.keys(params).sort().map((key)=>{
+            value+=`${key}=${params[key] === undefined?'':params[key]}&`;
+        });
+        value = value.substr(0,value.length-1)
+        return doSign(value);
+    }else{
+
+    }
 }
 
