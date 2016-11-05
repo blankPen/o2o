@@ -48,6 +48,7 @@ export class index extends React.Component {
     	this.state={
     		userInfo: props.info,
     		wait: 0,/* 验证码发送倒计时秒数，默认0，最大60*/
+        wait2: 0,
   		  type: "bindMobile",/* 修改绑定手机号操作类型*/
         type2: "modifyMobile",/* 绑定手机号操作操作类型*/
         nextStep: false
@@ -75,10 +76,9 @@ export class index extends React.Component {
                   })
               }, 1000)
             } else {
+                message.error(re.msg);
                 this.setState({
-                    wait2: 0,
-                    openFormError: true,
-                    validate_info: re.msg
+                    wait2: 0
                 })
             }
           }
@@ -143,10 +143,9 @@ export class index extends React.Component {
                       })
                   }, 1000)
                 } else {
+                    message.error(re.msg);
                     this.setState({
-                        wait: 0,
-                        openFormError: true,
-                        validate_info: re.msg
+                        wait: 0
                     })
                 }
               }
