@@ -20,6 +20,7 @@ export default function(opt) {
         ...opt,
     };
     opt.data.sign = getSign(opt.data);
+    opt.data.timestamp = Date.now();
     opt.success = (res) => {
         if (res.result == 2) {
             console.log("登录超时");
