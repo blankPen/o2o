@@ -1,5 +1,6 @@
 import reqwest from 'reqwest';
 import History from 'common/History';
+import doSign from 'common/doSign';
 import store from 'stores';
 import {
     message
@@ -18,6 +19,7 @@ export default function(opt) {
         cache: 'false',
         ...opt,
     };
+    opt.data.sign = getSign(opt.data);
     opt.success = (res) => {
         if (res.result == 2) {
             console.log("登录超时");
@@ -31,3 +33,12 @@ export default function(opt) {
     };
     reqwest(opt);
 }
+
+function getSign(params={}){
+    let value = '';
+    Object.keys(params).sort().map((key)=>{
+        value+=`${key}&${params[key]}`;
+    });
+    return doSign(value);
+}
+
