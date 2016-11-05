@@ -39,8 +39,10 @@ export default function(opt) {
 function getSign(params={}){
     let value = '';
     Object.keys(params).sort().map((key)=>{
-        value+=`${key}&${params[key]}`;
+        value+=`${key}=${params[key] || ''}&`;
     });
+    value = value.substr(0,value.length-1)
+    console.log(value)
     return doSign(value);
 }
 
