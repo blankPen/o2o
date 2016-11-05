@@ -19,6 +19,7 @@ export default function(opt) {
         cache: 'false',
         ...opt,
     };
+    opt.data = opt.data || {};
     opt.data.sign = getSign(opt.data);
     opt.data.timestamp = Date.now();
     opt.success = (res) => {
