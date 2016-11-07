@@ -18,7 +18,7 @@ export default class Download extends React.Component {
             <div className="download">
                 <div className="neirong">
                     <Link className="returnHome" to={"/"}><i className="fa fa-home"></i>返回首页</Link>
-                    <div className="back"  style={{"backgroundImage":"url(http://waimai.meituan.com/static/img/3g/new/download_1.png)"}}></div>
+                    <div className="back"  style={{"backgroundImage":"url(../../images/o2o.png)"}}></div>
                     <div className="qrcode">
                         <span className="imgK">
                             <span className="imgtip">ios</span>
