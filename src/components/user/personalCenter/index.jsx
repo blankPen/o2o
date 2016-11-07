@@ -293,7 +293,7 @@ export class index extends React.Component {
       return (
         <div className="personal-center-box">
             <div className="avatar-container">
-                <h3>亲爱的{(userInfo.memberTruename?userInfo.memberTruename:userInfo.memberName)||"默认用户"}，来上传一张头像吧</h3>
+            <h3>亲爱的<span className="yc_text" title={(userInfo.memberTruename?userInfo.memberTruename:userInfo.memberName)||"默认用户"}>{(userInfo.memberTruename?userInfo.memberTruename:userInfo.memberName)||"默认用户"}</span>，来上传一张头像吧</h3>
                 <div className="avatar-content">
                     <div className="img-wrap">
                         <Img isShow={true} src={userInfo.memberAvatar} />
@@ -333,7 +333,7 @@ export class index extends React.Component {
                          用户名：
                     </Col>
                     <Col span={8} className="yc_text" >
-                        <span title={userInfo.memberTruename}>
+                        <span title={userInfo.memberTruename} className="text_line">
                           {userInfo.memberTruename}
                         </span>
                     </Col>

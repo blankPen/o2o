@@ -345,7 +345,7 @@ export class Account extends React.Component {
                 {progress_name?
                   (
                     <span>
-                      <Col span={9}><p>您的用户名为：{username}</p></Col>
+                    <Col span={9}><p className="yc_text" title={username}>您的用户名为：{username}</p></Col>
                       <Col span={5}> <Button className="btn" type='primary' onClick={this.changeName}>修改</Button></Col>
                     </span>
                   ):
