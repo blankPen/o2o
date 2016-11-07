@@ -152,7 +152,7 @@ export default class CartBox extends React.Component {
                     {totalPrice >= startPrice?
                         needLogin(<button className="submit" onClick={this.toOrderPreview}>去下单</button>):
                         <button disabled className="submit">
-                            还差{startPrice-totalPrice}元起送
+                            还差{(startPrice-totalPrice).toFixed(2)}元起送
                         </button>
                     }
                 </div>
