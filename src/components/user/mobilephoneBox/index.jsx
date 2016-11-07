@@ -48,7 +48,7 @@ export class index extends React.Component {
     	this.state={
     		userInfo: props.info,
     		wait: 0,/* 验证码发送倒计时秒数，默认0，最大60*/
-        wait2: 0,
+        wait2: 0,/* 验证码发送倒计时秒数，默认0，最大60*/
   		  type: "bindMobile",/* 修改绑定手机号操作类型*/
         type2: "modifyMobile",/* 绑定手机号操作操作类型*/
         nextStep: false
@@ -68,11 +68,11 @@ export class index extends React.Component {
               message.success("验证码已发送请查收");
               console.log(re.data.verifyCode);
               this.g = setInterval(() => {
-                  if (this.state.wait == -1) {
+                  if (this.state.wait2 == -1) {
                       clearInterval(this.g);
                   }
                   this.setState({
-                      wait2: this.state.wait - 1
+                      wait2: this.state.wait2 - 1
                   })
               }, 1000)
             } else {
