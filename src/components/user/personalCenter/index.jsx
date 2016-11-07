@@ -283,12 +283,11 @@ export class index extends React.Component {
       const props = { //上传请求
           action: '/rest/api/member/updateMemberFace',
           data: upData,
-          listType: 'text',
           onChange: this.handleChange,
           multiple: false,
           // fileList: this.state.fileList,
           name: "face",
-          accept: "image/*",
+          // accept: "image/*",
           beforeUpload: this.beforeUpload,
       };
       return (
