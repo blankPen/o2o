@@ -151,7 +151,7 @@ export class Detail extends React.Component {
         }
 
     }
-    renderTooltipTitle=(type,level,num1,num2)=>{ 
+    renderTooltipTitle=(type,level,num1,num2)=>{
         if(type=='time'){
             return(
                 <div>
@@ -279,7 +279,7 @@ export class Detail extends React.Component {
                                 <div className="buttom-info">
                                     <div>{'商家地址：'+data.storeAddress}</div>
                                    {data.storeTels?
-                                        (<div>{'商家电话：'+data.storeTels}</div>):undefined} 
+                                        (<div>{'商家电话：'+data.storeTels}</div>):undefined}
                                     <div>
                                         营业时间：{
                                             data.startBusinessTime && data.endBusinessTime ?
@@ -600,9 +600,13 @@ export class CategoryItem extends React.Component {
         super(props);
     }
     onAdd=(e)=>{
-        let {data} = this.props;
-        saveTarget(data.goodsId,e);
-        this.props.onAdd(data);
+        if(this.props.inCartNum && this.props.inCartNum >= 99){
+            message.warn('单个商品一次最多只能购买99件。');
+        }else{
+            let {data} = this.props;
+            saveTarget(data.goodsId,e);
+            this.props.onAdd(data);
+        }
     }
     render(){
         let {data} = this.props;

@@ -8,6 +8,7 @@ import {
     connect
 } from 'react-redux';
 import Img from 'common/Img';
+import { getSign } from 'common/Ajax';
 import History from 'common/History';
 import {
   Button,
@@ -232,7 +233,7 @@ export class index extends React.Component {
       );
     }
     handleRetrievePassword=(errors,values,callback)=>{//找回登录密码
-      let user_info = Cookie.getJSON('user_info') || undefined;
+      let user_info = this.props.userInfo;
       console.log(user_info.password+','+user_info.user_id+","+user_info.username);
       if (errors) {
           console.log('Retrieve-password-box表单验证错误!');
@@ -273,11 +274,15 @@ export class index extends React.Component {
           password=(userInfo.isSettingPwd===1)?"******" : "尚未设置密码";
           paypass=(userInfo.payPassword)?"******" : "尚未设置支付密码";
       }
+      let upData = {
+          memberId: userInfo.memberId,
+          timestamp: Date.now(),
+      };
+      upData.sign = getSign(upData);
+      console.log(upData)
       const props = { //上传请求
           action: '/rest/api/member/updateMemberFace',
-          data:{
-              memberId: userInfo.memberId
-          },
+          data: upData,
           listType: 'text',
           onChange: this.handleChange,
           multiple: false,

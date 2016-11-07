@@ -41,7 +41,7 @@ export default function(opt) {
     reqwest(opt);
 }
 
-function getSign(params={}){
+export function getSign(params={}){
     if(typeof params === 'object'){
         let value = '';
         Object.keys(params).sort().map((key)=>{

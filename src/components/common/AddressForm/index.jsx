@@ -3,7 +3,7 @@
  * @Date:   2016-10-25 17:19:49
  * @Desc: this_is_desc
  * @Last Modified by:   pengzhen
- * @Last Modified time: 2016-11-03 19:38:28
+ * @Last Modified time: 2016-11-07 15:38:21
  */
 
 'use strict';
@@ -46,7 +46,7 @@ export class AddressForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: false,
         }
     }
     componentDidMount() {
@@ -67,6 +67,7 @@ export class AddressForm extends React.Component {
                 onhighlight: setAddress,
                 onconfirm: setAddress
             })
+            document.getElementById('search-input').value = this.props.data.address || '';
         });
     }
     checkPhone = (rule, value, callback) => {
@@ -105,7 +106,6 @@ export class AddressForm extends React.Component {
         this.setState({
             loading: false
         });
-        this.props.form.resetFields();
         this.props.onCancel();
     }
     validateHelp(name){
@@ -124,6 +124,7 @@ export class AddressForm extends React.Component {
         });
     }
     render() {
+        const data = this.props.data;
         const formItemLayout = {labelCol: {span: 4 }, wrapperCol: {span: 18 }, };
         const getFieldDecorator = this.getFieldDecorator;
         return (

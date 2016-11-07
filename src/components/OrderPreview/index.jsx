@@ -217,7 +217,7 @@ export class OrderPreview extends React.Component {
                 title= {title}
             >
                 <AddressForm
-                    key={address.addressId || 'add'}
+                    key={address.addressId || Date.now()}
                     data={address}
                     onSubmit={this.onAddAddress}
                     onCancel={this.toggleAddressDialog}/>
@@ -436,7 +436,7 @@ export class OrderPreview extends React.Component {
                                         发票信息：
                                     </span>
                                     <div className="message-box">
-                                        
+
                                             <input
                                                 className="message-input"
                                                 onChange={this.onChangeValue.bind(this,'invoice')}
