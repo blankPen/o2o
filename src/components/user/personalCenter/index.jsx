@@ -84,7 +84,7 @@ export class index extends React.Component {
         console.log(file.type);
         let isBoolean = (file.type === 'image/jpeg') || (file.type === 'image/png') || (file.type === 'image/jpg') || (file.type === 'image/gif') || (file.type === 'image/bmp');
         if (!isBoolean) {
-            message.error('文件格式不正确，只能上传 JPG/PNG文件哦！');
+            message.error('文件格式不正确，只能上传 JPG/JPEG/GIF/PNG/BMP文件哦！');
         }
         return isBoolean;
     }
