@@ -109,7 +109,7 @@ export class OrderPreview extends React.Component {
     loadCoupons(){
         let memberId = this.props.userInfo.memberId;
         const { storeId } = this.props.location.state;
-        let orderAmount = this.props.order.totalPrice;
+        let orderAmount = this.props.order.orderAmount;
         this.props.dispatch(actions.getCouponList({
             storeId,
             memberId,
@@ -270,7 +270,7 @@ export class OrderPreview extends React.Component {
         })
     }
     rednerGoodsMenu(){
-        const { goodsList=[],extraFeeList=[],salesCampaignList=[],totalPrice } = this.props.order;
+        const { goodsList=[],extraFeeList=[],salesCampaignList=[],orderAmount } = this.props.order;
         const couponList = this.props.couponList;
         return (
             <div className="content-left">
@@ -301,7 +301,7 @@ export class OrderPreview extends React.Component {
                     })}
                     <div className="info-item total">
                         <div className="left-info">合计</div>
-                        <div className="right-price">¥{totalPrice}</div>
+                        <div className="right-price">¥{orderAmount}</div>
                     </div>
                 </div>
                 <div className="info-footer">
@@ -316,8 +316,8 @@ export class OrderPreview extends React.Component {
                                 <Option value={''}>请选择优惠券</Option> :
                                 <Option value={''}>没有可用的优惠券</Option>}
                             {couponList.map((item,i)=>{
-                                return <Option key={i} value={item.id+''}>
-                                    {item.name}
+                                return <Option key={i} value={item.couponId+''}>
+                                    {item.couponTitle}
                                 </Option>
                             })}
                         </Select>
@@ -394,7 +394,7 @@ export class OrderPreview extends React.Component {
         )
     }
     render(){
-        const { store={},totalPrice } = this.props.order;
+        const { store={},orderAmount } = this.props.order;
 
         return(
             <div className="preview-body">
@@ -451,7 +451,7 @@ export class OrderPreview extends React.Component {
                         {this.renderTimeSelector()}
                         <div className="order-info clearfix">
                             <div className="need-pay">
-                                您需要支付<span className="need-price">￥{totalPrice}</span>
+                                您需要支付<span className="need-price">￥{orderAmount}</span>
                             </div>
                             <div className="app-download">
                                 <div className="download-label">
