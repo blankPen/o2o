@@ -2,13 +2,14 @@
 * @Author: chenjingwei
 * @Date:   2016-10-26 15:31:52
 * @Last Modified by:   pengzhen
-* @Last Modified time: 2016-11-01 15:00:57
+* @Last Modified time: 2016-11-07 16:13:36
 */
 
 import './index.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import Img from 'common/Img';
+import { getSign } from 'common/Ajax';
 import { Radio,message } from 'antd';
 import * as actions from'actions/OrderAction';
 import Loading from'components/common/Loading/';
@@ -198,7 +199,10 @@ export class Payment extends React.Component {
             });
             this.toogleRenderDialog();
             let origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
-            let url = origin+'/rest/api/order/zfbPay?paysn='+this.paySn;
+            let params = `paysn=${this.paySn}&timestamp=${Date.now()}`;
+            params+=`&sign=${encodeURIComponent(getSign(params))}`;
+            let url = origin+'/rest/api/order/zfbPay?'+params;
+
             window.open(url);
         }
     }
