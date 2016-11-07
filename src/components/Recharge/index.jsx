@@ -9,6 +9,7 @@ import './index.less';
 import React from 'react';
 import { connect } from 'react-redux';
 import Img from 'common/Img';
+import { getSign } from 'common/Ajax';
 import { Radio,message } from 'antd';
 import * as actions from'actions/OrderAction';
 import Loading from'components/common/Loading/';
@@ -186,6 +187,8 @@ export class index extends React.Component {
             });
             this.toogleRenderDialog();
             let origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+            let params = `paysn=${this.paySn}&timestamp=${Date.now()}`;
+            params+=`&sign=${encodeURIComponent(getSign(params))}`;
             let url = origin+'/rest/api/order/zfbPay?paysn='+this.pdrSn;
             window.open(url);
         }
