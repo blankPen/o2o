@@ -206,8 +206,8 @@ export class Account extends React.Component {
       );
     }
     handlePasswordSubmit = (errors,values,callback) => {//修改登录密码
-        let user_info = Cookie.getJSON('user_info') || undefined;
-        console.log(user_info.password+','+user_info.user_id+","+user_info.username);
+        let user_info = this.props.userInfo;
+        // console.log(user_info.password+','+user_info.user_id+","+user_info.username);
         if (errors) {
             console.log('  password-box表单验证错误!');
             return;
