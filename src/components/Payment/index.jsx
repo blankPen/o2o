@@ -201,7 +201,7 @@ export class Payment extends React.Component {
             let origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
             let params = `paysn=${this.paySn}&timestamp=${Date.now()}`;
             params+=`&sign=${encodeURIComponent(getSign(params))}`;
-            let url = origin+'/rest/api/order/zfbPay?paysn='+this.pdrSn;
+            let url = origin+'/rest/api/order/zfbPay?'+params;
             window.open(url);
         }
     }
