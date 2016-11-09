@@ -52,6 +52,7 @@ export class OrderPreview extends React.Component {
                 storeId: undefined,
                 memberId: undefined,
                 addressId: undefined,
+                couponId: undefined,
             }
         }
     }
@@ -85,6 +86,7 @@ export class OrderPreview extends React.Component {
                         nums: nums.join(','),
                         storeId,
                         memberId,
+                        couponId: this.state.couponId,
                         addressId: data.address && data.address.addressId,
                         deliveryTime: this.now,
                         paymentMethod: data.store.paymentMethod!=2?data.store.paymentMethod:0
@@ -110,11 +112,13 @@ export class OrderPreview extends React.Component {
         let memberId = this.props.userInfo.memberId;
         const { storeId } = this.props.location.state;
         let orderAmount = this.props.order.orderAmount;
-        this.props.dispatch(actions.getCouponList({
-            storeId,
-            memberId,
-            orderAmount,
-        }));
+        if(!this.props.couponList.length){
+            this.props.dispatch(actions.getCouponList({
+                storeId,
+                memberId,
+                orderAmount,
+            }));
+        }
     }
     onChangeValue(key,value){
         value = value.target ? value.target.value : value;
