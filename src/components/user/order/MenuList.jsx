@@ -27,6 +27,7 @@ import {
     ReceivingFinish,
     ViewReceiving
 } from 'components/user/order/ReceivingFinish/';
+import { getSign } from 'common/Ajax';
 
 const moment = require('moment');
 
@@ -546,13 +547,19 @@ export class MenuList extends React.Component {
         }
         console.log('表单验证成功');
         console.log(values);
+        let upData = {
+          orderId: detail.orderId,
+          shopComments: values.add,
+          shopStar: values.shoprate,
+          productStepLike: values.foods,
+          storeId: detail.storeId,
+          numberOfStars: values.rate,
+          timestamp: Date.now()
+        };
+        upData.sign = getSign(upData);
+        console.log(upData)
         this.props.dispatch(saveEvaluateInfo({
-              "orderId": detail.orderId,
-              "shopComments": values.add,
-              "shopStar": values.shoprate,
-              "productStepLike": values.foods,
-              "storeId": detail.storeId,
-              "numberOfStars": values.rate
+              ...upData
             },(re)=> {
                 if(re.result==1){
                     this.props.dispatch(getMenuList(this.props.orderId,()=>{
@@ -572,6 +579,7 @@ export class MenuList extends React.Component {
         let address=detail.address||{};
         let orderState=detail.orderState;
         console.log(detail,orderState,detail.evaluationStatus);
+        orderState=40;
         return(
             <div className="yincang-active yincang clearfix ">
                 <Loading  isLoading={this.state.loading}>
