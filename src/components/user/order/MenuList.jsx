@@ -554,10 +554,8 @@ export class MenuList extends React.Component {
           productStepLike: values.foods,
           storeId: detail.storeId,
           numberOfStars: values.rate,
-          timestamp: Date.now()
+          arrivaTime: moment(new Date(values.time)).format('YYYY-MM-DD hh:mm:ss'),
         };
-        upData.sign = getSign(upData);
-        console.log(upData)
         this.props.dispatch(saveEvaluateInfo({
               ...upData
             },(re)=> {

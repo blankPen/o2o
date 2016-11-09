@@ -174,12 +174,17 @@ export function getPayResult(paysn,call){
  */
 export function saveEvaluateInfo(params,call) {
     return function(dispatch) {
+        let data = '';
+        Object.keys(params).forEach(key=>{
+            data +=`&${key}=${params[key]}`;
+        });
+        data = data.substr(1);
         ajax({
-            contentType:"multipart/form-data; boundary=---------------------------7d33a816d302b6 ",
+            contentType:"multipart/form-data; boundary=ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC",
             url: '/rest/api/order/saveEvaluatePage',
-            data: {
-                ...params
-            },
+            type: 'get',
+            data: data,
+            // data: { ...params},
             success: function(res){
                 call && call(res);
             }
